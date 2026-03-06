@@ -1,0 +1,57 @@
+diff --git a/browser/components/preferences/main.inc.xhtml b/browser/components/preferences/main.inc.xhtml
+index 3b07de78a6..f27cf7ff78 100644
+--- a/browser/components/preferences/main.inc.xhtml
++++ b/browser/components/preferences/main.inc.xhtml
+@@ -27,10 +27,13 @@
+   <label><html:h2 data-l10n-id="startup-header"/></label>
+ 
+   <vbox id="startupPageBox">
+-    <html:setting-group groupid="startup"/>
+-    <html:a is="moz-support-link" support-page="session-restore" data-l10n-id="session-restore-learn-more" />
++  <html:setting-group groupid="startup"/>
++  <html:a is="moz-support-link"
++          support-page="session-restore"
++          data-l10n-id="session-restore-learn-more"/>
+   </vbox>
+ 
++
+ </groupbox>
+ 
+ <!-- Data migration -->
+diff --git a/browser/components/preferences/main.js b/browser/components/preferences/main.js
+index 6f99cbf..0ec057f 100644
+--- a/browser/components/preferences/main.js
++++ b/browser/components/preferences/main.js
+@@ -1759,31 +1759,6 @@ SettingGroupManager.registerGroups({
+         control: "moz-message-bar",
+         l10nId: "startup-windows-launch-on-login-profile-disabled",
+       },
+-      {
+-        id: "alwaysCheckDefault",
+-        l10nId: "always-check-default",
+-      },
+-      {
+-        id: "isDefaultPane",
+-        l10nId: "is-default-browser",
+-        control: "moz-promo",
+-      },
+-      {
+-        id: "isNotDefaultPane",
+-        l10nId: "is-not-default-browser",
+-        control: "moz-promo",
+-        options: [
+-          {
+-            control: "moz-button",
+-            l10nId: "set-as-my-default-browser",
+-            id: "setDefaultButton",
+-            slot: "actions",
+-            controlAttrs: {
+-              type: "primary",
+-            },
+-          },
+-        ],
+-      },
+     ],
+   },
+   importBrowserData: {
+

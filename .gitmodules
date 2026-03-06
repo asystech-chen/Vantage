@@ -1,0 +1,3 @@
+[submodule "settings"]
+	path = settings
+	url = https://codeberg.org/librewolf/settings.git

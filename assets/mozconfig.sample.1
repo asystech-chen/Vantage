@@ -1,0 +1,47 @@
+# we want a full build of firefox.
+ac_add_options --enable-application=browser
+ac_add_options --disable-artifact-builds
+
+# for crosscompiling...
+#ac_add_options --target=x86_64-pc-mingw32
+#ac_add_options --host=x86_64-pc-mingw32
+#ac_add_options --target=x86_64-apple-darwin
+#ac_add_options --with-macos-sdk=...
+
+# optimization and disabling unwanted features.
+ac_add_options --disable-crashreporter
+ac_add_options --disable-debug
+ac_add_options --disable-default-browser-agent
+ac_add_options --disable-tests
+ac_add_options --disable-updater
+ac_add_options --enable-hardening
+ac_add_options --enable-optimize
+ac_add_options --enable-release
+ac_add_options --enable-rust-simd
+
+# add-ons..
+ac_add_options --allow-addon-sideload
+ac_add_options --with-unsigned-addon-scopes=app,system
+
+
+# disables crash reporting, telemetry and other tools
+mk_add_options MOZ_CRASHREPORTER=0
+mk_add_options MOZ_DATA_REPORTING=0
+mk_add_options MOZ_SERVICES_HEALTHREPORT=0
+mk_add_options MOZ_TELEMETRY_REPORTING=0
+
+
+# see issue # https://codeberg.org/librewolf/issues/issues/223
+export MOZ_REQUIRE_SIGNING=
+
+# branding..
+ac_add_options --with-branding=browser/branding/librewolf
+
+# This is needed for the sandboxed wasm libraries. If you already have them installed, you can remove this.
+ac_add_options --enable-bootstrap
+
+# this setting kills windows, but that's ok for now
+# the problem with windows is probably somewhere in the theme files
+# that nobody wants to touch..
+ac_add_options --with-app-name=librewolf
+

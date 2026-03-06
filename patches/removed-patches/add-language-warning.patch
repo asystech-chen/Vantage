@@ -1,0 +1,8 @@
+--- a/browser/locales/en-US/browser/preferences/languages.ftl
++++ b/browser/locales/en-US/browser/preferences/languages.ftl
+@@ -70,4 +70,4 @@
+ browser-languages-installed-label = Installed languages
+ browser-languages-available-label = Available languages
+ 
+-browser-languages-error = { -brand-short-name } can’t update your languages right now. Check that you are connected to the internet or try again.
++browser-languages-error = { -brand-short-name } forces your language to en-US in order to protect your privacy. If you still want to make this change, check our FAQ.

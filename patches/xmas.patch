@@ -1,0 +1,43 @@
+diff --git a/browser/installer/package-manifest.in b/browser/installer/package-manifest.in
+index 725a639..2b88218 100644
+--- a/browser/installer/package-manifest.in
++++ b/browser/installer/package-manifest.in
+@@ -251,6 +251,11 @@
+ ; Remote Settings JSON dumps
+ @RESPATH@/browser/defaults/settings
+ 
++; LibreWolf specific files.
++@RESPATH@/defaults/pref/local-settings.js
++@RESPATH@/distribution/policies.json
++@RESPATH@/librewolf.cfg
++
+ # channel-prefs.js has been removed on macOS.
+ #ifndef XP_MACOSX
+ ; Warning: changing the path to channel-prefs.js can cause bugs (Bug 756325)
+diff --git a/lw/moz.build b/lw/moz.build
+index e69de29..8589aac 100644
+--- a/lw/moz.build
++++ b/lw/moz.build
+@@ -0,0 +1,12 @@
++FINAL_TARGET_FILES += [
++  "librewolf.cfg",
++]
++
++FINAL_TARGET_FILES.distribution += [
++  "policies.json",
++]
++
++# local-settings does not yet end up being pacakged.
++FINAL_TARGET_FILES.defaults.pref += [
++  "local-settings.js",
++]
+diff --git a/moz.build b/moz.build
+index 4b7fabd..734eee8 100644
+--- a/moz.build
++++ b/moz.build
+@@ -244,3 +244,5 @@ SPHINX_TREES["content-security"] = "docs/content-security"
+ SPHINX_TREES["jsloader"] = "docs/jsloader"
+ 
+ include("build/templates.mozbuild")
++
++DIRS += ["lw"]

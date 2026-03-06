@@ -1,0 +1,28 @@
+From 90e57f71621084111baa6098fc637b76e106114a Mon Sep 17 00:00:00 2001
+From: Demez <demizexp@gmail.com>
+Date: Mon, 13 Feb 2023 18:07:23 -0500
+Subject: [PATCH] enable
+
+---
+ modules/libpref/init/StaticPrefList.yaml | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/modules/libpref/init/StaticPrefList.yaml b/modules/libpref/init/StaticPrefList.yaml
+index fca74af..4cc6d5d 100644
+--- a/modules/libpref/init/StaticPrefList.yaml
++++ b/modules/libpref/init/StaticPrefList.yaml
+@@ -6975,7 +6975,11 @@
+ # Whether we attempt to decode JXL images or not.
+ - name: image.jxl.enabled
+   type: RelaxedAtomicBool
++#if defined(MOZ_JXL)
++  value: true
++#else
+   value: false
++#endif
+   mirror: always
+ 
+ #---------------------------------------------------------------------------
+-- 
+2.34.1.windows.1
+

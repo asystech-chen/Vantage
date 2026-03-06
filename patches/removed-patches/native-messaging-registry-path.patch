@@ -1,0 +1,13 @@
+diff --git a/toolkit/components/extensions/NativeManifests.jsm b/toolkit/components/extensions/NativeManifests.jsm
+index 5e8e0dc..a0d4ea5 100644
+--- a/toolkit/components/extensions/NativeManifests.jsm
++++ b/toolkit/components/extensions/NativeManifests.jsm
+@@ -31,7 +31,7 @@ const TYPES = {
+ const NATIVE_MANIFEST_SCHEMA =
+   "chrome://extensions/content/schemas/native_manifest.json";
+ 
+-const REGPATH = "Software\\Mozilla";
++const REGPATH = "Software\\LibreWolf";
+ 
+ var NativeManifests = {
+   _initializePromise: null,

@@ -1,0 +1,54 @@
+# Authorative mozconfig source: https://github.com/emilio/mozconfigs/tree/master/mozconfigs
+
+ac_add_options --target=x86_64-pc-mingw32
+
+CROSS_BUILD=1
+
+# win-cross contains:
+#  * clang: downloaded with mach artifact toolchain --from-build win64-clang-12
+#    (optional if you use midl, see below)
+#  * win-sdk: Windows SDK
+#  * dia-sdk: DIA SDK
+#  * visual-c: Visual C++
+#  * liblowercase: .so built from build/liblowercase
+#
+# If you hit any issues with being unable to find midl.exe or other executables
+# make sure that all .exe's in the win-cross directory have the executable bit set.
+
+export WINDOWSSDKDIR="$MOZBUILD/win-cross/win-sdk"
+export DIA_SDK_PATH="$MOZBUILD/win-cross/dia-sdk"
+
+# TODO: Use a loop vfat device instead of this?
+mk_add_options "export LD_PRELOAD=$MOZBUILD/win-cross/liblowercase/liblowercase.so"
+mk_add_options "export LOWERCASE_DIRS=$MOZBUILD/win-cross"
+
+EXTRA_PATH="$MOZBUILD/win-cross/visual-c/tools/msvc/14.21.27702/bin/hostx64/x64:"
+
+# Either this, which will use clang-cl.exe and midl.exe:
+# EXTRA_PATH+="$MOZBUILD/win-cross/clang/bin:"
+#
+# Or this, which makes export much faster, but needs a relatively recent wine
+# installation:
+#
+# export MIDL="widl"
+#
+# Something like this pointing to a local build works too:
+EXTRA_PATH+="$HOME/src/wine/src:"
+export MIDL="$HOME/src/wine/src/tools/widl/widl"
+export MIDL_FLAGS="-I $HOME/src/wine/src/include"
+
+mk_add_options "export PATH=$EXTRA_PATH$PATH"
+
+export CC="$MOZBUILD/clang/bin/clang-cl"
+export CXX="$MOZBUILD/clang/bin/clang-cl"
+export HOST_CC="$MOZBUILD/clang/bin/clang"
+export HOST_CXX="$MOZBUILD/clang/bin/clang++"
+
+# This is needed for packaging not to fail.
+ac_add_options --disable-updater
+ac_add_options --disable-maintenance-service
+
+# Other things needed for packaging:
+#
+#  * 7z needs to be on your PATH, or specified with export 7Z
+#  * makensis needs to be on your PATH, or specified with export MAKENSIS

@@ -1,0 +1,13 @@
+diff --git a/browser/components/privatebrowsing/content/aboutPrivateBrowsing.html b/browser/components/privatebrowsing/content/aboutPrivateBrowsing.html
+index edad72a..c641296 100644
+--- a/browser/components/privatebrowsing/content/aboutPrivateBrowsing.html
++++ b/browser/components/privatebrowsing/content/aboutPrivateBrowsing.html
+@@ -53,7 +53,7 @@
+           <div class="fake-caret"></div>
+         </button>
+       </div>
+-      <div class="info">
++      <div class="info" hidden>
+         <h1 id="info-title"></h1>
+         <p id="info-body"></p>
+         <a id="private-browsing-myths"></a>

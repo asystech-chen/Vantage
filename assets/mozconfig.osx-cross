@@ -1,0 +1,34 @@
+# Authorative mozconfig source: https://github.com/emilio/mozconfigs/tree/master/mozconfigs
+
+ac_add_options --target=x86_64-apple-darwin
+
+CROSS_BUILD=1
+
+# osx-cross contains:
+#  * https://github.com/phracker/MacOSX-SDKs
+#  * linux64-libdmg
+#  * linux64-cctools-port
+#  * linux64-hfsplus
+#  * linux64-binutils (might not be needed)
+#  * linux64-clang-macosx-cross
+
+CROSS="$MOZBUILD/osx-cross"
+CCTOOLS="$CROSS/cctools"
+
+CROSS_SYSROOT="$CROSS/MacOSX-SDKs/MacOSX10.12.sdk"
+export MACOS_SDK_DIR="$CROSS_SYSROOT"
+
+export DSYMUTIL="$CROSS/clang/bin/dsymutil"
+
+mk_add_options "export PATH=$CCTOOLS/bin:$CROSS/binutils/bin:$CROSS/llvm-dsymutil/bin:$PATH"
+mk_add_options "export LD_LIBRARY_PATH=$MOZBUILD/clang/lib:$CCTOOLS/lib"
+
+export CC="$CROSS/clang/bin/clang"
+export CXX="$CROSS/clang/bin/clang++"
+export HOST_CC="$CROSS/clang/bin/clang"
+export HOST_CXX="$CROSS/clang/bin/clang++"
+
+# These are needed for packaging.
+export MKFSHFS="$CROSS/hfsplus-tools/newfs_hfs"
+export DMG_TOOL="$CROSS/dmg/dmg"
+export HFS_TOOL="$CROSS/dmg/hfsplus"

@@ -1,0 +1,215 @@
+name: Create Test Builds
+
+on:
+  push:
+    branches:
+      - main
+      - beta
+  workflow_dispatch:
+    inputs:
+      Target:
+        description: 'Target Platform'
+        required: true
+        default: 'linux'
+        type: choice
+        options:
+          - all
+          - linux
+          - windows
+          - macos
+      Version:
+        description: 'Firefox Version'
+        required: true
+        default: 'stable'
+        type: choice
+        options:
+          - latest
+          - beta
+          - rc
+          - stable
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  detect-version:
+    if: ${{ !(forgejo.event_name == 'pull_request' && forgejo.head_ref == 'beta' && forgejo.base_ref == 'main') }}
+    runs-on: epsilon
+    container:
+      image: codeberg.org/librewolf/bsys6:dind
+    outputs:
+      ff_version: ${{ steps.detect.outputs.FF_VERSION }}
+      ff_channel: ${{ steps.detect.outputs.FF_CHANNEL }}
+      ff_build: ${{ steps.detect.outputs.FF_BUILD }}
+      ff_beta_suffix: ${{ steps.detect.outputs.FF_BETA_SUFFIX }}
+      ff_display: ${{ steps.detect.outputs.FF_DISPLAY }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Install Dependencies
+        run: |
+          apt-get update
+          apt-get -y install curl jq
+
+      - name: Detect Firefox Version
+        id: detect
+        run: |
+          chmod +x ./scripts/detect-firefox-version.sh
+          ./scripts/detect-firefox-version.sh --channel "${{ (github.ref == 'refs/heads/beta' || github.base_ref == 'beta') && 'latest' || inputs.Version || 'stable' }}" >> $FORGEJO_OUTPUT
+          
+          # Read outputs
+          while IFS='=' read -r key value; do
+            export "$key=$value"
+          done < $FORGEJO_OUTPUT
+          
+          echo "========================================"
+          echo "Firefox Version:"
+          echo "========================================"
+          echo "Version:     $FF_VERSION"
+          echo "Channel:     $FF_CHANNEL"
+          echo "Build:       $FF_BUILD"
+          echo "Beta Suffix: $FF_BETA_SUFFIX"
+          echo "Display:     $FF_DISPLAY"
+          echo "========================================"
+
+  test-linux:
+    needs: detect-version
+    if: inputs.Target == 'all' || inputs.Target == 'linux' || inputs.Target == ''
+    runs-on: epsilon
+    container:
+      image: codeberg.org/librewolf/bsys6:dind
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Install Dependencies
+        run: |
+          apt-get update && apt-get -y upgrade
+          apt-get -y install build-essential curl jq make python3 python3-dev python3-pip wget unzip git pigz gnupg
+
+      - name: Setup Version
+        run: |
+          echo "Testing against: ${{ needs.detect-version.outputs.ff_display }}"
+          echo "${{ needs.detect-version.outputs.ff_version }}" > version
+
+      - name: Fetching Firefox Source
+        run: |
+          make fetch FF_CHANNEL=${{ needs.detect-version.outputs.ff_channel }} \
+                     FF_BUILD=${{ needs.detect-version.outputs.ff_build || 'build1' }} \
+                     FF_BETA_SUFFIX=${{ needs.detect-version.outputs.ff_beta_suffix }}
+
+      - name: Check Patchfail
+        run: |
+          sh -c "./scripts/check-patchfail.sh"
+      
+      - name: Test Build
+        run: |
+          make test-linux
+
+      - name: Upload artifacts
+        uses: https://data.forgejo.org/forgejo/upload-artifact@v4
+        with:
+          name: linux-test
+          path: |
+            librewolf-*.tar.xz
+            mozconfig.txt
+          retention-days: ${{ github.event_name == 'push' && 3 || 14 }}
+
+  test-windows:
+    needs: detect-version
+    if: inputs.Target == 'all' || inputs.Target == 'windows'
+    runs-on: epsilon
+    container:
+      image: codeberg.org/librewolf/bsys6:dind
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Install Dependencies
+        run: |
+          apt-get update && apt-get -y upgrade
+          apt-get -y install build-essential curl jq make python3 python3-dev python3-pip wget unzip git pigz gnupg
+
+      - name: Setup Version
+        run: |
+          echo "Testing against: ${{ needs.detect-version.outputs.ff_display }}"
+          echo "${{ needs.detect-version.outputs.ff_version }}" > version
+
+      - name: Fetching Firefox Source
+        run: |
+          make fetch FF_CHANNEL=${{ needs.detect-version.outputs.ff_channel }} \
+                     FF_BUILD=${{ needs.detect-version.outputs.ff_build || 'build1' }} \
+                     FF_BETA_SUFFIX=${{ needs.detect-version.outputs.ff_beta_suffix }}
+
+      - name: Check Patchfail
+        run: |
+          sh -c "./scripts/check-patchfail.sh"
+      
+      - name: Test Build
+        run: |
+          make test-windows
+
+      - name: Upload artifacts
+        uses: https://data.forgejo.org/forgejo/upload-artifact@v4
+        with:
+          name: windows-test
+          path: |
+            librewolf-*.zip
+            mozconfig.txt
+          retention-days: ${{ github.event_name == 'push' && 3 || 14 }}
+
+  test-macos:
+    needs: detect-version
+    if: inputs.Target == 'all' || inputs.Target == 'macos'
+    runs-on: epsilon
+    container:
+      image: codeberg.org/librewolf/bsys6:dind
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Install Dependencies
+        run: |
+          apt-get update && apt-get -y upgrade
+          apt-get -y install build-essential curl jq make python3 python3-dev python3-pip wget unzip git pigz gnupg
+
+      - name: Setup Version
+        run: |
+          echo "Testing against: ${{ needs.detect-version.outputs.ff_display }}"
+          echo "${{ needs.detect-version.outputs.ff_version }}" > version
+
+      - name: Fetching Firefox Source
+        run: |
+          make fetch FF_CHANNEL=${{ needs.detect-version.outputs.ff_channel }} \
+                     FF_BUILD=${{ needs.detect-version.outputs.ff_build || 'build1' }} \
+                     FF_BETA_SUFFIX=${{ needs.detect-version.outputs.ff_beta_suffix }}
+
+      - name: Check Patchfail
+        run: |
+          sh -c "./scripts/check-patchfail.sh"
+      
+      - name: Test Build
+        run: |
+          make test-macos
+
+      - name: Upload artifacts
+        uses: https://data.forgejo.org/forgejo/upload-artifact@v4
+        with:
+          name: macos-test
+          path: |
+            librewolf-*.tar.gz
+            mozconfig.txt
+          retention-days: ${{ github.event_name == 'push' && 3 || 14 }}

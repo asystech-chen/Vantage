@@ -1,0 +1,194 @@
+# LibreWolf msix.patch
+#
+# Author:        Malte Jürgens <maltejur@dismail.de>
+# Description:   Allows us to build a msix for the Microsoft Store
+# Last Updated:  2025-05-27
+# License:       MPL 2.0
+
+diff --git a/browser/installer/windows/msix/AppxManifest.xml.in b/browser/installer/windows/msix/AppxManifest.xml.in
+index b81a73518a..3e58515c5d 100644
+--- a/browser/installer/windows/msix/AppxManifest.xml.in
++++ b/browser/installer/windows/msix/AppxManifest.xml.in
+@@ -30,13 +30,14 @@
+   </Resources>
+   <Dependencies>
+     <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.22621.1555" />
++    <PackageDependency Name="Microsoft.VCLibs.140.00.UWPDesktop" MinVersion="14.0.0.0" Publisher="CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US" />
+   </Dependencies>
+   <Capabilities>
+     <rescap:Capability Name="runFullTrust" />
+   </Capabilities>
+   <Applications>
+     <Application Id="App" Executable="VFS\ProgramFiles\@APPX_INSTDIR@\@MOZ_APP_NAME@.exe" EntryPoint="Windows.FullTrustApplication">
+-      <uap:VisualElements BackgroundColor="#20123A" DisplayName="@MOZ_APP_DISPLAYNAME@" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="@MOZ_APP_DISPLAYNAME@">
++      <uap:VisualElements BackgroundColor="#FFFFFF" DisplayName="@MOZ_APP_DISPLAYNAME@" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="@MOZ_APP_DISPLAYNAME@">
+         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\LargeTile.png" Square71x71Logo="Assets\SmallTile.png">
+           <uap:ShowNameOnTiles>
+             <uap:ShowOn Tile="square150x150Logo"/>
+@@ -119,20 +120,4 @@
+       </Extensions>
+     </Application>
+   </Applications>
+-  <Extensions>
+-    <!-- These COM registrations allow Windows/MSAA to access Firefox accessibility features. -->
+-    <com:Extension Category="windows.comInterface">
+-      <com:ComInterface>
+-        <com:ProxyStub DisplayName="AccessibleMarshal"
+-                       Id="1814ceeb-49e2-407f-af99-fa755a7d2607"
+-                       Path="VFS\ProgramFiles\@APPX_INSTDIR@\AccessibleMarshal.dll" />
+-        <com:Interface Id="4e747be5-2052-4265-8af0-8ecad7aad1c0"
+-                       ProxyStubClsid="1814ceeb-49e2-407f-af99-fa755a7d2607" />
+-        <com:Interface Id="1814ceeb-49e2-407f-af99-fa755a7d2607"
+-                       ProxyStubClsid="1814ceeb-49e2-407f-af99-fa755a7d2607" />
+-        <com:Interface Id="0d68d6d0-d93d-4d08-a30d-f00dd1f45b24"
+-                       ProxyStubClsid="1814ceeb-49e2-407f-af99-fa755a7d2607" />
+-      </com:ComInterface>
+-    </com:Extension>
+-  </Extensions>
+ </Package>
+diff --git a/python/mozbuild/mozbuild/mach_commands.py b/python/mozbuild/mozbuild/mach_commands.py
+index 58702a0734..08d7862509 100644
+--- a/python/mozbuild/mozbuild/mach_commands.py
++++ b/python/mozbuild/mozbuild/mach_commands.py
+@@ -3003,7 +3003,7 @@ def repackage_msi(
+ @CommandArgument(
+     "--vendor",
+     type=str,
+-    default="Mozilla",
++    default=None,
+     required=False,
+     help="The vendor to use in the Package/Identity/Name string to use in the App Manifest."
+     + " Defaults to 'Mozilla'.",
+@@ -3162,7 +3162,7 @@ def repackage_msix(
+         command_context.topsrcdir,
+         channel=channel,
+         arch=arch,
+-        displayname=identity_name,
++        identity=identity_name,
+         vendor=vendor,
+         publisher=publisher,
+         publisher_display_name=publisher_display_name,
+diff --git a/python/mozbuild/mozbuild/repackaging/msix.py b/python/mozbuild/mozbuild/repackaging/msix.py
+index 133944f06f..81c9ab2465 100644
+--- a/python/mozbuild/mozbuild/repackaging/msix.py
++++ b/python/mozbuild/mozbuild/repackaging/msix.py
+@@ -106,68 +106,19 @@ def get_embedded_version(version, buildid):
+     the dotted quad to be identically 0, so we enforce that here.
+     """
+ 
+-    # It's irritating to roll our own version parsing, but the tree doesn't seem
+-    # to contain exactly what we need at this time.
+-    version = version.rsplit("esr", 1)[0]
+-    alpha = "a" in version
+-
+-    tail = None
+-    if "a" in version:
+-        head, tail = version.rsplit("a", 1)
+-        if tail != "1":
+-            # Disallow anything beyond `X.Ya1`.
+-            raise ValueError(
+-                f"Alpha version not of the form X.0a1 is not supported: {version}"
+-            )
+-        tail = buildid
+-    elif "b" in version:
+-        head, tail = version.rsplit("b", 1)
+-        if len(head.split(".")) > 2:
+-            raise ValueError(
+-                f"Beta version not of the form X.YbZ is not supported: {version}"
+-            )
+-    elif "rc" in version:
+-        head, tail = version.rsplit("rc", 1)
+-        if len(head.split(".")) > 2:
+-            raise ValueError(
+-                f"Release candidate version not of the form X.YrcZ is not supported: {version}"
+-            )
+-    else:
+-        head = version
+-
+-    components = (head.split(".") + ["0", "0", "0"])[:3]
+-    if tail:
+-        components[2] = tail
+-
+-    if alpha:
+-        # Nightly builds are all `X.0a1`, which isn't helpful.  Include build ID
+-        # to disambiguate.  But each part of the dotted quad is 16 bits, so we
+-        # have to squash.
+-        if components[1] != "0":
+-            # Disallow anything beyond `X.0a1`.
+-            raise ValueError(
+-                f"Alpha version not of the form X.0a1 is not supported: {version}"
+-            )
+-
+-        # Last two digits only to save space.  Nightly builds in 2066 and 2099
+-        # will be impacted, but future us can deal with that.
+-        year = buildid[2:4]
+-        if year[0] == "0":
+-            # Avoid leading zero, like `.0YMm`.
+-            year = year[1:]
+-        month = buildid[4:6]
+-        day = buildid[6:8]
+-        if day[0] == "0":
+-            # Avoid leading zero, like `.0DHh`.
+-            day = day[1:]
+-        hour = buildid[8:10]
+-
+-        components[1] = "".join((year, month))
+-        components[2] = "".join((day, hour))
++    [ver, rel] = version.split("-")
+ 
+-    version = "{}.{}.{}.0".format(*components)
++    ver_parts = ver.split(".")
++    ver_parts += ["0"] * (3 - len(ver_parts))
+ 
+-    return version
++    return ".".join(
++        [
++            ver_parts[0],
++            str(100 * int(ver_parts[1]) + int(ver_parts[2])),
++            str(int(rel) * 100),
++            "0",
++        ]
++    )
+ 
+ 
+ def remove_single_line_comments(text):
+@@ -410,21 +361,7 @@ def repackage_msix(
+     )
+ 
+     first = next(values)
+-    if not displayname:
+-        displayname = f"Mozilla {first}"
+-
+-        # Release (official) and Beta share branding.  Differentiate Beta a little bit.
+-        if channel == "beta":
+-            suffix = " Beta"
+-            if not displayname.endswith(suffix):
+-                displayname += suffix
+-
+-        elif channel == "esr":
+-            # Release (official) and ESR share branding.  Differentiate ESR a little bit.
+-            suffix = " ESR"
+-            if not displayname.endswith(suffix):
+-                displayname += suffix
+-
++    displayname = displayname or first
+     second = next(values)
+     vendor = vendor or second
+ 
+@@ -553,16 +490,6 @@ def repackage_msix(
+             # In local builds and unpacked MSIX directories, `p` is like "firefox.exe" already.
+             pp = p
+ 
+-        if pp.startswith("distribution"):
+-            # Treat any existing distribution as a distribution directory,
+-            # potentially with language packs. This makes it easy to repack
+-            # unpacked MSIXes.
+-            distribution_dir = mozpath.join(dir_or_package, "distribution")
+-            if distribution_dir not in distribution_dirs:
+-                distribution_dirs.append(distribution_dir)
+-
+-            continue
+-
+         copier.add(mozpath.normsep(mozpath.join("VFS", "ProgramFiles", instdir, pp)), f)
+ 
+     # Locales to declare as supported in `AppxManifest.xml`.

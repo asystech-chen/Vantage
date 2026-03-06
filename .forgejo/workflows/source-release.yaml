@@ -1,0 +1,122 @@
+name: Create Source Code Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-source:
+    runs-on: epsilon
+    container:
+      image: codeberg.org/librewolf/bsys6:dind
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Dependencies
+        run: |
+          apt-get update && apt-get -y upgrade
+          apt-get -y install pigz gnupg python3
+
+      - name: Make LibreWolf source archive
+        env:
+            SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        run: |
+          make all
+
+      - name: Check patches
+        run: |
+          make check-fuzz
+
+      - name: Upload artifacts
+        uses: https://data.forgejo.org/forgejo/upload-artifact@v4
+        with:
+          name: librewolf-source
+          path: |
+            librewolf-*.source.tar.gz
+            librewolf-*.source.tar.gz.sha256sum
+            librewolf-*.source.tar.gz.sha512sum
+            librewolf-*.source.tar.gz.sig
+            patchfail-fuzz.out
+          retention-days: 7
+
+  publish-release:
+    runs-on: epsilon
+    container:
+      image: codeberg.org/librewolf/bsys6:dind
+    needs: [build-source]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      
+      - name: Download artifacts
+        uses: https://data.forgejo.org/forgejo/download-artifact@v4
+        with:
+          merge-multiple: true
+
+      - name: Set variables
+        id: version
+        run: |
+          echo "VERSION=$(cat version)" >> $FORGEJO_OUTPUT
+          echo "RELEASE=$(cat release)" >> $FORGEJO_OUTPUT
+          echo "BUILD_JOB_ID=$FORGEJO_RUN_NUMBER" >> $FORGEJO_OUTPUT
+
+      - name: Upload to Package Registry
+        run: |
+          FILES=(
+            "librewolf-${{ steps.version.outputs.VERSION }}-${{ steps.version.outputs.RELEASE }}.source.tar.gz"
+            "librewolf-${{ steps.version.outputs.VERSION }}-${{ steps.version.outputs.RELEASE }}.source.tar.gz.sha256sum"
+            "librewolf-${{ steps.version.outputs.VERSION }}-${{ steps.version.outputs.RELEASE }}.source.tar.gz.sha512sum"
+          )
+
+          if [[ -n "${{ secrets.SIGNING_KEY }}" ]]; then
+            FILES+=("librewolf-${{ steps.version.outputs.VERSION }}-${{ steps.version.outputs.RELEASE }}.source.tar.gz.sig")
+          fi
+
+          for FILE in "${FILES[@]}"; do
+            curl --http1.1 --user "${{ vars.FORGE_USER }}:${{ secrets.FORGE_TOKEN }}" --upload-file "${FILE}" "${{ forgejo.server_url }}/api/packages/${{ forgejo.repository_owner }}/generic/librewolf-source/${{ steps.version.outputs.VERSION }}-${{ steps.version.outputs.RELEASE }}/${FILE}" >&2
+          done
+
+      - name: Create Release
+        run: |
+          TAG="${{ steps.version.outputs.VERSION }}-${{ steps.version.outputs.RELEASE }}"
+          PACKAGE_BASE="${{ forgejo.server_url }}/api/packages/${{ forgejo.repository_owner }}/generic/librewolf-source/${TAG}"
+          
+          # Create release
+          body=$(jq -n \
+            --arg tag "$TAG" \
+            --arg name "LibreWolf Source v${TAG}" \
+            --arg body $'## LibreWolf Source Release v'"${TAG}"$'\n\nBuilt on Codeberg by workflow [#${{ forgejo.run_number }}](${{ forgejo.server_url }}/${{ forgejo.repository }}/actions/runs/${{ forgejo.run_number }})' \
+            '{tag_name: $tag, name: $name, body: $body, draft: false, prerelease: false}')
+          
+          release_id=$(curl --fail-with-body --header 'Content-Type: application/json' \
+            --header 'accept: application/json' \
+            --header "Authorization: token ${{ secrets.FORGE_TOKEN }}" \
+            --data "$body" \
+            --request POST \
+            "${{ forgejo.server_url }}/api/v1/repos/${{ forgejo.repository }}/releases" | jq -r '.id')
+          
+          echo "Release created with ID: $release_id"
+          
+          # Add external URL assets
+          FILES=(
+            "librewolf-${TAG}.source.tar.gz"
+            "librewolf-${TAG}.source.tar.gz.sha256sum"
+            "librewolf-${TAG}.source.tar.gz.sha512sum"
+          )
+          
+          if [[ -n "${{ secrets.SIGNING_KEY }}" ]]; then
+            FILES+=("librewolf-${TAG}.source.tar.gz.sig")
+          fi
+          
+          for FILE in "${FILES[@]}"; do
+            echo "Adding external asset: $FILE"
+            curl --fail-with-body --header 'accept: application/json' \
+              --header "Authorization: token ${{ secrets.FORGE_TOKEN }}" \
+              -F "external_url=${PACKAGE_BASE}/${FILE}" \
+              --request POST \
+              "${{ forgejo.server_url }}/api/v1/repos/${{ forgejo.repository }}/releases/${release_id}/assets?name=$(printf '%s' "$FILE" | jq -sRr @uri)"
+          done

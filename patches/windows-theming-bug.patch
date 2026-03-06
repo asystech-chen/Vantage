@@ -1,0 +1,34 @@
+# LibreWolf windows-theming-bug.patch
+#
+# Author:        Malte Jürgens <maltejur@dismail.de>
+# Description:   Fix broken titlebar on Windows
+# Last Updated:  2023-03-17
+# License:       MPL 2.0
+#
+# If we use `--with-app-name=librewolf`, Firefox will think it is running on a
+# super old windows version. This will cause it to make some changes
+# which break the titlebar styling (and probably also some other things).
+#
+# See:
+# https://codeberg.org/librewolf/issues/issues/908
+# https://bugzilla.mozilla.org/show_bug.cgi?id=1801640
+diff --git a/browser/app/firefox.exe.manifest b/browser/app/librewolf.exe.manifest
+similarity index 96%
+rename from browser/app/firefox.exe.manifest
+rename to browser/app/librewolf.exe.manifest
+--- a/browser/app/firefox.exe.manifest
++++ b/browser/app/librewolf.exe.manifest
+@@ -3,10 +3,10 @@
+ <assemblyIdentity
+         version="1.0.0.0"
+         processorArchitecture="*"
+-        name="Firefox"
++        name="LibreWolf"
+         type="win32"
+ />
+-<description>Firefox</description>
++<description>LibreWolf</description>
+ <dependency>
+         <dependentAssembly>
+                 <assemblyIdentity
+

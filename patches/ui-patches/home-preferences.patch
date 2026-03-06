@@ -1,0 +1,16 @@
+diff --git a/browser/themes/shared/preferences/preferences.css b/browser/themes/shared/preferences/preferences.css
+index fd2400d4d6..aadd970e24 100644
+--- a/browser/themes/shared/preferences/preferences.css
++++ b/browser/themes/shared/preferences/preferences.css
+@@ -1523,6 +1523,11 @@
+   }
+ }
+ 
++#support-firefox,
++.mission-message {
++  display: none;
++}
++
+ #dohProviderSelect {
+   --select-max-width: 235px;
+ }

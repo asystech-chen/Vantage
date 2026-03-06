@@ -1,0 +1,212 @@
+diff --git a/browser/components/preferences/privacy.inc.xhtml b/browser/components/preferences/privacy.inc.xhtml
+index 2f36c0a..eef7209 100644
+--- a/browser/components/preferences/privacy.inc.xhtml
++++ b/browser/components/preferences/privacy.inc.xhtml
+@@ -47,20 +47,6 @@
+                 permissions-exceptions-manage-etp-desc,
+               "/>
+     </hbox>
+-    <hbox id="rfpIncompatibilityWarning" class="info-box-container" hidden="true">
+-      <vbox class="info-icon-container">
+-        <html:img class="info-icon"></html:img>
+-      </vbox>
+-      <vbox flex="1">
+-        <description>
+-          <html:span data-l10n-id="content-blocking-rfp-incompatibility-warning"/>
+-          <html:a is="moz-support-link"
+-                  class="learnMore"
+-                  support-page="resist-fingerprinting"
+-          />
+-        </description>
+-      </vbox>
+-    </hbox>
+     <hbox id="fpiIncompatibilityWarning" class="info-box-container" hidden="true">
+       <vbox class="info-icon-container">
+         <html:img class="info-icon"></html:img>
+@@ -75,7 +61,7 @@
+       <radiogroup id="contentBlockingCategoryRadio"
+                   preference="browser.contentblocking.category"
+                   aria-labelledby="trackingProtectionMenuDesc">
+-        <vbox id="contentBlockingOptionStandard" class="privacy-detailedoption info-box-container">
++        <vbox id="contentBlockingOptionStandard" class="privacy-detailedoption info-box-container" hidden="true">
+           <hbox>
+             <radio id="standardRadio"
+                    value="standard"
+@@ -240,7 +226,7 @@
+                         is="highlightable-button"
+                         data-l10n-id="content-blocking-reload-tabs-button"/>
+               </html:div>
+-              <vbox class="content-blocking-warning info-box-container">
++              <vbox class="content-blocking-warning info-box-container" hidden="true">
+                 <hbox>
+                   <image class="content-blocking-warning-image"/>
+                   <label class="content-blocking-warning-title" data-l10n-id="content-blocking-warning-title-2"/>
+@@ -256,7 +242,7 @@
+             </vbox>
+           </vbox>
+         </vbox>
+-        <vbox id="contentBlockingOptionCustom" class="privacy-detailedoption info-box-container">
++        <vbox id="contentBlockingOptionCustom" class="privacy-detailedoption info-box-container" hidden="true">
+           <hbox>
+             <radio id="customRadio"
+                    value="custom"
+@@ -389,6 +375,20 @@
+         </vbox>
+       </radiogroup>
+     </vbox>
++    <hbox id="rfpIncompatibilityWarning" class="info-box-container" hidden="true">
++      <vbox class="info-icon-container">
++        <html:img class="info-icon"></html:img>
++      </vbox>
++      <vbox flex="1">
++        <description>
++          <html:span data-l10n-id="content-blocking-rfp-incompatibility-warning"/>
++          <html:a is="moz-support-link"
++                  class="learnMore"
++                  support-page="resist-fingerprinting"
++          />
++        </description>
++      </vbox>
++    </hbox>
+   </vbox>
+ </groupbox>
+ <groupbox id="nonTechnicalPrivacyGroup" data-category="panePrivacy" hidden="true">
+@@ -722,7 +722,7 @@
+ 
+ <!-- addons, forgery (phishing) UI Security -->
+ <groupbox data-category="panePrivacy" hidden="true">
+-  <label><html:h2 data-l10n-id="security-browsing-protection" class="section-heading"/></label>
++  <label hidden="true"><html:h2 data-l10n-id="security-browsing-protection" class="section-heading"/></label>
+   <html:setting-group groupid="browsingProtection"></html:setting-group>
+ </groupbox>
+ 
+diff --git a/browser/locales/en-US/browser/preferences/preferences.ftl b/browser/locales/en-US/browser/preferences/preferences.ftl
+index 664fcacba3..612f392974 100644
+--- a/browser/locales/en-US/browser/preferences/preferences.ftl
++++ b/browser/locales/en-US/browser/preferences/preferences.ftl
+@@ -1309,8 +1309,6 @@ addressbar-restore-dismissed-suggestions-button =
+ 
+ content-blocking-enhanced-tracking-protection = Enhanced Tracking Protection
+ 
+-content-blocking-section-top-level-description = Trackers follow you around online to collect information about your browsing habits and interests. { -brand-short-name } blocks many of these trackers and other malicious scripts.
+-
+ content-blocking-learn-more = Learn more
+ 
+ content-blocking-fpi-incompatibility-warning = You are using First Party Isolation (FPI), which overrides some of { -brand-short-name }’s cookie settings.
+diff --git a/browser/themes/shared/preferences/privacy.css b/browser/themes/shared/preferences/privacy.css
+index 8d33f43f26..aa52794597 100644
+--- a/browser/themes/shared/preferences/privacy.css
++++ b/browser/themes/shared/preferences/privacy.css
+@@ -221,7 +221,7 @@
+ }
+ 
+ .extra-information-label {
+-  margin-top: 18px;
++  margin-top: 5px;
+ }
+ 
+ /* Apply display: block to the containers of all the category information, as
+@@ -257,9 +257,8 @@
+ }
+ 
+ .content-blocking-extra-blocking-desc {
+-  margin-inline-start: 0.5em;
+-  position: relative;
+-  top: 0.65em;
++  margin-top: 1em;
++  margin-bottom: 0.5em;
+ }
+ 
+ .content-blocking-label,
+diff --git a/browser/components/preferences/main.js b/browser/components/preferences/main.js
+index 3720de1..34d70a8 100644
+--- a/browser/components/preferences/main.js
++++ b/browser/components/preferences/main.js
+@@ -3259,33 +3259,6 @@ SettingGroupManager.registerGroups({
+   },
+   history: {
+     items: [
+-      {
+-        id: "historyMode",
+-        control: "moz-select",
+-        options: [
+-          {
+-            value: "remember",
+-            l10nId: "history-remember-option-all",
+-          },
+-          { value: "dontremember", l10nId: "history-remember-option-never" },
+-          { value: "custom", l10nId: "history-remember-option-custom" },
+-        ],
+-        controlAttrs: {
+-          "search-l10n-ids": `
+-            history-remember-description3,
+-            history-dontremember-description3,
+-            history-private-browsing-permanent.label,
+-            history-remember-browser-option.label,
+-            history-remember-search-option.label,
+-            history-clear-on-close-option.label,
+-            history-clear-on-close-settings.label
+-          `,
+-        },
+-      },
+-      {
+-        id: "privateBrowsingAutoStart",
+-        l10nId: "history-private-browsing-permanent",
+-      },
+       {
+         id: "rememberHistory",
+         l10nId: "history-remember-browser-option",
+@@ -4525,39 +4498,6 @@ SettingGroupManager.registerGroups({
+             l10nId: "addressbar-locbar-quickactions-option",
+             supportPage: "quick-actions-firefox-search-bar",
+           },
+-          {
+-            id: "firefoxSuggestAll",
+-            l10nId: "addressbar-locbar-suggest-all-option-2",
+-            items: [
+-              {
+-                id: "firefoxSuggestSponsored",
+-                l10nId: "addressbar-locbar-suggest-sponsored-option-2",
+-              },
+-              {
+-                id: "firefoxSuggestOnlineEnabledToggle",
+-                l10nId: "addressbar-firefox-suggest-online",
+-                supportPage: "firefox-suggest",
+-                subcategory: "w_what-is-firefox-suggest",
+-              },
+-            ],
+-          },
+-          {
+-            id: "dismissedSuggestionsDescription",
+-            l10nId: "addressbar-dismissed-suggestions-label-2",
+-            control: "moz-fieldset",
+-            controlAttrs: {
+-              headinglevel: 3,
+-            },
+-            items: [
+-              {
+-                id: "restoreDismissedSuggestions",
+-                l10nId: "addressbar-restore-dismissed-suggestions-button-2",
+-                control: "moz-button",
+-                iconSrc:
+-                  "chrome://global/skin/icons/arrow-counterclockwise-16.svg",
+-              },
+-            ],
+-          },
+         ],
+       },
+     ],
+diff --git a/browser/components/preferences/privacy.js b/browser/components/preferences/privacy.js
+index cde8635..39d22ac 100644
+--- a/browser/components/preferences/privacy.js
++++ b/browser/components/preferences/privacy.js
+@@ -3464,7 +3464,7 @@ var gPrivacyPane = {
+       initSettingGroup("securityPrivacyStatus");
+     }
+     initSettingGroup("httpsOnly");
+-    initSettingGroup("browsingProtection");
++    //initSettingGroup("browsingProtection");
+     initSettingGroup("cookiesAndSiteData");
+     initSettingGroup("certificates");
+     initSettingGroup("ipprotection");
+

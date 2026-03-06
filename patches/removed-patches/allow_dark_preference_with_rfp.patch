@@ -1,0 +1,31 @@
+diff --git a/dom/base/Document.cpp b/dom/base/Document.cpp
+index f49f4ac..45c0e95 100644
+--- a/dom/base/Document.cpp
++++ b/dom/base/Document.cpp
+@@ -17828,7 +17828,8 @@ ColorScheme Document::DefaultColorScheme() const {
+ }
+ 
+ ColorScheme Document::PreferredColorScheme(IgnoreRFP aIgnoreRFP) const {
+-  if (ShouldResistFingerprinting() && aIgnoreRFP == IgnoreRFP::No) {
++  if (ShouldResistFingerprinting() && aIgnoreRFP == IgnoreRFP::No &&
++      !StaticPrefs::privacy_override_rfp_for_color_scheme()) {
+     return ColorScheme::Light;
+   }
+ 
+diff --git a/modules/libpref/init/StaticPrefList.yaml b/modules/libpref/init/StaticPrefList.yaml
+index 7ec0341..c70b3af 100644
+--- a/modules/libpref/init/StaticPrefList.yaml
++++ b/modules/libpref/init/StaticPrefList.yaml
+@@ -12156,6 +12156,12 @@
+   value: false
+   mirror: always
+ 
++# Allows overriding RFP for only the dark/light pref
++- name: privacy.override_rfp_for_color_scheme
++  type: bool
++  value: false
++  mirror: always
++
+ # We automatically decline canvas permission requests if they are not initiated
+ # from user input. Just in case that breaks something, we allow the user to
+ # revert this behavior with this obscure pref. We do not intend to support this

@@ -1,0 +1,118 @@
+diff --git a/browser/components/urlbar/UrlbarInput.jsm b/browser/components/urlbar/UrlbarInput.jsm
+index 4c42071..12323dd 100644
+--- a/browser/components/urlbar/UrlbarInput.jsm
++++ b/browser/components/urlbar/UrlbarInput.jsm
+@@ -1712,13 +1712,13 @@ class UrlbarInput {
+ 
+     // Enable the animation only after the first extend call to ensure it
+     // doesn't run when opening a new window.
+-    if (!this.hasAttribute("breakout-extend-animate")) {
+-      this.window.promiseDocumentFlushed(() => {
+-        this.window.requestAnimationFrame(() => {
+-          this.setAttribute("breakout-extend-animate", "true");
+-        });
+-      });
+-    }
++//    if (!this.hasAttribute("breakout-extend-animate")) {
++//      this.window.promiseDocumentFlushed(() => {
++//        this.window.requestAnimationFrame(() => {
++//          this.setAttribute("breakout-extend-animate", "true");
++//        });
++//      });
++//    }
+   }
+ 
+   endLayoutExtend() {
+diff --git a/browser/themes/shared/urlbar-searchbar.inc.css b/browser/themes/shared/urlbar-searchbar.inc.css
+index e80aaf6..6ec0961 100644
+--- a/browser/themes/shared/urlbar-searchbar.inc.css
++++ b/browser/themes/shared/urlbar-searchbar.inc.css
+@@ -5,6 +5,6 @@
+ %endif
+ 
+-%define urlbarMarginInline 5px
++%define urlbarMarginInline 0px
+ %define urlbarSearchButtonWidth calc(16px + 2 * var(--urlbar-icon-padding))
+ 
+ :root {
+@@ -246,14 +246,14 @@
+ 
+ #urlbar[breakout][breakout-extend] {
+   top: 0;
+-  left: -@urlbarMarginInline@;
+-  width: calc(100% + 2 * @urlbarMarginInline@);
++  left: 0;
++  width: 100;
+ }
+ 
+ #urlbar[breakout][breakout-extend] > #urlbar-input-container {
+   height: var(--urlbar-toolbar-height);
+-  padding-block: calc((var(--urlbar-toolbar-height) - var(--urlbar-height)) / 2 + var(--urlbar-container-padding));
+-  padding-inline: calc(@urlbarMarginInline@ + var(--urlbar-container-padding));
++  padding-block: 0;
++  padding-inline: 0;
+ }
+ 
+ #urlbar.searchButton[breakout][breakout-extend] > #urlbar-input-container > #urlbar-search-button {
+@@ -271,7 +271,7 @@
+ }
+ 
+ #urlbar[breakout][breakout-extend] > #urlbar-background {
+-  animation-name: urlbar-grow;
++  animation-name: none;
+   animation-duration: 0s;
+   animation-timing-function: var(--animation-easing-function);
+ }
+diff --git a/browser/themes/shared/urlbarView.inc.css b/browser/themes/shared/urlbarView.inc.css
+index d2bb269..0d47466 100644
+--- a/browser/themes/shared/urlbarView.inc.css
++++ b/browser/themes/shared/urlbarView.inc.css
+@@ -56,8 +56,8 @@
+   display: block;
+   text-shadow: none;
+   overflow: clip;
+-  margin-inline: calc(5px + var(--urlbar-container-padding));
+-  width: calc(100% - 2 * (5px + var(--urlbar-container-padding)));
++  margin-inline: 0;
++  width: 100%;
+   /* Match urlbar-background's border. */
+   border-inline: 1px solid transparent;
+ }
+@@ -83,11 +83,11 @@
+ .urlbarView-row {
+   fill: currentColor;
+   fill-opacity: var(--urlbar-icon-fill-opacity);
+-  padding-block: 2px;
++  padding-block: 0px;
+ }
+
+ :root:not([uidensity=compact]) .urlbarView-row:not([type=tip], [type=dynamic]) {
+-  min-height: 32px;
++  min-height: 0px;
+ }
+ 
+ :root[uidensity=touch] .urlbarView-row:not([type=tip], [type=dynamic]) {
+@@ -241,6 +241,7 @@
+   object-fit: contain;
+   flex-shrink: 0;
+   -moz-context-properties: fill, fill-opacity;
++  margin-inline-start: 20px;
+ }
+ 
+
+@@ -268,10 +269,10 @@
+ 
+ .urlbarView-type-icon {
+   position: absolute;
+-  width: 12px;
+-  height: 12px;
+-  margin-bottom: -4px;
+-  margin-inline-start: 8px;
++  width: 16px;
++  height: 16px;
++  margin-bottom: 0px;
++  margin-inline-start: 0px;
+   align-self: end;
+   background-repeat: no-repeat;
+   background-size: contain;
+

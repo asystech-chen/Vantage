@@ -1,0 +1,11 @@
+--- a/browser/locales/en-US/browser/sanitize.ftl
++++ b/browser/locales/en-US/browser/sanitize.ftl
+@@ -19,7 +19,7 @@
+     .title = Clear All History
+     .style = width: 34em
+ 
+-clear-data-settings-label = When closed, { -brand-short-name } should automatically clear all
++clear-data-settings-label = When closed, { -brand-short-name } should automatically clear all (this will bypass your cookie exceptions)
+ 
+ ## clear-time-duration-prefix is followed by a dropdown list, with
+ ## values localized using clear-time-duration-value-* messages.

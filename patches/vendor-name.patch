@@ -1,0 +1,21 @@
+diff --git a/toolkit/components/extensions/parent/ext-runtime.js b/toolkit/components/extensions/parent/ext-runtime.js
+index 0d7a3e5..8853dd0 100644
+--- a/toolkit/components/extensions/parent/ext-runtime.js
++++ b/toolkit/components/extensions/parent/ext-runtime.js
+@@ -333,7 +333,15 @@ this.runtime = class extends ExtensionAPIPersistent {
+ 
+         getBrowserInfo: function () {
+           const { name, vendor, version, appBuildID } = Services.appinfo;
+-          const info = { name, vendor, version, buildID: appBuildID };
++          const useFirefoxDefaults = Services.prefs.getBoolPref(
++            "librewolf.getBrowserInfo.setToFirefoxDefaults",
++            true
++          );
++
++          const info = useFirefoxDefaults
++            ? { name: "Firefox", vendor: "Mozilla", version, buildID: appBuildID }
++            : { name, vendor, version, buildID: appBuildID };
++
+           return Promise.resolve(info);
+         },
+ 

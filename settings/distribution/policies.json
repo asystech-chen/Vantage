@@ -1,0 +1,45 @@
+{
+  "COMMENT More Information": "https://github.com/mozilla/policy-templates/blob/master/README.md",
+  "policies": {
+    "AppUpdateURL": "https://localhost",
+    "DisableAppUpdate": true,
+    "OverrideFirstRunPage": "",
+    "OverridePostUpdatePage": "",
+    "DisableSystemAddonUpdate": true,
+    "DisableProfileImport": false,
+    "DisableFirefoxStudies": true,
+    "DisableTelemetry": true,
+    "DisableFeedbackCommands": true,
+    "DisablePocket": true,
+    "DisableSetDesktopBackground": false,
+    "DisableDeveloperTools": false,
+    "NoDefaultBookmarks": true,
+    "WebsiteFilter": {
+      "Block": ["https://localhost/"],
+      "Exceptions": ["https://localhost/"]
+    },
+    "ExtensionSettings": {
+      "uBlock0@raymondhill.net": {
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/uBlock0@raymondhill.net/latest.xpi",
+        "installation_mode": "normal_installed",
+        "private_browsing": true
+      },
+      "google@search.mozilla.org": { "installation_mode": "normal" },
+      "bing@search.mozilla.org": { "installation_mode": "normal" },
+      "amazondotcom@search.mozilla.org": { "installation_mode": "normal" },
+      "ebay@search.mozilla.org": { "installation_mode": "normal" },
+      "twitter@search.mozilla.org": { "installation_mode": "normal" }
+    },
+    "SearchEngines": {
+      "PreventInstalls": false,
+      "Remove": [],
+      "Default": "Bing",
+      "Add": []
+    },
+    "SkipTermsOfUse": true,
+    "SupportMenu": {
+      "Title": "Vantage Issue Tracker",
+      "URL": "https://asystech.cn"
+    }
+  }
+}
