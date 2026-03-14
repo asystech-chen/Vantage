@@ -36,68 +36,97 @@ async function init(aEvent) {
     // Display current version number
     let versionField = document.getElementById("versionNumber");
     versionField.innerHTML = AppConstants.MOZ_APP_VERSION_DISPLAY;
+	// 找到原来被 /* ... */ 包裹的版本检查代码，替换为以下内容：
 
-    /*
-    // ============================================
-    // 版本检查功能已禁用 - 以下代码已被注释
-    // ============================================
+	// ============================================
+	// 版本检查功能 - 已启用
+	// ============================================
+
+	if (Services.prefs.getBoolPref("vantage.aboutMenu.checkVersion", true)) {
+	let versionDiv = document.getElementById("version");
+  
+	// 创建加载动画
+	const loader = document.createElement("div");
+	loader.classList.add("loader");
+	versionDiv.appendChild(loader);
+
+	// 版本比较函数
+	function isNewerVersion(newVer, oldVer) {
+		// 去除 'v' 前缀，按 '-' 分割处理预发布版本
+		let [oldV, oldR] = oldVer.replace(/^v/, "").split("-");
+		let [newV, newR] = newVer.replace(/^v/, "").split("-");
     
-    // If pref "librewolf.aboutMenu.checkVersion" is set to true,
-    // check for new version with the link given in "librewolf.aboutMenu.versionCheckGitlabUrl"
-    if (Services.prefs.getBoolPref("librewolf.aboutMenu.checkVersion", false)) {
-        let versionDiv = document.getElementById("version");
-        const loader = document.createElement("div");
-        loader.classList.add("loader");
-        versionDiv.appendChild(loader);
+		if (!oldR) oldR = "0";
+		if (!newR) newR = "0";
 
-        function isNewerVersion(newVersionString, oldVersionString) {
-            let [oldVersion, oldRelease] = oldVersionString.replace(/^v/, " ").split("-");
-            let [newVersion, newRelease] = newVersionString.replace(/^v/, " ").split("-");
-            console.log(oldVersionString, newVersionString);
-            if (oldVersion && newVersion) {
-                if (!oldRelease) oldRelease = "0";
-                if (!newRelease) newRelease = "0";
+		// 逐段比较主版本号 (如 1.2.3)
+		let oldParts = oldV.split(".");
+		let newParts = newV.split(".");
+    
+		for (let i = 0; i < newParts.length; i++) {
+		let o = Number(oldParts[i] || "0");
+		let n = Number(newParts[i]);
+		if (n > o) return true;
+		if (n < o) return false;
+		}
+    
+		// 主版本相同则比较发布号 (如 -1, -2)
+		return Number(newR) > Number(oldR);
+	}
 
-                // Check version
-                for (let i = 0; i < newVersion.split(".").length; i++) {
-                    if (Number(newVersion.split(".")[i]) > Number(oldVersion?.split(".")[i] || "0")) return true;
-                }
+	// 获取配置
+	const apiUrl = Services.prefs.getStringPref(
+		"vantage.aboutMenu.versionCheckUrl",
+		"https://asystech.cn/vantage/releases.json"  // 默认接口地址
+	);
+  
+	const downloadPage = Services.prefs.getStringPref(
+		"vantage.aboutMenu.downloadPageUrl",
+		"https://asystech.cn/pc/Vantage.html"  // 默认下载页
+	);
 
-                // Check release
-                if (Number(newRelease) > Number(oldRelease)) return true;
-            }
-            return false;
-        }
+	fetch(apiUrl)
+		.then(response => {
+		if (!response.ok) throw new Error("HTTP " + response.status);
+		return response.json();
+		})
+		.then(data => {
+		if (data && data.length > 0) {
+			const latest = data[0].tag_name;  // 假设第一个是最新版本
+			const current = AppConstants.MOZ_APP_VERSION_DISPLAY;
 
-        fetch(
-            Services.prefs.getStringPref(
-                "librewolf.aboutMenu.versionCheckGitlabUrl",
-                "https://codeberg.org/api/v1/repos/librewolf/source/releases"
-            )
-        )
-        .then(response => response.json())
-        .then(data => {
-            if (data.length > 0) {
-                const latestVersion = data[0].tag_name;
-                if (isNewerVersion(latestVersion, AppConstants.MOZ_APP_VERSION_DISPLAY)) {
-                    const updateNotice = document.createElement("a");
-                    updateNotice.classList.add("text-link");
-                    updateNotice.href = data[0]._links.self;
-                    updateNotice.onclick = () => window.openWebLinkIn(data[0]._links.self, "tab");
-                    updateNotice.innerText = "(Update available)";
-                    updateNotice.id = "updateNotice";
-                    versionDiv.appendChild(updateNotice);
-                } else {
-                    const upToDateNotice = document.createElement("div");
-                    upToDateNotice.innerText = "(Up to date)";
-                    upToDateNotice.id = "updateNotice";
-                    versionDiv.appendChild(upToDateNotice);
-                }
-            }
-            loader.remove();
-        });
-    }
-    */
+			if (isNewerVersion(latest, current)) {
+			// 发现新版本：显示可点击的提示
+			const notice = document.createElement("a");
+			notice.classList.add("text-link");
+			notice.href = downloadPage;
+			notice.onclick = (e) => {
+				e.preventDefault();
+				window.openWebLinkIn(downloadPage, "tab");
+			};
+			notice.innerText = "(发现新版本，前往官网下载)";
+			notice.id = "updateNotice";
+			notice.style.color = "#90FF90";  // 绿色高亮
+			versionDiv.appendChild(notice);
+			} else {
+			// 已是最新版
+			const notice = document.createElement("div");
+			notice.innerText = "(已是最新版本)";
+			notice.id = "updateNotice";
+			notice.style.opacity = "0.7";
+			versionDiv.appendChild(notice);
+			}
+		}
+		})
+		.catch(err => {
+		console.warn("更新检查失败:", err);
+      // 静默失败，不干扰用户
+		})
+		.finally(() => {
+		loader.remove();
+		window.sizeToContent();  // 自适应窗口大小
+		});
+	}
 
     window.sizeToContent();
     if (AppConstants.platform == "macosx") {

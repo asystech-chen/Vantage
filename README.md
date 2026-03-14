@@ -9,7 +9,7 @@
 [![GitHub](https://img.shields.io/badge/GitHub-源码-181717?style=for-the-badge&logo=github)](https://github.com/ASYS-Tech/Vantage)
 
 # 软件截图
-![10LTSC-2026-03-14-14-34-51.png](../_resources/10LTSC-2026-03-14-14-34-51.png)
+![10LTSC-2026-03-14-14-34-51.png](./_resources/10LTSC-2026-03-14-14-34-51.png)
 
 
 ---
