@@ -176,6 +176,24 @@ def librewolf_patches():
                 *rel_path.parts[0:2],
                 *rel_path.parts[1:]
             )
+
+        if ".properties.inc" in target_path.name and "en-US" not in str(target_path):
+            target_path = Path(
+                "lw", "l10n",
+                rel_path.parts[0],
+                "browser", "chrome",
+                "browser",
+                rel_path.parts[-1]
+            )
+
+        if ".properties.inc" in target_path.name and "en-US" in str(target_path):
+            target_path = Path(
+                "browser", "locales",
+                "en-US", "chrome",
+                "browser",
+                rel_path.parts[-1]
+            )
+        
         target_path.parent.mkdir(parents=True, exist_ok=True)
 
         write_mode = "w"

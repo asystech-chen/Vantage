@@ -1,5 +1,6 @@
 patches/allow-JXL-in-non-nightly-browser.patch
 patches/always-fetch-latest-toolchain-artifact.patch
+patches/backport-build-fixes-from-150.patch
 patches/bootstrap.patch
 patches/custom-ubo-assets-bootstrap-location.patch
 patches/dbus_name.patch
@@ -10,10 +11,12 @@ patches/fpp-canvas-fix.patch
 patches/fullpage-translations-customization.patch
 patches/fullpage-translations.patch
 patches/hide-passwordmgr.patch
+patches/link-preview.patch
 patches/moz-configure.patch
 patches/mozilla_dirs.patch
 patches/msix.patch
 patches/newtab-fix.patch
+patches/remove-pingsender.patch
 patches/rs-blocker.patch
 patches/rust-gentoo-musl.patch
 patches/sed-patches/stop-undesired-requests.patch
@@ -31,6 +34,7 @@ patches/ui-patches/remove-organization-policy-banner.patch
 patches/ui-patches/website-appearance-ui-rfp.patch
 patches/urlbarprovider-interventions.patch
 patches/vendor-name.patch
+patches/webgl-permission.patch
 patches/webrtc-backport-pipeWire-capture-clear-e.patch
 patches/windows-theming-bug.patch
 patches/xdg-dir.patch
