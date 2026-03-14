@@ -21,26 +21,32 @@
 #else
     <script src="chrome://browser/content/utilityOverlay.js"/>
 #endif
-    <linkset>
-        <html:link rel="localization" href="branding/brand.ftl"/>
-        <html:link rel="localization" href="browser/aboutDialog.ftl"/>
-    </linkset>
-    <script src="chrome://browser/content/aboutDialog.js"/>
-    <div id="grid">
-        <div id="left"/>
-        <div id="right">
-            <label id="wordmark">Vantage</label>
-            <div id="version">
-                <label id="versionNumber"/>
-            </div>
-            <label id="distribution"/>
-            <label id="distributionId"/>
-            <label id="aboutText" data-l10n-id="about-librewolf"/>
-            <label id="websiteLink" is="text-link" href="https://asystech.cn/">Official Site</label>
-            <!-- 更新链接已移除 -->
-        </div>
+  <linkset>
+    <html:link rel="localization" href="branding/brand.ftl"/>
+    <html:link rel="localization" href="browser/aboutDialog.ftl"/>
+  </linkset>
+
+  <script src="chrome://browser/content/aboutDialog.js"/>
+
+  <div id="grid">
+    <div id="left" />
+    <div id="right">
+      <label id="wordmark">Vantage</label>
+      <div id="version">
+        <label id="versionNumber" />
+      </div >
+      <label id="distribution" />
+      <label id="distributionId" />
+      <label id="aboutText" data-l10n-id="about-librewolf" />
+      <label id="websiteLink" 
+       is="text-link" 
+       href="https://asystech.cn/pc/Vantage.html" 
+       data-l10n-id="official-site1"></label>
     </div>
-    <keyset>
-        <key keycode="VK_ESCAPE" oncommand="window.close();"/>
-    </keyset>
+  </div>
+
+  <keyset>
+    <key keycode="VK_ESCAPE" oncommand="window.close();"/>
+  </keyset>
+
 </window>

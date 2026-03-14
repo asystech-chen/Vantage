@@ -267,3 +267,119 @@ test-macos : $(lw_source_tarball)
 test-windows : $(lw_source_tarball)
 	${MAKE} -f assets/testing.mk bsys6_x86_64_windows_zip_artifact
 
+# ==========================================
+# 新增：本地打包为多种格式的目标
+# ==========================================
+
+# 查找最新生成的二进制 tarball（通配符匹配）
+BINARY_TARBALL := $(shell ls -t *.tar.xz 2>/dev/null | head -n 1)
+
+# 图标路径
+LW_ICON := themes/browser/branding/librewolf/default128.png
+
+# 软件名称配置
+APP_NAME := vantage
+APP_DISPLAY_NAME := Vantage
+
+# 通用清理
+clean-packaging :
+	@rm -rf deb_build rpm_build AppDir
+
+# 打包为 .deb (Debian/Ubuntu/Mint)
+package-deb : package clean-packaging
+	@if [ -z "$(BINARY_TARBALL)" ]; then echo "Error: No binary tarball found."; exit 1; fi
+	@echo ">>> [DEB] Creating package from $(BINARY_TARBALL)..."
+	@mkdir -p deb_build/opt/$(APP_NAME)
+	@mkdir -p deb_build/DEBIAN
+	@mkdir -p deb_build/usr/share/icons/hicolor/128x128/apps
+	@mkdir -p deb_build/usr/share/applications
+	@tar -xf $(BINARY_TARBALL) -C deb_build/opt/$(APP_NAME) --strip-components=1
+	@echo "Package: $(APP_NAME)" > deb_build/DEBIAN/control
+	@echo "Version: $(version)-$(release)" >> deb_build/DEBIAN/control
+	@echo "Section: web" >> deb_build/DEBIAN/control
+	@echo "Priority: optional" >> deb_build/DEBIAN/control
+	@echo "Architecture: amd64" >> deb_build/DEBIAN/control
+	@echo "Maintainer: Vantage Build" >> deb_build/DEBIAN/control
+	@echo "Description: $(APP_DISPLAY_NAME) Browser" >> deb_build/DEBIAN/control
+	@echo "Depends: libgtk-3-0, libdbus-glib-1-2, libxtst6, libxss1, libasound2" >> deb_build/DEBIAN/control
+	@echo '#!/bin/sh' > deb_build/opt/$(APP_NAME)/$(APP_NAME).sh
+	@echo 'exec /opt/$(APP_NAME)/$(APP_NAME) "$$@"' >> deb_build/opt/$(APP_NAME)/$(APP_NAME).sh
+	@chmod +x deb_build/opt/$(APP_NAME)/$(APP_NAME).sh
+	@if [ -f "$(LW_ICON)" ]; then cp "$(LW_ICON)" deb_build/usr/share/icons/hicolor/128x128/apps/$(APP_NAME).png; fi
+	@echo '[Desktop Entry]' > deb_build/usr/share/applications/$(APP_NAME).desktop
+	@echo 'Name=$(APP_DISPLAY_NAME)' >> deb_build/usr/share/applications/$(APP_NAME).desktop
+	@echo 'Exec=/opt/$(APP_NAME)/$(APP_NAME).sh' >> deb_build/usr/share/applications/$(APP_NAME).desktop
+	@echo 'Icon=$(APP_NAME)' >> deb_build/usr/share/applications/$(APP_NAME).desktop
+	@echo 'Type=Application' >> deb_build/usr/share/applications/$(APP_NAME).desktop
+	@echo 'Categories=Network;WebBrowser;' >> deb_build/usr/share/applications/$(APP_NAME).desktop
+	@echo ">>> [DEB] Building .deb file..."
+	@dpkg-deb --build deb_build $(APP_NAME)_$(version)-$(release)_amd64.deb
+	@echo ">>> [DEB] Done: $(APP_NAME)_$(version)-$(release)_amd64.deb"
+	@rm -rf deb_build
+
+# 打包为 .rpm (Fedora/CentOS/openSUSE) - 需要 fpm
+package-rpm : package clean-packaging
+	@if [ -z "$(BINARY_TARBALL)" ]; then echo "Error: No binary tarball found."; exit 1; fi
+	@echo ">>> [RPM] Creating package from $(BINARY_TARBALL)..."
+	@if ! command -v fpm >/dev/null 2>&1; then \
+		echo "Error: fpm not found. Install with: gem install fpm"; \
+		exit 1; \
+	fi
+	@mkdir -p rpm_build/opt/$(APP_NAME)
+	@tar -xf $(BINARY_TARBALL) -C rpm_build/opt/$(APP_NAME) --strip-components=1
+	@fpm -s dir -t rpm -n $(APP_NAME) -v $(version)-$(release) \
+		--rpm-os linux \
+		--description "$(APP_DISPLAY_NAME) Web Browser" \
+		--maintainer "Vantage Build" \
+		--url "https://vantage.local" \
+		-C rpm_build/opt/$(APP_NAME) \
+		--prefix /opt/$(APP_NAME)
+	@echo ">>> [RPM] Done: $(APP_NAME)-$(version)-$(release).x86_64.rpm"
+	@rm -rf rpm_build
+
+# 打包为 .AppImage (通用)
+package-appimage : package clean-packaging
+	@if [ -z "$(BINARY_TARBALL)" ]; then echo "Error: No binary tarball found."; exit 1; fi
+	@echo ">>> [APPIMAGE] Creating package from $(BINARY_TARBALL)..."
+	@if ! command -v appimagetool >/dev/null 2>&1; then \
+		echo "Error: appimagetool not found."; \
+		exit 1; \
+	fi
+	@mkdir -p AppDir/usr/bin
+	@mkdir -p AppDir/usr/share/icons/hicolor/128x128/apps
+	@mkdir -p AppDir/usr/share/applications
+	@tar -xf $(BINARY_TARBALL) -C AppDir/usr/bin --strip-components=1
+	@if [ -f "$(LW_ICON)" ]; then \
+		cp "$(LW_ICON)" AppDir/usr/share/icons/hicolor/128x128/apps/$(APP_NAME).png; \
+		cp "$(LW_ICON)" AppDir/$(APP_NAME).png; \
+	fi
+	@echo '#!/bin/sh' > AppDir/AppRun
+	@echo 'HERE="$$(dirname "$$(readlink -f "$$0)")"' >> AppDir/AppRun
+	@echo 'exec "$$HERE/usr/bin/$(APP_NAME)" "$$@"' >> AppDir/AppRun
+	@chmod +x AppDir/AppRun
+	@echo '[Desktop Entry]' > AppDir/$(APP_NAME).desktop
+	@echo 'Name=$(APP_DISPLAY_NAME)' >> AppDir/$(APP_NAME).desktop
+	@echo 'Exec=$(APP_NAME)' >> AppDir/$(APP_NAME).desktop
+	@echo 'Icon=$(APP_NAME)' >> AppDir/$(APP_NAME).desktop
+	@echo 'Type=Application' >> AppDir/$(APP_NAME).desktop
+	@echo 'Categories=Network;WebBrowser;' >> AppDir/$(APP_NAME).desktop
+	@cp AppDir/$(APP_NAME).desktop AppDir/usr/share/applications/
+	@echo ">>> [APPIMAGE] Running appimagetool..."
+	@ARCH=x86_64 appimagetool --no-appstream AppDir $(APP_NAME)-$(version)-$(release).x86_64.AppImage
+	@echo ">>> [APPIMAGE] Done: $(APP_NAME)-$(version)-$(release).x86_64.AppImage"
+	@rm -rf AppDir
+
+# 打包为 .tar.gz (Arch/Gentoo/通用)
+package-tar : package clean-packaging
+	@if [ -z "$(BINARY_TARBALL)" ]; then echo "Error: No binary tarball found."; exit 1; fi
+	@echo ">>> [TAR] Creating portable tar.gz..."
+	@mkdir -p $(APP_NAME)-portable
+	@tar -xf $(BINARY_TARBALL) -C $(APP_NAME)-portable --strip-components=1
+	@tar -czf $(APP_NAME)-$(version)-$(release).portable.tar.gz $(APP_NAME)-portable
+	@echo ">>> [TAR] Done: $(APP_NAME)-$(version)-$(release).portable.tar.gz"
+	@rm -rf $(APP_NAME)-portable
+
+# 快捷目标：一次性生成所有格式
+package-all : package package-deb package-appimage package-tar
+	@echo ">>> All packages generated successfully."
+	@ls -lh $(APP_NAME)*.$(version)*
