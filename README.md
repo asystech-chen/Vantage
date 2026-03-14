@@ -1,200 +1,215 @@
-# LibreWolf Source Repository
+# Vantage Browser 🦊
 
-This repository contains all the patches and theming that make up LibreWolf, as well as scripts and a Makefile to build LibreWolf. There also is the [Settings repository](https://codeberg.org/librewolf/settings), which contains the LibreWolf preferences.
+> **隐私 · 快速 · 易用**
 
-## LibreWolf overview
+![Vantage](https://asystech.cn/pc/vantage.html)
 
-```mermaid
-graph LR
-    FFSRC(Firefox Source)
+[![Download](https://img.shields.io/badge/下载-最新版-blue?style=for-the-badge)](https://asystech.cn/pc/vantage.html)
+[![License](https://img.shields.io/badge/许可证-MPL--2.0-green?style=for-the-badge)](LICENSE)
+[![GitHub](https://img.shields.io/badge/GitHub-源码-181717?style=for-the-badge&logo=github)](https://github.com/ASYS-Tech/Vantage)
 
-    FFSRC--Tarball--->Source
+# 软件截图
+![10LTSC-2026-03-14-14-34-51.png](../_resources/10LTSC-2026-03-14-14-34-51.png)
 
-    subgraph librewolf-community/
-    Settings(Settings)--"librewolf.cfg<br>policies.json"-->Source
-    Website(Website<br><br>- Documentation<br>- FAQ)
-    subgraph browser/
-        Source(Source<br><br>- Patches<br>- Theming<br>- Build scripts)
-        bsys6(bsys6<br><br>New Docker building<br>repository)
-        AppImage
-        Arch
-    end
-    end
-    Website-->librewolf.net
-    Source--"Source tarball"-->bsys6
-    AppImage--".appimage"-->librewolf.net
-    bsys6--"Windows setup.exe"--->librewolf.net
-    bsys6--"Windows portable.zip"--->librewolf.net
-    bsys6--"Windows .msix"--->MS("Microsoft Store")
-    bsys6--"Windows .nupkg"--->Chocolatey
-    bsys6--"Linux binary tarball"--->Flathub
-    bsys6--"Linux binary tarball"--> AppImage
-    bsys6--"Linux .deb"--->repo.librewolf.net
-    bsys6--"Linux .rpm"--->repo.librewolf.net
-    bsys6--"Linux binary tarball for 'librewolf-bin'"--> Arch
-    Source--"Source tarball for 'librewolf'"-->Arch
-    Arch-->AUR
-```
 
-## Active repositories and projects
+---
 
-List of browser build sub projects. These are the locations where people have their repositories and build artifacts.
+## 📋 目录
 
-Currently active build repositories:
+- [什么是 Vantage？](#-什么是-vantage)
+- [✨ 核心特性](#-核心特性)
+- [🖥️ 系统要求](#️-系统要求)
+- [📦 安装指南](#-安装指南)
+- [⚙️ 配置与使用](#️-配置与使用)
+- [🤝 贡献指南](#-贡献指南)
+- [❓ 常见问题](#-常见问题)
+- [📄 许可证](#-许可证)
+- [🔗 相关链接](#-相关链接)
 
-* [Arch](https://codeberg.org/librewolf/arch): Arch Linux package
-* [Bsys6](https://codeberg.org/librewolf/bsys6): .deb/.rpm for Mint, Fedora, Ubuntu; .dmg for MacOS; portable/setup for Windows.
-* [Gentoo](https://codeberg.org/librewolf/gentoo): Gentoo package
+---
 
-Downstream distribution packages:
+## 🔍 什么是 Vantage？
 
-* [Alpine Linux aport](https://pkgs.alpinelinux.org/packages?name=librewolf&arch=)
+**Vantage** 是一款由 **ASYS 科技** 深度定制的 Firefox 浏览器，基于 LibreWolf 代码实现，专注于**隐私保护、安全防护与用户自由**。
 
-Previous forks:
+> ⚠️ Vantage 与 LibreWolf 或 Mozilla 官方无隶属关系，是独立的定制发行版。
 
-* Cachy-Browser: https://github.com/cachyos/cachyos-browser-settings
-* FireDragon: https://github.com/dr460nf1r3/firedragon-browser
+我们的目标：在保留 Firefox 强大扩展生态的同时，为用户提供开箱即用的隐私增强体验，摆脱追踪、遥测与不必要的干扰。
 
-## LibreWolf build instructions
+---
 
-There are two ways to build LibreWolf. You can either use the source tarball or compile directly with this repository.
+## ✨ 核心特性
 
-### Building from the Tarball
+| 特性 | 说明 |
+|------|------|
+| 🚫 **无遥测** | 完全禁用 Firefox 遥测、实验功能、广告推送及数据收集模块 |
+| 🔍 **灵活搜索** | 默认集成 Microsoft Bing，支持一键切换百度、谷歌、DuckDuckGo 等引擎 |
+| 🛡️ **内置拦截** | 预装 uBlock Origin 等广告/追踪器拦截规则，提升页面加载速度与纯净度 |
+| 🔒 **隐私加固** | 启用 RFP（Resist Fingerprinting）、禁用 WebRTC 泄露、强制 HTTPS 等硬核隐私策略 |
+| 🔄 **跨端同步** | 支持登录 Mozilla 账号，无缝同步书签、扩展、主题及配置（可选启用） |
+| 🔓 **开源透明** | 全部源码公开，欢迎审计、复刻与二次开发 |
 
-First, let's **[download the latest tarball](https://codeberg.org/librewolf/source/releases)**. This tarball is the latest produced by the [CI](https://codeberg.org/librewolf/source/actions). You can also check the sha256sum of the tarball there.
+---
 
+## 🖥️ 系统要求
+
+### Windows
+- **操作系统**：Windows 10 / 11 (64 位)
+- **处理器**：x64 兼容处理器，支持 SSE2
+- **内存**：≥ 4 GB RAM（推荐 8 GB+）
+- **存储**：≥ 500 MB 可用空间
+- **显卡**：支持 DirectX 11 的 GPU（硬件加速）
+
+### Linux
+- **发行版**：大多数主流发行版
+- **依赖库**：安装包已包含常见依赖
+
+### macOS（开发中）
+> 🚧 macOS 版本正在适配中，敬请期待
+
+---
+
+## 📦 安装指南
+
+### Windows 用户
+1. 访问官网下载页面：[https://asystech.cn/pc/vantage.html](https://asystech.cn/pc/vantage.html)
+2. 下载 `.exe` 安装包
+3. 双击运行，按向导完成安装
+4. 启动 Vantage，开始隐私浏览之旅 ✨
+
+### Linux 用户
+
+Debian、Ubuntu等使用APT包管理器的Linux发行版
 ```bash
-tar xf <tarball>
-cd <folder>
+cd ~
+wget https://asystech.cn/vantage/vantage-latest.deb #通过官网下载（推荐）
+wget https://github.com/asystech-chen/Vantage/releases/download/148.0-1/vantage_148.0-1_amd64.deb #通过GitHub下载
+
+sudo apt update
+sudo apt install -y vantage-latest.deb
+
 ```
 
-Then, you have to bootstrap your system to be able to build LibreWolf. You only have to do this one time. It is done by running the following commands:
-
+Rocky等RHEL发行版
 ```bash
-./mach --no-interactive bootstrap --application-choice=browser
+cd ~
+wget https://github.com/asystech-chen/Vantage/releases/download/148.0-1/vantage-148.0_1-1.x86_64.rpm #通过GitHub下载
+
+sudo yum update
+sudo yum install -y vantage-latest.rpm
+
 ```
 
-Finally you can build LibreWolf and then package or run it with the following commands:
-
+其他发行版：使用AppImage包
 ```bash
-./mach build
-./mach package
-# OR
-./mach run
+cd ~
+wget https://github.com/asystech-chen/Vantage/releases/download/148.0-1/vantage-148.0-1.x86_64.AppImage
+chmod +x vantage-148.0-1.x86_64.AppImage
+./Vantage-x86_64.AppImage
 ```
 
-### Building with this Repository
 
-First, clone this repository with Git:
-
+# 方式二：使用压缩包手动安装
 ```bash
-git clone --recursive https://codeberg.org/librewolf/source.git librewolf-source
-cd librewolf-source
+tar -xjf Vantage-linux-x86_64.tar.bz2 -C /opt/
+ln -s /opt/vantage/vantage /usr/local/bin/vantage
 ```
 
-Next, build the LibreWolf source code with the following command:
 
-```bash
-make dir
+
+---
+
+## ⚙️ 配置与使用
+
+### 首次启动建议
+- ✅ 检查 `about:preferences#privacy` 中的隐私设置
+- ✅ 根据需要启用/禁用 Mozilla 同步功能
+- ✅ 安装常用扩展（Vantage 兼容 Firefox 扩展商店）
+
+### 高级配置（about:config）
+> ⚠️ 修改前请备份配置，不当设置可能影响浏览器稳定性
+
+```ini
+# 示例：进一步禁用遥测（默认已禁用，供参考）
+datareporting.healthreport.uploadEnabled = false
+toolkit.telemetry.enabled = false
+browser.ping-centre.telemetry = false
+
+# 示例：增强 DNS over HTTPS
+network.trr.mode = 3
+network.trr.uri = "https://mozilla.cloudflare-dns.com/dns-query"
 ```
 
-After that, you have to bootstrap your system to be able to build LibreWolf. You only have to do this one time. It is done by running the following command:
-
-```bash
-make bootstrap
-```
-
-Finally you can build LibreWolf and then package or run it with the following commands:
-
-```bash
-make build
-make package
-# OR
-make run
-```
-
-## Translations
-
-We use Weblate to localize all LibreWolf-specific strings. You can help us by
-translating LibreWolf into your language at
-https://translate.codeberg.org/engage/librewolf. Here is the current translation
-status:
-
-<a href="https://translate.codeberg.org/engage/librewolf/">
-<img src="https://translate.codeberg.org/widget/librewolf/multi-auto.svg" alt="Translation status" />
-</a>
-
-## Development Notes
-
-### How to make a patch
-
-The easiest way to make patches is to go to the LibreWolf source folder:
-```bash
-cd librewolf-$(cat version)
-git init
-git add <path_to_file_you_changed>
-git commit -am initial-commit
-git diff > ../mypatch.patch
-```
-We have Gitter / Matrix rooms, and on the website we have links to the various issue trackers.
-
-### How to work on an existing patch
-
-The easiest way to make patches is to go to the LibreWolf source folder:
-```bash
-make fetch # get the firefox tarball
-./scripts/git-patchtree.sh patches/sed-patches/disable-pocket.patch
-```
-Now change the source tree the way you want, keeping in mind to `git add` new files. When done, you can create the new patch with:
-```bash
-cd firefox-<version>
-git diff 4b825dc642cb6eb9a060e54bf8d69288fbee4904 HEAD > ../my-patch-name.patch
-```
-This ID is the hash value of the first commit, which is called `initial`. Dont forget to commit changes before doing this diff, or the patch will be incomplete.
+### 快捷键速查
+| 快捷键 | 功能 |
+|--------|------|
+| `Ctrl+Shift+P` | 打开隐私浏览窗口 |
+| `Ctrl+Shift+Delete` | 快速清除浏览数据 |
+| `Ctrl+L` | 聚焦地址栏 |
+| `F11` | 全屏模式 |
 
 
-### How to create a patch for problems in Mozilla's [Bugzilla](https://bugzilla.mozilla.org/).
 
-Well, first of all:
+---
 
-* [Create an account](https://bugzilla.mozilla.org/createaccount.cgi).
-* Handy link: [Bugs Filed Today](https://bugzilla.mozilla.org/buglist.cgi?cmdtype=dorem&remaction=run&namedcmd=Bugs%20Filed%20Today&sharer_id=1&list_id=15939480).
-* The essential: [Firefox Source Tree Documentation](https://firefox-source-docs.mozilla.org/).
+## 🤝 贡献指南
 
-Now that you have a patch in LibreWolf, that's not enough to upload to Mozilla. See, Mozilla only accepts patches against Nightly. So here is how to do that:
+我们欢迎任何形式的贡献！🎉
 
-If you have not done already, create the `mozilla-unified` folder and build Firefox with it:
-```bash
-hg clone https://hg.mozilla.org/mozilla-unified
-cd mozilla-unified
-hg update
-MOZBUILD_STATE_PATH=$HOME/.mozbuild ./mach --no-interactive bootstrap --application-choice=browser
-./mach build
-./mach run
-```
-If you skipped the previous step, you could ensure that you're up to date with:
-```bash
-cd mozilla-unified
-hg pull
-hg update
-```
-Now you can apply your patch to Nightly:
-```bash
-patch -p1 -i ../mypatch.patch
-```
-Now you let Mercurial create the patch:
-```bash
-hg diff > ../my-nightly-patch.patch
-```
-And it can be uploaded to Bugzilla.
+### 你可以：
+- 🐛 提交 Bug 报告（请附复现步骤与环境信息）
+- 💡 提出新功能建议
+- 🔧 提交 Pull Request 修复问题或增强功能
+- 🌍 帮助翻译本地化内容
+- 📝 完善文档与使用教程
 
-##### *(excerpt from the Mozilla readme)* Now the fun starts
+### 贡献流程
+1. Fork 本仓库
+2. 创建特性分支：`git checkout -b feat/your-feature`
+3. 提交更改：`git commit -am 'feat: 添加 XXX 功能'`
+4. 推送分支：`git push origin feat/your-feature`
+5. 发起 Pull Request
 
-Time to start hacking! You should join us on [Matrix](https://chat.mozilla.org/), say hello in the [Introduction channel](https://chat.mozilla.org/#/room/#introduction:mozilla.org), and [find a bug to start working on](https://codetribute.mozilla.org/). See the [Firefox Contributors’ Quick Reference](https://firefox-source-docs.mozilla.org/contributing/contribution_quickref.html#firefox-contributors-quick-reference) to learn how to test your changes, send patches to Mozilla, update your source code locally, and more.
+> 📌 请确保代码符合 [Mozilla 代码规范](https://firefox-source-docs.mozilla.org/code-quality/)，并通过基础测试。
 
-## Hey, I'm using MacOS or Windows..
-We understand, life isn't always fair 😺. The same steps as above do apply, you'll just have to walk through the beginning part of the guides for:
-* [MacOS](https://firefox-source-docs.mozilla.org/setup/macos_build.html): The cross-compiled Mac .dmg files are somewhat new. They should work, perhaps with the exception of the `make setup-wasi` step.
-* [Windows](https://firefox-source-docs.mozilla.org/setup/windows_build.html): Building on Windows is not very well tested.
+---
 
-Help with testing these targets is always welcome.
+## ❓ 常见问题
+
+**Q: Vantage 和 Firefox / LibreWolf 有什么区别？**  
+A: Vantage 基于 LibreWolf 代码基线，由 ASYS 科技针对中文用户习惯与隐私需求进行二次定制，预置更适合本地使用的搜索与拦截策略。
+
+**Q: 扩展兼容吗？**  
+A: ✅ 完全兼容 Firefox 扩展商店（addons.mozilla.org）中的扩展，可直接安装使用。
+
+**Q: 同步功能会泄露隐私吗？**  
+A: 同步功能默认关闭。如启用，数据将通过 Mozilla 服务器加密传输，我们不会额外收集同步内容。
+
+**Q: 如何反馈问题？**  
+A: 请通过 [GitHub Issues](https://github.com/ASYS-Tech/Vantage/issues) 提交，或访问官网联系客服。
+
+---
+
+## 📄 许可证
+
+Vantage 浏览器主体代码遵循 **Mozilla Public License 2.0** 开源。  
+部分预置扩展与资源遵循其各自许可证，详见 `LICENSE` 与 `NOTICE` 文件。
+
+> 📜 本软件按「原样」提供，不提供任何明示或暗示的担保。
+
+---
+
+## 🔗 相关链接
+
+- 🌐 官网：[https://asystech.cn/pc/vantage.html](https://asystech.cn/pc/vantage.html)
+- 💻 源码：[GitHub - ASYS-Tech/Vantage](https://github.com/ASYS-Tech/Vantage)
+- 📦 下载：[官网下载页](https://asystech.cn/pc/vantage.html)
+- 🐛 问题反馈：[Issues](https://github.com/ASYS-Tech/Vantage/issues)
+- 📚 Firefox 文档：[MDN Web Docs](https://developer.mozilla.org/)
+
+---
+
+> 🙏 感谢 Mozilla、LibreWolf 社区及所有开源贡献者！  
+> 🛡️ 由 **ASYS 科技** 维护 · 为隐私与自由而生
+
+
