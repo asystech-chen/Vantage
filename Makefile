@@ -379,6 +379,22 @@ package-tar : package clean-packaging
 	@echo ">>> [TAR] Done: $(APP_NAME)-$(version)-$(release).portable.tar.gz"
 	@rm -rf $(APP_NAME)-portable
 
+# ==========================================
+# Windows 简体中文安装包目标
+# ==========================================
+package-zhcn :
+	@echo "=== 打包简体中文版本 ==="
+	(cd $(lw_source_dir) && ./mach package-multi-locale --locales zh-CN)
+	cp -v $(lw_source_dir)/obj-*/dist/librewolf-$(version)-$(release).zh-CN.*.zip . 2>/dev/null || true
+	cp -v $(lw_source_dir)/obj-*/dist/librewolf-$(version)-$(release).zh-CN.*.exe . 2>/dev/null || true
+	cp -v $(lw_source_dir)/obj-*/dist/librewolf-$(version)-$(release).zh-CN.*.tar.xz . 2>/dev/null || true
+	@echo "=== 简体中文打包完成 ==="
+	@echo "产物文件:"
+	@ls -lh librewolf-$(version)-$(release).zh-CN.* 2>/dev/null || echo "未找到产物文件"
+	
+	
+	
+	
 # 快捷目标：一次性生成所有格式
 package-all : package package-deb package-appimage package-tar
 	@echo ">>> All packages generated successfully."
