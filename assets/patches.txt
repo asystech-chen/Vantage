@@ -16,6 +16,7 @@ patches/moz-configure.patch
 patches/mozilla_dirs.patch
 patches/msix.patch
 patches/newtab-fix.patch
+patches/remove-openai.patch
 patches/remove-pingsender.patch
 patches/rs-blocker.patch
 patches/rust-gentoo-musl.patch
@@ -35,6 +36,5 @@ patches/ui-patches/website-appearance-ui-rfp.patch
 patches/urlbarprovider-interventions.patch
 patches/vendor-name.patch
 patches/webgl-permission.patch
-patches/webrtc-backport-pipeWire-capture-clear-e.patch
 patches/windows-theming-bug.patch
 patches/xdg-dir.patch

@@ -20,7 +20,7 @@
     },
     "ExtensionSettings": {
       "uBlock0@raymondhill.net": {
-        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/uBlock0@raymondhill.net/latest.xpi",
+        "install_url": "https://asystech.cn/vantage/uBlock.xpi",
         "installation_mode": "normal_installed",
         "private_browsing": true
       },

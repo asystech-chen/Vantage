@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 600 600" 
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+     xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+     version="1.1">
+  
+  <title>Vantage Browser Logo</title>
+  <desc>Vantage Orb Logo - 512x512 - 3D Gradient - Thick Edge</desc>
+  
+  <defs id="defs">
+    <!-- Orb 立体渐变（径向，中心亮→边缘稍暗） -->
+    <radialGradient id="orbGradient" cx="300" cy="300" r="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0" style="stop-color:#FFFFFF;stop-opacity:1"/>
+      <stop offset="0.7" style="stop-color:#F8FAFC;stop-opacity:1"/>
+      <stop offset="1" style="stop-color:#F1F5F9;stop-opacity:1"/>
+    </radialGradient>
+    
+    <!-- V 形渐变（蓝→青） -->
+    <linearGradient id="vGrad" x1="210" y1="210" x2="390" y2="420" gradientUnits="userSpaceOnUse">
+      <stop offset="0" style="stop-color:#3B82F6;stop-opacity:1"/>
+      <stop offset="0.4" style="stop-color:#2563EB;stop-opacity:1"/>
+      <stop offset="0.7" style="stop-color:#2DD4BF;stop-opacity:1"/>
+      <stop offset="1" style="stop-color:#14B8A6;stop-opacity:1"/>
+    </linearGradient>
+    
+    <!-- V 形左侧高光渐变 -->
+    <linearGradient id="vHighlight" x1="180" y1="200" x2="240" y2="260" gradientUnits="userSpaceOnUse">
+      <stop offset="0" style="stop-color:#FFFFFF;stop-opacity:0.6"/>
+      <stop offset="0.5" style="stop-color:#FFFFFF;stop-opacity:0.2"/>
+      <stop offset="1" style="stop-color:#FFFFFF;stop-opacity:0"/>
+    </linearGradient>
+    
+    <!-- V 形右侧高光渐变 -->
+    <linearGradient id="vHighlightRight" x1="420" y1="200" x2="360" y2="260" gradientUnits="userSpaceOnUse">
+      <stop offset="0" style="stop-color:#FFFFFF;stop-opacity:0.6"/>
+      <stop offset="0.5" style="stop-color:#FFFFFF;stop-opacity:0.2"/>
+      <stop offset="1" style="stop-color:#FFFFFF;stop-opacity:0"/>
+    </linearGradient>
+    
+    <!-- 外环渐变 -->
+    <linearGradient id="ringGrad" x1="0" y1="0" x2="600" y2="600" gradientUnits="userSpaceOnUse">
+      <stop offset="0" style="stop-color:#60A5FA;stop-opacity:1"/>
+      <stop offset="1" style="stop-color:#2DD4BF;stop-opacity:1"/>
+    </linearGradient>
+    
+    <!-- 高光模糊滤镜 -->
+    <filter id="highlightBlur" x="-0.5" y="-0.5" width="2" height="2">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+    
+    <!-- 顶部光晕滤镜 -->
+    <filter id="glowBlur" x="-0.5" y="-0.5" width="2" height="2">
+      <feGaussianBlur stdDeviation="10"/>
+    </filter>
+  </defs>
+  
+  <sodipodi:namedview id="namedview" 
+                      pagecolor="#ffffff" 
+                      bordercolor="#666666" 
+                      borderopacity="1.0"
+                      inkscape:pageshadow="2"
+                      inkscape:pageopacity="0.0"
+                      inkscape:pagecheckerboard="0"
+                      inkscape:document-units="px"
+                      showgrid="false"
+                      inkscape:zoom="1"
+                      inkscape:cx="300"
+                      inkscape:cy="300"
+                      inkscape:window-width="1920"
+                      inkscape:window-height="1080"
+                      inkscape:window-x="0"
+                      inkscape:window-y="0"
+                      inkscape:window-maximized="1"
+                      inkscape:current-layer="svg"/>
+  
+  <!-- 主背景圆（径向渐变，立体感） -->
+  <circle id="bg-circle" cx="300" cy="300" r="300" fill="url(#orbGradient)"/>
+  
+  <!-- 外环边框（加宽至 8px） -->
+  <circle id="outer-ring" cx="300" cy="300" r="296" stroke="url(#ringGrad)" stroke-width="8" fill="none" opacity="0.6"/>
+  
+  <!-- 内环装饰（加宽至 3px） -->
+  <circle id="inner-ring" cx="300" cy="300" r="282" stroke="#E2E8F0" stroke-width="3" fill="none" opacity="0.7"/>
+  
+  <!-- 主 V 形（无阴影） -->
+  <path id="v-shape" d="M175 195 L300 435 L425 195" 
+        stroke="url(#vGrad)" 
+        stroke-width="75" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+        fill="none"/>
+  
+  <!-- V 形左侧高光 -->
+  <path id="v-highlight-left" d="M185 205 L275 395" 
+        stroke="url(#vHighlight)" 
+        stroke-width="12" 
+        stroke-linecap="round"
+        filter="url(#highlightBlur)"
+        opacity="0.8"/>
+  
+  <!-- V 形右侧高光 -->
+  <path id="v-highlight-right" d="M415 205 L325 395" 
+        stroke="url(#vHighlightRight)" 
+        stroke-width="12" 
+        stroke-linecap="round"
+        filter="url(#highlightBlur)"
+        opacity="0.8"/>
+  
+  <!-- V 形底部柔光 -->
+  <ellipse id="v-bottom-glow" cx="300" cy="425" rx="30" ry="20" fill="#FFFFFF" opacity="0.25" filter="url(#highlightBlur)"/>
+  
+  <!-- 顶部环境光晕 -->
+  <ellipse id="top-glow" cx="300" cy="130" rx="80" ry="15" fill="#FFFFFF" opacity="0.25" filter="url(#glowBlur)"/>
+  
+</svg>

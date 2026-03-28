@@ -12,10 +12,10 @@ CROSS_BUILD=1
 #  * linux64-binutils (might not be needed)
 #  * linux64-clang-macosx-cross
 
-CROSS="$MOZBUILD/osx-cross"
+CROSS="~/osx-cross"
 CCTOOLS="$CROSS/cctools"
 
-CROSS_SYSROOT="$CROSS/MacOSX-SDKs/MacOSX10.12.sdk"
+CROSS_SYSROOT="$CROSS/MacOSX-SDKs/MacOSX11.3.sdk"
 export MACOS_SDK_DIR="$CROSS_SYSROOT"
 
 export DSYMUTIL="$CROSS/clang/bin/dsymutil"

@@ -1,87 +1,23 @@
-/* 添加 XUL 命名空间以确保样式正确应用到 XUL 元素 */
-@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
-
 .librewolf-collapse > input {
-  display: none;
+	display: none;
 }
-
 .librewolf-collapse > input ~ .librewolf-collapsed {
-  display: none;
-  /* max-height: 0; */
-  transition: max-height 0.25s ease-in-out;
+	display: none;
+	/* max-height: 0; */
+	transition: max-height 0.25s ease-in-out;
 }
-
 .librewolf-collapse > input:checked ~ .librewolf-collapsed {
-  display: block;
-  /* max-height: 20rem; */
+	display: block;
+	/* max-height: 20rem; */
 }
-
 .librewolf-warning {
-  display: inline;
-  font-size: 0.8em;
+	display: inline;
+	font-size: 0.8em;
 }
-
 .librewolf-button-icon {
-  width: 16px;
-  height: 16px;
-  margin-right: 8px;
-  -moz-context-properties: fill, fill-opacity;
-  fill: currentColor;
-}
-
-/* --- 新增：开关样式 (Toggle Switch) --- */
-checkbox.librewolf-switch {
-  -moz-appearance: none !important;
-  display: flex !important;
-  align-items: center !important;
-  margin: 4px 0 !important;
-  cursor: pointer;
-}
-
-/* 开关背景轨道 */
-checkbox.librewolf-switch .checkbox-check {
-  -moz-appearance: none !important;
-  width: 40px !important;
-  height: 20px !important;
-  border-radius: 20px !important;
-  background-color: #8f8f8f !important; /* 关闭状态颜色 */
-  position: relative !important;
-  margin-inline-end: 10px !important; /* 开关与文字之间的间距 */
-  transition: background-color 0.2s ease !important;
-  border: none !important;
-  padding: 0 !important;
-}
-
-/* 开关圆点 */
-checkbox.librewolf-switch .checkbox-check::before {
-  content: "" !important;
-  position: absolute !important;
-  top: 2px !important;
-  left: 2px !important;
-  width: 16px !important;
-  height: 16px !important;
-  border-radius: 50% !important;
-  background-color: #fff !important;
-  transition: transform 0.2s ease !important;
-}
-
-/* 选中状态 */
-checkbox.librewolf-switch:checked .checkbox-check {
-  background-color: #0060df !important; /* Firefox 蓝色 */
-}
-
-checkbox.librewolf-switch:checked .checkbox-check::before {
-  transform: translateX(20px) !important;
-}
-
-/* 禁用状态 */
-checkbox.librewolf-switch[disabled="true"] .checkbox-check {
-  background-color: #5f5f5f !important;
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* 确保标签文字垂直居中 */
-checkbox.librewolf-switch .checkbox-label {
-  user-select: none;
+	width: 16px;
+	height: 16px;
+	margin-right: 8px;
+	-moz-context-properties: fill, fill-opacity;
+	fill: currentColor;
 }
