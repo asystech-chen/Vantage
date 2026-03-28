@@ -15,6 +15,7 @@ ac_add_options --enable-rust-simd
 # allow replacing malloc manually, will not affect regular systems
 # not compatible with ac_add_options --disable-jemalloc, which only works when preloading custom malloc
 ac_add_options --enable-replace-malloc
+ac_add_options --enable-jemalloc
 
 ac_add_options --with-app-name=librewolf
 ac_add_options --with-branding=browser/branding/librewolf
@@ -31,6 +32,10 @@ mk_add_options MOZ_CRASHREPORTER=0
 mk_add_options MOZ_DATA_REPORTING=0
 mk_add_options MOZ_SERVICES_HEALTHREPORT=0
 mk_add_options MOZ_TELEMETRY_REPORTING=0
+
+export CFLAGS="-ftrivial-auto-var-init=zero -fwrapv"
+export CXXFLAGS="-ftrivial-auto-var-init=zero -fwrapv"
+#export LDFLAGS=
 
 # Add your own stuff, libraries, architecture, etc..
 # ex: `cat mozconfig.orig mozconfig.my > mozconfig`

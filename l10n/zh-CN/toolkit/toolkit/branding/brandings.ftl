@@ -1,0 +1,7 @@
+-screenshots-brand-name = 截图
+-profiler-brand-name = 分析器
+-translations-brand-name = 翻译
+-firefox-suggest-brand-name = 建议
+-firefox-home-brand-name = 主页
+-firefoxview-brand-name = 标签页视图
+-firefoxlabs-brand-name = 实验功能

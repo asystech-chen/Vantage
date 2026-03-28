@@ -342,20 +342,20 @@ package-appimage : package clean-packaging
 	@if [ -z "$(BINARY_TARBALL)" ]; then echo "Error: No binary tarball found."; exit 1; fi
 	@echo ">>> [APPIMAGE] Creating package from $(BINARY_TARBALL)..."
 	@if ! command -v appimagetool >/dev/null 2>&1; then \
-		echo "Error: appimagetool not found."; \
-		exit 1; \
+	echo "Error: appimagetool not found."; \
+	exit 1; \
 	fi
 	@mkdir -p AppDir/usr/bin
 	@mkdir -p AppDir/usr/share/icons/hicolor/128x128/apps
 	@mkdir -p AppDir/usr/share/applications
 	@tar -xf $(BINARY_TARBALL) -C AppDir/usr/bin --strip-components=1
 	@if [ -f "$(LW_ICON)" ]; then \
-		cp "$(LW_ICON)" AppDir/usr/share/icons/hicolor/128x128/apps/$(APP_NAME).png; \
-		cp "$(LW_ICON)" AppDir/$(APP_NAME).png; \
+	cp "$(LW_ICON)" AppDir/usr/share/icons/hicolor/128x128/apps/$(APP_NAME).png; \
+	cp "$(LW_ICON)" AppDir/$(APP_NAME).png; \
 	fi
-	@echo '#!/bin/sh' > AppDir/AppRun
-	@echo 'HERE="$$(dirname "$$(readlink -f "$$0)")"' >> AppDir/AppRun
-	@echo 'exec "$$HERE/usr/bin/$(APP_NAME)" "$$@"' >> AppDir/AppRun
+	@printf '#!/bin/sh\n' > AppDir/AppRun
+	@printf 'HERE="$$(dirname "$$(readlink -f "$$0")")"\n' >> AppDir/AppRun
+	@printf 'exec "$$HERE/usr/bin/$(APP_NAME)" "$$@"\n' >> AppDir/AppRun
 	@chmod +x AppDir/AppRun
 	@echo '[Desktop Entry]' > AppDir/$(APP_NAME).desktop
 	@echo 'Name=$(APP_DISPLAY_NAME)' >> AppDir/$(APP_NAME).desktop
