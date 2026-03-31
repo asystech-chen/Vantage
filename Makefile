@@ -275,7 +275,7 @@ test-windows : $(lw_source_tarball)
 BINARY_TARBALL := $(shell ls -t *.tar.xz 2>/dev/null | head -n 1)
 
 # 图标路径
-LW_ICON := themes/browser/branding/librewolf/default128.png
+LW_ICON := themes/browser/branding/vantage/default128.png
 
 # 软件名称配置
 APP_NAME := vantage
@@ -286,7 +286,7 @@ clean-packaging :
 	@rm -rf deb_build rpm_build AppDir
 
 # 打包为 .deb (Debian/Ubuntu/Mint)
-package-deb : package clean-packaging
+package-deb : clean-packaging
 	@if [ -z "$(BINARY_TARBALL)" ]; then echo "Error: No binary tarball found."; exit 1; fi
 	@echo ">>> [DEB] Creating package from $(BINARY_TARBALL)..."
 	@mkdir -p deb_build/opt/$(APP_NAME)
@@ -318,7 +318,7 @@ package-deb : package clean-packaging
 	@rm -rf deb_build
 
 # 打包为 .rpm (Fedora/CentOS/openSUSE) - 需要 fpm
-package-rpm : package clean-packaging
+package-rpm : clean-packaging
 	@if [ -z "$(BINARY_TARBALL)" ]; then echo "Error: No binary tarball found."; exit 1; fi
 	@echo ">>> [RPM] Creating package from $(BINARY_TARBALL)..."
 	@if ! command -v fpm >/dev/null 2>&1; then \
@@ -338,7 +338,7 @@ package-rpm : package clean-packaging
 	@rm -rf rpm_build
 
 # 打包为 .AppImage (通用)
-package-appimage : package clean-packaging
+package-appimage : clean-packaging
 	@if [ -z "$(BINARY_TARBALL)" ]; then echo "Error: No binary tarball found."; exit 1; fi
 	@echo ">>> [APPIMAGE] Creating package from $(BINARY_TARBALL)..."
 	@if ! command -v appimagetool >/dev/null 2>&1; then \
@@ -370,7 +370,7 @@ package-appimage : package clean-packaging
 	@rm -rf AppDir
 
 # 打包为 .tar.gz (Arch/Gentoo/通用)
-package-tar : package clean-packaging
+package-tar : clean-packaging
 	@if [ -z "$(BINARY_TARBALL)" ]; then echo "Error: No binary tarball found."; exit 1; fi
 	@echo ">>> [TAR] Creating portable tar.gz..."
 	@mkdir -p $(APP_NAME)-portable
@@ -396,6 +396,6 @@ package-zhcn :
 	
 	
 # 快捷目标：一次性生成所有格式
-package-all : package package-deb package-appimage package-tar
+package-all : package-deb package-appimage package-tar
 	@echo ">>> All packages generated successfully."
 	@ls -lh $(APP_NAME)*.$(version)*
