@@ -385,6 +385,7 @@ package-tar : package clean-packaging
 package-zhcn :
 	@echo "=== 打包简体中文版本 ==="
 	(cd $(lw_source_dir) && ./mach package-multi-locale --locales zh-CN)
+	(cd $(lw_source_dir) && ./mach build installers-zh-CN)
 	cp -v $(lw_source_dir)/obj-*/dist/librewolf-$(version)-$(release).zh-CN.*.zip . 2>/dev/null || true
 	cp -v $(lw_source_dir)/obj-*/dist/librewolf-$(version)-$(release).zh-CN.*.exe . 2>/dev/null || true
 	cp -v $(lw_source_dir)/obj-*/dist/librewolf-$(version)-$(release).zh-CN.*.tar.xz . 2>/dev/null || true
