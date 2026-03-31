@@ -21,7 +21,7 @@ index 6445643..6eff23e 100644
   */
 -static nsresult GetSystemParentDirectory(nsIFile** aFile) {
 +static nsresult GetSystemParentDirectory(nsIFile** aFile,
-+					 nsCString aName = "LibreWolf"_ns) {
++					 nsCString aName = "Vantage"_ns) {
    nsresult rv;
    nsCOMPtr<nsIFile> localDir;
  #  if defined(XP_MACOSX)
@@ -59,9 +59,9 @@ index 6445643..6eff23e 100644
                                    /* aForceLegacy */ true);
      NS_ENSURE_SUCCESS(rv, rv);
 +#  if defined(XP_MACOSX)
-+    rv = file->AppendNative("LibreWolf"_ns);
++    rv = file->AppendNative("Vantage"_ns);
 +#  else   // defined(XP_MACOSX)
-+    rv = file->AppendNative(".librewolf"_ns);
++    rv = file->AppendNative(".vantage"_ns);
 +#  endif  // defined(XP_MACOSX)
 +  } else if (!strcmp(aProperty, XRE_MOZ_USER_NATIVE_MANIFESTS)) {
 +    rv = GetUserDataDirectoryHome(getter_AddRefs(file), false, true);
@@ -74,10 +74,10 @@ index 6445643..6eff23e 100644
  #  ifdef ENABLE_SYSTEM_EXTENSION_DIRS
  #    if defined(__OpenBSD__) || defined(__FreeBSD__)
 -    static const char* const sysLExtDir = "/usr/local/share/mozilla/extensions";
-+    static const char* const sysLExtDir = "/usr/local/share/librewolf/extensions";
++    static const char* const sysLExtDir = "/usr/local/share/vantage/extensions";
  #    else
 -    static const char* const sysLExtDir = "/usr/share/mozilla/extensions";
-+    static const char* const sysLExtDir = "/usr/share/librewolf/extensions";
++    static const char* const sysLExtDir = "/usr/share/vantage/extensions";
  #    endif
      rv = NS_NewNativeLocalFile(nsDependentCString(sysLExtDir),
                                 getter_AddRefs(file));
@@ -92,7 +92,7 @@ index 6445643..6eff23e 100644
 -      return NS_ERROR_FAILURE;
 -    }
 -  } else if (NS_FAILED(localDir->AppendNative("Mozilla"_ns))) {
-+  if (NS_FAILED(localDir->AppendNative("LibreWolf"_ns))) {
++  if (NS_FAILED(localDir->AppendNative("Vantage"_ns))) {
      return NS_ERROR_FAILURE;
    }
  
@@ -101,7 +101,7 @@ index 6445643..6eff23e 100644
  #if defined(XP_MACOSX) || defined(XP_WIN)
  
 -  static const char* const sXR = "Mozilla";
-+  static const char* const sXR = "LibreWolf";
++  static const char* const sXR = "Vantage";
    rv = aFile->AppendNative(nsDependentCString(sXR));
    NS_ENSURE_SUCCESS(rv, rv);
  
@@ -110,7 +110,7 @@ index 6445643..6eff23e 100644
  #elif defined(XP_UNIX)
  
 -  static const char* const sXR = ".mozilla";
-+  static const char* const sXR = ".librewolf";
++  static const char* const sXR = ".vantage";
    rv = aFile->AppendNative(nsDependentCString(sXR));
    NS_ENSURE_SUCCESS(rv, rv);
  

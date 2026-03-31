@@ -6,7 +6,7 @@ index e5e517635d639..4482baba59699 100644
  
  project_flag(
      env="MOZ_APP_VENDOR",
-+    default="LibreWolf",
++    default="Vantage",
      nargs=1,
      help='Used for application.ini\'s "Vendor" field, which also impacts profile location and user-visible fields',
  )
@@ -14,7 +14,7 @@ index e5e517635d639..4482baba59699 100644
  
  project_flag(
      "MOZ_APP_PROFILE",
-+    default="librewolf",
++    default="vantage",
      nargs=1,
      help='Used for application.ini\'s "Profile" field, which controls profile location',
  )

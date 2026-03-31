@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="32"
+   height="32"
+   viewBox="0 0 8.4666665 8.4666666"
+   version="1.1"
+   id="svg144"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="file.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#">
+  <sodipodi:namedview
+     id="namedview146"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="24.915376"
+     inkscape:cx="8.0071038"
+     inkscape:cy="15.652985"
+     inkscape:window-width="1920"
+     inkscape:window-height="1019"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs141">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient1293">
+      <stop
+         style="stop-color:#000000;stop-opacity:0.41290322;"
+         offset="0"
+         id="stop1289" />
+      <stop
+         style="stop-color:#f9f9f9;stop-opacity:0;"
+         offset="1"
+         id="stop1291" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1293"
+       id="linearGradient1295"
+       x1="4.9707665"
+       y1="0.22110716"
+       x2="6.2446589"
+       y2="4.2308941"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="pad" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#cccccc;stroke-width:0.264583"
+       d="M 5.0270833,0.52916669 6.8791666,2.38125 H 5.0270833 Z"
+       id="path367" />
+    <path
+       style="fill:#ececec;stroke-width:0.264583"
+       d="M 1.5875001,7.9374999 H 6.8791666 V 2.38125 H 5.0270833 V 0.52916669 H 1.5875001 Z"
+       id="path369" />
+    <rect
+       style="fill:#f9f9f9;stroke-width:0.264583"
+       id="rect479"
+       width="3.4395833"
+       height="0.26458332"
+       x="1.5875"
+       y="0.52916664" />
+    <path
+       style="fill:url(#linearGradient1295);stroke-width:0.288925;fill-opacity:1;stroke-dasharray:none;fill-rule:nonzero"
+       d="M 5.0270833,2.38125 6.8791666,4.2333333 V 2.38125 Z"
+       id="path587" />
+    <rect
+       style="fill:#cccccc;fill-rule:nonzero;stroke-width:0.288925;stroke-dasharray:none"
+       id="rect1525"
+       width="5.2916665"
+       height="0.26458332"
+       x="1.5875"
+       y="7.6671195" />
+  </g>
+  <metadata
+     id="metadata1608">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <cc:license
+           rdf:resource="https://www.mozilla.org/en-US/MPL/2.0/" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

@@ -11,6 +11,22 @@
 </hbox>
 
 <groupbox hidden="true" data-category="paneLibrewolf">
+  <html:h2 data-l10n-id="vantage-update-heading" />
+
+  <hbox>
+    <checkbox id="vantage-update-checkbox" data-l10n-id="vantage-update-checkbox" preference="vantage.updateCheck.enabled" flex="1" />
+    <html:label for="vantage-update-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
+  </hbox>
+  <vbox class="librewolf-collapse indent">
+    <html:input type="checkbox" id="vantage-update-collapse" />
+    <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
+      <label data-l10n-id="vantage-update-description" />
+    </vbox>
+  </vbox>
+
+</groupbox>
+
+<groupbox hidden="true" data-category="paneLibrewolf">
   <html:h2 data-l10n-id="librewolf-general-heading"/>
 
   <!-- TEMPLATE FOR A NEW PREFERENCE

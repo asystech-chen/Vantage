@@ -9,7 +9,7 @@ ac_add_options --host=x86_64-pc-linux-gnu
 
 # 应用/品牌
 ac_add_options --enable-application=browser
-ac_add_options --with-branding=browser/branding/librewolf
+ac_add_options --with-branding=browser/branding/vantage
 
 # 构建优化
 ac_add_options --enable-release

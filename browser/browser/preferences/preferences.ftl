@@ -8,6 +8,11 @@ category-librewolf =
     .tooltiptext = about:config changes, logically grouped and easily accessible
 
 # Main content
+vantage-update-heading = Update
+vantage-update-checkbox =
+    .label = Automatically check for updates
+vantage-update-description = Check for new versions of Vantage on startup. You will be notified when a new version is available, but updates will not be installed automatically.
+
 librewolf-header = Vantage Preferences
 librewolf-warning-title = Heads up!
 librewolf-warning-description = We carefully choose default settings to focus on privacy and security. When changing these settings, read the descriptions to understand the implications of those changes.

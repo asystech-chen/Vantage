@@ -12,22 +12,22 @@
 # See:
 # https://codeberg.org/librewolf/issues/issues/908
 # https://bugzilla.mozilla.org/show_bug.cgi?id=1801640
-diff --git a/browser/app/firefox.exe.manifest b/browser/app/librewolf.exe.manifest
+diff --git a/browser/app/firefox.exe.manifest b/browser/app/vantage.exe.manifest
 similarity index 96%
 rename from browser/app/firefox.exe.manifest
-rename to browser/app/librewolf.exe.manifest
+rename to browser/app/vantage.exe.manifest
 --- a/browser/app/firefox.exe.manifest
-+++ b/browser/app/librewolf.exe.manifest
++++ b/browser/app/vantage.exe.manifest
 @@ -3,10 +3,10 @@
  <assemblyIdentity
          version="1.0.0.0"
          processorArchitecture="*"
 -        name="Firefox"
-+        name="LibreWolf"
++        name="Vantage"
          type="win32"
  />
 -<description>Firefox</description>
-+<description>LibreWolf</description>
++<description>Vantage</description>
  <dependency>
          <dependentAssembly>
                  <assemblyIdentity
