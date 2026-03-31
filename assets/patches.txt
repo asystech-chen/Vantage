@@ -37,3 +37,4 @@ patches/vendor-name.patch
 patches/webgl-permission.patch
 patches/windows-theming-bug.patch
 patches/xdg-dir.patch
+patches/installer-zhcn.patch
