@@ -1,7 +1,0 @@
--screenshots-brand-name = 截圖
--profiler-brand-name = 分析器
--translations-brand-name = 翻譯
--firefox-suggest-brand-name = 建議
--firefox-home-brand-name = 主頁
--firefoxview-brand-name = 標籤頁檢視
--firefoxlabs-brand-name = 實驗功能

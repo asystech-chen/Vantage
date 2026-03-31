@@ -25,7 +25,6 @@ patches/temp-macos-fix.patch
 patches/ui-patches/allow_cookies_for_site.patch
 patches/ui-patches/firefox-view.patch
 patches/ui-patches/handlers.patch
-patches/ui-patches/hide-default-browser.patch
 patches/ui-patches/hide-finish-setup-bookmark.patch
 patches/ui-patches/lw-logo-devtools.patch
 patches/ui-patches/pref-naming.patch

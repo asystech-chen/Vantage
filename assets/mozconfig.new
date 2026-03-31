@@ -17,8 +17,8 @@ ac_add_options --enable-rust-simd
 ac_add_options --enable-replace-malloc
 ac_add_options --enable-jemalloc
 
-ac_add_options --with-app-name=librewolf
-ac_add_options --with-branding=browser/branding/librewolf
+ac_add_options --with-app-name=vantage
+ac_add_options --with-branding=browser/branding/vantage
 
 ac_add_options --with-unsigned-addon-scopes=app,system
 

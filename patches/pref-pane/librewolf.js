@@ -13,6 +13,8 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
 });
 
 Preferences.addAll([
+  // Update check
+  { id: "vantage.updateCheck.enabled", type: "bool" },
   // IPv6
   { id: "network.dns.disableIPv6", type: "bool" },
   // Firefox Accounts
@@ -51,6 +53,11 @@ var gLibrewolfPane = {
     this._pane = document.getElementById("paneLibrewolf");
 
     // Set all event listeners on checkboxes
+    setBoolSyncListeners(
+      "vantage-update-checkbox",
+      ["vantage.updateCheck.enabled"],
+      [true],
+    );
     setBoolSyncListeners(
       "librewolf-extension-update-checkbox",
       ["extensions.update.autoUpdateDefault", "extensions.update.enabled"],
@@ -155,21 +162,13 @@ function setXOriginPolicySyncListeners(checkboxid, pref, onVals, offVals) {
 }
 
 function openProfileDirectory() {
-  // Get the profile directory.
-  let currProfD = Services.dirsvc.get("ProfD", Ci.nsIFile);
-  let profileDir = currProfD.path;
-
-  // Show the profile directory.
-  let nsLocalFile = Components.Constructor(
-    "@mozilla.org/file/local;1",
-    "nsIFile",
-    "initWithPath"
-  );
-  new nsLocalFile(profileDir).reveal();
+  let profDir = Services.dirsvc.get("ProfD", Ci.nsIFile);
+  profDir.reveal();
 }
 
 function openAboutConfig() {
-  window.open("about:config", "_blank");
+  let mainWindow = window.browsingContext.topChromeWindow;
+  mainWindow.openTrustedLinkIn("about:config", "tab");
 }
 
 function setBoolSyncListeners(checkboxid, opts, vals) {
