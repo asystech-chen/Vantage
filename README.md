@@ -1,12 +1,10 @@
-# Vantage Browser 🦊
+# Vantage 浏览器
 
 > **隐私 · 快速 · 易用**
 
-![Vantage](https://asystech.cn/pc/vantage.html)
-
-[![Download](https://img.shields.io/badge/下载-最新版-blue?style=for-the-badge)](https://asystech.cn/pc/vantage.html)
+[![Download](https://img.shields.io/badge/下载-最新版-blue?style=for-the-badge)](https://asystech.cn/pc/vdownload.html)
 [![License](https://img.shields.io/badge/许可证-MPL--2.0-green?style=for-the-badge)](LICENSE)
-[![GitHub](https://img.shields.io/badge/GitHub-源码-181717?style=for-the-badge&logo=github)](https://github.com/ASYS-Tech/Vantage)
+[![GitHub](https://img.shields.io/badge/GitHub-源码-181717?style=for-the-badge&logo=github)](https://github.com/asystech-chen/Vantage)
 
 # 软件截图
 ![10LTSC-2026-03-14-14-34-51.png](./_resources/10LTSC-2026-03-14-14-34-51.png)
@@ -30,9 +28,9 @@
 
 ## 🔍 什么是 Vantage？
 
-**Vantage** 是一款由 **ASYS 科技** 深度定制的 Firefox 浏览器，基于 LibreWolf 代码实现，专注于**隐私保护、安全防护与用户自由**。
+**Vantage** 是一款由 **ASYS 科技** 深度定制的 Firefox 浏览器，基于 LibreWolf 代码实现，专注于**隐私 · 快速 · 易用**。
 
-> ⚠️ Vantage 与 LibreWolf 或 Mozilla 官方无隶属关系，是独立的定制发行版。
+> ⚠️ Vantage 与 LibreWolf 或 Mozilla 官方无任何隶属关系或商业合作。
 
 我们的目标：在保留 Firefox 强大扩展生态的同时，为用户提供开箱即用的隐私增强体验，摆脱追踪、遥测与不必要的干扰。
 
@@ -55,8 +53,8 @@
 
 ### Windows
 - **操作系统**：Windows 10 / 11 (64 位)
-- **处理器**：x64 兼容处理器，支持 SSE2
-- **内存**：≥ 4 GB RAM（推荐 8 GB+）
+- **处理器**：x64 兼容处理器
+- **内存**：≥ 4 GB RAM
 - **存储**：≥ 500 MB 可用空间
 - **显卡**：支持 DirectX 11 的 GPU（硬件加速）
 
@@ -73,7 +71,7 @@
 
 ### Windows 用户
 1. 访问官网下载页面：[https://asystech.cn/pc/vantage.html](https://asystech.cn/pc/vantage.html)
-2. 下载 `.exe` 安装包
+2. 下载安装包
 3. 双击运行，按向导完成安装
 4. 启动 Vantage，开始隐私浏览之旅 ✨
 
@@ -193,7 +191,7 @@ A: 请通过 [GitHub Issues](https://github.com/ASYS-Tech/Vantage/issues) 提交
 ## 📄 许可证
 
 Vantage 浏览器主体代码遵循 **Mozilla Public License 2.0** 开源。  
-部分预置扩展与资源遵循其各自许可证，详见 `LICENSE` 与 `NOTICE` 文件。
+部分预置扩展与资源遵循其各自许可证
 
 > 📜 本软件按「原样」提供，不提供任何明示或暗示的担保。
 
@@ -201,15 +199,13 @@ Vantage 浏览器主体代码遵循 **Mozilla Public License 2.0** 开源。
 
 ## 🔗 相关链接
 
-- 🌐 官网：[https://asystech.cn/pc/vantage.html](https://asystech.cn/pc/vantage.html)
-- 💻 源码：[GitHub - ASYS-Tech/Vantage](https://github.com/ASYS-Tech/Vantage)
-- 📦 下载：[官网下载页](https://asystech.cn/pc/vantage.html)
-- 🐛 问题反馈：[Issues](https://github.com/ASYS-Tech/Vantage/issues)
+- 🌐 官网：[https://asystech.cn/vantage](https://asystech.cn/vantage)
+- 💻 源码：[GitHub - ASYS-Tech/Vantage](https://github.com/asystech-chen/Vantage)
+- 🐛 问题反馈：[Issues](https://github.com/asystech-chen/Vantage/issues)
 - 📚 Firefox 文档：[MDN Web Docs](https://developer.mozilla.org/)
 
 ---
 
-> 🙏 感谢 Mozilla、LibreWolf 社区及所有开源贡献者！  
-> 🛡️ 由 **ASYS 科技** 维护 · 为隐私与自由而生
+> 感谢 Mozilla、LibreWolf 社区及所有开源贡献者！  
 
 
