@@ -244,16 +244,16 @@
 </hbox>
 
 <groupbox data-category="paneLibrewolf" hidden="true">
-  <vbox align="start">
+  <vbox class="sidebar-footer-list">
     <hbox>
-      <button id="librewolf-config-link" is="highlightable-button" flex="1">
-        <image class="librewolf-button-icon" src="chrome://browser/skin/preferences/category-general.svg" />
-        <label data-l10n-id="librewolf-config-link"></label>
-      </button>
-      <button id="librewolf-open-profile" is="highlightable-button" flex="1">
-        <image class="librewolf-button-icon" src="chrome://browser/skin/open.svg" />
-        <label data-l10n-id="librewolf-open-profile"></label>
-      </button>
+      <html:a class="sidebar-footer-link" href="about:config" target="_blank" style="margin-inline-end: 24px;">
+        <image class="sidebar-footer-icon" src="chrome://browser/skin/preferences/category-general.svg"/>
+        <label class="sidebar-footer-label" data-l10n-id="librewolf-config-link"/>
+      </html:a>
+      <html:a class="sidebar-footer-link" href="about:support" target="_blank">
+        <image class="sidebar-footer-icon" src="chrome://browser/skin/open.svg"/>
+        <label class="sidebar-footer-label" data-l10n-id="librewolf-open-profile"/>
+      </html:a>
     </hbox>
   </vbox>
 </groupbox>

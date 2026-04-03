@@ -15,6 +15,7 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
 Preferences.addAll([
   // AI Sidebar
   { id: "browser.ml.chat.enabled", type: "bool" },
+  { id: "browser.ai.control.sidebarChatbot", type: "string" },
   // Update check
   { id: "vantage.updateCheck.enabled", type: "bool" },
   // IPv6
@@ -55,10 +56,23 @@ var gLibrewolfPane = {
     this._pane = document.getElementById("paneLibrewolf");
 
     // Set all event listeners on checkboxes
-    setBoolSyncListeners(
-      "vantage-ai-checkbox",
-      ["browser.ml.chat.enabled"],
-      [true],
+    // AI Sidebar: sync browser.ml.chat.enabled + browser.ai.control.sidebarChatbot
+    setSyncFromPrefListener("vantage-ai-checkbox", () =>
+      Services.prefs.getBoolPref("browser.ml.chat.enabled", false)
+    );
+    setSyncToPrefListener("vantage-ai-checkbox", () => {
+      let checked = document.getElementById("vantage-ai-checkbox").checked;
+      Services.prefs.setBoolPref("browser.ml.chat.enabled", checked);
+      Services.prefs.setCharPref(
+        "browser.ai.control.sidebarChatbot",
+        checked ? "available" : "blocked"
+      );
+      return checked;
+    });
+    Preferences.get("browser.ml.chat.enabled").on("change", () =>
+      makeMasterCheckboxesReactive("vantage-ai-checkbox", () =>
+        Services.prefs.getBoolPref("browser.ml.chat.enabled", false)
+      )
     );
     setBoolSyncListeners(
       "vantage-update-checkbox",
@@ -146,11 +160,6 @@ var gLibrewolfPane = {
       [0]
     );
 
-    // Set event listener on open profile directory button
-    setEventListener("librewolf-open-profile", "command", openProfileDirectory);
-    // Set event listener on open about:config button
-    setEventListener("librewolf-config-link", "click", openAboutConfig);
-
     // Notify observers that the UI is now ready
     Services.obs.notifyObservers(window, "librewolf-pane-loaded");
   },
@@ -168,15 +177,6 @@ function setXOriginPolicySyncListeners(checkboxid, pref, onVals, offVals) {
   );
 }
 
-function openProfileDirectory() {
-  let profDir = Services.dirsvc.get("ProfD", Ci.nsIFile);
-  profDir.reveal();
-}
-
-function openAboutConfig() {
-  let mainWindow = window.browsingContext.topChromeWindow;
-  mainWindow.openTrustedLinkIn("about:config", "tab");
-}
 
 function setBoolSyncListeners(checkboxid, opts, vals) {
   setSyncFromPrefListener(checkboxid, () => readGenericBoolPrefs(opts, vals));

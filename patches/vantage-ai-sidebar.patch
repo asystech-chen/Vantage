@@ -1,5 +1,5 @@
---- a/browser/components/genai/GenAI.sys.mjs	2026-04-03 17:32:00.819081457 +0800
-+++ b/browser/components/genai/GenAI.sys.mjs	2026-04-03 19:41:54.159580457 +0800
+--- a/browser/components/genai/GenAI.sys.mjs
++++ b/browser/components/genai/GenAI.sys.mjs
 @@ -80,7 +80,7 @@
    lazy,
    "chatProviders",
@@ -157,8 +157,8 @@
    ]),
  
    /**
---- a/browser/components/genai/chat.js	2026-04-03 19:40:54.291234281 +0800
-+++ b/browser/components/genai/chat.js	2026-04-03 19:41:07.706311744 +0800
+--- a/browser/components/genai/chat.js
++++ b/browser/components/genai/chat.js
 @@ -194,6 +194,13 @@
    }
    renderProviders.lastId = providerId;
@@ -173,8 +173,23 @@
    // Load the requested provider
    request();
    return select;
---- a/browser/locales/en-US/browser/genai.ftl	2026-04-03 19:09:32.919521372 +0800
-+++ b/browser/locales/en-US/browser/genai.ftl	2026-04-03 19:10:14.168710159 +0800
+@@ -404,6 +411,14 @@
+         data: [...providerConfigs.values()].map(config => ({
+           action: { type: ACTIONS.CHATBOT_SELECT, config },
+           id: config.id,
++          icon: config.iconUrl
++            ? {
++                background: `url("${config.iconUrl}") no-repeat center / contain`,
++                height: "40px",
++                width: "40px",
++                borderRadius: "0",
++              }
++            : undefined,
+           label: config.name,
+           tooltip: { string_id: config.tooltipId },
+         })),
+--- a/browser/locales/en-US/browser/genai.ftl
++++ b/browser/locales/en-US/browser/genai.ftl
 @@ -4,16 +4,15 @@
  
  ## Generative AI (GenAI) Settings section
