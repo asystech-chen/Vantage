@@ -142,6 +142,13 @@ def librewolf_patches():
     exec('cp ../patches/pref-pane/librewolf.inc.xhtml browser/components/preferences/librewolf.inc.xhtml')
     exec('cp ../patches/pref-pane/librewolf.js browser/components/preferences/librewolf.js')
     
+    #
+    # Vantage AI sidebar: copy brand icons for new providers
+    #
+    exec('cp -v ../patches/ai-svg/deepseek-color.svg browser/components/genai/assets/brands/deepseek.svg')
+    exec('cp -v ../patches/ai-svg/qwen-color.svg browser/components/genai/assets/brands/qwen.svg')
+    exec('cp -v ../patches/ai-svg/doubao-color.svg browser/components/genai/assets/brands/doubao.svg')
+
     # provide a script that fetches and bootstraps Nightly and some mozconfigs
     exec('cp -v ../scripts/mozfetch.sh lw/')
     exec('cp -v ../assets/mozconfig.new ../assets/mozconfig.new.without-bootstrap lw/')

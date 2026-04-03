@@ -13,6 +13,8 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
 });
 
 Preferences.addAll([
+  // AI Sidebar
+  { id: "browser.ml.chat.enabled", type: "bool" },
   // Update check
   { id: "vantage.updateCheck.enabled", type: "bool" },
   // IPv6
@@ -53,6 +55,11 @@ var gLibrewolfPane = {
     this._pane = document.getElementById("paneLibrewolf");
 
     // Set all event listeners on checkboxes
+    setBoolSyncListeners(
+      "vantage-ai-checkbox",
+      ["browser.ml.chat.enabled"],
+      [true],
+    );
     setBoolSyncListeners(
       "vantage-update-checkbox",
       ["vantage.updateCheck.enabled"],
