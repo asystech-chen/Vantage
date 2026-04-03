@@ -1,0 +1,13 @@
+diff --git a/browser/installer/windows/Makefile.in b/browser/installer/windows/Makefile.in
+--- a/browser/installer/windows/Makefile.in
++++ b/browser/installer/windows/Makefile.in
+@@ -63,7 +63,10 @@
+   --l10n-dir=$(topsrcdir)/browser/locales/en-US/installer \
+   $(NULL)
+ else
+-PPL_LOCALE_ARGS=$(call EXPAND_LOCALE_SRCDIR,browser/locales)/installer
++PPL_LOCALE_ARGS = \
++  --l10n-dir=$(topsrcdir)/lw/l10n/zh-CN/browser/installer \
++  --l10n-dir=$(call EXPAND_LOCALE_SRCDIR,browser/locales)/installer \
++  $(NULL)
+ endif

@@ -1,0 +1,92 @@
+--- a/browser/installer/windows/nsis/uninstaller.nsi
++++ b/browser/installer/windows/nsis/uninstaller.nsi
+@@ -45,7 +45,6 @@
+ 
+ Var TmpVal
+ Var MaintCertKey
+-Var ShouldOpenSurvey
+ Var ShouldSendPing
+ Var InstalledVersion
+ Var InstalledBuildID
+@@ -199,10 +198,6 @@
+ !insertmacro MUI_UNPAGE_INSTFILES
+ 
+ ; Finish Page
+-!define MUI_FINISHPAGE_SHOWREADME
+-!define MUI_FINISHPAGE_SHOWREADME_NOTCHECKED
+-!define MUI_FINISHPAGE_SHOWREADME_TEXT $(UN_SURVEY_CHECKBOX_LABEL)
+-!define MUI_FINISHPAGE_SHOWREADME_FUNCTION un.Survey
+ !define MUI_PAGE_CUSTOMFUNCTION_PRE un.preFinish
+ !define MUI_PAGE_CUSTOMFUNCTION_SHOW un.showFinish
+ !insertmacro MUI_UNPAGE_FINISH
+@@ -213,15 +208,6 @@
+ ################################################################################
+ # Helper Functions
+ 
+-Function un.Survey
+-  ; We can't actually call ExecInExplorer here because it's going to have to
+-  ; make some marshalled COM calls and those are not allowed from within a
+-  ; synchronous message handler (where we currently are); we'll be thrown
+-  ; RPC_E_CANTCALLOUT_ININPUTSYNCCALL if we try. So all we can do is record
+-  ; that we need to make the call later, which we'll do from un.onGUIEnd.
+-  StrCpy $ShouldOpenSurvey "1"
+-FunctionEnd
+-
+ ; This function is used to uninstall the maintenance service if the
+ ; application currently being uninstalled is the last application to use the
+ ; maintenance service.
+@@ -766,6 +752,16 @@
+   ${If} "$0" == "true"
+     liteFirewallW::RemoveRule "$INSTDIR\${FileMainEXE}" "${BrandShortName} ($INSTDIR)"
+   ${EndIf}
++
++  ; Vantage: Ask user whether to remove profile data
++  MessageBox MB_YESNO|MB_ICONQUESTION "$(UN_CLEANUP_USERDATA)" IDNO skip_cleanup
++    ; Remove Roaming profile
++    RmDir /r /REBOOTOK "$APPDATA\Vantage"
++    ; Remove Local profile (cache etc.)
++    RmDir /r /REBOOTOK "$LOCALAPPDATA\Vantage"
++    ; Remove registry key
++    DeleteRegKey HKCU "Software\Mozilla\Vantage"
++  skip_cleanup:
+ SectionEnd
+ 
+ ################################################################################
+@@ -1059,7 +1055,6 @@
+   System::Call 'kernel32::SetDllDirectoryW(w "")'
+ 
+   StrCpy $LANGUAGE 0
+-  StrCpy $ShouldOpenSurvey "0"
+ 
+   ${un.UninstallUnOnInitCommon}
+ 
+@@ -1113,29 +1108,6 @@
+ Function un.onGUIEnd
+   ${un.OnEndCommon}
+ 
+-  ${If} $ShouldOpenSurvey == "1"
+-    ; Though these values are sometimes incorrect due to bug 444664 it happens
+-    ; so rarely it isn't worth working around it by reading the registry values.
+-    ${WinVerGetMajor} $0
+-    ${WinVerGetMinor} $1
+-    ${WinVerGetBuild} $2
+-    ${WinVerGetServicePackLevel} $3
+-    StrCpy $R1 "${URLUninstallSurvey}$0.$1.$2.$3"
+-
+-    ; We can't just open the URL normally because we are most likely running
+-    ; elevated without an unelevated process to redirect through, and we're
+-    ; not going to go around starting elevated web browsers. But to start an
+-    ; unelevated process directly from here we need a pretty nasty hack; see
+-    ; the ExecInExplorer plugin code itself for the details.
+-    ; If we were the default browser and we've now been uninstalled, we need
+-    ; to take steps to make sure the user doesn't see an "open with" dialog;
+-    ; they're helping us out by answering this survey, they don't need more
+-    ; friction.
+-    ; Windows 10 always seems to just clear the default browser, so for it
+-    ; we'll manually invoke Edge using Edge's custom URI scheme.
+-    ExecInExplorer::Exec "microsoft-edge:$R1"
+-  ${EndIf}
+-
+   ; Finally send the ping, there's no GUI to freeze in case it is slow.
+   ${If} $ShouldSendPing == "1"
+     Call un.SendUninstallPing
