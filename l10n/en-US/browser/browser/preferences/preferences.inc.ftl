@@ -10,6 +10,11 @@ vantage-update-checkbox =
     .label = Automatically check for updates
 vantage-update-description = Check for new versions of Vantage on startup. You will be notified when a new version is available, but updates will not be installed automatically.
 
+vantage-ai-heading = AI Sidebar
+vantage-ai-checkbox =
+    .label = Enable AI in sidebar (experimental)
+vantage-ai-description = When enabled, you can use AI chatbots in the browser sidebar. This feature loads third-party AI services directly in the sidebar panel.
+
 librewolf-header = Vantage Preferences
 librewolf-warning-title = Heads up!
 librewolf-warning-description = We carefully choose default settings to focus on privacy and security. When changing these settings, read the descriptions to understand the implications of those changes.
@@ -69,7 +74,7 @@ librewolf-goog-safe-download-warning1 = All the checks happen locally.
 # Footer
 librewolf-footer = Useful links
 librewolf-config-link = All advanced settings (about:config)
-librewolf-open-profile = Open user profile directory
+librewolf-open-profile = Troubleshooting information (about:support)
 
 ## Privacy & Security preferences
 
