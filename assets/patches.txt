@@ -38,3 +38,8 @@ patches/webgl-permission.patch
 patches/windows-theming-bug.patch
 patches/xdg-dir.patch
 patches/installer-zhcn.patch
+patches/installer-locale.patch
+patches/uninstaller-cleanup.patch
+patches/macos-sdk-version.patch
+patches/dmg-fix-permissions.patch
+patches/vantage-ai-sidebar.patch

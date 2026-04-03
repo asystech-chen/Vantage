@@ -1,0 +1,159 @@
+--- a/browser/components/genai/GenAI.sys.mjs	2026-04-03 17:32:00.819081457 +0800
++++ b/browser/components/genai/GenAI.sys.mjs	2026-04-03 17:32:38.834514348 +0800
+@@ -80,7 +80,7 @@
+   lazy,
+   "chatProviders",
+   "browser.ml.chat.providers",
+-  "claude,chatgpt,copilot,gemini,lechat",
++  "deepseek,qwen,doubao,chatgpt,gemini,claude",
+   reorderChatProviders
+ );
+ XPCOMUtils.defineLazyPreferenceGetter(
+@@ -135,24 +135,47 @@
+   // will allow for additional UI shown such as populating dropdown with a name,
+   // showing links, and other special behaviors needed for individual providers.
+   chatProviders: new Map([
++    // --- 国产 AI ---
+     [
+-      "https://claude.ai/new",
++      "https://chat.deepseek.com",
+       {
+-        iconUrl: "chrome://browser/content/genai/assets/brands/claude.svg",
+-        id: "claude",
+-        link1:
+-          "https://www.anthropic.com/legal/archive/6370fb23-12ed-41d9-a4a2-28866dee3105",
+-        link2:
+-          "https://www.anthropic.com/legal/archive/7197103a-5e27-4ee4-93b1-f2d4c39ba1e7",
+-        link3:
+-          "https://www.anthropic.com/legal/archive/628feec9-7df9-4d38-bc69-fbf104df47b0",
+-        linksId: "genai-settings-chat-claude-links",
+-        maxLength: 14150,
+-        name: "Anthropic Claude",
+-        supportAutoSubmit: true,
+-        tooltipId: "genai-onboarding-claude-tooltip",
++        iconUrl: "chrome://browser/content/genai/assets/brands/deepseek.svg",
++        id: "deepseek",
++        link1: "https://chat.deepseek.com/downloads/deepseek-terms",
++        link2: "https://chat.deepseek.com/downloads/deepseek-privacy",
++        linksId: "genai-settings-chat-deepseek-links",
++        maxLength: 8192,
++        name: "DeepSeek",
++        tooltipId: "genai-onboarding-deepseek-tooltip",
++      },
++    ],
++    [
++      "https://chat.qwen.ai",
++      {
++        iconUrl: "chrome://browser/content/genai/assets/brands/qwen.svg",
++        id: "qwen",
++        link1: "https://chat.qwen.ai/terms-of-service",
++        link2: "https://chat.qwen.ai/privacy-policy",
++        linksId: "genai-settings-chat-qwen-links",
++        maxLength: 8192,
++        name: "Qwen",
++        tooltipId: "genai-onboarding-qwen-tooltip",
++      },
++    ],
++    [
++      "https://www.doubao.com/chat",
++      {
++        iconUrl: "chrome://browser/content/genai/assets/brands/doubao.svg",
++        id: "doubao",
++        link1: "https://www.doubao.com/legal/terms",
++        link2: "https://www.doubao.com/legal/privacy",
++        linksId: "genai-settings-chat-doubao-links",
++        maxLength: 8192,
++        name: "豆包",
++        tooltipId: "genai-onboarding-doubao-tooltip",
+       },
+     ],
++    // --- 国际 AI ---
+     [
+       "https://chatgpt.com",
+       {
+@@ -168,19 +191,6 @@
+       },
+     ],
+     [
+-      "https://copilot.microsoft.com/?form=MOZCMC",
+-      {
+-        iconUrl: "chrome://browser/content/genai/assets/brands/copilot.svg",
+-        id: "copilot",
+-        link1: "https://www.bing.com/new/termsofuse",
+-        link2: "https://go.microsoft.com/fwlink/?LinkId=521839",
+-        linksId: "genai-settings-chat-copilot-links",
+-        maxLength: 3260,
+-        name: "Copilot",
+-        tooltipId: "genai-onboarding-copilot-tooltip",
+-      },
+-    ],
+-    [
+       "https://gemini.google.com",
+       {
+         header: "X-Firefox-Gemini",
+@@ -190,47 +200,38 @@
+         link2: "https://policies.google.com/terms/generative-ai/use-policy",
+         link3: "https://support.google.com/gemini?p=privacy_notice",
+         linksId: "genai-settings-chat-gemini-links",
+-        // Max header length is around 55000, but spaces are encoded with %20
+-        // for header instead of + for query parameter
+         maxLength: 45000,
+         name: "Google Gemini",
+         tooltipId: "genai-onboarding-gemini-tooltip",
+       },
+     ],
+     [
+-      "https://huggingface.co/chat",
+-      {
+-        iconUrl: "chrome://browser/content/genai/assets/brands/huggingchat.svg",
+-        id: "huggingchat",
+-        link1: "https://huggingface.co/chat/privacy",
+-        link2: "https://huggingface.co/privacy",
+-        linksId: "genai-settings-chat-huggingchat-links",
+-        maxLength: 8192,
+-        name: "HuggingChat",
+-        tooltipId: "genai-onboarding-huggingchat-tooltip",
+-      },
+-    ],
+-    [
+-      "https://chat.mistral.ai/chat",
++      "https://claude.ai/new",
+       {
+-        iconUrl: "chrome://browser/content/genai/assets/brands/lechat.svg",
+-        id: "lechat",
+-        link1: "https://mistral.ai/terms/#terms-of-service-le-chat",
+-        link2: "https://mistral.ai/terms/#privacy-policy",
+-        linksId: "genai-settings-chat-lechat-links",
+-        maxLength: 13350,
+-        name: "Le Chat Mistral",
+-        tooltipId: "genai-onboarding-lechat-tooltip",
++        iconUrl: "chrome://browser/content/genai/assets/brands/claude.svg",
++        id: "claude",
++        link1:
++          "https://www.anthropic.com/legal/archive/6370fb23-12ed-41d9-a4a2-28866dee3105",
++        link2:
++          "https://www.anthropic.com/legal/archive/7197103a-5e27-4ee4-93b1-f2d4c39ba1e7",
++        link3:
++          "https://www.anthropic.com/legal/archive/628feec9-7df9-4d38-bc69-fbf104df47b0",
++        linksId: "genai-settings-chat-claude-links",
++        maxLength: 14150,
++        name: "Anthropic Claude",
++        supportAutoSubmit: true,
++        tooltipId: "genai-onboarding-claude-tooltip",
+       },
+     ],
++    // --- 本地 ---
+     [
+-      "http://localhost:8080",
++      "http://localhost:11434",
+       {
+         id: "localhost",
+-        link1: "https://llamafile.ai",
++        link1: "https://ollama.com",
+         linksId: "genai-settings-chat-localhost-links",
+         maxLength: 8192,
+-        name: "localhost",
++        name: "Ollama (localhost)",
+       },
+     ],
+   ]),
