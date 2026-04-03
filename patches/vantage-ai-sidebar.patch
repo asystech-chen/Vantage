@@ -1,5 +1,5 @@
 --- a/browser/components/genai/GenAI.sys.mjs	2026-04-03 17:32:00.819081457 +0800
-+++ b/browser/components/genai/GenAI.sys.mjs	2026-04-03 19:33:21.163668432 +0800
++++ b/browser/components/genai/GenAI.sys.mjs	2026-04-03 19:41:54.159580457 +0800
 @@ -80,7 +80,7 @@
    lazy,
    "chatProviders",
@@ -9,7 +9,7 @@
    reorderChatProviders
  );
  XPCOMUtils.defineLazyPreferenceGetter(
-@@ -135,25 +135,51 @@
+@@ -135,25 +135,48 @@
    // will allow for additional UI shown such as populating dropdown with a name,
    // showing links, and other special behaviors needed for individual providers.
    chatProviders: new Map([
@@ -29,6 +29,8 @@
 -        linksId: "genai-settings-chat-claude-links",
 -        maxLength: 14150,
 -        name: "Anthropic Claude",
+-        supportAutoSubmit: true,
+-        tooltipId: "genai-onboarding-claude-tooltip",
 +        iconUrl: "chrome://browser/content/genai/assets/brands/deepseek.svg",
 +        id: "deepseek",
 +        link1: "https://chat.deepseek.com/downloads/deepseek-terms",
@@ -36,8 +38,6 @@
 +        linksId: "genai-settings-chat-deepseek-links",
 +        maxLength: 8192,
 +        name: "DeepSeek",
-         supportAutoSubmit: true,
--        tooltipId: "genai-onboarding-claude-tooltip",
 +        tooltipId: "genai-onboarding-deepseek-tooltip",
        },
      ],
@@ -51,7 +51,6 @@
 +        linksId: "genai-settings-chat-qwen-links",
 +        maxLength: 8192,
 +        name: "Qwen",
-+        supportAutoSubmit: true,
 +        tooltipId: "genai-onboarding-qwen-tooltip",
 +      },
 +    ],
@@ -65,7 +64,6 @@
 +        linksId: "genai-settings-chat-doubao-links",
 +        maxLength: 8192,
 +        name: "豆包",
-+        supportAutoSubmit: true,
 +        tooltipId: "genai-onboarding-doubao-tooltip",
 +      },
 +    ],
@@ -74,7 +72,7 @@
        "https://chatgpt.com",
        {
          iconUrl: "chrome://browser/content/genai/assets/brands/chatgpt.svg",
-@@ -168,19 +194,6 @@
+@@ -168,19 +191,6 @@
        },
      ],
      [
@@ -94,7 +92,7 @@
        "https://gemini.google.com",
        {
          header: "X-Firefox-Gemini",
-@@ -190,49 +203,30 @@
+@@ -190,49 +200,30 @@
          link2: "https://policies.google.com/terms/generative-ai/use-policy",
          link3: "https://support.google.com/gemini?p=privacy_notice",
          linksId: "genai-settings-chat-gemini-links",
@@ -159,6 +157,22 @@
    ]),
  
    /**
+--- a/browser/components/genai/chat.js	2026-04-03 19:40:54.291234281 +0800
++++ b/browser/components/genai/chat.js	2026-04-03 19:41:07.706311744 +0800
+@@ -194,6 +194,13 @@
+   }
+   renderProviders.lastId = providerId;
+ 
++  // Hide summarize button for providers that don't support auto-submit
++  const currentProvider = lazy.GenAI.chatProviders.get(lazy.providerPref);
++  const summarizeContainer = document.getElementById("summarize-btn-container");
++  if (summarizeContainer) {
++    summarizeContainer.hidden = !currentProvider?.supportAutoSubmit;
++  }
++
+   // Load the requested provider
+   request();
+   return select;
 --- a/browser/locales/en-US/browser/genai.ftl	2026-04-03 19:09:32.919521372 +0800
 +++ b/browser/locales/en-US/browser/genai.ftl	2026-04-03 19:10:14.168710159 +0800
 @@ -4,16 +4,15 @@
