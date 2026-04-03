@@ -1,0 +1,61 @@
+--- a/python/mozbuild/mozpack/dmg.py	2026-04-03 00:10:40.822665989 +0800
++++ b/python/mozbuild/mozpack/dmg.py	2026-04-03 00:11:03.538439268 +0800
+@@ -21,6 +21,49 @@
+     subprocess.check_call(["chmod", "-R", "a+rX,a-st,u+w,go-w", dir])
+ 
+ 
++def _fix_hfs_macho_permissions(hfs_image, stagedir, hfs_tool):
++    """After hfsplus addall, fix execute permissions inside the HFS image.
++
++    hfsplus addall does not preserve POSIX permissions — all files end up 0644.
++    This scans the staging directory for Mach-O executables and uses
++    `hfsplus chmod 0755` to set the correct permissions in the HFS image.
++    """
++    import struct
++
++    MH_EXECUTE = 2
++    MACHO_MAGICS_LE = {0xFEEDFACE, 0xFEEDFACF}  # native byte order
++    MACHO_MAGICS_BE = {0xCEFAEDFE, 0xCFFAEDFE}  # swapped byte order
++
++    stagedir = Path(stagedir)
++
++    for root, _dirs, files in os.walk(stagedir):
++        for name in files:
++            fpath = Path(root) / name
++            if fpath.is_symlink():
++                continue
++            try:
++                with open(fpath, "rb") as f:
++                    hdr = f.read(16)
++                if len(hdr) < 16:
++                    continue
++                magic = struct.unpack("<I", hdr[:4])[0]
++                if magic in MACHO_MAGICS_LE:
++                    filetype = struct.unpack("<I", hdr[12:16])[0]
++                elif magic in MACHO_MAGICS_BE:
++                    filetype = struct.unpack(">I", hdr[12:16])[0]
++                else:
++                    continue
++                if filetype == MH_EXECUTE:
++                    # Compute path relative to stagedir for hfsplus chmod
++                    rel = fpath.relative_to(stagedir)
++                    hfs_path = "/" + str(rel)
++                    subprocess.check_call(
++                        [str(hfs_tool), str(hfs_image), "chmod", "0755", hfs_path]
++                    )
++            except (OSError, struct.error):
++                continue
++
++
+ def rsync(source: Path, dest: Path):
+     "rsync the contents of directory source into directory dest"
+     # Ensure a trailing slash on directories so rsync copies the *contents* of source.
+@@ -99,6 +142,8 @@
+         ensureParentDir(output_dmg)
+         hfs = os.path.join(tmpdir, "staged.hfs")
+         subprocess.check_call([hfs_tool, hfs, "addall", stagedir])
++        # hfsplus addall doesn't preserve POSIX permissions — fix Mach-O executables
++        _fix_hfs_macho_permissions(hfs, stagedir, hfs_tool)
+ 
+         dmg_cmd = [dmg_tool, "build", hfs, output_dmg]
+         if attribution_sentinel:

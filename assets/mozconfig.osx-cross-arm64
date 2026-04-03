@@ -1,12 +1,12 @@
 # ==========================================
-# Vantage Browser - macOS x86_64 Cross-Compile from Linux
+# Vantage Browser - macOS ARM64 (Apple Silicon) Cross-Compile from Linux
 # ==========================================
 
 CROSS="$HOME/osx-cross"
 CCTOOLS="$CROSS/osxcross-output"
 
-# Target
-ac_add_options --target=x86_64-apple-darwin
+# Target - Apple Silicon
+ac_add_options --target=aarch64-apple-darwin
 
 # SDK
 export MACOS_SDK_DIR="$CCTOOLS/SDK/MacOSX26.1.sdk"

@@ -1,5 +1,5 @@
 --- a/browser/components/genai/GenAI.sys.mjs	2026-04-03 17:32:00.819081457 +0800
-+++ b/browser/components/genai/GenAI.sys.mjs	2026-04-03 17:32:38.834514348 +0800
++++ b/browser/components/genai/GenAI.sys.mjs	2026-04-03 17:39:11.223877093 +0800
 @@ -80,7 +80,7 @@
    lazy,
    "chatProviders",
@@ -9,7 +9,7 @@
    reorderChatProviders
  );
  XPCOMUtils.defineLazyPreferenceGetter(
-@@ -135,24 +135,47 @@
+@@ -135,24 +135,44 @@
    // will allow for additional UI shown such as populating dropdown with a name,
    // showing links, and other special behaviors needed for individual providers.
    chatProviders: new Map([
@@ -31,7 +31,6 @@
 -        name: "Anthropic Claude",
 -        supportAutoSubmit: true,
 -        tooltipId: "genai-onboarding-claude-tooltip",
-+        iconUrl: "chrome://browser/content/genai/assets/brands/deepseek.svg",
 +        id: "deepseek",
 +        link1: "https://chat.deepseek.com/downloads/deepseek-terms",
 +        link2: "https://chat.deepseek.com/downloads/deepseek-privacy",
@@ -44,7 +43,6 @@
 +    [
 +      "https://chat.qwen.ai",
 +      {
-+        iconUrl: "chrome://browser/content/genai/assets/brands/qwen.svg",
 +        id: "qwen",
 +        link1: "https://chat.qwen.ai/terms-of-service",
 +        link2: "https://chat.qwen.ai/privacy-policy",
@@ -57,7 +55,6 @@
 +    [
 +      "https://www.doubao.com/chat",
 +      {
-+        iconUrl: "chrome://browser/content/genai/assets/brands/doubao.svg",
 +        id: "doubao",
 +        link1: "https://www.doubao.com/legal/terms",
 +        link2: "https://www.doubao.com/legal/privacy",
@@ -71,7 +68,7 @@
      [
        "https://chatgpt.com",
        {
-@@ -168,19 +191,6 @@
+@@ -168,19 +188,6 @@
        },
      ],
      [
@@ -91,7 +88,7 @@
        "https://gemini.google.com",
        {
          header: "X-Firefox-Gemini",
-@@ -190,47 +200,38 @@
+@@ -190,47 +197,38 @@
          link2: "https://policies.google.com/terms/generative-ai/use-policy",
          link3: "https://support.google.com/gemini?p=privacy_notice",
          linksId: "genai-settings-chat-gemini-links",
