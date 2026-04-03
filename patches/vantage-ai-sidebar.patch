@@ -1,5 +1,5 @@
 --- a/browser/components/genai/GenAI.sys.mjs	2026-04-03 17:32:00.819081457 +0800
-+++ b/browser/components/genai/GenAI.sys.mjs	2026-04-03 17:39:11.223877093 +0800
++++ b/browser/components/genai/GenAI.sys.mjs	2026-04-03 19:11:43.051830743 +0800
 @@ -80,7 +80,7 @@
    lazy,
    "chatProviders",
@@ -9,7 +9,7 @@
    reorderChatProviders
  );
  XPCOMUtils.defineLazyPreferenceGetter(
-@@ -135,24 +135,44 @@
+@@ -135,25 +135,48 @@
    // will allow for additional UI shown such as populating dropdown with a name,
    // showing links, and other special behaviors needed for individual providers.
    chatProviders: new Map([
@@ -31,6 +31,7 @@
 -        name: "Anthropic Claude",
 -        supportAutoSubmit: true,
 -        tooltipId: "genai-onboarding-claude-tooltip",
++        iconUrl: "chrome://browser/content/genai/assets/brands/deepseek.svg",
 +        id: "deepseek",
 +        link1: "https://chat.deepseek.com/downloads/deepseek-terms",
 +        link2: "https://chat.deepseek.com/downloads/deepseek-privacy",
@@ -38,11 +39,12 @@
 +        maxLength: 8192,
 +        name: "DeepSeek",
 +        tooltipId: "genai-onboarding-deepseek-tooltip",
-+      },
-+    ],
-+    [
+       },
+     ],
+     [
 +      "https://chat.qwen.ai",
 +      {
++        iconUrl: "chrome://browser/content/genai/assets/brands/qwen.svg",
 +        id: "qwen",
 +        link1: "https://chat.qwen.ai/terms-of-service",
 +        link2: "https://chat.qwen.ai/privacy-policy",
@@ -55,6 +57,7 @@
 +    [
 +      "https://www.doubao.com/chat",
 +      {
++        iconUrl: "chrome://browser/content/genai/assets/brands/doubao.svg",
 +        id: "doubao",
 +        link1: "https://www.doubao.com/legal/terms",
 +        link2: "https://www.doubao.com/legal/privacy",
@@ -62,13 +65,14 @@
 +        maxLength: 8192,
 +        name: "豆包",
 +        tooltipId: "genai-onboarding-doubao-tooltip",
-       },
-     ],
++      },
++    ],
 +    // --- 国际 AI ---
-     [
++    [
        "https://chatgpt.com",
        {
-@@ -168,19 +188,6 @@
+         iconUrl: "chrome://browser/content/genai/assets/brands/chatgpt.svg",
+@@ -168,19 +191,6 @@
        },
      ],
      [
@@ -88,7 +92,7 @@
        "https://gemini.google.com",
        {
          header: "X-Firefox-Gemini",
-@@ -190,47 +197,38 @@
+@@ -190,49 +200,30 @@
          link2: "https://policies.google.com/terms/generative-ai/use-policy",
          link3: "https://support.google.com/gemini?p=privacy_notice",
          linksId: "genai-settings-chat-gemini-links",
@@ -114,8 +118,7 @@
 -    ],
 -    [
 -      "https://chat.mistral.ai/chat",
-+      "https://claude.ai/new",
-       {
+-      {
 -        iconUrl: "chrome://browser/content/genai/assets/brands/lechat.svg",
 -        id: "lechat",
 -        link1: "https://mistral.ai/terms/#terms-of-service-le-chat",
@@ -124,6 +127,17 @@
 -        maxLength: 13350,
 -        name: "Le Chat Mistral",
 -        tooltipId: "genai-onboarding-lechat-tooltip",
+-      },
+-    ],
+-    [
+-      "http://localhost:8080",
++      "https://claude.ai/new",
+       {
+-        id: "localhost",
+-        link1: "https://llamafile.ai",
+-        linksId: "genai-settings-chat-localhost-links",
+-        maxLength: 8192,
+-        name: "localhost",
 +        iconUrl: "chrome://browser/content/genai/assets/brands/claude.svg",
 +        id: "claude",
 +        link1:
@@ -139,18 +153,163 @@
 +        tooltipId: "genai-onboarding-claude-tooltip",
        },
      ],
-+    // --- 本地 ---
-     [
--      "http://localhost:8080",
-+      "http://localhost:11434",
-       {
-         id: "localhost",
--        link1: "https://llamafile.ai",
-+        link1: "https://ollama.com",
-         linksId: "genai-settings-chat-localhost-links",
-         maxLength: 8192,
--        name: "localhost",
-+        name: "Ollama (localhost)",
-       },
-     ],
++
    ]),
+ 
+   /**
+--- a/browser/locales/en-US/browser/genai.ftl	2026-04-03 19:09:32.919521372 +0800
++++ b/browser/locales/en-US/browser/genai.ftl	2026-04-03 19:10:14.168710159 +0800
+@@ -4,16 +4,15 @@
+ 
+ ## Generative AI (GenAI) Settings section
+ 
++genai-settings-chat-deepseek-links = DeepSeek — an open-source AI lab known for its reasoning models. By choosing DeepSeek, you agree to the <a data-l10n-name="link1">Terms of Use</a> and <a data-l10n-name="link2">Privacy Policy</a>.
++genai-settings-chat-qwen-links = Qwen — Alibaba's large language model, offering strong multilingual capabilities. By choosing Qwen, you agree to the <a data-l10n-name="link1">Terms of Service</a> and <a data-l10n-name="link2">Privacy Policy</a>.
++genai-settings-chat-doubao-links = Doubao (豆包) — ByteDance's AI assistant, optimized for Chinese language tasks. By choosing Doubao, you agree to the <a data-l10n-name="link1">Terms of Service</a> and <a data-l10n-name="link2">Privacy Policy</a>.
+ genai-settings-chat-chatgpt-links = By choosing ChatGPT, you agree to the OpenAI <a data-l10n-name="link1">Terms of Use</a> and <a data-l10n-name="link2">Privacy Policy</a>.
+-genai-settings-chat-claude-links = By choosing Anthropic Claude, you agree to the Anthropic <a data-l10n-name="link1">Consumer Terms of Service</a>, <a data-l10n-name="link2">Usage Policy</a>, and <a data-l10n-name="link3">Privacy Policy</a>.
+-genai-settings-chat-copilot-links = By choosing Copilot, you agree to the <a data-l10n-name="link1">Copilot AI Experiences Terms</a> and <a data-l10n-name="link2">Microsoft Privacy Statement</a>.
+ genai-settings-chat-gemini-links = By choosing Google Gemini, you agree to the <a data-l10n-name="link1">Google Terms of Service</a>, <a data-l10n-name="link2">Generative AI Prohibited Use Policy</a>, and <a data-l10n-name="link3">Gemini Apps Privacy Notice</a>.
+-genai-settings-chat-huggingchat-links = By choosing HuggingChat, you agree to the <a data-l10n-name="link1">HuggingChat Privacy Notice</a> and <a data-l10n-name="link2">Hugging Face Privacy Policy</a>.
+-genai-settings-chat-lechat-links = By choosing Le Chat Mistral, you agree to the Mistral AI <a data-l10n-name="link1">Terms of Service</a> and <a data-l10n-name="link2">Privacy Policy</a>.
+-genai-settings-chat-localhost-links = Bring your own private local chatbot such as <a data-l10n-name="link1">llamafile</a> from { -vendor-short-name }’s Innovation group.
++genai-settings-chat-claude-links = By choosing Anthropic Claude, you agree to the Anthropic <a data-l10n-name="link1">Consumer Terms of Service</a>, <a data-l10n-name="link2">Usage Policy</a>, and <a data-l10n-name="link3">Privacy Policy</a>.
+ 
+ ## Chatbot prompts
+-## Prompts are plain language ‘instructions’ sent to a chatbot.
++## Prompts are plain language 'instructions' sent to a chatbot.
+ ## These prompts have been made concise and direct in English because some chatbot providers
+ ## have character restrictions and being direct reduces the chance for misinterpretation.
+ ## When localizing, please be concise and direct, but not at the expense of losing meaning.
+@@ -21,7 +20,7 @@
+ # This prompt is added to the beginning of selection prompts sent to a chatbot.
+ # $tabTitle (string) - title of the webpage
+ # $selection (string) - selected text
+-genai-prompt-prefix-selection = I’m on page “{ $tabTitle }” with “{ $selection }” selected.
++genai-prompt-prefix-selection = I'm on page "{ $tabTitle }" with "{ $selection }" selected.
+ 
+ # Prompt purpose: help users understand what a selection covers at a glance
+ genai-prompts-summarize =
+@@ -78,25 +77,25 @@
+ genai-menu-summarize-page = Summarize Page
+ 
+ genai-input-ask-generic =
+-    .placeholder = Ask AI chatbot…
++    .placeholder = Ask AI chatbot...
+ # $provider (string) - name of the provider
+ genai-input-ask-provider =
+-    .placeholder = Ask { $provider }…
++    .placeholder = Ask { $provider }...
+ 
+ # $selectionLength (number) - selected text length
+ # $maxLength (number) - max length of what can be selected
+ genai-shortcuts-selected-warning-generic =
+-    .heading = AI chatbot won’t get your full selection
++    .heading = AI chatbot won't get your full selection
+     .message = { $selectionLength ->
+-        *[other] You’ve selected about { $selectionLength } characters. The number of characters we can send to the AI chatbot is about { $maxLength }.
++        *[other] You've selected about { $selectionLength } characters. The number of characters we can send to the AI chatbot is about { $maxLength }.
+     }
+ # $provider (string) - name of the provider
+ # $selectionLength (number) - selected text length
+ # $maxLength (number) - max length of what can be selected
+ genai-shortcuts-selected-warning =
+-    .heading = { $provider } won’t get your full selection
++    .heading = { $provider } won't get your full selection
+     .message = { $selectionLength ->
+-        *[other] You’ve selected about { $selectionLength } characters. The number of characters we can send to { $provider } is about { $maxLength }.
++        *[other] You've selected about { $selectionLength } characters. The number of characters we can send to { $provider } is about { $maxLength }.
+     }
+ genai-shortcuts-hide =
+     .label = Hide chatbot shortcut
+@@ -139,13 +138,13 @@
+ genai-chatbot-summarize-title = New! Summarize pages in one click
+ genai-chatbot-summarize-button = Summarize page
+ 
+-# “Summarize Page” should be consistent with the translation for the string genai-menu-summarize-page
+-genai-chatbot-summarize-sidebar-provider-subtitle = Right-click on your AI chatbot in the sidebar and choose “Summarize Page”.
+-# “Summarize Page” should be consistent with the translation for the string genai-menu-summarize-page
+-genai-chatbot-summarize-sidebar-generic-subtitle = Right-click the sparkles button in the sidebar and choose “Summarize Page”. The first time, you’ll also choose an AI chatbot.
++# "Summarize Page" should be consistent with the translation for the string genai-menu-summarize-page
++genai-chatbot-summarize-sidebar-provider-subtitle = Right-click on your AI chatbot in the sidebar and choose "Summarize Page".
++# "Summarize Page" should be consistent with the translation for the string genai-menu-summarize-page
++genai-chatbot-summarize-sidebar-generic-subtitle = Right-click the sparkles button in the sidebar and choose "Summarize Page". The first time, you'll also choose an AI chatbot.
+ 
+-# “Summarize page” should be consistent with the translation for the string genai-page-button-summarize
+-genai-chatbot-summarize-footer-provider-subtitle = Open your AI chatbot in the sidebar and choose “Summarize page” at the bottom.
++# "Summarize page" should be consistent with the translation for the string genai-page-button-summarize
++genai-chatbot-summarize-footer-provider-subtitle = Open your AI chatbot in the sidebar and choose "Summarize page" at the bottom.
+ genai-chatbot-summarize-footer-generic-subtitle = Add an AI chatbot to the { -brand-short-name } sidebar to quickly summarize pages.
+ 
+ genai-chatbot-contextual-title = Use an AI chatbot without switching tabs
+@@ -157,18 +156,18 @@
+ genai-onboarding-choose-description = Switch anytime. For help choosing, <a data-l10n-name="learn-more">learn more about each chatbot</a>.
+ genai-onboarding-primary = Continue
+ genai-onboarding-secondary = Close
+-genai-onboarding-claude-tooltip =
+-    .title = Anthropic Claude
++genai-onboarding-deepseek-tooltip =
++    .title = DeepSeek — Open-source AI with strong reasoning
++genai-onboarding-qwen-tooltip =
++    .title = Qwen — Alibaba's multilingual AI model
++genai-onboarding-doubao-tooltip =
++    .title = Doubao (豆包) — ByteDance's AI assistant
+ genai-onboarding-chatgpt-tooltip =
+-    .title = ChatGPT
+-genai-onboarding-copilot-tooltip =
+-    .title = Copilot
++    .title = ChatGPT — OpenAI's conversational AI
+ genai-onboarding-gemini-tooltip =
+-    .title = Google Gemini
+-genai-onboarding-huggingchat-tooltip =
+-    .title = HuggingChat
+-genai-onboarding-lechat-tooltip =
+-    .title = Le Chat Mistral
++    .title = Google Gemini — Google's multimodal AI
++genai-onboarding-claude-tooltip =
++    .title = Anthropic Claude — Safety-focused AI assistant
+ 
+ ## Model Optin Component
+ 
+@@ -183,8 +182,8 @@
+ 
+ ## Link previews
+ 
+-# ‘min’ is short for “minute”
+-# ‘mins’ is short for “minutes”
++# 'min' is short for "minute"
++# 'mins' is short for "minutes"
+ # An estimate for how long it takes to read an article,
+ # expressed as a range covering both slow and fast readers.
+ # Variables:
+@@ -197,13 +196,13 @@
+     }
+ 
+ # Error message displayed when a link preview cannot be generated
+-link-preview-error-message-v2 = { -brand-short-name } can’t preview this link
++link-preview-error-message-v2 = { -brand-short-name } can't preview this link
+ 
+ # Text for the link to visit the original URL when in error state
+ link-preview-visit-link = Visit link
+ 
+ # Error message when key points generation (summary highlights or main ideas of page content) fails for a page
+-link-preview-generation-error-missing-data-v2 = { -brand-short-name } can’t generate key points for this webpage.
++link-preview-generation-error-missing-data-v2 = { -brand-short-name } can't generate key points for this webpage.
+ 
+ # Error message when something went wrong during key point generation
+ link-preview-generation-error-unexpected = Something went wrong.
+@@ -246,7 +245,7 @@
+ link-preview-setup = First-time setup • <strong>{ $progress }%</strong>
+ 
+ # Message indicating faster performance after initial setup
+-link-preview-setup-faster-next-time = You’ll see key points more quickly next time.
++link-preview-setup-faster-next-time = You'll see key points more quickly next time.
+ 
+ # Onboarding card See a preview button
+ link-preview-onboarding-button = See a preview
+@@ -258,4 +257,4 @@
+ link-preview-first-time-setup-title = First-time setup
+ 
+ # Message for the first-time setup modal
+-link-preview-first-time-setup-message = This may take a moment. You’ll see key points more quickly next time.
++link-preview-first-time-setup-message = This may take a moment. You'll see key points more quickly next time.
