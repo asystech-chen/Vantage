@@ -1,0 +1,1066 @@
+--- a/browser/components/protections/content/protections.html	2026-04-06 00:21:40.777040311 +0800
++++ b/browser/components/protections/content/protections.html	2026-04-06 00:22:25.125825215 +0800
+@@ -27,41 +27,46 @@
+   </head>
+ 
+   <body>
+-    <div class="new-banner vpn-banner hidden">
+-      <div class="banner-wrapper">
+-        <img class="icon" src="chrome://browser/content/logos/vpn.svg" />
+-        <div class="wrapper">
+-          <div>
+-            <h3 class="banner-title" data-l10n-id="vpn-banner-header"></h3>
+-            <span class="content" data-l10n-id="vpn-banner-content"></span>
+-          </div>
+-          <a
+-            target="_blank"
+-            id="vpn-banner-link"
+-            data-l10n-id="get-vpn-link"
+-          ></a>
+-          <button
+-            class="exit-icon"
+-            data-l10n-id="protections-close-button2"
+-          ></button>
++    <div id="report-content">
++      <h1 id="report-title" data-l10n-id="protection-report-page-content-title"></h1>
++      <p id="report-summary" data-l10n-id="protection-report-page-summary-default"></p>
++      <p id="protection-settings" data-l10n-id="protection-report-settings-link" role="link" tabindex="0"></p>
++
++      <!-- Stats overview cards -->
++      <div id="stats-overview">
++        <div class="stat-card" id="stat-total">
++          <div class="stat-icon">🛡️</div>
++          <div class="stat-number" id="stat-total-count">0</div>
++          <div class="stat-label" data-l10n-id="vantage-dashboard-total-blocked">Threats Blocked</div>
++        </div>
++        <div class="stat-card" id="stat-trackers">
++          <div class="stat-icon">👁️</div>
++          <div class="stat-number" id="stat-tracker-count">0</div>
++          <div class="stat-label" data-l10n-id="vantage-dashboard-trackers">Trackers</div>
++        </div>
++        <div class="stat-card" id="stat-cookies">
++          <div class="stat-icon">🍪</div>
++          <div class="stat-number" id="stat-cookie-count">0</div>
++          <div class="stat-label" data-l10n-id="vantage-dashboard-cookies">Cross-Site Cookies</div>
++        </div>
++        <div class="stat-card" id="stat-fingerprinters">
++          <div class="stat-icon">🔏</div>
++          <div class="stat-number" id="stat-fingerprinter-count">0</div>
++          <div class="stat-label" data-l10n-id="vantage-dashboard-fingerprinters">Fingerprinters</div>
++        </div>
++        <div class="stat-card" id="stat-cryptominers">
++          <div class="stat-icon">⛏️</div>
++          <div class="stat-number" id="stat-cryptominer-count">0</div>
++          <div class="stat-label" data-l10n-id="vantage-dashboard-cryptominers">Cryptominers</div>
++        </div>
++        <div class="stat-card" id="stat-social">
++          <div class="stat-icon">📱</div>
++          <div class="stat-number" id="stat-social-count">0</div>
++          <div class="stat-label" data-l10n-id="vantage-dashboard-social">Social Trackers</div>
+         </div>
+       </div>
+-    </div>
+-    <div id="report-content">
+-      <h1
+-        id="report-title"
+-        data-l10n-id="protection-report-page-content-title"
+-      ></h1>
+-      <p
+-        id="report-summary"
+-        data-l10n-id="protection-report-page-summary-default"
+-      ></p>
+-      <p
+-        id="protection-settings"
+-        data-l10n-id="protection-report-settings-link"
+-        role="link"
+-        tabindex="0"
+-      ></p>
++
++      <!-- ETP card with graph -->
+       <div class="card card-no-hover etp-card">
+         <div class="card-header">
+           <img
+@@ -283,300 +288,43 @@
+             <div id="graph-total-summary"></div>
+           </div>
+         </div>
+-        <div id="mobile-hanger" class="card-body hidden">
+-          <div class="body-wrapper">
+-            <button
+-              class="exit-icon"
+-              data-l10n-id="protections-close-button2"
+-            ></button>
+-            <div id="etp-mobile-content">
+-              <img
+-                class="mobile-app-icon"
+-                src="chrome://browser/content/logos/etp-mobile.svg"
+-              />
+-              <span>
+-                <h2 class="card-title" data-l10n-id="mobile-app-title"></h2>
+-                <p class="content">
+-                  <span data-l10n-id="mobile-app-card-content"></span>
+-                  <span
+-                    target="_blank"
+-                    id="mobile-app-links"
+-                    data-l10n-id="mobile-app-links"
+-                  >
+-                    <a
+-                      target="_blank"
+-                      id="android-mobile-inline-link"
+-                      data-l10n-name="android-mobile-inline-link"
+-                      href=""
+-                    ></a>
+-                    <a
+-                      target="_blank"
+-                      id="ios-mobile-inline-link"
+-                      data-l10n-name="ios-mobile-inline-link"
+-                      href=""
+-                    ></a>
+-                  </span>
+-                </p>
+-              </span>
+-            </div>
+-          </div>
+-        </div>
+       </div>
+-      <!-- Markup for Monitor card. -->
+-      <section class="card card-no-hover monitor-card hidden">
++
++      <!-- Protection status card -->
++      <div class="card card-no-hover" id="protection-status-card">
+         <div class="card-header">
+-          <img class="icon" src="chrome://browser/content/logos/monitor.svg" />
+-          <div class="wrapper">
+-            <div>
+-              <h2
+-                id="monitor-title"
+-                class="card-title"
+-                data-l10n-id="monitor-title"
+-              ></h2>
+-              <p id="monitor-header-content" class="content">
+-                <span>
+-                  <!-- Insert Monitor header content here. -->
+-                </span>
+-                <a
+-                  target="_blank"
+-                  href=""
+-                  id="monitor-link"
+-                  data-l10n-id="monitor-link"
+-                ></a>
+-              </p>
+-              <div class="monitor-scanned-wrapper">
+-                <img
+-                  class="icon-small"
+-                  src="chrome://global/skin/icons/reload.svg"
+-                />
+-                <span
+-                  class="monitor-scanned-text"
+-                  data-l10n-id="auto-scan"
+-                ></span>
+-              </div>
+-            </div>
+-            <a target="_blank" id="sign-up-for-monitor-link">
+-              <!-- Insert Monitor link content here. -->
+-            </a>
++          <div class="wrapper" style="width:100%">
++            <h2 class="card-title" data-l10n-id="vantage-dashboard-status-title">Protection Status</h2>
+           </div>
+         </div>
+         <div class="card-body">
+           <div class="body-wrapper">
+-            <div id="monitor-body-content">
+-              <div class="monitor-info-wrapper">
+-                <div class="monitor-block email">
+-                  <a
+-                    target="_blank"
+-                    id="monitor-stored-emails-link"
+-                    data-l10n-id="monitor-emails-tooltip"
+-                  >
+-                    <span class="monitor-stat">
+-                      <img
+-                        class="icon-med"
+-                        src="chrome://browser/skin/mail.svg"
+-                      />
+-                      <span data-type="stored-emails">
+-                        <!-- Display number of stored emails here. -->
+-                      </span>
+-                    </span>
+-                    <span
+-                      id="info-monitored-addresses"
+-                      class="info-text"
+-                    ></span>
+-                  </a>
+-                </div>
+-                <div class="monitor-block breaches">
+-                  <a
+-                    target="_blank"
+-                    id="monitor-known-breaches-link"
+-                    data-l10n-id="monitor-breaches-tooltip"
+-                  >
+-                    <span class="monitor-stat">
+-                      <img
+-                        class="icon-med"
+-                        src="chrome://browser/skin/fxa/avatar.svg"
+-                      />
+-                      <span data-type="known-breaches">
+-                        <!-- Display number of known breaches here. -->
+-                      </span>
+-                    </span>
+-                    <span id="info-known-breaches" class="info-text"></span>
+-                  </a>
+-                </div>
+-                <div class="monitor-block passwords">
+-                  <a
+-                    target="_blank"
+-                    id="monitor-exposed-passwords-link"
+-                    data-l10n-id="monitor-passwords-tooltip"
+-                  >
+-                    <span class="monitor-stat">
+-                      <img
+-                        class="icon-med"
+-                        src="chrome://browser/skin/login.svg"
+-                      />
+-                      <span data-type="exposed-passwords">
+-                        <!-- Display number of exposed passwords here. -->
+-                      </span>
+-                    </span>
+-                    <span id="info-exposed-passwords" class="info-text"></span>
+-                  </a>
+-                </div>
++            <div id="protection-status-list">
++              <div class="protection-status-item">
++                <span class="status-indicator" id="status-tp"></span>
++                <span data-l10n-id="vantage-dashboard-status-tp">Tracking Protection</span>
+               </div>
+-              <div class="monitor-breaches-wrapper">
+-                <div class="monitor-breaches-header">
+-                  <img id="monitor-breaches-icon" />
+-                  <span id="monitor-breaches-title" />
+-                </div>
+-                <div class="monitor-breaches-description-wrapper">
+-                  <span
+-                    id="monitor-breaches-description"
+-                    class="content"
+-                  ></span>
+-                  <div class="monitor-breaches-link-wrapper">
+-                    <a id="monitor-breaches-link" target="_blank"></a>
+-                  </div>
+-                </div>
++              <div class="protection-status-item">
++                <span class="status-indicator" id="status-cookie"></span>
++                <span data-l10n-id="vantage-dashboard-status-cookie">Cookie Blocking</span>
+               </div>
+-              <div class="monitor-partial-breaches-wrapper">
+-                <div class="monitor-partial-breaches-header">
+-                  <img
+-                    id="monitor-partial-breaches-icon"
+-                    src="chrome://browser/skin/protections/resolved-breach-gray.svg"
+-                  />
+-                  <span id="monitor-partial-breaches-title"></span>
+-                  <span id="monitor-partial-breaches-percentage"></span>
+-                </div>
+-                <progress class="progress-bar" max="100"></progress>
+-                <div class="monitor-partial-breaches-motivation-text">
+-                  <span id="monitor-partial-breaches-motivation-title"></span>
+-                  <div class="monitor-partial-breaches-motivation-wrapper">
+-                    <span
+-                      id="monitor-partial-breaches-motivation-desc"
+-                      class="content"
+-                      data-l10n-id="monitor-partial-breaches-motivation-description"
+-                    ></span>
+-                    <div class="monitor-partial-breaches-link-wrapper">
+-                      <a
+-                        id="monitor-partial-breaches-link"
+-                        target="_blank"
+-                        data-l10n-id="monitor-resolve-breaches-link"
+-                      ></a>
+-                    </div>
+-                  </div>
+-                </div>
++              <div class="protection-status-item">
++                <span class="status-indicator" id="status-fingerprint"></span>
++                <span data-l10n-id="vantage-dashboard-status-fingerprint">Fingerprinting Protection</span>
+               </div>
+-            </div>
+-          </div>
+-        </div>
+-      </section>
+-      <!-- Markup for passwords card. -->
+-      <section class="card card-no-hover lockwise-card hidden">
+-        <div class="card-header">
+-          <img class="icon" src="chrome://browser/content/logos/lockwise.svg" />
+-          <div class="wrapper">
+-            <div>
+-              <h2 id="lockwise-title" class="card-title">
+-                <!-- Insert Lockwise card title here. -->
+-              </h2>
+-              <p id="lockwise-header-content" class="content">
+-                <span>
+-                  <!-- Insert Lockwise header content here. -->
+-                </span>
+-                <a
+-                  target="_blank"
+-                  id="lockwise-how-it-works"
+-                  data-l10n-id="lockwise-how-it-works-link"
+-                  href=""
+-                ></a>
+-              </p>
+-            </div>
+-            <button
+-              id="save-passwords-button"
+-              class="primary"
+-              data-l10n-id="protection-report-passwords-save-passwords-button"
+-            ></button>
+-            <div class="lockwise-scanned-wrapper">
+-              <img id="lockwise-scanned-icon" />
+-              <span id="lockwise-scanned-text" class="content">
+-                <!-- Display message for stored logins here. -->
+-              </span>
+-            </div>
+-            <button
+-              id="manage-passwords-button"
+-              class="primary"
+-              data-l10n-id="protection-report-passwords-manage-passwords-button"
+-            ></button>
+-          </div>
+-        </div>
+-        <!-- <div class="card-body hidden">
+-          <div id="lockwise-body-content" class="body-wrapper">
+-            <div class="no-logins hidden">
+-            </div>
+-          </div>
+-        </div> -->
+-      </section>
+-      <!-- Markup for Proxy card -->
+-      <section class="card card-no-hover proxy-card hidden">
+-        <div class="card-header">
+-          <img
+-            class="icon light"
+-            src="chrome://browser/content/logos/proxy-light.svg"
+-          />
+-          <img
+-            class="icon dark"
+-            src="chrome://browser/content/logos/proxy-dark.svg"
+-          />
+-          <div class="wrapper">
+-            <div>
+-              <h3 class="card-title" data-l10n-id="proxy-title"></h3>
+-              <p class="content" data-l10n-id="proxy-header-content"></p>
+-            </div>
+-            <a
+-              target="_blank"
+-              id="get-proxy-extension-link"
+-              data-l10n-id="get-proxy-extension-link"
+-            ></a>
+-          </div>
+-        </div>
+-      </section>
+-
+-      <section class="card card-no-hover vpn-card hidden">
+-        <div class="card-header">
+-          <img class="icon" src="chrome://browser/content/logos/vpn.svg" />
+-          <div class="wrapper">
+-            <div>
+-              <div class="title-wrapper">
+-                <img
+-                  id="check-icon"
+-                  src="chrome://browser/skin/protections/resolved-breach.svg"
+-                />
+-                <h3 class="card-title" data-l10n-id="vpn-title"></h3>
++              <div class="protection-status-item">
++                <span class="status-indicator" id="status-cryptominer"></span>
++                <span data-l10n-id="vantage-dashboard-status-cryptominer">Cryptominer Blocking</span>
++              </div>
++              <div class="protection-status-item">
++                <span class="status-indicator" id="status-social"></span>
++                <span data-l10n-id="vantage-dashboard-status-social">Social Tracking Protection</span>
+               </div>
+-              <p class="content" data-l10n-id="vpn-header-content"></p>
+-              <p
+-                class="content subscribed"
+-                data-l10n-id="vpn-header-content-subscribed"
+-              >
+-                <a
+-                  target="_blank"
+-                  id="vpn-google-playstore-link"
+-                  data-l10n-name="vpn-google-playstore-link"
+-                ></a>
+-                <a
+-                  target="_blank"
+-                  id="vpn-app-store-link"
+-                  data-l10n-name="vpn-app-store-link"
+-                ></a>
+-              </p>
+             </div>
+-            <a
+-              target="_blank"
+-              id="get-vpn-link"
+-              data-l10n-id="get-vpn-link"
+-            ></a>
+           </div>
+         </div>
+-      </section>
++      </div>
++
+     </div>
+   </body>
+ </html>
+
+--- a/browser/components/protections/content/protections.mjs	2026-04-06 00:21:40.787040489 +0800
++++ b/browser/components/protections/content/protections.mjs	2026-04-06 00:23:23.362852149 +0800
+@@ -2,10 +2,7 @@
+  * License, v. 2.0. If a copy of the MPL was not distributed with this
+  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ 
+-import LockwiseCard from "./lockwise-card.mjs";
+-import MonitorCard from "./monitor-card.mjs";
+-import ProxyCard from "./proxy-card.mjs";
+-import VPNCard from "./vpn-card.mjs";
++/* Vantage Privacy Dashboard - simplified from Firefox protections report */
+ 
+ let cbCategory = RPMGetStringPref("browser.contentblocking.category");
+ document.sendTelemetryEvent = (eventName, value = "") => {
+@@ -22,13 +19,42 @@
+   RPMSendAsyncMessage("RecordEntryPoint", {
+     entrypoint: searchParams.get("entrypoint"),
+   });
+-  // Remove this parameter from the URL (after recording above) to make it
+-  // cleaner for bookmarking and switch-to-tab and so that bookmarked values
+-  // don't skew telemetry.
+   searchParams.delete("entrypoint");
+   searchParamsChanged = true;
+ }
+ 
++/**
++ * Format large numbers with locale-aware grouping (e.g. 1,234 or 1.234)
++ */
++function formatCount(n) {
++  return n.toLocaleString();
++}
++
++/**
++ * Animate a counter from 0 to target value
++ */
++function animateCounter(element, target) {
++  if (target === 0) {
++    element.textContent = "0";
++    return;
++  }
++  const duration = 800;
++  const start = performance.now();
++  const step = (now) => {
++    const elapsed = now - start;
++    const progress = Math.min(elapsed / duration, 1);
++    // ease-out cubic
++    const eased = 1 - Math.pow(1 - progress, 3);
++    element.textContent = formatCount(Math.floor(target * eased));
++    if (progress < 1) {
++      requestAnimationFrame(step);
++    } else {
++      element.textContent = formatCount(target);
++    }
++  };
++  requestAnimationFrame(step);
++}
++
+ document.addEventListener("DOMContentLoaded", () => {
+   if (searchParamsChanged) {
+     let newURL = protocol + pathname;
+@@ -41,11 +67,9 @@
+   }
+ 
+   RPMSendQuery("FetchEntryPoint", {}).then(entrypoint => {
+-    // Send telemetry on arriving on this page
+     document.sendTelemetryEvent("showProtectionReport", entrypoint);
+   });
+ 
+-  // We need to send the close telemetry before unload while we still have a connection to RPM.
+   window.addEventListener("beforeunload", () => {
+     document.sendTelemetryEvent("closeProtectionReport");
+   });
+@@ -61,26 +85,16 @@
+     "social",
+   ];
+ 
++  // Settings link handlers
+   let manageProtectionsLink = document.getElementById("protection-settings");
+   let manageProtections = document.getElementById("manage-protections");
+   let protectionSettingsEvtHandler = evt => {
+     if (evt.keyCode == evt.DOM_VK_RETURN || evt.type == "click") {
+       RPMSendAsyncMessage("OpenContentBlockingPreferences");
+-      if (evt.target.id == "protection-settings") {
+-        document.sendTelemetryEvent("clickSettingsLink", "header-settings");
+-      } else if (evt.target.id == "manage-protections") {
+-        document.sendTelemetryEvent(
+-          "clickSettingsLink",
+-          "custom-card-settings"
+-        );
+-      }
+     }
+   };
+   manageProtectionsLink.addEventListener("click", protectionSettingsEvtHandler);
+-  manageProtectionsLink.addEventListener(
+-    "keypress",
+-    protectionSettingsEvtHandler
+-  );
++  manageProtectionsLink.addEventListener("keypress", protectionSettingsEvtHandler);
+   manageProtections.addEventListener("click", protectionSettingsEvtHandler);
+   manageProtections.addEventListener("keypress", protectionSettingsEvtHandler);
+ 
+@@ -88,12 +102,85 @@
+   legend.style.gridTemplateAreas =
+     "'social cookie tracker fingerprinter cryptominer'";
+ 
++  // --- Protection status indicators ---
++  let updateProtectionStatus = () => {
++    let blockingCookies = RPMGetIntPref("network.cookie.cookieBehavior", 0) != 0;
++    let cryptominingEnabled = RPMGetBoolPref("privacy.trackingprotection.cryptomining.enabled", false);
++    let fingerprintingEnabled =
++      RPMGetBoolPref("privacy.trackingprotection.fingerprinting.enabled", false) ||
++      RPMGetBoolPref("privacy.fingerprintingProtection", false);
++    let tpEnabled = RPMGetBoolPref("privacy.trackingprotection.enabled", false);
++    let socialTracking = RPMGetBoolPref("privacy.trackingprotection.socialtracking.enabled", false);
++    let socialCookies = RPMGetBoolPref("privacy.socialtracking.block_cookies.enabled", false);
++    let socialEnabled = socialCookies && (blockingCookies || (tpEnabled && socialTracking));
++
++    document.getElementById("status-tp").classList.toggle("active", tpEnabled);
++    document.getElementById("status-cookie").classList.toggle("active", blockingCookies);
++    document.getElementById("status-fingerprint").classList.toggle("active", fingerprintingEnabled);
++    document.getElementById("status-cryptominer").classList.toggle("active", cryptominingEnabled);
++    document.getElementById("status-social").classList.toggle("active", socialEnabled);
++
++    let notBlocking = !blockingCookies && !cryptominingEnabled && !fingerprintingEnabled && !tpEnabled && !socialEnabled;
++
++    if (notBlocking) {
++      document.getElementById("etp-card-content").setAttribute(
++        "data-l10n-id", "protection-report-etp-card-content-custom-not-blocking"
++      );
++      document.querySelector(".etp-card .card-title").setAttribute(
++        "data-l10n-id", "etp-card-title-custom-not-blocking"
++      );
++      document.getElementById("report-summary").setAttribute(
++        "data-l10n-id", "protection-report-page-summary"
++      );
++      document.querySelector(".etp-card").classList.add("custom-not-blocking");
++      manageProtectionsLink.style.display = "none";
++    } else {
++      // Hide disabled tracker types from legend
++      if (!tpEnabled) {
++        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace("tracker", "");
++        let radio = document.getElementById("tab-tracker");
++        radio.setAttribute("disabled", true);
++        document.querySelector("#tab-tracker ~ label").style.display = "none";
++      }
++      if (!socialEnabled) {
++        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace("social", "");
++        let radio = document.getElementById("tab-social");
++        radio.setAttribute("disabled", true);
++        document.querySelector("#tab-social ~ label").style.display = "none";
++      }
++      if (!blockingCookies) {
++        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace("cookie", "");
++        let radio = document.getElementById("tab-cookie");
++        radio.setAttribute("disabled", true);
++        document.querySelector("#tab-cookie ~ label").style.display = "none";
++      }
++      if (!cryptominingEnabled) {
++        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace("cryptominer", "");
++        let radio = document.getElementById("tab-cryptominer");
++        radio.setAttribute("disabled", true);
++        document.querySelector("#tab-cryptominer ~ label").style.display = "none";
++      }
++      if (!fingerprintingEnabled) {
++        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace("fingerprinter", "");
++        let radio = document.getElementById("tab-fingerprinter");
++        radio.setAttribute("disabled", true);
++        document.querySelector("#tab-fingerprinter ~ label").style.display = "none";
++      }
++
++      let firstRadio = document.querySelector("input:enabled");
++      if (firstRadio) {
++        firstRadio.checked = true;
++        document.body.setAttribute("focuseddatatype", firstRadio.dataset.type);
++      }
++      addListeners();
++    }
++  };
++
+   let createGraph = data => {
+     let graph = document.getElementById("graph");
+     let summary = document.getElementById("graph-total-summary");
+     let weekSummary = document.getElementById("graph-week-summary");
+ 
+-    // User is in private mode, show no data on the graph
+     if (data.isPrivate) {
+       graph.classList.add("private-window");
+     } else {
+@@ -104,32 +191,25 @@
+       });
+     }
+ 
+-    // Set a default top size for the height of the graph bars so that small
+-    // numbers don't fill the whole graph.
++    // --- Update stats overview cards ---
++    animateCounter(document.getElementById("stat-total-count"), data.sumEvents || 0);
++
++    // We need to sum up all-time stats by type. The API gives us weekly breakdown per day.
++    // sumEvents is the all-time total, but we don't have all-time per-type from TrackingDBService.
++    // So for the overview cards, we'll use the weekly totals by type.
++    let weekTypeCounts = { social: 0, cookie: 0, tracker: 0, fingerprinter: 0, cryptominer: 0 };
++
+     let largest = 100;
+     if (largest < data.largest) {
+       largest = data.largest;
+     }
+     let weekCount = 0;
+-    let weekTypeCounts = {
+-      social: 0,
+-      cookie: 0,
+-      tracker: 0,
+-      fingerprinter: 0,
+-      cryptominer: 0,
+-    };
+ 
+-    // For accessibility clients, we turn the graph into a fake table with annotated text.
+-    // We use WAI-ARIA roles, properties, and states to mark up the table, rows and cells.
+-    // Each day becomes one row in the table.
+-    // Each row contains the day, total, and then one cell for each bar that we display.
+-    // At most, a row can contain seven cells.
+-    // But we need to caclulate the actual number of the most cells in a row to give accurate information.
+     let maxColumnCount = 0;
+     let date = new Date();
+     for (let i = 0; i <= 6; i++) {
+       let dateString = date.toISOString().split("T")[0];
+-      let ariaOwnsString = ""; // Get the row's colummns in order
++      let ariaOwnsString = "";
+       let currentColumnCount = 0;
+       let bar = document.createElement("div");
+       bar.className = "graph-bar";
+@@ -151,14 +231,12 @@
+         currentColumnCount += 1;
+         let barHeight = (content.total / largest) * 100;
+         weekCount += content.total;
+-        // Add a short timeout to allow the elements to be added to the dom before triggering an animation.
+         setTimeout(() => {
+           bar.style.height = `${barHeight}%`;
+         }, 20);
+         for (let type of dataTypes) {
+           if (content[type]) {
+             let dataHeight = (content[type] / content.total) * 100;
+-            // Since we are dealing with non-visual content, screen readers need a parent container to get the text
+             let cellSpan = document.createElement("span");
+             cellSpan.id = type + i;
+             cellSpan.setAttribute("role", "cell");
+@@ -186,21 +264,16 @@
+           }
+         }
+         if (currentColumnCount > maxColumnCount) {
+-          // The current row has more than any previous rows
+           maxColumnCount = currentColumnCount;
+         }
+       } else {
+-        // There were no content blocking events on this day.
+         bar.classList.add("empty");
+       }
+       bar.appendChild(innerBar);
+       graph.prepend(bar);
+ 
+       if (data.isPrivate) {
+-        document.l10n.setAttributes(
+-          weekSummary,
+-          "graph-week-summary-private-window"
+-        );
++        document.l10n.setAttributes(weekSummary, "graph-week-summary-private-window");
+       } else {
+         document.l10n.setAttributes(weekSummary, "graph-week-summary", {
+           count: weekCount,
+@@ -209,7 +282,6 @@
+ 
+       let label = document.createElement("span");
+       label.className = "column-label";
+-      // While the graphs fill up from the right, the days fill up from the left, so match the IDs
+       label.id = "day" + (6 - i);
+       label.setAttribute("role", "rowheader");
+       if (i == 6) {
+@@ -218,14 +290,13 @@
+         label.textContent = data.weekdays[(i + 1 + new Date().getDay()) % 7];
+       }
+       graph.append(label);
+-      // Make the day the first column in a row, making it the row header.
+       bar.setAttribute("aria-owns", "day" + i + " " + ariaOwnsString);
+       date.setDate(date.getDate() - 1);
+     }
+-    maxColumnCount += 1; // Add the day column in the fake table
++    maxColumnCount += 1;
+     graph.setAttribute("aria-colCount", maxColumnCount);
+-    // Set the total number of each type of tracker on the tabs as well as their
+-    // "Learn More" links
++
++    // Update type counts on legend tabs
+     for (let type of dataTypes) {
+       document.querySelector(`label[data-type=${type}] span`).textContent =
+         weekTypeCounts[type];
+@@ -238,110 +309,14 @@
+       });
+     }
+ 
+-    let blockingCookies =
+-      RPMGetIntPref("network.cookie.cookieBehavior", 0) != 0;
+-    let cryptominingEnabled = RPMGetBoolPref(
+-      "privacy.trackingprotection.cryptomining.enabled",
+-      false
+-    );
+-    let fingerprintingEnabled =
+-      RPMGetBoolPref(
+-        "privacy.trackingprotection.fingerprinting.enabled",
+-        false
+-      ) || RPMGetBoolPref("privacy.fingerprintingProtection", false);
+-    let tpEnabled = RPMGetBoolPref("privacy.trackingprotection.enabled", false);
+-    let socialTracking = RPMGetBoolPref(
+-      "privacy.trackingprotection.socialtracking.enabled",
+-      false
+-    );
+-    let socialCookies = RPMGetBoolPref(
+-      "privacy.socialtracking.block_cookies.enabled",
+-      false
+-    );
+-    let socialEnabled =
+-      socialCookies && (blockingCookies || (tpEnabled && socialTracking));
+-    let notBlocking =
+-      !blockingCookies &&
+-      !cryptominingEnabled &&
+-      !fingerprintingEnabled &&
+-      !tpEnabled &&
+-      !socialEnabled;
++    // Update the stat cards with weekly type counts
++    animateCounter(document.getElementById("stat-tracker-count"), weekTypeCounts.tracker);
++    animateCounter(document.getElementById("stat-cookie-count"), weekTypeCounts.cookie);
++    animateCounter(document.getElementById("stat-fingerprinter-count"), weekTypeCounts.fingerprinter);
++    animateCounter(document.getElementById("stat-cryptominer-count"), weekTypeCounts.cryptominer);
++    animateCounter(document.getElementById("stat-social-count"), weekTypeCounts.social);
+ 
+-    // User has turned off all blocking, show a different card.
+-    if (notBlocking) {
+-      document.l10n.setAttributes(
+-        document.getElementById("etp-card-content"),
+-        "protection-report-etp-card-content-custom-not-blocking"
+-      );
+-      document.l10n.setAttributes(
+-        document.querySelector(".etp-card .card-title"),
+-        "etp-card-title-custom-not-blocking"
+-      );
+-      document.l10n.setAttributes(
+-        document.getElementById("report-summary"),
+-        "protection-report-page-summary"
+-      );
+-      document.querySelector(".etp-card").classList.add("custom-not-blocking");
+-
+-      // Hide the link to settings from the header, so we are not showing two links.
+-      manageProtectionsLink.style.display = "none";
+-    } else {
+-      // Hide each type of tab if blocking of that type is off.
+-      if (!tpEnabled) {
+-        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace(
+-          "tracker",
+-          ""
+-        );
+-        let radio = document.getElementById("tab-tracker");
+-        radio.setAttribute("disabled", true);
+-        document.querySelector("#tab-tracker ~ label").style.display = "none";
+-      }
+-      if (!socialEnabled) {
+-        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace(
+-          "social",
+-          ""
+-        );
+-        let radio = document.getElementById("tab-social");
+-        radio.setAttribute("disabled", true);
+-        document.querySelector("#tab-social ~ label").style.display = "none";
+-      }
+-      if (!blockingCookies) {
+-        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace(
+-          "cookie",
+-          ""
+-        );
+-        let radio = document.getElementById("tab-cookie");
+-        radio.setAttribute("disabled", true);
+-        document.querySelector("#tab-cookie ~ label").style.display = "none";
+-      }
+-      if (!cryptominingEnabled) {
+-        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace(
+-          "cryptominer",
+-          ""
+-        );
+-        let radio = document.getElementById("tab-cryptominer");
+-        radio.setAttribute("disabled", true);
+-        document.querySelector("#tab-cryptominer ~ label").style.display =
+-          "none";
+-      }
+-      if (!fingerprintingEnabled) {
+-        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace(
+-          "fingerprinter",
+-          ""
+-        );
+-        let radio = document.getElementById("tab-fingerprinter");
+-        radio.setAttribute("disabled", true);
+-        document.querySelector("#tab-fingerprinter ~ label").style.display =
+-          "none";
+-      }
+-
+-      let firstRadio = document.querySelector("input:enabled");
+-      // There will be no radio options if we are showing the
+-      firstRadio.checked = true;
+-      document.body.setAttribute("focuseddatatype", firstRadio.dataset.type);
+-
+-      addListeners();
+-    }
++    updateProtectionStatus();
+   };
+ 
+   let addListeners = () => {
+@@ -367,7 +342,6 @@
+     wrapper.addEventListener("mouseover", triggerTabFocus);
+     wrapper.addEventListener("click", triggerTabClick);
+ 
+-    // Change the class on the body to change the color variable.
+     let radios = document.querySelectorAll("#legend input");
+     for (let radio of radios) {
+       radio.addEventListener("change", ev => {
+@@ -387,104 +361,4 @@
+     from: weekAgoInMs,
+     to: todayInMs,
+   }).then(createGraph);
+-
+-  let exitIcon = document.querySelector("#mobile-hanger .exit-icon");
+-  // hide the mobile promotion and keep hidden with a pref.
+-  exitIcon.addEventListener("click", () => {
+-    RPMSetPref("browser.contentblocking.report.show_mobile_app", false);
+-    document.getElementById("mobile-hanger").classList.add("hidden");
+-  });
+-
+-  let androidMobileAppLink = document.getElementById(
+-    "android-mobile-inline-link"
+-  );
+-  androidMobileAppLink.href = RPMGetStringPref(
+-    "browser.contentblocking.report.mobile-android.url"
+-  );
+-  androidMobileAppLink.addEventListener("click", () => {
+-    document.sendTelemetryEvent("clickMobileAppLink", "android");
+-  });
+-  let iosMobileAppLink = document.getElementById("ios-mobile-inline-link");
+-  iosMobileAppLink.href = RPMGetStringPref(
+-    "browser.contentblocking.report.mobile-ios.url"
+-  );
+-  iosMobileAppLink.addEventListener("click", () => {
+-    document.sendTelemetryEvent("clickMobileAppLink", "ios");
+-  });
+-
+-  let lockwiseEnabled = RPMGetBoolPref(
+-    "browser.contentblocking.report.lockwise.enabled",
+-    true
+-  );
+-
+-  let lockwiseCard;
+-  if (lockwiseEnabled) {
+-    const lockwiseUI = document.querySelector(".lockwise-card");
+-    lockwiseUI.classList.remove("hidden");
+-    lockwiseUI.classList.add("loading");
+-
+-    lockwiseCard = new LockwiseCard(document);
+-    lockwiseCard.init();
+-  }
+-
+-  RPMSendQuery("FetchUserLoginsData", {}).then(data => {
+-    if (lockwiseCard) {
+-      // Once data for the user is retrieved, display the lockwise card.
+-      lockwiseCard.buildContent(data);
+-    }
+-
+-    if (
+-      RPMGetBoolPref("browser.contentblocking.report.show_mobile_app") &&
+-      !data.mobileDeviceConnected
+-    ) {
+-      document
+-        .getElementById("mobile-hanger")
+-        .classList.toggle("hidden", false);
+-    }
+-  });
+-
+-  // For tests
+-  const lockwiseUI = document.querySelector(".lockwise-card");
+-  lockwiseUI.dataset.enabled = lockwiseEnabled;
+-
+-  let monitorEnabled = RPMGetBoolPref(
+-    "browser.contentblocking.report.monitor.enabled",
+-    true
+-  );
+-  if (monitorEnabled) {
+-    // Show the Monitor card.
+-    const monitorUI = document.querySelector(".card.monitor-card.hidden");
+-    monitorUI.classList.remove("hidden");
+-    monitorUI.classList.add("loading");
+-
+-    const monitorCard = new MonitorCard(document);
+-    monitorCard.init();
+-  }
+-
+-  // For tests
+-  const monitorUI = document.querySelector(".monitor-card");
+-  monitorUI.dataset.enabled = monitorEnabled;
+-
+-  const proxyEnabled = RPMGetBoolPref(
+-    "browser.contentblocking.report.proxy.enabled",
+-    true
+-  );
+-
+-  if (proxyEnabled) {
+-    const proxyCard = new ProxyCard(document);
+-    proxyCard.init();
+-  }
+-
+-  // For tests
+-  const proxyUI = document.querySelector(".proxy-card");
+-  proxyUI.dataset.enabled = proxyEnabled;
+-
+-  const VPNEnabled = RPMGetBoolPref("browser.vpn_promo.enabled", true);
+-  if (VPNEnabled) {
+-    const vpnCard = new VPNCard(document);
+-    vpnCard.init();
+-  }
+-  // For tests
+-  const vpnUI = document.querySelector(".vpn-card");
+-  vpnUI.dataset.enabled = VPNEnabled;
+ });
+
+--- a/browser/components/protections/content/protections.css	2026-04-06 00:21:40.789040524 +0800
++++ b/browser/components/protections/content/protections.css	2026-04-06 00:23:43.830212139 +0800
+@@ -1153,3 +1153,113 @@
+ .vpn-card:not(.subscribed) #check-icon {
+   display: none;
+ }
++
++/* ===== Vantage Privacy Dashboard ===== */
++
++#stats-overview {
++  display: grid;
++  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
++  gap: 16px;
++  margin: 24px 0;
++}
++
++.stat-card {
++  background: var(--in-content-box-background);
++  border: 1px solid var(--in-content-box-border-color);
++  border-radius: 8px;
++  padding: 20px 16px;
++  text-align: center;
++  transition: transform 0.15s ease, box-shadow 0.15s ease;
++}
++
++.stat-card:hover {
++  transform: translateY(-2px);
++  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
++}
++
++@media (prefers-color-scheme: dark) {
++  .stat-card:hover {
++    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
++  }
++}
++
++.stat-card .stat-icon {
++  font-size: 28px;
++  margin-bottom: 8px;
++}
++
++.stat-card .stat-number {
++  font-size: 32px;
++  font-weight: 700;
++  color: var(--in-content-accent-color);
++  line-height: 1.2;
++  font-variant-numeric: tabular-nums;
++}
++
++#stat-total .stat-number {
++  font-size: 40px;
++  color: var(--green-60);
++}
++
++@media (prefers-color-scheme: dark) {
++  #stat-total .stat-number {
++    color: var(--green-40);
++  }
++}
++
++.stat-card .stat-label {
++  font-size: 13px;
++  color: var(--in-content-deemphasized-text);
++  margin-top: 6px;
++}
++
++/* Protection status card */
++#protection-status-card {
++  margin-top: 24px;
++}
++
++#protection-status-list {
++  display: flex;
++  flex-direction: column;
++  gap: 12px;
++}
++
++.protection-status-item {
++  display: flex;
++  align-items: center;
++  gap: 12px;
++  padding: 8px 0;
++  font-size: 14px;
++}
++
++.status-indicator {
++  width: 12px;
++  height: 12px;
++  border-radius: 50%;
++  background: var(--red-50);
++  flex-shrink: 0;
++  transition: background 0.3s ease;
++}
++
++.status-indicator.active {
++  background: var(--green-50);
++}
++
++@media (prefers-color-scheme: dark) {
++  .status-indicator {
++    background: var(--red-40);
++  }
++  .status-indicator.active {
++    background: var(--green-40);
++  }
++}
++
++/* Hide the VPN banner, monitor, lockwise, proxy, vpn, mobile sections */
++.vpn-banner,
++.monitor-card,
++.lockwise-card,
++.proxy-card,
++.vpn-card,
++#mobile-hanger {
++  display: none !important;
++}
+
+--- a/browser/components/preferences/privacy.inc.xhtml	2026-04-06 00:21:40.791040560 +0800
++++ b/browser/components/preferences/privacy.inc.xhtml	2026-04-06 00:24:40.056198767 +0800
+@@ -392,6 +392,12 @@
+       </vbox>
+     </hbox>
+   </vbox>
++  <hbox id="vantage-dashboard-link-box" align="center" style="margin-top: 12px;">
++    <html:a id="vantage-dashboard-link" href="about:protections" target="_blank"
++            data-l10n-id="vantage-privacy-dashboard-link"
++            style="color: var(--in-content-accent-color); cursor: pointer; font-weight: 600; text-decoration: none;">
++    </html:a>
++  </hbox>
+ </groupbox>
+ <html:setting-group id="nonTechnicalPrivacyGroup" groupid="nonTechnicalPrivacy" data-category="panePrivacy" hidden="true" data-srd-groupid="nonTechnicalPrivacy2"/>
+ <html:setting-group groupid="nonTechnicalPrivacy2" data-category="panePrivacy" hidden="true"/>

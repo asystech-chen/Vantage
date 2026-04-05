@@ -74,3 +74,6 @@ librewolf-webgl-prompt-checkbox =
 librewolf-webgl-prompt-description = 这会隐藏当网站尝试创建WebGL上下文时出现的弹出窗口。您仍然可以通过在搜索栏中点击图标手动调出提示。
 permissions-webgl2 =
     .label = WebGL
+
+## Privacy Dashboard
+vantage-privacy-dashboard-link = 查看隐私仪表盘

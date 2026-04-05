@@ -79,3 +79,6 @@ librewolf-open-profile = Troubleshooting information (about:support)
 ## Privacy & Security preferences
 
 content-blocking-section-top-level-description = Vantage supports - and it enables by default - Enhanced Tracking Protection in Strict mode. This is one of the most important settings in the browser, as it provides state partitioning, strict blocking lists and other neat privacy features. We do not recommend changing to other modes.
+
+## Privacy Dashboard
+vantage-privacy-dashboard-link = View Privacy Dashboard
