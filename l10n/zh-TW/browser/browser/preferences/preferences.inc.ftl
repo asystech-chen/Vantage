@@ -69,3 +69,6 @@ librewolf-goog-safe-download-warning1 = 所有檢查都在本地進行。
 librewolf-config-link = 所有高階設定 (about:config)
 librewolf-open-profile = 疑難排解資訊 (about:support)
 content-blocking-section-top-level-description = Vantage 預設支援並啟用嚴格模式下的增強跟蹤保護。這是瀏覽器中最重要的設定之一，因為它提供狀態分割槽、嚴格的阻止列表和其他精妙的隱私功能。我們不建議更改為其他模式。
+
+## Privacy Dashboard
+vantage-privacy-dashboard-link = 檢視隱私儀表板

@@ -43,3 +43,4 @@ patches/uninstaller-cleanup.patch
 patches/macos-sdk-version.patch
 patches/dmg-fix-permissions.patch
 patches/vantage-ai-sidebar.patch
+patches/vantage-privacy-dashboard.patch

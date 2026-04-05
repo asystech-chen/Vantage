@@ -1,6 +1,54 @@
 # Vantage Browser 更新日志
 
-## v149.0-2 — 2026-03-31
+## v149.0-2 — 2026-04-03
+
+### 🤖 AI 侧边栏（实验功能）
+
+- **新增 AI 侧边栏** — 基于 Firefox 149 GenAI 组件，默认关闭
+- **Provider 列表**：DeepSeek、Qwen（国际版 chat.qwen.ai）、豆包、ChatGPT、Gemini、Claude
+- 移除不需要的 Provider：Ollama、Copilot、HuggingChat、Le Chat Mistral
+- 国产 AI 不支持 `autoSubmit`，切换到国产 Provider 时**自动隐藏摘要按钮**
+- **Onboarding 选择页面图标修复** — 为所有 Provider（含国产）添加品牌图标显示
+- **设置页开关** — about:preferences Vantage 页面可勾选启用/禁用 AI 侧边栏
+  - 同时控制 `browser.ml.chat.enabled` 和 `browser.ai.control.sidebarChatbot`
+  - 修复 `lockPref` 导致开关无效的问题（改为 `defaultPref`）
+- 新增品牌 SVG 图标：`deepseek-color.svg`、`qwen-color.svg`、`doubao-color.svg`
+- l10n：en-US / zh-CN / zh-TW 均已添加 AI 侧边栏相关翻译
+
+### 🍎 macOS 交叉编译
+
+- **x86_64 首次成功** — 产物 `vantage-149.0-2.en-US.mac.dmg` (131MB)
+- 编译耗时约 13 分钟（192 核 251GB RAM）
+- 工具链：clang 21 + osxcross cctools + macOS 26.1 SDK + hfsplus-tools + libdmg-hfsplus
+- 新增 patch：
+  - `macos-sdk-version.patch` — SDK 版本要求 26.2→26.1
+  - `dmg-fix-permissions.patch` — DMG 打包前自动修复 Mach-O 文件执行权限
+- 新增 `assets/mozconfig.osx-cross` — 完整 macOS x86_64 交叉编译配置
+- 真机测试通过（Apple Silicon MacBook Pro macOS 26.3，Rosetta 2）
+- **ARM64 工具链就绪** — `assets/mozconfig.osx-cross-arm64` 已创建
+
+### 🔧 设置面板修复
+
+- **底部链接修复** — `about:config` 和 `about:support` 链接改为纯 HTML `<a href>` 实现
+  - 原因：`setEventListener` 是 `main.js`/`privacy.js` 的局部函数，`librewolf.js` 作用域不可见
+  - 链接在新标签页打开（`target="_blank"`）
+- "打开用户配置文件目录" → "故障排除信息 (about:support)"，与 about:config 链接风格统一
+- AI 侧边栏复选框缺失文字 → 添加 `vantage-ai-heading`/`vantage-ai-checkbox`/`vantage-ai-description` 三个 l10n id
+
+### 🏗️ NSIS 卸载器改进
+
+- 移除 Mozilla 卸载调查问卷
+- 卸载完成后弹窗询问是否清理用户数据（`%APPDATA%\Vantage\`、注册表等）
+- 通过 `.inc.properties` 追加模式添加翻译，避免覆盖完整 locale 文件
+
+### 🌐 NSIS 安装器中文化（进行中）
+
+- `patches/installer-locale.patch` — 修改 `PPL_LOCALE_ARGS` 优先读取 zh-CN locale 目录
+- Patch 能干净应用（fuzz 1），完整构建验证待完成
+
+---
+
+## v149.0-2 — 2026-03-31 (初始版本)
 
 ### 🔐 隐私与数据隔离
 
