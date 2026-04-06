@@ -2,3 +2,7 @@
 /librewolf-*
 /mozilla-unified
 vantage-*.tar.xz
+*.deb
+*.rpm
+*.AppImage
+*.portable.tar.gz
