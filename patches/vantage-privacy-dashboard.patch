@@ -1065,10 +1065,15 @@
 +  padding: 16px 20px;
 +}
 +
++#protection-status-card .card-title {
++  white-space: nowrap;
++  min-width: max-content;
++}
++
 +#protection-status-list {
-+  display: grid;
-+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-+  gap: 8px 24px;
++  display: flex;
++  flex-wrap: wrap;
++  gap: 8px 32px;
 +  width: 100%;
 +}
 +
@@ -1079,8 +1084,7 @@
 +  padding: 10px 0;
 +  font-size: 14px;
 +  white-space: nowrap;
-+  overflow: hidden;
-+  text-overflow: ellipsis;
++  min-width: max-content;
 +}
 +
 +.status-indicator {
@@ -1118,16 +1122,19 @@
 
 --- a/browser/components/preferences/privacy.inc.xhtml
 +++ b/browser/components/preferences/privacy.inc.xhtml
-@@ -392,6 +392,12 @@
+@@ -392,6 +392,14 @@
        </vbox>
      </hbox>
    </vbox>
-+  <hbox id="vantage-dashboard-link-box" align="center" style="margin-top: 12px;">
-+    <html:a id="vantage-dashboard-link" href="about:protections" target="_blank"
++  <hbox id="vantage-dashboard-link-box" align="center" style="margin-top: 16px;">
++    <html:a id="vantage-dashboard-link"
++            href="about:protections"
++            target="_blank"
 +            data-l10n-id="vantage-privacy-dashboard-link"
-+            style="color: var(--in-content-accent-color); cursor: pointer; font-weight: 600; text-decoration: none;">
-+    </html:a>
++            class="accessory-button"
++            style="display: inline-block; text-decoration: none; text-align: center;"/>
 +  </hbox>
  </groupbox>
  <html:setting-group id="nonTechnicalPrivacyGroup" groupid="nonTechnicalPrivacy" data-category="panePrivacy" hidden="true" data-srd-groupid="nonTechnicalPrivacy2"/>
  <html:setting-group groupid="nonTechnicalPrivacy2" data-category="panePrivacy" hidden="true"/>
+
