@@ -268,11 +268,27 @@ test-windows : $(lw_source_tarball)
 	${MAKE} -f assets/testing.mk bsys6_x86_64_windows_zip_artifact
 
 # ==========================================
-# 新增：本地打包为多种格式的目标
+# 本地打包为多种格式的目标
 # ==========================================
 
-# 查找最新生成的二进制 tarball（通配符匹配）
-BINARY_TARBALL := $(shell ls -t *.tar.xz 2>/dev/null | head -n 1)
+# 架构检测：从 BINARY_TARBALL 文件名自动推断，或通过 PKG_ARCH=aarch64 手动指定
+# 支持的值：x86_64, aarch64
+PKG_ARCH ?= $(shell echo "$(BINARY_TARBALL)" | grep -oE '(x86_64|aarch64)' | head -1)
+ifeq ($(PKG_ARCH),)
+PKG_ARCH := x86_64
+endif
+
+# 架构名映射
+ifeq ($(PKG_ARCH),aarch64)
+DEB_ARCH := arm64
+RPM_ARCH := aarch64
+else
+DEB_ARCH := amd64
+RPM_ARCH := x86_64
+endif
+
+# 查找匹配架构的二进制 tarball（优先匹配指定架构）
+BINARY_TARBALL ?= $(shell ls -t *$(PKG_ARCH)*.tar.xz 2>/dev/null | grep -v source | head -n 1)
 
 # 图标路径
 LW_ICON := themes/browser/branding/vantage/default128.png
@@ -298,7 +314,7 @@ package-deb : clean-packaging
 	@echo "Version: $(version)-$(release)" >> deb_build/DEBIAN/control
 	@echo "Section: web" >> deb_build/DEBIAN/control
 	@echo "Priority: optional" >> deb_build/DEBIAN/control
-	@echo "Architecture: amd64" >> deb_build/DEBIAN/control
+	@echo "Architecture: $(DEB_ARCH)" >> deb_build/DEBIAN/control
 	@echo "Maintainer: Vantage Build" >> deb_build/DEBIAN/control
 	@echo "Description: $(APP_DISPLAY_NAME) Browser" >> deb_build/DEBIAN/control
 	@echo "Depends: libgtk-3-0, libdbus-glib-1-2, libxtst6, libxss1, libasound2" >> deb_build/DEBIAN/control
@@ -313,8 +329,8 @@ package-deb : clean-packaging
 	@echo 'Type=Application' >> deb_build/usr/share/applications/$(APP_NAME).desktop
 	@echo 'Categories=Network;WebBrowser;' >> deb_build/usr/share/applications/$(APP_NAME).desktop
 	@echo ">>> [DEB] Building .deb file..."
-	@dpkg-deb --build deb_build $(APP_NAME)_$(version)-$(release)_amd64.deb
-	@echo ">>> [DEB] Done: $(APP_NAME)_$(version)-$(release)_amd64.deb"
+	@dpkg-deb --build deb_build $(APP_NAME)_$(version)-$(release)_$(DEB_ARCH).deb
+	@echo ">>> [DEB] Done: $(APP_NAME)_$(version)-$(release)_$(DEB_ARCH).deb"
 	@rm -rf deb_build
 
 # 打包为 .rpm (Fedora/CentOS/openSUSE) - 需要 fpm
@@ -327,14 +343,16 @@ package-rpm : clean-packaging
 	fi
 	@mkdir -p rpm_build/opt/$(APP_NAME)
 	@tar -xf $(BINARY_TARBALL) -C rpm_build/opt/$(APP_NAME) --strip-components=1
-	@fpm -s dir -t rpm -n $(APP_NAME) -v $(version)-$(release) \
+	@fpm -s dir -t rpm -n $(APP_NAME) -v $(version) --iteration $(release) \
 		--rpm-os linux \
+		--rpm-compression xzmt \
+		--architecture $(RPM_ARCH) \
 		--description "$(APP_DISPLAY_NAME) Web Browser" \
 		--maintainer "Vantage Build" \
 		--url "https://vantage.local" \
-		-C rpm_build/opt/$(APP_NAME) \
-		--prefix /opt/$(APP_NAME)
-	@echo ">>> [RPM] Done: $(APP_NAME)-$(version)-$(release).x86_64.rpm"
+		-C rpm_build \
+		opt/$(APP_NAME)
+	@echo ">>> [RPM] Done: $(APP_NAME)-$(version)-$(release).$(RPM_ARCH).rpm"
 	@rm -rf rpm_build
 
 # 打包为 .AppImage (通用)
@@ -365,8 +383,8 @@ package-appimage : clean-packaging
 	@echo 'Categories=Network;WebBrowser;' >> AppDir/$(APP_NAME).desktop
 	@cp AppDir/$(APP_NAME).desktop AppDir/usr/share/applications/
 	@echo ">>> [APPIMAGE] Running appimagetool..."
-	@ARCH=x86_64 appimagetool --no-appstream AppDir $(APP_NAME)-$(version)-$(release).x86_64.AppImage
-	@echo ">>> [APPIMAGE] Done: $(APP_NAME)-$(version)-$(release).x86_64.AppImage"
+	@ARCH=$(PKG_ARCH) appimagetool --no-appstream AppDir $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).AppImage
+	@echo ">>> [APPIMAGE] Done: $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).AppImage"
 	@rm -rf AppDir
 
 # 打包为 .tar.gz (Arch/Gentoo/通用)
@@ -375,8 +393,8 @@ package-tar : clean-packaging
 	@echo ">>> [TAR] Creating portable tar.gz..."
 	@mkdir -p $(APP_NAME)-portable
 	@tar -xf $(BINARY_TARBALL) -C $(APP_NAME)-portable --strip-components=1
-	@tar -czf $(APP_NAME)-$(version)-$(release).portable.tar.gz $(APP_NAME)-portable
-	@echo ">>> [TAR] Done: $(APP_NAME)-$(version)-$(release).portable.tar.gz"
+	@tar -czf $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).portable.tar.gz $(APP_NAME)-portable
+	@echo ">>> [TAR] Done: $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).portable.tar.gz"
 	@rm -rf $(APP_NAME)-portable
 
 # ==========================================
