@@ -77,3 +77,5 @@ permissions-webgl2 =
 
 ## Privacy Dashboard
 vantage-privacy-dashboard-link = 查看隐私仪表盘
+librewolf-debug = 打开调试页面
+

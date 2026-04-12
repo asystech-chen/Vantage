@@ -82,3 +82,4 @@ content-blocking-section-top-level-description = Vantage supports - and it enabl
 
 ## Privacy Dashboard
 vantage-privacy-dashboard-link = View Privacy Dashboard
+librewolf-debug = Open Debugging Page
