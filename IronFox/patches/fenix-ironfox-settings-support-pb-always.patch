@@ -1,0 +1,25 @@
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/PrivateBrowsingFragment.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/PrivateBrowsingFragment.kt
+index b600bf6b3d43..86fc25c15b52 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/PrivateBrowsingFragment.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/PrivateBrowsingFragment.kt
+@@ -72,6 +72,7 @@ class PrivateBrowsingFragment : PreferenceFragmentCompat() {
+         requirePreference<SwitchPreference>(R.string.pref_key_open_links_in_a_private_tab).apply {
+             onPreferenceChangeListener = SharedPreferenceUpdater()
+             isChecked = context.settings().openLinksInAPrivateTab
++            isVisible = !context.settings().ironfox.alwaysUsePrivateBrowsing
+         }
+ 
+         requirePreference<SwitchPreference>(R.string.pref_key_allow_screenshots_in_private_mode).apply {
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/utils/Settings.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/utils/Settings.kt
+index c7db941b0f7e..d8a1c1078722 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/utils/Settings.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/utils/Settings.kt
+@@ -1323,7 +1323,7 @@ class Settings(
+                 false,
+             )
+ 
+-            return if (lastKnownModeWasPrivate) {
++            return if (ironfox.alwaysUsePrivateBrowsing || lastKnownModeWasPrivate) {
+                 BrowsingMode.Private
+             } else {
+                 BrowsingMode.Normal

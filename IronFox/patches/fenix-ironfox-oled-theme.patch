@@ -1,0 +1,245 @@
+From aac64ddfd4859563a403ff24430ad0d11be6a5bb Mon Sep 17 00:00:00 2001
+From: Akash Yadav <itsaky01@gmail.com>
+Date: Tue, 23 Dec 2025 13:43:01 +0530
+Subject: [PATCH] feat: IronFox OLED theme support
+
+Signed-off-by: Akash Yadav <itsaky01@gmail.com>
+---
+ .../org/mozilla/fenix/FenixApplication.kt     |  2 +-
+ .../java/org/mozilla/fenix/components/Core.kt |  7 ++++++-
+ .../customtabs/FennecWebAppIntentProcessor.kt |  4 +++-
+ .../fenix/settings/CustomizationFragment.kt   | 15 +++++++++++++--
+ .../org/mozilla/fenix/theme/FirefoxTheme.kt   |  5 +++--
+ .../org/mozilla/fenix/theme/ThemeManager.kt   | 19 +++++++++++++++++--
+ .../fenix/app/src/main/res/values/styles.xml  |  1 +
+ .../res/xml/customization_preferences.xml     |  5 +++++
+ 8 files changed, 49 insertions(+), 9 deletions(-)
+
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/FenixApplication.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/FenixApplication.kt
+index 8dd1374d2d94f..601cf1cf2a38a 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/FenixApplication.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/FenixApplication.kt
+@@ -739,7 +739,7 @@ open class FenixApplication : Application(), Provider, ThemeProvider {
+                     AppCompatDelegate.MODE_NIGHT_NO,
+                 )
+             }
+-            settings.shouldUseDarkTheme -> {
++            settings.shouldUseDarkTheme || settings.ironfox.shouldUseOledTheme -> {
+                 AppCompatDelegate.setDefaultNightMode(
+                     AppCompatDelegate.MODE_NIGHT_YES,
+                 )
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/Core.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/Core.kt
+index ff4c7a014c2c1..78d7cddb9549a 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/Core.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/Core.kt
+@@ -153,6 +153,11 @@ class Core(
+      * configuration (see build variants).
+      */
+     val engine: Engine by lazyMonitored {
++        val clearColor = if (context.settings().ironfox.shouldUseOledTheme) {
++            R.color.fx_mobile_surface_oled
++        } else {
++            R.color.fx_mobile_surface
++        }
+         val defaultSettings = DefaultSettings(
+             requestInterceptor = requestInterceptor,
+             remoteDebuggingEnabled = context.settings().isRemoteDebuggingEnabled,
+@@ -168,7 +173,7 @@ class Core(
+             enterpriseRootsEnabled = context.settings().allowThirdPartyRootCerts,
+             clearColor = ContextCompat.getColor(
+                 context,
+-                R.color.fx_mobile_surface,
++                clearColor,
+             ),
+             httpsOnlyMode = context.settings().getHttpsOnlyMode(),
+             dohSettingsMode = context.settings().getDohSettingsMode(),
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/customtabs/FennecWebAppIntentProcessor.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/customtabs/FennecWebAppIntentProcessor.kt
+index 4066633bbc427..473e3c755765c 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/customtabs/FennecWebAppIntentProcessor.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/customtabs/FennecWebAppIntentProcessor.kt
+@@ -31,6 +31,8 @@ import org.mozilla.fenix.R
+ import org.mozilla.fenix.perf.runBlockingIncrement
+ import java.io.File
+ import java.io.IOException
++import com.google.android.material.R as materialR
++import org.mozilla.fenix.theme.ThemeManager
+ 
+ /**
+  * Legacy processor for Progressive Web App shortcut intents created by Fennec.
+@@ -143,7 +145,7 @@ class FennecWebAppIntentProcessor(
+         return CustomTabConfig(
+             colorSchemes = ColorSchemes(
+                 defaultColorSchemeParams = ColorSchemeParams(
+-                    toolbarColor = ContextCompat.getColor(context, R.color.fx_mobile_surface),
++                    toolbarColor = ThemeManager.resolveAttributeColor(materialR.attr.colorSurface, context),
+                 ),
+             ),
+         )
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/CustomizationFragment.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/CustomizationFragment.kt
+index 55821be3746cf..71f2a497458c9 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/CustomizationFragment.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/CustomizationFragment.kt
+@@ -37,6 +37,7 @@ import org.mozilla.fenix.utils.view.addToRadioGroup
+ class CustomizationFragment : PreferenceFragmentCompat() {
+     private lateinit var radioLightTheme: RadioButtonPreference
+     private lateinit var radioDarkTheme: RadioButtonPreference
++    private lateinit var radioOledTheme: RadioButtonPreference
+     private lateinit var radioAutoBatteryTheme: RadioButtonPreference
+     private lateinit var radioFollowDeviceTheme: RadioButtonPreference
+     private val args by navArgs<CustomizationFragmentArgs>()
+@@ -59,6 +60,7 @@ class CustomizationFragment : PreferenceFragmentCompat() {
+         bindFollowDeviceTheme()
+         bindDarkTheme()
+         bindLightTheme()
++        bindOledTheme()
+         bindAutoBatteryTheme()
+         setupRadioGroups()
+         val tabletAndTabStripEnabled = Settings(requireContext()).isTabStripEnabled
+@@ -128,6 +130,7 @@ class CustomizationFragment : PreferenceFragmentCompat() {
+         addToRadioGroup(
+             radioLightTheme,
+             radioDarkTheme,
++            radioOledTheme,
+             if (SDK_INT >= Build.VERSION_CODES.P) {
+                 radioFollowDeviceTheme
+             } else {
+@@ -150,6 +153,13 @@ class CustomizationFragment : PreferenceFragmentCompat() {
+         }
+     }
+ 
++    private fun bindOledTheme() {
++        radioOledTheme = requirePreference(R.string.pref_key_oled_theme)
++        radioOledTheme.onClickListener {
++            setNewTheme(AppCompatDelegate.MODE_NIGHT_YES)
++        }
++    }
++
+     private fun bindDarkTheme() {
+         radioDarkTheme = requirePreference(R.string.pref_key_dark_theme)
+         radioDarkTheme.onClickListener {
+@@ -172,8 +182,9 @@ class CustomizationFragment : PreferenceFragmentCompat() {
+     }
+ 
+     private fun setNewTheme(mode: Int) {
+-        if (AppCompatDelegate.getDefaultNightMode() == mode) return
+-        AppCompatDelegate.setDefaultNightMode(mode)
++        if (AppCompatDelegate.getDefaultNightMode() != mode) {
++            AppCompatDelegate.setDefaultNightMode(mode)
++        }
+         activity?.recreate()
+         with(requireComponents.core) {
+             engine.settings.preferredColorScheme = getPreferredColorScheme()
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/theme/FirefoxTheme.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/theme/FirefoxTheme.kt
+index e335f9d4adc06..c287d12503ed1 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/theme/FirefoxTheme.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/theme/FirefoxTheme.kt
+@@ -18,6 +18,8 @@ import mozilla.components.compose.base.theme.layout.AcornLayout
+ import mozilla.components.compose.base.theme.layout.AcornWindowSize
+ import mozilla.components.compose.base.theme.lightColorPalette
+ import mozilla.components.compose.base.theme.privateColorPalette
++import androidx.compose.ui.platform.LocalContext
++import org.ironfoxoss.ironfox.utils.maybeApplyOledColors
+ 
+ /**
+  * The theme for Mozilla Firefox for Android (Fenix).
+@@ -32,13 +34,13 @@ fun FirefoxTheme(
+ ) {
+     val colors: AcornColors = when (theme) {
+         Theme.Light -> lightColorPalette
+-        Theme.Dark -> darkColorPalette
++        Theme.Dark -> darkColorPalette.maybeApplyOledColors(LocalContext.current)
+         Theme.Private -> privateColorPalette
+     }
+ 
+     val colorScheme: ColorScheme = when (theme) {
+         Theme.Light -> acornLightColorScheme()
+-        Theme.Dark -> acornDarkColorScheme()
++        Theme.Dark -> acornDarkColorScheme().maybeApplyOledColors(LocalContext.current)
+         Theme.Private -> acornPrivateColorScheme()
+     }
+ 
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/theme/ThemeManager.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/theme/ThemeManager.kt
+index bcde2e5ed7eb..db26367cf1c6 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/theme/ThemeManager.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/theme/ThemeManager.kt
+@@ -26,9 +26,14 @@ import org.mozilla.fenix.R
+ import org.mozilla.fenix.browser.browsingmode.BrowsingMode
+ import org.mozilla.fenix.customtabs.ExternalAppBrowserActivity
+ import com.google.android.material.R as materialR
++import androidx.annotation.AttrRes
++import androidx.annotation.ColorInt
++import androidx.core.content.ContextCompat
++import org.ironfoxoss.ironfox.utils.IronFoxPreferences
+ 
+ abstract class ThemeManager {
+ 
++    protected abstract val activity: Activity
+     abstract var currentTheme: BrowsingMode
+ 
+     /**
+@@ -36,7 +41,11 @@ abstract class ThemeManager {
+      */
+     @get:StyleRes
+     val currentThemeResource get() = when (currentTheme) {
+-        BrowsingMode.Normal -> R.style.NormalTheme
++        BrowsingMode.Normal -> if (IronFoxPreferences.shouldUseOledTheme(activity)) {
++            R.style.IronFox_OLEDTheme
++        } else {
++            R.style.NormalTheme
++        }
+         BrowsingMode.Private -> R.style.PrivateTheme
+     }
+ 
+@@ -98,6 +107,12 @@ abstract class ThemeManager {
+             return typedValue.resourceId
+         }
+ 
++        @ColorInt
++        fun resolveAttributeColor(@AttrRes attribute: Int, context: Context): Int {
++            val resourceId = resolveAttribute(attribute, context)
++            return ContextCompat.getColor(context, resourceId)
++        }
++
+         /**
+          * Resolves the attribute to a color.
+          *
+@@ -147,7 +162,7 @@ abstract class ThemeManager {
+ 
+ class DefaultThemeManager(
+     currentTheme: BrowsingMode,
+-    private val activity: Activity,
++    override val activity: Activity,
+ ) : ThemeManager() {
+     override var currentTheme: BrowsingMode = currentTheme
+         set(value) {
+diff --git a/mobile/android/fenix/app/src/main/res/values/styles.xml b/mobile/android/fenix/app/src/main/res/values/styles.xml
+index 13dc38547fe8..a4caa0ccb7d0 100644
+--- a/mobile/android/fenix/app/src/main/res/values/styles.xml
++++ b/mobile/android/fenix/app/src/main/res/values/styles.xml
+@@ -103,6 +103,7 @@
+         <!-- Action -->
+         <!-- Primary button, Snackbar, Floating action button, Chip selected -->
+         <item name="actionPrimary">@color/fx_mobile_action_color_primary</item>
++        <item name="actionSecondary">@color/fx_mobile_action_color_secondary</item>
+         <!-- Primary button in a disabled state -->
+         <item name="actionPrimaryDisabled">@color/fx_mobile_action_color_primary_disabled</item>
+ 
+diff --git a/mobile/android/fenix/app/src/main/res/xml/customization_preferences.xml b/mobile/android/fenix/app/src/main/res/xml/customization_preferences.xml
+index 313053c48c62..619cb8e8e997 100644
+--- a/mobile/android/fenix/app/src/main/res/xml/customization_preferences.xml
++++ b/mobile/android/fenix/app/src/main/res/xml/customization_preferences.xml
+@@ -28,6 +28,11 @@
+             android:key="@string/pref_key_dark_theme"
+             android:title="@string/preference_dark_theme" />
+ 
++        <org.mozilla.fenix.settings.RadioButtonPreference
++            android:defaultValue="false"
++            android:key="@string/pref_key_oled_theme"
++            android:title="@string/preference_oled_theme" />
++
+         <org.mozilla.fenix.settings.RadioButtonPreference
+             android:defaultValue="false"
+             android:key="@string/pref_key_auto_battery_theme"
+-- 
+2.53.0
+

@@ -1,0 +1,883 @@
+categories:
+  - name: "Accessibility"
+    excerpt: "Patches that improve accessibility features for all users."
+    description: >
+      These patches aim to make the browser more accessible, such as enabling zoom features
+      universally so that users with visual impairments can navigate websites more easily.
+
+  - name: "Build System"
+    excerpt: "Modifications to improve and stabilize the build process."
+    description: >
+      Patches in this category focus on altering the build system by removing unnecessary dependencies,
+      fixing build issues, or optimizing the build flow to ensure successful compilation and better reproducibility.
+
+  - name: "Dependency"
+    excerpt: "Changes that remove or replace proprietary or external dependencies."
+    description: >
+      These patches remove dependencies on closed-source or third-party services/libraries, replacing them with open-source
+      alternatives (where desired) to enhance transparency, privacy, and control over the software stack.
+
+  - name: "Mozilla"
+    excerpt: "Changes that remove and/or replace undesired Mozilla functionality."
+    description: >
+      These patches disable, remove, or replace unwanted Mozilla-related functionality from the browser. This includes
+      advertising, data collection, promotions, and other services not required for critical functionality.
+
+  - name: "Privacy"
+    excerpt: "Enhancements that improve user privacy and strengthen data protection."
+    description: >
+      This category includes patches that protect against various forms of tracking, as well as patches that limit
+      data exposure and reduce the browser's required permissions.
+
+  - name: "Security"
+    excerpt: "Patches that improve default security settings and reduce attack surfaces."
+    description: >
+      These patches tweak or enhance security-related settings and features, such as enabling HTTPS-only mode,
+      securing PDF handling, and reducing exposure to potentially dangerous web content.
+
+  - name: "User Control"
+    excerpt: "Unlocking advanced settings and configuration options for power users."
+    description: >
+      Focused on user empowerment, these patches provide access to advanced or hidden configuration options
+      such as about:config or secret developer settings to allow deeper browser customization.
+
+  - name: "User Experience"
+    excerpt: "Improvements to usability and everyday browsing comfort."
+    description: >
+      These patches improve the overall browsing experience by blocking annoyances like autoplaying media,
+      creating a smoother and less disruptive user journey.
+
+  - name: "User Interface"
+    excerpt: "Visual and interface customizations for branding and clarity."
+    description: >
+      UI-focused patches customize the appearance of the browser, introduce branding changes,
+      and simplify or declutter interface elements to enhance user clarity and recognition.
+
+patches:
+  # Accessibility
+  - file: "fenix-force-enable-zoom-by-default.patch"
+    name: "Enable Universal Zoom"
+    description: "Allows zoom on all websites, even if the website tries to block it, by default"
+    reason: "To improve accessibility by overriding website zoom restrictions."
+    effect: "Users can zoom on all websites, even those trying to block zooming."
+    category: "Accessibility"
+
+  # Build System
+  - file: "a-c-allow-build-date-override.patch"
+    name: "Allow overriding the build date"
+    description: "Allows devs to override the build date."
+    reason: "To ensure consistent build dates for all variants of IronFox."
+    effect: "Ensures that the build dates are consistent for all variants of IronFox, in order to prevent unexpected version code issues."
+    category: "Build System"
+
+  - file: "gecko-ensure-builds-reflect-changes.patch"
+    name: "Ensure builds always reflect our (latest) changes"
+    description: "Ensures that builds of GeckoView binaries always reflect our (latest) changes."
+    reason: "To ensure that our GeckoView binaries are always packaged as intended."
+    effect: "Ensures that our GeckoView binaries are always packaged as intended."
+    category: "Build System"
+
+  - file: "gecko-remove-example-dependencies.patch"
+    name: "Remove Unwanted Example/Sample Dependencies"
+    description: "Prevents building and configuring unnecessary/unwanted example/sample libraries."
+    reason: "Allows for faster builds, with less overhead."
+    effect: "Reduces build-time, and reduces the complexity of the overall build process."
+    category: "Build System"
+
+  - file: "gecko-support-policies.patch"
+    name: "Support Enterprise Policies"
+    description: "Adds support for, and configures a set of, enterprise policies for GeckoView."
+    reason: "Allows for additional control/configuration of the browsing behavior."
+    effect: "Allows users to take advantage of additional customizations, and helps to provide a superior browsing experience."
+    category: "Build System"
+
+  - file: "gecko-support-autoconfig.patch"
+    name: "Support AutoConfig"
+    description: "Adds support for Firefox's AutoConfig functionality to GeckoView, and leverages it for advanced configuration."
+    reason: "Allows for additional control/configuration of the browsing behavior."
+    effect: "Allows users to take advantage of additional customizations, and helps to provide a superior browsing experience."
+    category: "Build System"
+
+  - file: "gecko-substitute-nimbus-fml.patch"
+    name: "Substitute nimbus-fml"
+    description: "Adds support for using a locally built nimbus-fml binary, instead of fetching an artifact from Mozilla."
+    reason: "Reduces dependency on Mozilla infrastructure and improves build reproducibility."
+    effect: "Provides more control over build dependencies with fewer connections to Mozilla servers."
+    category: "Build System"
+
+  # Dependency
+  - file: "a-c-liberate.patch"
+    name: "Remove Unwanted Libraries (Android Components)"
+    description: "Removes proprietary, tracking, and other unwanted libraries from Mozilla's Android Components (and replaces them with suitable alternatives if desired, such as microG)."
+    reason: "To remove unwanted libraries, and dependencies on related services."
+    effect: "Improves privacy and protects the freedom of users."
+    category: "Dependency"
+
+  - file: "fenix-liberate.patch"
+    name: "Remove Unwanted Libraries (Fenix)"
+    description: "Removes proprietary, tracking, and other unwanted libraries from Fenix (and replaces them with suitable alternatives if desired, such as microG)."
+    reason: "To remove unwanted libraries, and dependencies on related services."
+    effect: "Improves privacy and protects the freedom of users."
+    category: "Dependency"
+
+  - file: "fenix-liberate-play-integrity.patch"
+    name: "Remove Google Play Integrity (Fenix)"
+    description: "Removes the unwanted Google Play Integrity library from Fenix (Firefox for Android)."
+    reason: "To remove unwanted libraries, and dependencies on related services."
+    effect: "Improves privacy and protects the freedom of users."
+    category: "Dependency"
+
+  - file: "geckoview-liberate.patch"
+    name: "Replace Google Play FIDO with microG"
+    description: "Replaces the Google Play FIDO library with microG."
+    reason: "To remove unwanted proprietary libraries, and dependencies on related services."
+    effect: "Improves privacy and protects the freedom of users."
+    category: "Dependency"
+
+  - file: "geckoview-prioritize-cred-manager-over-gms.patch"
+    name: "Prioritize Credential Manager over microG/GMS"
+    description: "Prioritizes the use of Android's standard Credential Manager API, instead of first attempting to use microG/Google Play Services (if they're installed by the user)."
+    reason: "Avoids unnecessary/unwanted use of Google Play Services."
+    effect: "Improves privacy and freedom for users, by avoiding the use of Google Play Services."
+    category: "Dependency"
+
+  - file: "gecko-remove-gmp-sources.patch"
+    name: "Remove GMP (Gecko Media Plugins) Sources"
+    description: "Removes Firefox's default sources for installing Gecko Media Plugins (GMP: https://wiki.mozilla.org/GeckoMediaPlugins), such as OpenH264 and Widevine (the latter is proprietary)."
+    reason: "To prevent the installation of unwanted/unnecessary plug-ins."
+    effect: "Improves security for users, by reducing attack surface, and protects freedom, by ensuring that proprietary plug-ins are not installed."
+    category: "Dependency"
+
+  # Mozilla
+  - file: "fenix-disable-telemetry.patch"
+    name: "Disable Telemetry (Fenix)"
+    description: "Disables data collection and submission mechanisms within Firefox for Android."
+    reason: "To prevent any usage data, diagnostics, or technical metrics from being sent to Mozilla."
+    effect: "Prevents unwanted collection and transmission of telemetry data."
+    category: "Mozilla"
+
+  - file: "gecko-remove-abouttelemetry.patch"
+    name: "Remove `about:telemetry`"
+    description: "Removes the internal `about:telemetry` page."
+    reason: "To improve UX."
+    effect: "Prevents users from incorrectly believing telemetry is supported/enabled."
+    category: "Mozilla"
+
+  - file: "gecko-remove-aboutrestricted.patch"
+    name: "Remove `about:restricted`"
+    description: "Removes the internal `about:restricted` page (used for parental controls)."
+    reason: "To improve UX and eliminate unwanted components."
+    effect: "Ensures that parental controls are not active and filtering webpages, and reduces unwanted resources."
+    category: "Mozilla"
+
+  - file: "a-c-disable-crash-reporting.patch"
+    name: "Disable Crash Reporting (Android Components)"
+    description: "Disables the collection and submission of crash reports within Mozilla's Android Components."
+    reason: "To prevent submitting personal and/or sensitive data to Mozilla."
+    effect: "Prevents unwanted collection and transmission of crash reports."
+    category: "Mozilla"
+
+  - file: "fenix-disable-crash-reporting.patch"
+    name: "Disable Crash Reporting (Fenix)"
+    description: "Disables the collection and submission of crash reports within Firefox for Android."
+    reason: "To prevent submitting personal and/or sensitive data to Mozilla."
+    effect: "Prevents unwanted collection and transmission of crash reports."
+    category: "Mozilla"
+
+  - file: "geckoview-disable-crash-reporting.patch"
+    name: "Disable Crash Reporting (GeckoView)"
+    description: "Disables the collection and submission of crash reports within GeckoView."
+    reason: "To prevent submitting personal and/or sensitive data to Mozilla."
+    effect: "Prevents unwanted collection and transmission of crash reports."
+    category: "Mozilla"
+
+  - file: "a-c-liberate-glean.patch"
+    name: "Remove Glean (Android Components)"
+    description: "Removes the Glean SDK from Mozilla's Android Components."
+    reason: "To prevent any usage data, diagnostics, or technical metrics from being sent to Mozilla, to reduce attack surface, and to reduce unwanted dependencies."
+    effect: "Prevents unwanted collection and transmission of telemetry data."
+    category: "Mozilla"
+
+  - file: "a-c-liberate-error-support.patch"
+    name: "Remove Error Support (Android Components)"
+    description: "Removes the Rust 'Error Support' library."
+    reason: "To remove unwanted libraries, and dependencies on related services."
+    effect: "Prevents unwanted data collection of users."
+    category: "Mozilla"
+
+  - file: "fenix-liberate-glean.patch"
+    name: "Remove Glean (Fenix)"
+    description: "Removes the Glean SDK from Firefox for Android."
+    reason: "To prevent any usage data, diagnostics, or technical metrics from being sent to Mozilla, to reduce attack surface, and to reduce unwanted dependencies."
+    effect: "Prevents unwanted collection and transmission of telemetry data."
+    category: "Mozilla"
+
+  - file: "fenix-disable-nimbus.patch"
+    name: "Disable Nimbus Experimentation (Fenix)"
+    description: "Prevents A/B testing and remote configuration of settings via Nimbus within Firefox for Android."
+    reason: "To reduce data collection and remove Mozilla's ability to remotely change browser settings."
+    effect: "Ensures user configurations remain consistent and are controlled locally."
+    category: "Mozilla"
+
+  - file: "gecko-disable-nimbus.patch"
+    name: "Disable Nimbus Experimentation (Gecko)"
+    description: "Prevents A/B testing and remote configuration of settings via Nimbus within Gecko."
+    reason: "To reduce data collection and remove Mozilla's ability to remotely change browser settings."
+    effect: "Ensures user configurations remain consistent and are controlled locally."
+    category: "Mozilla"
+
+  - file: "a-c-liberate-nimbus.patch"
+    name: "Disable Nimbus Experimentation (Android Components)"
+    description: "Removes the Nimbus library/service from Android Components."
+    reason: "To reduce data collection and remove Mozilla's ability to remotely change browser settings."
+    effect: "Ensures user configurations remain consistent and are controlled locally, reduces attack surface, and reduces unwanted dependencies."
+    category: "Mozilla"
+
+  - file: "fenix-disable-firefox-suggest.patch"
+    name: "Disable Firefox Suggest"
+    description: "Disables Firefox Suggest functionality."
+    reason: "To remove sponsored suggestions, and to prevent sending address bar data to Mozilla."
+    effect: "Cleaner, more private address bar experience, without web suggestions."
+    category: "Mozilla"
+
+  - file: "fenix-disable-firefox-relay.patch"
+    name: "Disable Firefox Relay"
+    description: "Disables Firefox Relay functionality."
+    reason: "To reduce reliance/integration with external Mozilla services, and provide users with more control over whether they wish to use this functionality."
+    effect: "Cleaner browsing experience, with more control provided to users."
+    category: "Mozilla"
+
+  - file: "fenix-disable-remote-search-configuration.patch"
+    name: "Disable Remote Search Configuration"
+    description: "Disables remote configuration of search engines from Mozilla."
+    reason: "To reduce unwanted network activity and ensure that users are in control of their search engines/configuration."
+    effect: "Reduces unwanted network activity and ensures search settings are controlled locally."
+    category: "Mozilla"
+
+  - file: "fenix-remove-tos-privacy-policy.patch"
+    name: "Remove ToS and Privacy Policy"
+    description: "Removes unwanted elements related to Mozilla's terms of service and privacy policy."
+    reason: "To prevent confusing users and to remove unwanted Mozilla branding."
+    effect: "Users are provided with a cleaner browsing experience."
+    category: "Mozilla"
+
+  - file: "fenix-disable-link-sharing.patch"
+    name: "Disable 'Sent from Firefox' Link Sharing"
+    description: "Disables the 'Sent from Firefox' footer/link sharing feature."
+    reason: "To prevent automatic inclusion of Firefox branding in shared links."
+    effect: "Prevents advertising Firefox and disclosing browser information when sharing links."
+    category: "Mozilla"
+
+  - file: "a-c-disable-amo-collections.patch"
+    name: "Disable AMO Featured Collections and Recommendations."
+    description: "Disables fetching featured collections, recommendations, and icons from AMO (addons.mozilla.org)."
+    reason: "To prevent Firefox from connecting to `services.addons.mozilla.org` on every launch and periodically after."
+    effect: "Reduces unwanted network activity and integration with third party services."
+    category: "Mozilla"
+
+  - file: "fenix-disable-contile.patch"
+    name: "Disable Contile"
+    description: "Disables integration with Mozilla's Contile service (sponsored tiles) - https://mozilla-services.github.io/contile/."
+    reason: "To remove unwanted advertising and unnecessary third-party services."
+    effect: "Cleaner interface without promotional content."
+    category: "Mozilla"
+
+  - file: "fenix-disable-pocket.patch"
+    name: "Disable Pocket"
+    description: "Disables integration with Pocket."
+    reason: "To remove unnecessary third-party services and sponsored content."
+    effect: "Cleaner interface without promotional content or third-party integrations."
+    category: "Mozilla"
+
+  - file: "fenix-liberate-mars.patch"
+    name: "Remove MARS (Fenix)"
+    description: "Removes the Mozilla Ad Routing Service (MARS) from Firefox for Android."
+    reason: "To prevent unwanted advertising, to reduce attack surface, and to reduce unwanted dependencies."
+    effect: "Prevents unwanted advertising."
+    category: "Mozilla"
+
+  - file: "fenix-disable-sync-engines-by-default.patch"
+    name: "Disable Firefox Sync"
+    description: "Disables Firefox Sync by default."
+    reason: "To prevent automatic sync of browser data to Mozilla servers."
+    effect: "No data is synchronized with Mozilla unless explicitly enabled by user."
+    category: "Mozilla"
+
+  - file: "fenix-disable-sync-avatar-fetching.patch"
+    name: "Disable Firefox Sync Avatar Fetching"
+    description: "Disables downloading the user's profile picture from Mozilla if Firefox Sync is enabled."
+    reason: "To prevent Firefox from connecting to `https://profile.accounts.firefox.com/v1/avatar/b` every time the user navigates to settings if Firefox Sync is enabled."
+    effect: "Reduces unwanted network activity and integration with third party services."
+    category: "Mozilla"
+
+  - file: "gecko-rs-blocker.patch"
+    name: "Block Remote Settings (Gecko)"
+    description: "Restricts Remote Settings to only download collections specified in preferences."
+    reason: "To prevent the download/use of unnecessary and undesired Remote Settings from Mozilla (ex. for experimentation)."
+    effect: "Network activity is further limited, less data is shared with Mozilla, and the user is put in control of what specifically they want to download from Remote Settings."
+    category: "Mozilla"
+
+  - file: "gecko-support-addon-installation-without-mozaddonmanager.patch"
+    name: "Support add-on installation without mozAddonManager"
+    description: "Adds support for installing add-ons from `addons.mozilla.org`, without allowing Mozilla to enable, uninstall, and query a list of the user's installed add-ons (via the privileged mozAddonManager API), in addition to websites specified with the `xpinstall.whitelist.add` series of prefs."
+    reason: "To prevent fingerprinting, reduce attack surface, and to improve freedom by allowing users to install add-ons from sites other than AMO if desired (though installing add-ons outside of AMO is of course STRONGLY recommended against)."
+    effect: "Allows users to install add-ons from addons.mozilla.org (via the mozAddonManager API) without compromising their privacy and security, and allows installation from other sites if desired by the user."
+    category: "Mozilla"
+
+  - file: "gecko-remove-privileged-addon-signing-status.patch"
+    name: "Remove privileged add-on signing status"
+    description: "Prevents Mozilla add-ons from returning the 'PRIVILEGED' and 'SYSTEM' add-on signing states."
+    reason: "To improve privacy, security, and control for users, by preventing external add-ons developed By Mozilla from utilizing special privileged functionality."
+    effect: "Users have improved privacy, security, and control over their extensions."
+    category: "Mozilla"
+
+  - file: "fenix-liberate-webcompat-reporter.patch"
+    name: "Remove Web Compatibility Reporter (Fenix)"
+    description: "Removes the Web Compatibility Reporter from Firefox for Android."
+    reason: "To eliminate unwanted dependencies, to declutter the user interface, and to prevent wasting Mozilla's time."
+    effect: "Simplifies the browser UI and prevents issue reports from being sent to Mozilla."
+    category: "Mozilla"
+
+  - file: "fenix-disable-nags.patch"
+    name: "Disable Nags"
+    description: "Disables Contextual Feature Recommendations, prompts encouraging users to set the browser as the system default, and other promotional messaging."
+    reason: "To remove promotional suggestions for Firefox features, and to eliminate unnecessary engagement messages that may interrupt user workflows."
+    effect: "Provides a cleaner interface without contextual prompts, recommendations, and unwanted nags."
+    category: "Mozilla"
+
+  - file: "fenix-disable-microsurveys.patch"
+    name: "Disable Mozilla Surveys"
+    description: "Disables Mozilla Feedback Surveys (Microsurveys)."
+    reason: "To prevent interruptions from survey prompts."
+    effect: "Improves user experience by removing survey notifications."
+    category: "Mozilla"
+
+  - file: "fenix-local-wallpapers.patch"
+    name: "Local Wallpapers"
+    description: "Adds a built-in collection of wallpapers for the browser's homepage."
+    reason: "By default, Firefox fetches wallpapers from Mozilla servers on every browser launch. We disable this, due to the associated privacy concerns, and to reduce unwanted network activity."
+    effect: "Users can personalize the browser and take advantage of wallpapers, without introducing unnecessary/unwanted network activity and dependence on Mozilla services."
+    category: "Mozilla"
+
+  - file: "fenix-configure-geckoprovider.patch"
+    name: "Configure GeckoProvider"
+    description: "Configures Firefox's implementation of GeckoView (GeckoProvider)"
+    reason: "Disables integration with crash reporting and experimentation (Nimbus)."
+    effect: "Prevents unwanted collection and transmission of crash reports, and ensures user configurations remain consistent and are controlled locally."
+    category: "Mozilla"
+
+  - file: "fenix-remove-sync-promo-bookmarks.patch"
+    name: "Remove Firefox Sync Bookmark Promotion"
+    description: "Removes Mozilla's promotion to enable Sync at the bookmarks fragment."
+    reason: "To prevent unwanted nags/promotional suggestions from interrupting user workflows."
+    effect: "Improves user experience by removing an unwanted Sync promotion."
+    category: "Mozilla"
+
+  - file: "fenix-remove-sync-promo-settings.patch"
+    name: "Remove Firefox Sync Settings Promotion"
+    description: "Removes Mozilla's promotional banner to enable Sync at the top of the settings fragment."
+    reason: "To prevent unwanted nags/promotional suggestions from interrupting user workflows."
+    effect: "Improves user experience by removing an unwanted Sync promotion."
+    category: "Mozilla"
+
+  - file: "gecko-remove-url-tracking-params.patch"
+    name: "Remove URL Tracking Parameters"
+    description: "Prevents the browser from appending URL tracking parameters to Mozilla support links."
+    reason: "To improve privacy."
+    effect: "Improves privacy by removing unnecessary URL tracking parameters from Mozilla support links."
+    category: "Mozilla"
+
+  # Privacy
+  - file: "fenix-add-doh-providers.patch"
+    name: "Add DNS over HTTPS Providers"
+    description: |
+      Adds the following DoH providers to the browser's built-in list:
+        - Quad9
+        - AdGuard
+        - AdGuard (Unfiltered)
+        - Cloudflare (Malware Protection)
+        - DNS4EU (Ad Blocking)
+        - DNS4EU (Protective)
+        - DNS4EU (Unfiltered)
+        - Mullvad (Base)
+        - Mullvad (Unfiltered)
+        - Wikimedia
+    reason: "To add support for multiple secure DNS providers in the UI settings."
+    effect: "Adds a selection of carefully selected DoH providers for the users to choose from."
+    category: "Privacy"
+
+  - file: "fenix-enable-doh-via-quad9-by-default.patch"
+    name: "Enable DNS over HTTPS (via Quad9) by default"
+    description: "Enables DNS over HTTPS without fallback by default, and sets Quad9 as the default provider."
+    reason: "To harden DoH out of the box."
+    effect: "Improves DNS privacy and security by strengthening DoH's default protection level."
+    category: "Privacy"
+
+  - file: "fenix-disable-autocomplete-by-default.patch"
+    name: "Disable Autocomplete"
+    description: "Disables URL autocomplete by default."
+    reason: "To prevent accidental navigation to incorrect/undesired websites."
+    effect: "Provides users with more control over the URL bar, and ensures that users only navigate to their intended location."
+    category: "Privacy"
+
+  - file: "fenix-disable-password-mgr-and-autofill-by-default.patch"
+    name: "Disable Password Manager and Address/Credit Card Autofill"
+    description: |
+      Disables password manager and address/credit card autofill by default. Using the built-in
+      password manager in a browser is discouraged. Prefer using external, more secure
+      password managers, such as Bitwarden.
+    reason: "To prevent automatic storage of sensitive credentials in the browser."
+    effect: |
+      Reduces risk of credential exposure.
+    category: "Privacy"
+
+  - file: "fenix-disable-trending-search-suggestions-by-default.patch"
+    name: "Disable Trending Search Suggestions"
+    description: "Disables trending search suggestions by default."
+    reason: "Reduces unwanted network activity and connections to third party services."
+    effect: "Cleaner, more private address bar experience, without trending search suggestions."
+    category: "Privacy"
+
+  - file: "fenix-disable-search-suggestions-by-default.patch"
+    name: "Disable Search Suggestions"
+    description: "Disables search suggestions by default."
+    reason: "To prevent automatic submission of text entered in the URL bar to search providers."
+    effect: "Improves privacy by reducing data shared with search engines."
+    category: "Privacy"
+
+  - file: "fenix-sanitize-data-on-exit-by-default.patch"
+    name: "Sanitize Data on Exit"
+    description: "Clears browsing data on exit by default"
+    reason: "Protects privacy between browser sessions."
+    effect: "Automatically clears tabs, history, cache, and download list when browser closes."
+    category: "Privacy"
+
+  - file: "a-c-configure-default-search-engines.patch"
+    name: "Custom Search Engines"
+    description: "Adds custom privacy-focused search engines."
+    reason: "To provide alternatives to tracking-heavy default search engines."
+    effect: "Users can easily use privacy-respecting search engines."
+    category: "Privacy"
+
+  - file: "fenix-enable-etp-strict.patch"
+    name: "Enable ETP Strict"
+    description: "Sets Enhanced Tracking Protection to Strict mode by default."
+    reason: "To provide stronger protection against tracking without user configuration."
+    effect: "Blocks more trackers and fingerprinting scripts out of the box, strengthens state partitioning, and enables protection against various other methods of cross-site tracking."
+    category: "Privacy"
+
+  - file: "fenix-enable-local-network-access-restrictions-by-default.patch"
+    name: "Enable Local Network Access Restrictions"
+    description: "Enables Local Network Access Restrictions by default."
+    reason: "To provide websites from accessing local network resources, to reduce fingerprintability, and to prevent unauthorized access to the local network."
+    effect: "Improves privacy and security for users."
+    category: "Privacy"
+
+  - file: "fenix-block-cookie-banners-in-pb-by-default-and-expose-ui.patch"
+    name: "Block Cookie Banners in Private Browsing by default, and expose the UI to enable/disable it."
+    description: "Blocks cookie consent banners in Private Browsing windows by default, enables a UI setting to enable or disable blocking of cookie consent banners in Private Browsing, and allows users to enable or disable cookie banner blocking per-site (in both standard and Private Browsing windows)."
+    reason: "Improves privacy by preventing websites from co-ercing users to enable/agree to tracking, and improves the browsing experience by removing annoying consent pop-ups."
+    effect: "Cleaner websites without cookie banners, while automatically opting users out of tracking where possible."
+    category: "Privacy"
+
+  - file: "gecko-configure-ublock-origin.patch"
+    name: "Configure uBlock Origin"
+    description: "Sets uBlock Origin to use a custom/enhanced config, and changes certain settings by default."
+    reason: "To provide stronger out-of-box content blocking."
+    effect: "Better ad and tracker blocking with optimized filter lists."
+    category: "Privacy"
+
+  - file: "fenix-disable-network-connectivity-monitoring.patch"
+    name: "Disable Network Connectivity Status Monitoring (Fenix)"
+    description: "Prevents Firefox for Android from monitoring the status of the user's internet connection."
+    reason: "To prevent the browser from accessing network information (with the `ACCESS_NETWORK_STATE` permission)."
+    effect: "Reduces required permissions and limits data exposed to the browser."
+    category: "Privacy"
+
+  - file: "geckoview-disable-network-connectivity-monitoring.patch"
+    name: "Disable Network Connectivity Status Monitoring (GeckoView)"
+    description: "Prevents GeckoView from monitoring the status of the user's internet connection."
+    reason: "To prevent the browser from accessing network information (with the `ACCESS_NETWORK_STATE` permission)."
+    effect: "Reduces required permissions and limits data exposed to the browser."
+    category: "Privacy"
+
+  - file: "gecko-disable-network-id.patch"
+    name: "Disable Network ID generation"
+    description: "Prevents Firefox from generating an internal network ID that could potentially be used to track users (https://gitlab.torproject.org/tpo/applications/tor-browser/-/commit/4c548fa04b668a310c90c0e783ec404420f06257)."
+    reason: "To prevent the browser from generating an ID that could be used for tracking/fingerprinting."
+    effect: "Protects users against tracking/fingerprinting."
+    category: "Privacy"
+
+  - file: "geckoview-disable-speculative-connections.patch"
+    name: "Disable Speculative Connections"
+    description: "Prevents GeckoView from generating speculative/predictive connections."
+    reason: "To prevent unwanted/unsolicited network traffic (In Fenix, this is currently used for certain URL bar suggestions)."
+    effect: "Prevents the browser from connecting to third parties without explicit user consent, and provides users with more control over their network activity."
+    category: "Privacy"
+
+  - file: "gecko-stub-beacon.patch"
+    name: "Stub the Beacon API (navigator.sendBeacon)"
+    description: "To prevent tracking and the submission of analytics, without aiding fingerprinting and causing undesired breakage."
+    reason: "The Beacon API (navigator.sendBeacon)'s explicit, stated purpose/use case is for analytics/tracking (https://developer.mozilla.org/docs/Web/API/Beacon_API). However, disabling it entirely (like standard Firefox allows) is undesired, as it causes breakage, aids fingerprinting, and can allow trackers to fallback to other mechanisms for submitting data (as they can tell it's disabled/unavailable). Stubbing the API instead fixes these issues."
+    effect: "Users are protected against tracking, and benefit from added attack surface reduction, without causing breakage and having to deal with the usual side effects that appear when the Beacon API is disabled."
+    category: "Privacy"
+
+  - file: "gecko-prevent-exposing-branding.patch"
+    name: "Prevent exposing branding resources to websites"
+    description: |
+      Prevents exposing branding assets and certain other internal resources to websites
+      (https://gitlab.torproject.org/tpo/applications/tor-browser/-/commit/ecb798d066b039329223b4c31133e2f917ca477d).
+    reason: | 
+      Improves privacy by preventing websites from determining whether a user is on IronFox,
+      and improves compatibility, as we have reason to believe websites might be using this to block LibreWolf/IronFox users.
+    effect: "Users are protected against additional fingerprinting vectors, and websites work as expected."
+    category: "Privacy"
+
+  - file: "gecko-prevent-exposing-name-and-vendor-to-extensions.patch"
+    name: "Prevent exposing the browser name and vendor to extensions"
+    description: |
+      Prevents exposing the browser name and vendor to extensions via getBrowserInfo
+      (https://developer.mozilla.org/docs/Mozilla/Add-ons/WebExtensions/API/runtime/getBrowserInfo).
+    reason: | 
+      Improves privacy by preventing extensions from determining whether a user is on IronFox,
+      and improves compatibility with certain older extensions (ex. https://codeberg.org/librewolf/issues/issues/2492).
+    effect: "Extensions work as expected, and users are protected against added fingerprinting opportunities."
+    category: "Privacy"
+
+  - file: "a-c-disable-unsolicited-favicon-fetching.patch"
+    name: "Disable unsolicited favicon fetching"
+    description: "Prevents Firefox from automatically fetching favicons for websites pinned to the browser homepage."
+    reason: "To prevent unwanted network activity and connections to third parties."
+    effect: "Reduces network activity, provides users with more control, and provides a faster browser homepage."
+    category: "Privacy"
+
+  - file: "a-c-do-not-unconditionally-allow-builtin-addons-to-access-private-browsing.patch"
+    name: "Do not allow built-in add-ons to access private browsing windows unconditionally"
+    description: "Prevents built-in add-ons from always being able to access private browsing windows, even if they don't request or need access."
+    reason: "To improve privacy and security for users by limiting the amount of access built-in add-ons have to the browser."
+    effect: "Users are provided with a more private and secure browsing experience."
+    category: "Privacy"
+
+  - file: "gecko-fix-canvas-randomization.patch"
+    name: "Fix Canvas Randomization"
+    description: |
+      Backports a fix for an upstream bug that prevents Canvas randomization from working for getImageData and WebGL image hash: https://bugzilla.mozilla.org/show_bug.cgi?id=2013976, and enables Canvas randomization for solid colors.
+    reason: "To protect against fingerprinting by ensuring that canvas data is fully randomized."
+    effect: "Users are provided with fingerprinting protection that works as expected."
+    category: "Privacy"
+
+  - file: "gecko-remove-openai.patch"
+    name: "Remove OpenAI Backend"
+    description: "Removes the OpenAI backend from Mozilla's ML (machine learning) component."
+    reason: "To improve privacy for users (and reduce attack surface) by removing integration with a privacy-invasive/unwanted LLM."
+    effect: "Users are provided with a more private browsing experience."
+    category: "Privacy"
+
+  # Security
+  - file: "gecko-certificate-pinning.patch"
+    name: "Certificate Pinning"
+    description: |
+      Updates and expands the list of domains supported by Mozilla's built-in certificate pinning.
+    reason: "To protect against MITM attacks by restricting which certificate authorities can issue valid certificates for included websites. Example of a real-world attack that this protects against: https://blog.mozilla.org/security/2011/08/29/fraudulent-google-com-certificate/."
+    effect: "Users are provided with a more secure browsing experience."
+    category: "Security"
+
+  - file: "gecko-harden-pdfjs.patch"
+    name: "Harden PDF.js"
+    description: "Hardens Firefox's built-in PDF Viewer (PDF.js)."
+    reason: "To reduce attack surface and protect users from various attacks, with changes inspired by GrapheneOS's PDF Viewer: https://github.com/GrapheneOS/PdfViewer."
+    effect: "Users are provided with a more secure PDF viewing experience, while still enjoying it from the comfort of their browser."
+    category: "Security"
+
+  - file: "fenix-enable-https-only-mode-by-default.patch"
+    name: "Enable HTTPS-Only Mode"
+    description: "Enables HTTPS-only mode by default."
+    reason: "To encrypt connections whenever possible."
+    effect: "Improves privacy and security by preventing unencrypted HTTP connections."
+    category: "Security"
+
+  - file: "gecko-prevent-extensions-from-changing-browser-settings.patch"
+    name: "Prevent Extensions From Changing Browser Settings"
+    description: "Prevents extensions from changing various browser settings."
+    reason: "To prevent extensions from making unauthorized changes to browser settings."
+    effect: "Ensures browser settings aren't changed without explicit user consent."
+    category: "Security"
+
+  - file: "fenix-increase-update-frequency.patch"
+    name: "Increase Update Frequency"
+    description: "Increases the rate at which Firefox syncs with Remote Settings, from every 24 hours to hourly, and the rate at which Firefox checks for add-on updates, from every 12 hours to hourly."
+    reason: "To improve security for users, by ensuring they are kept up to date as fast as possible."
+    effect: "Protects users against security vulnerabilities and other potential threats, by ensuring their add-ons and Remote Settings are always up to date."
+    category: "Security"
+
+  - file: "fenix-enable-encrypted-storage.patch"
+    name: "Enable Encrypted Storage"
+    description: "Enables encrypted storage (via Android's Keystore system: https://developer.android.com/privacy-and-security/keystore) for Firefox account state."
+    reason: "To improve privacy and security for users, by adding extra protection for sensitive data."
+    effect: "Protects users against unauthorized access/compromise to sensitive data."
+    category: "Security"
+
+  - file: "fenix-enable-memory-tagging.patch"
+    name: "Enable Memory Tagging"
+    description: "Enables memory tagging (via Android's Arm Memory Tagging Extension: https://developer.android.com/ndk/guides/arm-mte)."
+    reason: "To improve security for users, by improving memory safety."
+    effect: "Protects users against memory safety bugs."
+    category: "Security"
+
+  # User Control
+  - file: "gecko-enable-aboutinference.patch"
+    name: "Enable `about:inference`"
+    description: "Enables the `about:inference` page."
+    reason: "To allow users to control machine learning models."
+    effect: "Users can easily test and configure installed machine learning models, as well as other related functionality."
+    category: "User Control"
+
+  - file: "a-c-display-builtin-addons.patch"
+    name: "Display built-in add-ons"
+    description: "Displays built-in add-ons at the Extensions fragment."
+    reason: "To improve freedom/control for users, by allowing them to see the full list of extensions installed on their browser, as well as their permissions and other information. Also improves security/provides attack surface reduction by allowing users to disable unused extensions."
+    effect: "Users are provided with more control over their browsing experience, and can further improve their security if desired."
+    category: "User Control"
+
+  - file: "fenix-display-extensions-in-custom-tabs-menu-by-default.patch"
+    name: "Display extensions in the custom tabs menu by default"
+    description: "Displays the status of extensions in the menu for custom tabs."
+    reason: "To improve freedom/control for users, by allowing them to see the status of extensions at any time, even when running with a custom tab."
+    effect: "Users are provided with more control over their browsing experience."
+    category: "User Interface"
+
+  # User Experience
+  - file: "fenix-default-site-permissions.patch"
+    name: "Default Site Permissions"
+    description: "Configures IronFox's default site permissions. Currently blocks Autoplay, Geolocation prompts, and Notification prompts by default."
+    reason: "To prevent websites from prompting users to access Geolocation and send Notifications, and to prevent unwanted audio/video playback."
+    effect: "Improves user experience, and blocking Autoplay reduces bandwidth usage."
+    category: "User Experience"
+
+  - file: "gecko-ironfox-fingerprinting-protection-overrides.patch"
+    name: "IronFox Fingerprinting Protection (FPP) Overrides"
+    description: "Adds support for an internal list that disables specific fingerprinting protections as needed on a per-site basis."
+    reason: "To reduce website breakage for end-users. Setting the overrides this way specifically also avoids us needing to use the 'privacy.fingerprintingProtection.granularOverrides' preference like we have in the past, allowing users to easily set their own overrides (via that preference) if needed."
+    effect: "Provides users with a seamless browsing experience and allows them to benefit from our strong fingerprinting protection, minus the breakage and headaches."
+    category: "User Experience"
+
+  - file: "fenix-ironfox-onboarding.patch"
+    name: "IronFox Onboarding"
+    description: "Adds IronFox-specific onboarding screens."
+    reason: "To allow users to configure IronFox to their liking on first install."
+    effect: "Users can toggle features as per their liking before they take effect in the browser."
+    category: "User Experience"
+
+  - file: "a-c-allow-ubo-in-private-browsing-by-default.patch"
+    name: "Allow uBlock Origin in Private Browsing by default"
+    description: "Allows uBlock Origin to run in private browsing windows by default."
+    reason: "To ensure that users are protected with strong content blocking in private browsing windows."
+    effect: "Users are always protected against ads/tracking/malware/etc."
+    category: "User Experience"
+
+  - file: "fenix-disable-auto-pinning-recently-visited-sites-to-home.patch"
+    name: "Disable Automatically Pinning Recently Visited Sites to Home"
+    description: "Prevents Firefox from automatically pinning random recently visited website to the browser homepage."
+    reason: "To reduce annoyances and get rid of obnoxious/unwanted behavior."
+    effect: "Users are provided with a cleaner, faster, and more focused browser homepage."
+    category: "User Experience"
+
+  - file: "fenix-hide-remove-and-pb-for-builtin-addons.patch"
+    name: "Hide the 'Remove' and 'Run in private browsing' toggles for built-in add-ons."
+    description: "Hide the no-op 'Remove' and 'Run in private browsing' toggles for built-in add-ons."
+    reason: "To improve UX and prevent users from seeing/attempting to use toggles that do not work (The 'Run in private browsing' toggle simply immediately resets, and built-in add-ons are simply re-installed on the next launch if uninstalled with the 'Remove' toggle)."
+    effect: "Users are provided with a cleaner UI and won't try to use toggles that do not work as expected."
+    category: "User Experience"
+
+  - file: "geckoview-lock-runtime-settings-prefs.patch"
+    name: "Lock GeckoRuntimeSettings Preferences."
+    description: "Locks Gecko preferences controlled by GeckoRuntimeSettings to ensure they stay in sync with Fenix (Firefox for Android)'s UI settings."
+    reason: "To avoid bugs/unexpected behavior from UI settings not matching with related Gecko preferences, and to prevent from users from attempting to change these preferences directly from `about:config` (as doing so simply results in the pref resetting on the next browser launch)."
+    effect: "Gecko preferences remain in sync with their corresponding UI setting(s), users are provided with a more stable browsing experience, and users can avoid having their preferences unintentionally reset (when set from `about:config` directly)."
+    category: "User Experience"
+
+  - file: "fenix-control-autofill-gecko.patch"
+    name: "Control Gecko Autofill From UI Settings"
+    description: "If autofill is enabled/disabled from the browser's UI settings, this patch also enables/disables support for it within Gecko."
+    reason: "Helps ensure that Gecko preferences/behavior is in sync with Fenix settings/behavior, improves UX, performance, and provides additional attack surface reduction, by ensuring that autofill functionality is fully disabled within Gecko when it's disabled by the corresponding Fenix UI settings."
+    effect: "Users can fully disable address/credit card autofill functionality from the UI."
+    category: "User Experience"
+
+  - file: "fenix-control-password-mgr-gecko.patch"
+    name: "Control Gecko Password Manager From UI Settings"
+    description: "If the password manager is enabled/disabled from the browser's UI settings, this patch also enables/disables support for it within Gecko."
+    reason: "Helps ensure that Gecko preferences/behavior is in sync with Fenix settings/behavior, improves UX, performance, and provides additional attack surface reduction, by ensuring that password manager functionality is fully disabled within Gecko when it's disabled by the corresponding Fenix UI setting."
+    effect: "Users can fully disable password manager functionality from the UI."
+    category: "User Experience"
+
+  # User Interface
+  - file: "fenix-ironfox-branding.patch"
+    name: "IronFox Branding (Fenix)"
+    description: "Modifies the branding to IronFox."
+    reason: "Creates distinct brand identity for the fork."
+    effect: "Users can identify the fork as IronFox instead of Firefox."
+    category: "User Interface"
+
+  - file: "gecko-ironfox-branding.patch"
+    name: "IronFox Branding (Gecko)"
+    description: "Modifies the branding to IronFox."
+    reason: "Creates distinct brand identity for the fork."
+    effect: "Users can identify the fork as IronFox instead of Firefox."
+    category: "User Interface"
+
+  - file: "fenix-ironfox-home.patch"
+    name: "IronFox Home"
+    description: "Customizes the default homepage."
+    reason: "Provides users with a cleaner browsing experience, and removes promotions of third party services."
+    effect: "Users have a clean new tab page without predetermined site suggestions or other content."
+    category: "User Interface"
+
+  - file: "fenix-disable-history-and-recent-search-suggestions-by-default.patch"
+    name: "Disable Historical and Recent Search Suggestions"
+    description: "Disables recent and historical search suggestions by default."
+    reason: "To provide users with a cleaner, focused URL bar and browsing experience."
+    effect: "Cleaner interface so that users can focus on where they want to go now, instead of where they went in the past."
+    category: "User Interface"
+
+  - file: "fenix-disable-unified-trust-panel-by-default.patch"
+    name: "Disable Unified Trust Panel"
+    description: "Disables the new Unified Trust Panel by default."
+    reason: "The new Unified Trust Panel prevents users from being able to set per-site exceptions for the built-in cookie banner blocker."
+    effect: "Users can set per-site exceptions for the built-in cookie banner blocker."
+    category: "User Interface"
+
+  - file: "gecko-expose-hidden-aboutsupport-settings.patch"
+    name: "Expose hidden settings at `about:support`"
+    description: "Enables advanced options at `about:support`."
+    reason: "Allows users to clear the browser's startup cache, kill the GPU process, and reset GPU devices if necessary."
+    effect: "Users have more control over their web browser."
+    category: "User Interface"
+
+  - file: "gecko-expose-aboutsupport-prefs.patch"
+    name: "Expose additional preferences at `about:support`"
+    description: "Enables the display of certain important preferences at `about:support`."
+    reason: "Allows for easier troubleshooting and support."
+    effect: "Users can easily see if they have modified these important preferences."
+    category: "User Interface"
+
+  - file: "gecko-expose-about-pages.patch"
+    name: "Expose `about:` pages"
+    description: "Exposes `about:config` and `about:translations` at `about:about`, alongside other internal `about:` pages."
+    reason: "To provide users with easier access to advanced configuration options and local translations."
+    effect: "Users can access `about:config` easier to customize advanced Firefox settings not available in the regular settings menu, and can access `about:translations` easier for local translations."
+    category: "User Interface"
+
+  - file: "gecko-enable-abouttranslations.patch"
+    name: "Enable `about:translations`"
+    description: "Enables `about:translations`."
+    reason: "To provide users with direct access to the Firefox Translations feature."
+    effect: "Like on Desktop, users can access `about:translations` to translate text directly, without needing the text to be on an external webpage."
+    category: "User Interface"
+
+  - file: "fenix-ironfox-settings.patch"
+    name: "IronFox Settings (Fenix)"
+    description: "Adds support to Fenix (Firefox for Android) for IronFox-specific UI settings to control various functionality."
+    reason: |
+      To allow users to easily control their browsing experience.
+    effect: "Users can conveniently enable/disable these features as needed to meet their needs, without needing to dig into advanced settings or the `about:config`."
+    category: "User Interface"
+
+  - file: "fenix-ironfox-settings-search.patch"
+    name: "IronFox Settings Search"
+    description: "Allows users to search for IronFox-specific UI settings."
+    reason: |
+      To allow users to easily find IronFox UI settings, like they can with standard UI settings.
+    effect: "Users can easily find and configure IronFox UI settings as desired."
+    category: "User Interface"
+
+  - file: "gecko-ironfox-settings.patch"
+    name: "IronFox Settings (Gecko)"
+    description: "Adds support to Gecko for IronFox-specific preferences/UI settings to control various functionality."
+    reason: |
+      To allow users to easily control their browsing experience.
+    effect: "Users can conveniently enable/disable these features as needed to meet their needs."
+    category: "User Interface"
+
+  - file: "fenix-ironfox-ui.patch"
+    name: "IronFox UI"
+    description: "Adds minor tweaks to the browser's user interface."
+    reason: "To reduce clutter and improve the user experience."
+    effect: "Users are provided with a cleaner, focused browsing experience."
+    category: "User Interface"
+
+  - file: "fenix-secret-settings-visibility.patch"
+    name: "Secret Settings Visibility"
+    description: "Provides support for enabling or disabling the display of UI settings within the Secret Settings Fragment."
+    reason: "To hide unwanted settings and display wanted ones."
+    effect: "Unwanted UI settings are hidden, and settings that we do want to display are revealed."
+    category: "User Interface"
+
+  - file: "fenix-site-settings-visibility.patch"
+    name: "Site Settings Visibility"
+    description: "Provides support for enabling or disabling the display of UI settings within the Site Settings Fragment."
+    reason: "To hide unwanted settings and display wanted ones."
+    effect: "Unwanted UI settings are hidden, and settings that we do want to display are revealed."
+    category: "User Interface"
+
+  - file: "fenix-tracking-protection-settings-visibility.patch"
+    name: "Tracking Protection Settings Visibility"
+    description: "Provides support for enabling or disabling the display of UI settings within the Tracking Protection Fragment."
+    reason: "To hide unwanted settings and display wanted ones."
+    effect: "Unwanted UI settings are hidden, and settings that we do want to display are revealed."
+    category: "User Interface"
+
+  - file: "fenix-ironfox-settings-support-accessibility-services.patch"
+    name: "IronFox Settings (Fenix) - Accessibility services"
+    description: "Provides support for a UI toggle to enable/disable accessibility services."
+    reason: "To disable accessibility services by default (due to privacy and security concerns), while still allowing users who need it to re-enable it if desired."
+    effect: "Integration with accessibility services are disabled by default, but users can re-enable it from the UI."
+    category: "User Interface"
+
+  - file: "fenix-ironfox-settings-support-pb-always.patch"
+    name: "IronFox Settings Support (Fenix) - Always Use Private Browsing"
+    description: "Provides support for a UI toggle to always use private browsing mode."
+    reason: "To allow users to always use private browsing mode if desired."
+    effect: "Users can force the browser to always use private browsing mode, directly from the UI."
+    category: "User Interface"
+
+  - file: "fenix-ironfox-settings-support-translations.patch"
+    name: "IronFox Settings Support (Fenix) - Firefox Translations"
+    description: "Provides support for a UI toggle to enable/disable Firefox Translations."
+    reason: "To allow users to disable Firefox Translations if desired."
+    effect: "Users can enable or disable Firefox Translations from the UI."
+    category: "User Interface"
+
+  - file: "fenix-ironfox-settings-support-xpinstall.patch"
+    name: "IronFox Settings Support (Fenix) - XPInstall"
+    description: "Provides support for a UI toggle to enable/disable the installation of add-ons."
+    reason: "To show users a prompt when add-on installation is disabled, so that they can better understand why their add-on didn't install, and can know how/where to re-enable it if desired."
+    effect: "Users can enable or disable add-on installation from the UI."
+    category: "User Interface"
+
+  - file: "gecko-ironfox-settings-support-webgl.patch"
+    name: "IronFox Settings Support (Gecko) - WebGL"
+    description: "Provides support for a UI toggle to enable/disable WebGL (including on a per-site basis)."
+    reason: "Users can enable or disable WebGL, globally or on a per-site basis."
+    effect: "Users can maximize privacy and security by disabling WebGL, without compromising usability, by allowing it to be re-enabled on a per-site basis."
+    category: "User Interface"
+
+  - file: "gecko-ironfox-settings-support-xpinstall.patch"
+    name: "IronFox Settings Support (Gecko) - XPInstall"
+    description: "Provides support for a UI toggle to enable/disable the installation of add-ons."
+    reason: "Leverages enterprise policies to enable/disable installation of add-ons."
+    effect: "Users can receive a prompt when add-on installation is disabled from the UI, and the installation of add-ons can be better controlled/fully disabled from policies."
+    category: "User Interface"
+
+  - file: "a-c-ironfox-oled-theme.patch"
+    name: "OLED Theme (Android Components)"
+    description: "Adds support for true OLED black theme to Mozilla's Android Components"
+    reason: "To provide users with the option to reduce battery consumption and eye strain on OLED displays by using true black theme."
+    effect: "Users can toggle a UI option for an OLED-optimized dark theme, which helps improve visual comfort and power efficiency on OLED screens."
+    category: "User Interface"
+
+  - file: "fenix-ironfox-oled-theme.patch"
+    name: "OLED Theme (Fenix)"
+    description: "Adds support for true OLED black theme to Fenix"
+    reason: "To provide users with the option to reduce battery consumption and eye strain on OLED displays by using true black theme."
+    effect: "Users can toggle a UI option for an OLED-optimized dark theme, which helps improve visual comfort and power efficiency on OLED screens."
+    category: "User Interface"

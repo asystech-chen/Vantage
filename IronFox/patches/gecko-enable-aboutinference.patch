@@ -1,0 +1,52 @@
+diff --git a/docshell/base/nsAboutRedirector.cpp b/docshell/base/nsAboutRedirector.cpp
+index 49779b7cc79a..de21c928fac2 100644
+--- a/docshell/base/nsAboutRedirector.cpp
++++ b/docshell/base/nsAboutRedirector.cpp
+@@ -136,7 +136,7 @@ static const RedirEntry kRedirMap[] = {
+      nsIAboutModule::URI_SAFE_FOR_UNTRUSTED_CONTENT |
+          nsIAboutModule::URI_CAN_LOAD_IN_CHILD | nsIAboutModule::ALLOW_SCRIPT |
+          nsIAboutModule::HIDE_FROM_ABOUTABOUT},
+-#if defined(NIGHTLY_BUILD)
++#if defined(IRONFOX)
+     {"inference", "chrome://global/content/aboutInference.html",
+      nsIAboutModule::ALLOW_SCRIPT | nsIAboutModule::IS_SECURE_CHROME_UI},
+ #endif
+diff --git a/docshell/build/components.conf b/docshell/build/components.conf
+index 5c1543ab806f..3f645534995f 100644
+--- a/docshell/build/components.conf
++++ b/docshell/build/components.conf
+@@ -53,7 +53,7 @@ if not defined('MOZ_GLEAN_ANDROID'):
+     about_pages.append('glean')
+ if buildconfig.substs['MOZ_WIDGET_TOOLKIT'] != 'android' and buildconfig.substs['MOZ_WIDGET_TOOLKIT'] != 'windows':
+     about_pages.append('webauthn')
+-if defined('NIGHTLY_BUILD'):
++if defined('IRONFOX'):
+     about_pages.append('inference')
+ 
+ Headers = ['/docshell/build/nsDocShellModule.h']
+diff --git a/toolkit/components/moz.build b/toolkit/components/moz.build
+index ae3dc77bea51..c7f21708e82d 100644
+--- a/toolkit/components/moz.build
++++ b/toolkit/components/moz.build
+@@ -147,7 +147,7 @@ if CONFIG["MOZ_BACKGROUNDTASKS"]:
+ if CONFIG["MOZ_UNIFFI_FIXTURES"]:
+     DIRS += ["uniffi-bindgen-gecko-js/tests"]
+ 
+-if CONFIG["NIGHTLY_BUILD"]:
++if CONFIG["IRONFOX"]:
+     DIRS += ["aboutinference"]
+ 
+ UNIFIED_SOURCES += [
+diff --git a/toolkit/locales/jar.mn b/toolkit/locales/jar.mn
+index c789b8726f5d..d31cc1ae96a1 100644
+--- a/toolkit/locales/jar.mn
++++ b/toolkit/locales/jar.mn
+@@ -12,7 +12,7 @@
+ #ifdef MOZ_LAYOUT_DEBUGGER
+   layoutdebug/layoutdebug.ftl                      (../../layout/tools/layout-debug/ui/content/layoutdebug.ftl)
+ #endif
+-#if defined(NIGHTLY_BUILD)
++#if defined(IRONFOX)
+   preview/aboutInference.ftl                       (../components/aboutinference/content/aboutInference.ftl)
+ #endif
+ 

@@ -1,0 +1,101 @@
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/account/AccountSettingsFragment.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/account/AccountSettingsFragment.kt
+index 76ab6e5b0072..5ae6093e034d 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/account/AccountSettingsFragment.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/account/AccountSettingsFragment.kt
+@@ -363,28 +363,28 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
+         val syncEnginesStatus = SyncEnginesStorage(requireContext()).getStatus()
+         requirePreference<CheckBoxPreference>(R.string.pref_key_sync_bookmarks).apply {
+             isEnabled = syncEnginesStatus.containsKey(SyncEngine.Bookmarks)
+-            isChecked = syncEnginesStatus.getOrElse(SyncEngine.Bookmarks) { true }
++            isChecked = syncEnginesStatus.getOrElse(SyncEngine.Bookmarks) { false }
+         }
+         requirePreference<CheckBoxPreference>(R.string.pref_key_sync_credit_cards).apply {
+             isEnabled = syncEnginesStatus.containsKey(SyncEngine.CreditCards)
+-            isChecked = syncEnginesStatus.getOrElse(SyncEngine.CreditCards) { true }
++            isChecked = syncEnginesStatus.getOrElse(SyncEngine.CreditCards) { false }
+         }
+         requirePreference<CheckBoxPreference>(R.string.pref_key_sync_history).apply {
+             isEnabled = syncEnginesStatus.containsKey(SyncEngine.History)
+-            isChecked = syncEnginesStatus.getOrElse(SyncEngine.History) { true }
++            isChecked = syncEnginesStatus.getOrElse(SyncEngine.History) { false }
+         }
+         requirePreference<CheckBoxPreference>(R.string.pref_key_sync_logins).apply {
+             isEnabled = syncEnginesStatus.containsKey(SyncEngine.Passwords)
+-            isChecked = syncEnginesStatus.getOrElse(SyncEngine.Passwords) { true }
++            isChecked = syncEnginesStatus.getOrElse(SyncEngine.Passwords) { false }
+         }
+         requirePreference<CheckBoxPreference>(R.string.pref_key_sync_tabs).apply {
+             isEnabled = syncEnginesStatus.containsKey(SyncEngine.Tabs)
+-            isChecked = syncEnginesStatus.getOrElse(SyncEngine.Tabs) { true }
++            isChecked = syncEnginesStatus.getOrElse(SyncEngine.Tabs) { false }
+         }
+         requirePreference<CheckBoxPreference>(R.string.pref_key_sync_address).apply {
+             isVisible = settings.isAddressSyncEnabled
+             isEnabled = syncEnginesStatus.containsKey(SyncEngine.Addresses)
+-            isChecked = syncEnginesStatus.getOrElse(SyncEngine.Addresses) { true }
++            isChecked = syncEnginesStatus.getOrElse(SyncEngine.Addresses) { false }
+         }
+     }
+ 
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/utils/Settings.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/utils/Settings.kt
+index c7db941b0f7e..7f2f6394157d 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/utils/Settings.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/utils/Settings.kt
+@@ -1996,7 +1996,7 @@ class Settings(
+      */
+     var isAddressSyncEnabled by featureFlagPreference(
+         key = appContext.getPreferenceKey(R.string.pref_key_enable_address_sync),
+-        default = true,
++        default = false,
+         featureFlag = isAddressFeatureEnabled(appContext),
+     )
+ 
+diff --git a/mobile/android/fenix/app/src/main/res/xml/account_settings_preferences.xml b/mobile/android/fenix/app/src/main/res/xml/account_settings_preferences.xml
+index 300331efb528..f1cbf8ea995b 100644
+--- a/mobile/android/fenix/app/src/main/res/xml/account_settings_preferences.xml
++++ b/mobile/android/fenix/app/src/main/res/xml/account_settings_preferences.xml
+@@ -29,38 +29,38 @@
+         android:layout="@layout/preference_cat_style">
+ 
+         <CheckBoxPreference
+-            android:defaultValue="true"
++            android:defaultValue="false"
+             android:key="@string/pref_key_sync_bookmarks"
+             android:layout="@layout/checkbox_left_preference"
+             android:title="@string/preferences_sync_bookmarks" />
+ 
+         <CheckBoxPreference
+-            android:defaultValue="true"
++            android:defaultValue="false"
+             android:key="@string/pref_key_sync_credit_cards"
+             android:layout="@layout/checkbox_left_preference"
+             android:title="@string/preferences_sync_credit_cards_2" />
+ 
+         <CheckBoxPreference
+-            android:defaultValue="true"
++            android:defaultValue="false"
+             android:key="@string/pref_key_sync_history"
+             android:layout="@layout/checkbox_left_preference"
+             android:title="@string/preferences_sync_history" />
+ 
+         <CheckBoxPreference
+-            android:defaultValue="true"
++            android:defaultValue="false"
+             android:key="@string/pref_key_sync_logins"
+             android:layout="@layout/checkbox_left_preference"
+             android:title="@string/preferences_sync_logins_2" />
+ 
+         <CheckBoxPreference
+-            android:defaultValue="true"
++            android:defaultValue="false"
+             android:key="@string/pref_key_sync_tabs"
+             android:layout="@layout/checkbox_left_preference"
+             android:title="@string/preferences_sync_tabs_2"/>
+ 
+         <!-- The default visibility is 'false' because we don't display this on most channels. -->
+         <CheckBoxPreference
+-            android:defaultValue="true"
++            android:defaultValue="false"
+             android:visible="false"
+             android:key="@string/pref_key_sync_address"
+             android:layout="@layout/checkbox_left_preference"

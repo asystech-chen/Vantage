@@ -1,0 +1,81 @@
+diff --git a/components/nimbus/android/src/main/java/org/mozilla/experiments/nimbus/Nimbus.kt b/components/nimbus/android/src/main/java/org/mozilla/experiments/nimbus/Nimbus.kt
+index 2b7f08734..8587e0752 100644
+--- a/components/nimbus/android/src/main/java/org/mozilla/experiments/nimbus/Nimbus.kt
++++ b/components/nimbus/android/src/main/java/org/mozilla/experiments/nimbus/Nimbus.kt
+@@ -136,23 +136,23 @@ open class Nimbus(
+ 
+     private val nimbusClient: NimbusClientInterface
+ 
+-    override var experimentParticipation: Boolean
+-        get() = nimbusClient.getExperimentParticipation()
++    override var experimentParticipation: Boolean = false
++/*        get() = nimbusClient.getExperimentParticipation()
+         set(active) {
+             dbScope.launch {
+                 nimbusClient.setExperimentParticipation(active)
+                 applyPendingExperimentsOnThisThread()
+             }
+-        }
++        } */
+ 
+-    override var rolloutParticipation: Boolean
+-        get() = nimbusClient.getRolloutParticipation()
++    override var rolloutParticipation: Boolean = false
++/*        get() = nimbusClient.getRolloutParticipation()
+         set(active) {
+             dbScope.launch {
+                 nimbusClient.setRolloutParticipation(active)
+                 applyPendingExperimentsOnThisThread()
+             }
+-        }
++        } */
+ 
+     init {
+         NullVariables.instance.setContext(context)
+@@ -271,9 +271,9 @@ open class Nimbus(
+         }
+     }
+ 
+-    override fun isFetchEnabled() = withCatchAll("isFetchEnabled") {
+-        nimbusClient.isFetchEnabled()
+-    } ?: true
++    override fun isFetchEnabled() = false
++//        nimbusClient.isFetchEnabled()
++//    } ?: true
+ 
+     @WorkerThread
+     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+diff --git a/components/nimbus/android/src/main/java/org/mozilla/experiments/nimbus/NimbusInterface.kt b/components/nimbus/android/src/main/java/org/mozilla/experiments/nimbus/NimbusInterface.kt
+index 451490b20..c0aa8f1e2 100644
+--- a/components/nimbus/android/src/main/java/org/mozilla/experiments/nimbus/NimbusInterface.kt
++++ b/components/nimbus/android/src/main/java/org/mozilla/experiments/nimbus/NimbusInterface.kt
+@@ -203,7 +203,7 @@ interface NimbusInterface : FeaturesInterface, NimbusMessagingInterface, NimbusE
+     * When set to false, the user will be opted out of all experiments but not rollouts.
+     */
+     var experimentParticipation: Boolean
+-        get() = true
++        get() = false
+         set(_) = Unit
+ 
+     /**
+@@ -211,7 +211,7 @@ interface NimbusInterface : FeaturesInterface, NimbusMessagingInterface, NimbusE
+     * When set to false, the user will be opted out of all rollouts but not experiments.
+     */
+     var rolloutParticipation: Boolean
+-        get() = true
++        get() = false
+         set(_) = Unit
+ 
+     override val events: NimbusEventStore
+diff --git a/proguard-rules-consumer-jna.pro b/proguard-rules-consumer-jna.pro
+index 2a3934c83..71f82ed17 100644
+--- a/proguard-rules-consumer-jna.pro
++++ b/proguard-rules-consumer-jna.pro
+@@ -11,5 +11,5 @@
+ # Add explicit keep rules for Nimbus RustBuffer and related structs to avoid
+ # overly-aggressive optimization when R8 fullMode is enabled, leading to crashes.
+ ####################################################################################################
+--keepattributes RuntimeVisibleAnnotations,RuntimeInvisibleAnnotations,RuntimeVisibleTypeAnnotations,RuntimeInvisibleTypeAnnotations,AnnotationDefault,InnerClasses,EnclosingMethod,Signature
+--keep class org.mozilla.experiments.nimbus.internal.** { *; }
++# -keepattributes RuntimeVisibleAnnotations,RuntimeInvisibleAnnotations,RuntimeVisibleTypeAnnotations,RuntimeInvisibleTypeAnnotations,AnnotationDefault,InnerClasses,EnclosingMethod,Signature
++# -keep class org.mozilla.experiments.nimbus.internal.** { *; }

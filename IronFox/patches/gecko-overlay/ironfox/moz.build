@@ -1,0 +1,10 @@
+
+DIRS += [
+    "about",
+    "dumps",
+    "enterprisepolicies",
+    "locales",
+    "prefs",
+    "themes/global",
+    "themes/mozapps",
+]
