@@ -1,0 +1,14 @@
+diff --git a/build/moz.configure/toolchain.configure b/build/moz.configure/toolchain.configure
+--- a/build/moz.configure/toolchain.configure
++++ b/build/moz.configure/toolchain.configure
+@@ -3620,6 +3620,10 @@
+ 
+ @depends(c_compiler, host, target)
+ def stdcpp_path(c_compiler, host, target):
++    # Skip libstdc++ check when using libc++ (llvm-mingw)
++    if c_compiler.type == "clang" and "-mingw" in str(target.alias):
++        return None
++
+     if c_compiler.type == "gcc":
+         # Find libstdc++ location
+         cmd = [c_compiler.path, "-print-file-name=libstdc++.a"]

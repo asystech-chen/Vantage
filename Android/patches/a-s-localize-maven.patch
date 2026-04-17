@@ -1,0 +1,28 @@
+diff --git a/settings.gradle b/settings.gradle
+index c891c8ac1..44df67926 100644
+--- a/settings.gradle
++++ b/settings.gradle
+@@ -15,6 +15,7 @@ buildscript {
+     if (!gradle.root.hasProperty("mozconfig")) {
+         // in app-services
+         repositories {
++            mavenLocal()
+             mavenCentral()
+         }
+     } else {
+@@ -22,14 +23,7 @@ buildscript {
+         gradle.ext.mozconfig = gradle.root.mozconfig
+ 
+         repositories {
+-            gradle.mozconfig.substs.GRADLE_MAVEN_REPOSITORIES.each { repository ->
+-                maven {
+-                    url = repository
+-                    if (gradle.mozconfig.substs.ALLOW_INSECURE_GRADLE_REPOSITORIES) {
+-                        allowInsecureProtocol = true
+-                    }
+-                }
+-            }
++            mavenLocal()
+         }
+     }
+ }

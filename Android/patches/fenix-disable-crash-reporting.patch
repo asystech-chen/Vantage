@@ -1,0 +1,203 @@
+From ca75f2556d3c43a290ce5c0030670f7b30467fae Mon Sep 17 00:00:00 2001
+From: celenity <celenity@celenity.dev>
+Date: Tue, 17 Feb 2026 03:44:28 +0000
+Subject: [PATCH] fix: Disable crash reporting
+
+Signed-off-by: celenity <celenity@celenity.dev>
+---
+ .../fenix/app/src/main/AndroidManifest.xml       |  4 ++--
+ .../java/org/mozilla/fenix/FenixApplication.kt   | 16 ++++++++--------
+ .../fenix/components/BackgroundServices.kt       |  2 +-
+ .../fenix/debugsettings/crashtools/CrashTools.kt |  8 ++++----
+ .../debugsettings/navigation/DebugDrawerRoute.kt |  8 ++++----
+ .../store/DebugDrawerNavigationMiddleware.kt     |  2 +-
+ .../search/BrowserToolbarSearchMiddleware.kt     |  4 ++--
+ .../fenix/search/SearchDialogController.kt       |  4 ++--
+ .../java/org/mozilla/fenix/utils/Settings.kt     |  4 ++--
+ 9 files changed, 26 insertions(+), 26 deletions(-)
+
+diff --git a/mobile/android/fenix/app/src/main/AndroidManifest.xml b/mobile/android/fenix/app/src/main/AndroidManifest.xml
+index 324a25a10af0..4225ec0a1ead 100644
+--- a/mobile/android/fenix/app/src/main/AndroidManifest.xml
++++ b/mobile/android/fenix/app/src/main/AndroidManifest.xml
+@@ -494,12 +494,12 @@
+             </intent-filter>
+         </activity-alias>
+ 
+-        <activity
++        <!-- <activity
+             android:name=".startupCrash.StartupCrashActivity"
+             android:exported="false"
+             android:process=":StartupCrashActivityProcess"
+             >
+-        </activity>
++        </activity> -->
+ 
+         <activity
+             android:name=".HomeActivity"
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/FenixApplication.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/FenixApplication.kt
+index f0ee597d00c8..7136852819da 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/FenixApplication.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/FenixApplication.kt
+@@ -124,7 +124,7 @@ import org.mozilla.fenix.push.WebPushEngineIntegration
+ import org.mozilla.fenix.session.VisibilityLifecycleCallback
+ import org.mozilla.fenix.settings.doh.DefaultDohSettingsProvider
+ import org.mozilla.fenix.settings.doh.DohSettingsProvider
+-import org.mozilla.fenix.startupCrash.StartupCrashActivity
++// import org.mozilla.fenix.startupCrash.StartupCrashActivity
+ import org.mozilla.fenix.theme.DefaultThemeProvider
+ import org.mozilla.fenix.theme.Theme
+ import org.mozilla.fenix.theme.Theme.Private
+@@ -212,7 +212,7 @@ open class FenixApplication : Application(), Provider, ThemeProvider {
+         //
+         // Note: This doesn't setup any [UncaughtExceptionHandler].
+         // Note: Gecko processes have their own crash handling mechanisms.
+-        CrashReporter.registerDeferredInitializer(::setupCrashReporting)
++//        CrashReporter.registerDeferredInitializer(::setupCrashReporting)
+ 
+         // While this [initializeFenixProcess] method is run for _all processes_ in the app, we only
+         // do global initialization for the _main process_ here. This main process initialization
+@@ -661,15 +661,15 @@ open class FenixApplication : Application(), Provider, ThemeProvider {
+         }
+     }
+ 
+-    private fun setupCrashReporting(): CrashReporter {
+-        return components
++    private fun setupCrashReporting() {
++/*        return components
+             .analytics
+             .crashReporter
+-            .install(this, ::handleCaughtException)
++            .install(this, ::handleCaughtException) */
+     }
+ 
+     private fun handleCaughtException() {
+-        if (
++/*        if (
+             isMainProcess() &&
+             components.settings.useNewCrashReporterFlow &&
+             !components.performance.visualCompletenessQueue.isReady()
+@@ -678,7 +678,7 @@ open class FenixApplication : Application(), Provider, ThemeProvider {
+ 
+             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+             applicationContext.startActivity(intent)
+-        }
++        } */
+     }
+ 
+     private fun initializeNimbus() {
+@@ -705,7 +705,7 @@ open class FenixApplication : Application(), Provider, ThemeProvider {
+     private fun setupMegazordInitial() {
+         // Rust components must be initialized at the very beginning, before any other Rust call, ...
+         AppServicesInitializer.init(
+-            AppServicesConfig(components.analytics.crashReporter),
++            AppServicesConfig(),
+         )
+     }
+ 
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/BackgroundServices.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/BackgroundServices.kt
+index 0bb38f8e5773..54dff3639970 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/BackgroundServices.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/BackgroundServices.kt
+@@ -225,7 +225,7 @@ class BackgroundServices(
+ 
+         // Enable push if it's configured.
+         push.feature?.let { autoPushFeature ->
+-            FxaPushSupportFeature(context, accountManager, autoPushFeature, crashReporter)
++            FxaPushSupportFeature(context, accountManager, autoPushFeature)
+                 .initialize()
+         }
+ 
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/debugsettings/crashtools/CrashTools.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/debugsettings/crashtools/CrashTools.kt
+index 05c401dc3cac..560f13167e7d 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/debugsettings/crashtools/CrashTools.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/debugsettings/crashtools/CrashTools.kt
+@@ -31,7 +31,7 @@ import mozilla.components.compose.base.annotation.FlexibleWindowPreview
+ import mozilla.components.compose.base.button.FilledButton
+ import org.mozilla.fenix.R
+ import org.mozilla.fenix.components.components
+-import org.mozilla.fenix.startupCrash.StartupCrashActivity
++// import org.mozilla.fenix.startupCrash.StartupCrashActivity
+ import org.mozilla.fenix.theme.FirefoxTheme
+ import org.mozilla.fenix.theme.PreviewThemeProvider
+ import org.mozilla.fenix.theme.Theme
+@@ -97,10 +97,10 @@ internal fun CrashTools(
+                 text = stringResource(R.string.crash_debug_show_startup_crash_screen),
+                 modifier = Modifier.fillMaxWidth(),
+                 onClick = {
+-                    val intent = Intent(appContext, StartupCrashActivity::class.java)
++//                    val intent = Intent(appContext, StartupCrashActivity::class.java)
+ 
+-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+-                    appContext.startActivity(intent)
++//                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
++//                    appContext.startActivity(intent)
+                     Process.killProcess(Process.myPid())
+                 },
+             )
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/search/BrowserToolbarSearchMiddleware.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/search/BrowserToolbarSearchMiddleware.kt
+index 788cee797c10..61fb08c6e103 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/search/BrowserToolbarSearchMiddleware.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/search/BrowserToolbarSearchMiddleware.kt
+@@ -213,14 +213,14 @@ class BrowserToolbarSearchMiddleware(
+         }
+ 
+         when (url) {
+-            "about:crashes" -> {
++/*            "about:crashes" -> {
+                 // The list of past crashes can be accessed via "settings > about", but desktop and
+                 // fennec users may be used to navigating to "about:crashes". So we intercept this here
+                 // and open the crash list activity instead.
+                 navController.navigate(
+                     NavGraphDirections.actionGlobalCrashListFragment(),
+                 )
+-            }
++            } */
+ 
+             "about:addons" -> {
+                 navController.navigate(
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/search/SearchDialogController.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/search/SearchDialogController.kt
+index aa2cd9e6ba8e..274326da94ca 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/search/SearchDialogController.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/search/SearchDialogController.kt
+@@ -92,13 +92,13 @@ class SearchDialogController(
+         }
+ 
+         when (url) {
+-            "about:crashes" -> {
++/*            "about:crashes" -> {
+                 // The list of past crashes can be accessed via "settings > about", but desktop and
+                 // fennec users may be used to navigating to "about:crashes". So we intercept this here
+                 // and open the crash list activity instead.
+                 val directions = SearchDialogFragmentDirections.actionCrashListFragment()
+                 navController.navigate(directions)
+-            }
++            } */
+             "about:addons" -> {
+                 val directions =
+                     SearchDialogFragmentDirections.actionGlobalAddonsManagementFragment()
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/utils/Settings.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/utils/Settings.kt
+index a975ccd3d669..0b8e7da31938 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/utils/Settings.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/utils/Settings.kt
+@@ -596,7 +596,7 @@ class Settings(
+ 
+     var crashReportChoice by stringPreference(
+         appContext.getPreferenceKey(R.string.pref_key_crash_reporting_choice),
+-        default = CrashReportOption.Ask.toString(),
++        default = CrashReportOption.Never.toString(),
+     )
+ 
+     val isRemoteDebuggingEnabled by booleanPreference(
+@@ -1013,7 +1013,7 @@ class Settings(
+      */
+     var crashPullNeverShowAgain: Boolean by booleanPreference(
+         appContext.getPreferenceKey(R.string.pref_key_crash_pull_never_show_again),
+-        default = false,
++        default = true,
+     )
+ 
+     @VisibleForTesting
+-- 
+2.53.0
+

@@ -1,0 +1,50 @@
+diff --git a/toolkit/components/enterprisepolicies/EnterprisePoliciesParent.sys.mjs b/toolkit/components/enterprisepolicies/EnterprisePoliciesParent.sys.mjs
+index bb451a279599d..ecaaf717da955 100644
+--- a/toolkit/components/enterprisepolicies/EnterprisePoliciesParent.sys.mjs
++++ b/toolkit/components/enterprisepolicies/EnterprisePoliciesParent.sys.mjs
+@@ -584,16 +584,29 @@ class JSONPoliciesProvider {
+     return configFile;
+   }
+ 
++  _getPolicies() {
++    const { NetUtil } = ChromeUtils.importESModule(
++      "resource://gre/modules/NetUtil.sys.mjs"
++    );
++    let uri = NetUtil.newURI("resource://gre/defaults/policies.json", "UTF-8");
++    let channel = NetUtil.newChannel({uri: uri, loadUsingSystemPrincipal: true, securityFlags: Ci.nsILoadInfo.SEC_ALLOW_CROSS_ORIGIN_SEC_CONTEXT_IS_NULL, contentPolicyType: Ci.nsIContentPolicy.TYPE_OTHER});
++    let file = channel.open();
++    let count = file.available();
++    let data = NetUtil.readInputStreamToString(file, count, {charset: "UTF-8"});
++    file.close();
++    return data;
++  }
++
+   _readData() {
+-    let configFile = this._getConfigurationFile();
++    let configFile = true;
+     if (!configFile) {
+       // Do nothing, _policies will remain null
+       return;
+     }
+     try {
+-      let data = Cu.readUTF8File(configFile);
++      let data = this._getPolicies();
+       if (data) {
+-        lazy.log.debug(`policies.json path = ${configFile.path}`);
++        lazy.log.debug(`policies.json path = resource://gre/defaults/policies.json`);
+         lazy.log.debug(`policies.json content = ${data}`);
+         this._policies = JSON.parse(data).policies;
+ 
+diff --git a/toolkit/components/enterprisepolicies/moz.build b/toolkit/components/enterprisepolicies/moz.build
+index 4fcb377c80145..539080df94edd 100644
+--- a/toolkit/components/enterprisepolicies/moz.build
++++ b/toolkit/components/enterprisepolicies/moz.build
+@@ -15,7 +15,7 @@ XPIDL_MODULE = "enterprisepolicies"
+ 
+ TEST_DIRS += ["tests"]
+ 
+-if CONFIG["MOZ_WIDGET_TOOLKIT"] != "android":
++if CONFIG["IRONFOX"]:
+     EXTRA_JS_MODULES += [
+         "EnterprisePolicies.sys.mjs",
+         "EnterprisePoliciesContent.sys.mjs",

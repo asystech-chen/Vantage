@@ -82,7 +82,7 @@ async function init(aEvent) {
   
 	const downloadPage = Services.prefs.getStringPref(
 		"vantage.aboutMenu.downloadPageUrl",
-		"https://asystech.cn/pc/vantage.html"  // 默认下载页
+		"https://asystech.cn/vantage/vdownload.html"  // 默认下载页
 	);
 
 	fetch(apiUrl)

@@ -1,0 +1,175 @@
+From 75a3b7b848d59f749f5e977550bd84247024bacb Mon Sep 17 00:00:00 2001
+From: celenity <celenity@celenity.dev>
+Date: Tue, 17 Feb 2026 05:35:54 +0000
+Subject: [PATCH] feat: add support for IronFox UI settings
+
+Signed-off-by: celenity <celenity@celenity.dev>
+---
+ .../java/org/mozilla/fenix/components/Core.kt |  2 ++
+ .../fenix/settings/SettingsFragment.kt        | 15 ++++++++++++++
+ .../java/org/mozilla/fenix/utils/Settings.kt  |  4 ++++
+ .../app/src/main/res/navigation/nav_graph.xml | 11 ++++++++++
+ .../app/src/main/res/xml/preferences.xml      | 20 +++++++++++++++++--
+ 5 files changed, 50 insertions(+), 2 deletions(-)
+
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/Core.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/Core.kt
+index 5cc1da059f7d..517c235062dd 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/Core.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/Core.kt
+@@ -136,6 +136,7 @@ import org.mozilla.geckoview.GeckoRuntime
+ import java.util.UUID
+ import java.util.concurrent.TimeUnit
+ import mozilla.components.service.pocket.mars.api.Placement as MarsSpocsPlacement
++import org.ironfoxoss.ironfox.utils.GeckoSettingsBridge
+ 
+ /**
+  * Component group for all core browser functionality.
+@@ -237,6 +238,7 @@ class Core(
+             defaultSettings,
+             geckoRuntime,
+         ).also {
++            GeckoSettingsBridge.setIronFoxPrefs(context, it)
+             WebCompatFeature.install(it)
+         }
+     }
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/SettingsFragment.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/SettingsFragment.kt
+index 4ecf8c8e6467..2035846c88b3 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/SettingsFragment.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/SettingsFragment.kt
+@@ -72,6 +72,7 @@ import org.mozilla.fenix.snackbar.SnackbarBinding
+ import org.mozilla.fenix.utils.Settings
+ import kotlin.system.exitProcess
+ import org.mozilla.fenix.GleanMetrics.Settings as SettingsMetrics
++import org.ironfoxoss.ironfox.utils.FenixSettingsVisibilityManager
+ 
+ @Suppress("LargeClass", "TooManyFunctions")
+ class SettingsFragment : PreferenceFragmentCompat() {
+@@ -609,8 +610,22 @@ class SettingsFragment : PreferenceFragmentCompat() {
+         setupHomepagePreference(settings)
+         setupTrackingProtectionPreference(settings)
+         setupDnsOverHttpsPreference(settings)
++        setupIronFoxPreferences()
+     }
+ 
++    internal fun setupIronFoxPreferences() {
++        requirePreference<Preference>(R.string.pref_key_if_preferences).apply {
++            setOnPreferenceClickListener {
++                val directions =
++                    SettingsFragmentDirections
++                        .actionSettingsFragmentToIronFoxSettingsFragment()
++                requireView().findNavController().navigate(directions)
++                true
++            }
++        }
++        FenixSettingsVisibilityManager.SettingsFragment(requireContext(), this)
++     }
++
+     /**
+      * For >=Q -> Use new RoleManager API to show in-app browser switching dialog.
+      * For <Q && >=N -> Navigate user to Android Default Apps Settings.
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/utils/Settings.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/utils/Settings.kt
+index 81d95a9666a1a..d0e261c4cae8c 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/utils/Settings.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/utils/Settings.kt
+@@ -4,6 +4,7 @@
+ 
+ package org.mozilla.fenix.utils
+ 
++import org.ironfoxoss.ironfox.utils.IronFoxSettings
+ import android.accessibilityservice.AccessibilityServiceInfo.CAPABILITY_CAN_PERFORM_GESTURES
+ import android.appwidget.AppWidgetManager
+ import android.content.Context
+@@ -174,6 +175,8 @@ class Settings(
+         private const val CLOUDFLARE_URI = "https://mozilla.cloudflare-dns.com/dns-query"
+     }
+ 
++    val ironfox = IronFoxSettings(appContext)
++
+     private val logger = Logger("Settings")
+ 
+     @VisibleForTesting
+diff --git a/mobile/android/fenix/app/src/main/res/navigation/nav_graph.xml b/mobile/android/fenix/app/src/main/res/navigation/nav_graph.xml
+index 440da531952f..d4c4e78d2887 100644
+--- a/mobile/android/fenix/app/src/main/res/navigation/nav_graph.xml
++++ b/mobile/android/fenix/app/src/main/res/navigation/nav_graph.xml
+@@ -692,6 +692,13 @@
+             app:exitAnim="@anim/slide_out_left"
+             app:popEnterAnim="@anim/slide_in_left"
+             app:popExitAnim="@anim/slide_out_right" />
++        <action
++            android:id="@+id/action_settingsFragment_to_ironFoxSettingsFragment"
++            app:destination="@id/ironFoxSettingsFragment"
++            app:enterAnim="@anim/slide_in_right"
++            app:exitAnim="@anim/slide_out_left"
++            app:popEnterAnim="@anim/slide_in_left"
++            app:popExitAnim="@anim/slide_out_right" />
+         <action
+             android:id="@+id/action_settingsFragment_to_trackingProtectionFragment"
+             app:destination="@id/trackingProtectionFragment"
+@@ -1034,6 +1041,10 @@
+             app:argType="string"
+             app:nullable="true" />
+     </fragment>
++    <fragment
++        android:id="@+id/ironFoxSettingsFragment"
++        android:name="org.mozilla.fenix.settings.IronFoxSettingsFragment"
++        android:label="@string/if_preferences" />
+     <fragment
+         android:id="@+id/trackingProtectionFragment"
+         android:name="org.mozilla.fenix.settings.TrackingProtectionFragment">
+diff --git a/mobile/android/fenix/app/src/main/res/xml/preferences.xml b/mobile/android/fenix/app/src/main/res/xml/preferences.xml
+index 243eddddd9a3..5963a7073099 100644
+--- a/mobile/android/fenix/app/src/main/res/xml/preferences.xml
++++ b/mobile/android/fenix/app/src/main/res/xml/preferences.xml
+@@ -6,12 +6,12 @@
+ <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto">
+ 
+-    <androidx.preference.Preference
++    <!-- <androidx.preference.Preference
+         android:key="@string/pref_key_sign_in"
+         android:layout="@layout/sign_in_preference"
+         android:summary="@string/preferences_sign_in_description"
+         android:title="@string/preferences_sign_in"
+-        app:allowDividerBelow="false" />
++        app:allowDividerBelow="false" /> -->
+ 
+     <androidx.preference.PreferenceCategory
+         android:key="@string/pref_key_account_category"
+@@ -19,6 +19,10 @@
+         app:isPreferenceVisible="false"
+         android:layout="@layout/preference_category_no_icon_style">
+ 
++        <org.mozilla.fenix.settings.account.AccountPreference
++            android:icon="@drawable/mozac_ic_avatar_circle_24"
++            android:key="@string/pref_key_sign_in" />
++
+         <org.mozilla.fenix.settings.account.AccountPreference
+             android:icon="@drawable/mozac_ic_avatar_circle_24"
+             android:key="@string/pref_key_account" />
+@@ -209,10 +213,22 @@
+         <androidx.preference.SwitchPreference
+             android:defaultValue="false"
+             android:key="@string/pref_key_enable_gecko_logs"
++            android:summary="@string/restart_required_summary"
+             app:iconSpaceReserved="false"
+             android:title="@string/preferences_enable_gecko_logs" />
+     </PreferenceCategory>
+ 
++    <androidx.preference.PreferenceCategory
++        android:layout="@layout/preference_category_no_icon_style"
++        android:selectable="false"
++        android:title="@string/if_title"
++        app:iconSpaceReserved="false">
++        <androidx.preference.Preference
++            android:key="@string/pref_key_if_preferences"
++            android:title="@string/if_preferences"
++            app:iconSpaceReserved="false" />
++    </androidx.preference.PreferenceCategory>
++
+     <androidx.preference.PreferenceCategory
+         android:title="@string/preferences_category_about"
+         app:iconSpaceReserved="false"
+-- 
+2.53.0
+

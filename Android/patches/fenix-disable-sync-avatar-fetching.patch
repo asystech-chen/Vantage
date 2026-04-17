@@ -1,0 +1,49 @@
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/menu/compose/header/MozillaAccountMenuItem.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/menu/compose/header/MozillaAccountMenuItem.kt
+index 288150bc6368..a977f4ecdecf 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/menu/compose/header/MozillaAccountMenuItem.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/components/menu/compose/header/MozillaAccountMenuItem.kt
+@@ -187,7 +187,7 @@ private fun AvatarIcon(
+     } else if (accountState is AuthenticationProblem) {
+         WarningAvatarIcon()
+     } else {
+-        val avatarUrl = account?.avatar?.url
++/*        val avatarUrl = account?.avatar?.url
+ 
+         if (avatarUrl != null) {
+             Image(
+@@ -199,9 +199,9 @@ private fun AvatarIcon(
+                 placeholder = { FallbackAvatarIcon() },
+                 fallback = { FallbackAvatarIcon() },
+             )
+-        } else {
++        } else { */
+             FallbackAvatarIcon()
+-        }
++//        }
+     }
+ }
+ 
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/account/AccountUiView.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/account/AccountUiView.kt
+index da8fa9afaa7f..be8b28ff70f6 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/account/AccountUiView.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/settings/account/AccountUiView.kt
+@@ -51,16 +51,16 @@ class AccountUiView(
+             preferenceSignIn.isVisible = false
+ 
+             avatarJob?.cancel()
+-            val avatarUrl = profile?.avatar?.url
++/*            val avatarUrl = profile?.avatar?.url
+             if (avatarUrl != null) {
+                 avatarJob = scope.launch {
+                     val roundedAvatarDrawable = toRoundedDrawable(avatarUrl, context)
+                     preferenceFirefoxAccount.icon = roundedAvatarDrawable ?: genericAvatar(context)
+                 }
+-            } else {
++            } else { */
+                 avatarJob = null
+                 preferenceFirefoxAccount.icon = genericAvatar(context)
+-            }
++//            }
+ 
+             preferenceSignIn.onPreferenceClickListener = null
+             preferenceFirefoxAccountAuthError.isVisible = false

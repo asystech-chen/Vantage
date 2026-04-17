@@ -41,6 +41,18 @@
   align-items: flex-start;
 }
 
+/* 链接容器 - 横向排列 */
+#linksContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+#linksContainer label[is="text-link"] {
+  white-space: nowrap;
+}
+
 #wordmark {
   color: #FFFFFF;
   font-size: 30px;

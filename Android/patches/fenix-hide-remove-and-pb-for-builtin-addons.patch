@@ -1,0 +1,23 @@
+diff --git a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/addons/InstalledAddonDetailsFragment.kt b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/addons/InstalledAddonDetailsFragment.kt
+index dbb3d349e94b..1da80345c565 100644
+--- a/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/addons/InstalledAddonDetailsFragment.kt
++++ b/mobile/android/fenix/app/src/main/java/org/mozilla/fenix/addons/InstalledAddonDetailsFragment.kt
+@@ -34,6 +34,7 @@ import org.mozilla.fenix.ext.components
+ import org.mozilla.fenix.ext.runIfFragmentIsAttached
+ import org.mozilla.fenix.ext.showToolbar
+ import mozilla.components.feature.addons.R as addonsR
++import org.ironfoxoss.ironfox.utils.IronFoxAddons
+ 
+ /**
+  * An activity to show the details of a installed add-on.
+@@ -155,6 +156,10 @@ class InstalledAddonDetailsFragment : Fragment() {
+         bindAllowInPrivateBrowsingSwitch()
+         bindRemoveButton()
+         bindReportButton()
++        if (IronFoxAddons.isBuiltIn(addon)) {
++             providePrivateBrowsingSwitch().isVisible = false
++             binding.removeAddOn.isVisible = false
++        }
+         context?.let {
+             val messageBarWarningView =
+                 binding.root.findViewById<View>(addonsR.id.add_on_messagebar_warning)
