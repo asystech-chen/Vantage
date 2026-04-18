@@ -20,7 +20,6 @@ import org.ironfoxoss.ironfox.utils.FenixStringsDictionary
 import org.ironfoxoss.ironfox.utils.GeckoSettingsBridge
 import org.ironfoxoss.ironfox.utils.IronFoxPreferences
 import org.mozilla.fenix.components.Push
-import org.mozilla.fenix.e2e.SystemInsetsPaddedFragment
 import org.mozilla.fenix.ext.components
 import org.mozilla.fenix.ext.getPreferenceKey
 import org.mozilla.fenix.ext.requireComponents
@@ -30,7 +29,7 @@ import org.mozilla.fenix.settings.requirePreference
 import org.mozilla.fenix.utils.view.addToRadioGroup
 
 @Suppress("TooManyFunctions")
-class IronFoxSettingsFragment : PreferenceFragmentCompat(), SystemInsetsPaddedFragment {
+class IronFoxSettingsFragment : PreferenceFragmentCompat() {
     private lateinit var radioAutoplayBlockingSticky: RadioButtonPreference
     private lateinit var radioAutoplayBlockingTransient: RadioButtonPreference
     private lateinit var radioAutoplayBlockingClickToPlay: RadioButtonPreference

@@ -33,19 +33,20 @@ import org.mozilla.fenix.theme.FirefoxTheme
 fun TermsOfServiceOnboardingPageRedesign(
     pageState: OnboardingPageState,
     eventHandler: Any?,
+    isSmallDevice: Boolean,
 ) {
     Card(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(if (pageState.shouldShowElevation) 6.dp else 0.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
     ) {
         Column(
             modifier = Modifier.padding(
                 horizontal = 16.dp,
-                vertical = if (pageState.isSmallDevice) 0.dp else 24.dp,
+                vertical = if (isSmallDevice) 0.dp else 24.dp,
             ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            if (!pageState.isSmallDevice) {
+            if (!isSmallDevice) {
                 Spacer(modifier = Modifier.weight(TITLE_TOP_SPACER_WEIGHT))
             }
 

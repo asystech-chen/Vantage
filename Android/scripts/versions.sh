@@ -3,33 +3,31 @@
 
 ## Firefox
 ### https://github.com/mozilla-firefox/firefox
-### (This commit corresponds to https://github.com/mozilla-firefox/firefox/releases/tag/FIREFOX-ANDROID_150_0_BUILD1)
-readonly FIREFOX_COMMIT='9154e5a11da43c93b65b436b0b12fd894bdc6f76'
-readonly FIREFOX_SHA512SUM='fc117dd3b897c26c7768268507fa241ef50e56691061085185b8ff9fa9f25bb4b3cc0b18067c7cc2b07fa71a0e17c8e3506b04e627aa7afa424c223ccdfe8fc7'
-readonly FIREFOX_VERSION='150.0'
+### (This commit corresponds to https://github.com/mozilla-firefox/firefox/releases/tag/FIREFOX-ANDROID_149_0_2_RELEASE)
+readonly FIREFOX_COMMIT='d8bbe6c514825d2de3f47a26c177b3b523d4e459'
+readonly FIREFOX_SHA512SUM='94f8a3824aba13d847b36a0509a56e0128d58a4d27f874b83cef2518491e8cc176741919c71cb1de9e77a4d3eeb4ab6c7a36fb9dea2275d7a46d9860b5e92751'
+readonly FIREFOX_VERSION='149.0.2'
 
 readonly IRONFOX_VERSION="${FIREFOX_VERSION}"
 
 ## Application Services
 ### https://github.com/mozilla/application-services
-### (for reference: https://github.com/mozilla-firefox/firefox/blob/main/mobile/android/android-components/plugins/dependencies/src/main/java/ApplicationServices.kt)
-readonly APPSERVICES_COMMIT='28e78b69f083c6879f39966dd58e58c2ea5db3d5'
-readonly APPSERVICES_SHA512SUM='4e0bc24afde9f311b124e325c2c6cbcd22f3479e2504e29c8cdc91366736e74def9af8c853d6fcb1eba36be7e16eda9e1e9af6392748c514e3c01bc2e26ff076'
-readonly APPSERVICES_VERSION='150.0.1'
+readonly APPSERVICES_COMMIT='c19ea2c24eb2f116dae170f5f82054d325e94a42'
+readonly APPSERVICES_SHA512SUM='087de733cf9bbef46678c18a51f6b87a4a2fe92b62db57f68fb118ee05d9c497506883ec41696c04b156a47a1304cbdaa823128d7dcf42f1fa659ae188175f6c'
+readonly APPSERVICES_VERSION='149.0'
 
 ## firefox-l10n
 ### https://github.com/mozilla-l10n/firefox-l10n
 ### NOTE: This repo is updated several times a day...
 ### so I think best approach here will be for us to just update it alongside new releases
-readonly L10N_COMMIT='e202f4cf00c9b19d3750756c45f2e4afe56c6386'
-readonly L10N_SHA512SUM='5875cffe94ad387a0d6aeb42e3cdf8ecf40a2ff84341e6172f4dc96f1d0ee866532ed78e10f1d594f5c09badb3856194860465cbabc0abc2190960ae70a892f6'
+readonly L10N_COMMIT='2c1fd95a5ad5c78ab96d8cf05ddc3047287b2a36'
+readonly L10N_SHA512SUM='1769898b0340b97e82c241dc78c9a7be8ae7a991210828da4ed9b8e2e10fad89d74c2676f53f28918473b5483506c341a44c0b6f787f6c26ca0ed2076baccbc8'
 
 ## Glean
 ### https://github.com/mozilla/glean
-### (for reference: https://github.com/mozilla-firefox/firefox/blob/main/gradle/libs.versions.toml)
-readonly GLEAN_COMMIT='667af08fa308ff8924ab9cd95f05d7887758c330'
-readonly GLEAN_SHA512SUM='a60da8666c7c3187b3602b5da0c74315f73f534e13cc6faa41b1f63909af97cc474bac5a92f4549ede90dba5c1acea11ae6c41526638283fe2e84b103946ed6b'
-readonly GLEAN_VERSION='67.1.0'
+readonly GLEAN_COMMIT='a793015bad500379ec5480e280ac2631178a2013'
+readonly GLEAN_SHA512SUM='bc5602f409c392ce929ab62fe8d3ad3bd2f84e6821bae9c091b2f557230849bd27a244aa268b6c286a6a8a609c801b08bb23831dd2380eb5bf93dd375206a075'
+readonly GLEAN_VERSION='67.0.0'
 
 ## Glean Parser
 ### Version: v18.2.0
@@ -81,15 +79,13 @@ readonly ANDROID_NDK_VERSION='r29'
 
 ## Android SDK (Command-Line Tools)
 ### https://developer.android.com/tools/releases/cmdline-tools
-### (for reference: https://github.com/mozilla-firefox/firefox/blob/main/python/mozboot/mozboot/android.py
-### + https://github.com/mozilla-firefox/firefox/blob/main/python/mozboot/mozboot/android-packages.txt)
-readonly ANDROID_SDK_REVISION='14742923'
-readonly ANDROID_SDK_SHA512SUM_LINUX='b65e830d7655fb39cc9eee669806977f462c49375807ef2c6487fabcc9afdbc210465ce6a1e2429ff95c74ca519d1239daf9a403c30b8d0bdb7a0962af656c8e'
-readonly ANDROID_SDK_SHA512SUM_OSX='20fc87470d1850ecbaf254509caca1b45055d72d3d78c9079adbe97ff7754018979a548f0cf145e52f03afd65357a5653f556db15ba569bffd4a143202cca0f8'
+### (for reference: https://searchfox.org/firefox-main/source/python/mozboot/mozboot/android.py)
+readonly ANDROID_SDK_REVISION='13114758'
+readonly ANDROID_SDK_SHA512SUM_LINUX='8e4bce8fb1a9a2b83454ab9ea642caa08adc69d93df345238a9c110a29aeb3dd4211ce9464de6d5ce41182c77ad2ff8c1941ed8a0b1f40d267fdfc8a31f461dc'
+readonly ANDROID_SDK_SHA512SUM_OSX='375e0594493ade7ab613bacdfbc751c5f004db213b02c6202ac28f4b6174ed9fc5d514b189bbfafd3d9d8c8d7d81b3fb312c0454b79e53ab9d139b90790d2a96'
 
 ## Android SDK Build Tools
 ### https://developer.android.com/tools/releases/build-tools
-### (for reference: https://github.com/mozilla-firefox/firefox/blob/main/python/mozboot/mozboot/android-packages.txt)
 readonly ANDROID_SDK_BUILD_TOOLS_VERSION='r36.1'
 readonly ANDROID_SDK_BUILD_TOOLS_VERSION_STRING='36.1.0'
 readonly ANDROID_SDK_BUILD_TOOLS_SHA512SUM_LINUX='32a1eea273980a96745ae5e0b141720e5f91c6c6f83f42da4244fad36025d7750521fdf678a7d332afe5946057b498264343c2533ba524967d84347af9cd7ce5'
@@ -99,7 +95,6 @@ readonly ANDROID_SDK_BUILD_TOOLS_35_SHA512SUM_OSX='991db0bbf23acd212b6be57033cdb
 
 ## Android SDK Platform
 ### https://developer.android.com/tools/releases/platforms
-### (for reference: https://github.com/mozilla-firefox/firefox/blob/main/python/mozboot/mozboot/android-packages.txt)
 readonly ANDROID_SDK_PLATFORM_VERSION='36.1'
 
 ## Android SDK Platform Tools
@@ -186,11 +181,11 @@ readonly PIP_SHA512SUM='3fca339b7c2596581fcf9691b8ef43664b4d0b25494b30eebda80358
 
 ## Python
 ### https://github.com/astral-sh/python-build-standalone
-readonly PYTHON_GIT_RELEASE='20260414'
-readonly PYTHON_SHA512SUM_LINUX_ARM64='44b005c5f05c2ce97e89c6c22ef402f15d9440cd3aea81835e3290365a7c27e23f6eb4cee44745f4c593489f30982cc47b7565215a2ed933326818e8716148e9'
-readonly PYTHON_SHA512SUM_LINUX_X86_64='38bcec7bda37073ecdd92fccaf21353fd4d774c6057a4b361e00853d8cd8e54050e9d40741e0c022ac0f633df9a3da47cabf33595213816356ef36acb6d0991c'
-readonly PYTHON_SHA512SUM_OSX_ARM64='e21f71ca3f7365f8fd962ea9df4fb693fddab04e11f34e4d0b4e15ec7eb0d9e44678abb4a6ae4a6c2e558035aa6fedd5399931b30c07fde0630d369d64dac514'
-readonly PYTHON_SHA512SUM_OSX_X86_64='ff82685a0f15d7d987c239b72b8d8148d476bbe82f3ef38a7a04541e4ef4f883c42349fa27b66de4f93e21d47cdb85660b8eedd6b257a13617d919a9462295ab'
+readonly PYTHON_GIT_RELEASE='20260408'
+readonly PYTHON_SHA512SUM_LINUX_ARM64='734a9a75056849e2f6504cf1e568f171131a3dc51bbe58b1e45a8023519f5895a1767d35ea558d9bee41600a6f5a1e50c007ebeedf0f8843091d9fbba7860775'
+readonly PYTHON_SHA512SUM_LINUX_X86_64='d62700ebf742484efbb791e00ac665793451207adf6e66affc6a3a85503a5de651ee871c99343c9b33a39165615c0990834a7b7ea52030fa1653bd048fd7bad4'
+readonly PYTHON_SHA512SUM_OSX_ARM64='1baa419f8054fb69133a20cc6e1b556fae9d88767f4228c7adb486de67dcd5c5834c379e7e01ca9cc5bca88426f6b7c11be16894e9d874291e0099c2d806f9c4'
+readonly PYTHON_SHA512SUM_OSX_X86_64='e22084f3f37847fb836588a3c9625073154a5db5236687212b29bf0f542379dc5a1b2a0ea471ba7441b906cf91811dfc0715fa160302fff0f477b8e8afb7da37'
 readonly PYTHON_VERSION='3.14.4'
 
 ## Rust
@@ -213,11 +208,11 @@ readonly S3CMD_SHA512SUM='b1b7c792265dfa1ccdd40f816e3463617c168e4317acac930b251c
 
 ## uv
 ### https://github.com/astral-sh/uv
-readonly UV_SHA512SUM_LINUX_ARM64='b55ff69f987833d3a0cfbff6508321c1af58f9b0c320ed32f0f34bdafcf4d1c1d23d1bd6c9a9178fb06a883ad09fe0e8c06d1a187a009c3150d3bf277023c89c'
-readonly UV_SHA512SUM_LINUX_X86_64='df988a2b974fe317444da1008df954c382c0ad1f2cba9995106ba8ae4d2f8f2034fe66b46032f52b36a4b820e51eea7552b5c3600d9f70a622dba1e001c7bf15'
-readonly UV_SHA512SUM_OSX_ARM64='79c964bfb4f70d6058b6169d47250c60a0dc17919b18480f9620b6aed6464847759b89a442a46ecddd1978df7ef975218121655acdbbf5c122f48ea1ed4701b0'
-readonly UV_SHA512SUM_OSX_X86_64='105a6f52b06870eabee40bdc3e28743013da30c2e4898642376d777f1e11f54267806b20695fb5d42279cf7ab4995925ca19c8b3345d69b581f090527e48e480'
-readonly UV_VERSION='0.11.7'
+readonly UV_SHA512SUM_LINUX_ARM64='5cc2568cfa1d816592202a373e5066b7d815b9cd4c2dcba9aaa21a6491e94b02830383c0c090ac2deed342b23cf7cdbd53795875d301930484f9094c60ff058c'
+readonly UV_SHA512SUM_LINUX_X86_64='3198b87d735d8a9b2e4fcd4977812892896bd1d9582c7170469414a115a8d1be2130cce71e53dbb4ef3f35192d6be905106a9f2ed8ffdec8fc020528f5689a80'
+readonly UV_SHA512SUM_OSX_ARM64='0e04de5453f51b2730d8a97ade2cc4e5f6c553d33064aab7a8a8484ca68ebae89c16a9661dc648fe6a0b82532770ab16b0a6034a91d9201a9ca3b2200cfe86c4'
+readonly UV_SHA512SUM_OSX_X86_64='e85ef8c68f7f19ebf033e4e81c696a176b2ac408b054de8425b6dd2633054d1c8440f9be05e781e7e9de5b71efb1faf1c034b08bcbb24df9c75fcb3419f58324'
+readonly UV_VERSION='0.11.6'
 
 # For prebuilds
 ## https://gitlab.com/ironfox-oss/prebuilds
