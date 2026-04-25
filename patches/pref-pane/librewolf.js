@@ -58,12 +58,10 @@ Preferences.addSetting({
 Preferences.addSetting({
   id: "vantageAiSidebar",
   pref: "browser.ml.chat.enabled",
-  set: (value) => {
-    Services.prefs.setBoolPref("browser.ml.chat.enabled", value);
-    Services.prefs.setCharPref(
-      "browser.ai.control.sidebarChatbot",
-      value ? "available" : "blocked"
-    );
+  deps: ["browser.ai.control.sidebarChatbot"],
+  set: (value, deps) => {
+    deps["browser.ai.control.sidebarChatbot"].value = value ? "available" : "blocked";
+    return value;
   },
 });
 

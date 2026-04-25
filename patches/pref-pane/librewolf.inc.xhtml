@@ -22,6 +22,7 @@
     <html:input type="checkbox" id="vantage-update-collapse" />
     <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
       <label data-l10n-id="vantage-update-description" />
+      <checkbox setting="vantage.updateCheck.enabled" label="vantage.updateCheck.enabled" />
     </vbox>
   </vbox>
 
@@ -40,6 +41,7 @@
     <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
       <label data-l10n-id="vantage-ai-description" />
       <checkbox setting="browser.ml.chat.enabled" label="browser.ml.chat.enabled" />
+      <checkbox setting="browser.ai.control.sidebarChatbot" label="browser.ai.control.sidebarChatbot" />
     </vbox>
   </vbox>
 
@@ -245,7 +247,7 @@
         <image class="sidebar-footer-icon" src="chrome://browser/skin/open.svg"/>
         <label class="sidebar-footer-label" data-l10n-id="librewolf-open-profile"/>
       </html:a>
-      <html:a class="sidebar-footer-link" href="about:debug" target="_blank">
+      <html:a class="sidebar-footer-link" href="about:debugging" target="_blank">
         <image class="sidebar-footer-icon" src="chrome://devtools/skin/images/settings.svg"/>
         <label class="sidebar-footer-label" data-l10n-id="librewolf-debug"/>
       </html:a>
