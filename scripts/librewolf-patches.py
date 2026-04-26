@@ -108,6 +108,9 @@ def librewolf_patches():
         for line in f.readlines():
             patch('../'+line)
 
+    # Fix cargo checksum for rust-build.patch (modifies x_user_defined.rs)
+    exec('sed -i "s/9456ca46168ef86c98399a2536f577ef7be3cdde90c0c51392d8ac48519d3fae/b9432f9ed39742015f4bb4c3e75c89a2b9a9eef943dd0fd7cd889fddd1e6d39c/g" third_party/rust/encoding_rs/.cargo-checksum.json')
+
     # apply xmas.patch seperately because not all builders use this repo the same way, and
     # we don't want to disturbe those workflows.
     patch('../patches/xmas.patch')
@@ -141,6 +144,7 @@ def librewolf_patches():
     exec('cp ../patches/pref-pane/librewolf.css browser/themes/shared/preferences/librewolf.css')
     exec('cp ../patches/pref-pane/librewolf.inc.xhtml browser/components/preferences/librewolf.inc.xhtml')
     exec('cp ../patches/pref-pane/librewolf.js browser/components/preferences/librewolf.js')
+    exec('cp ../patches/pref-pane/librewolf-config.mjs browser/components/preferences/librewolf-config.mjs')
     
     #
     # Vantage AI sidebar: copy brand icons for new providers
