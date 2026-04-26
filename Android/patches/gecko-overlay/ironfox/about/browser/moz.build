@@ -1,8 +1,0 @@
-
-DIRS += [
-    "robots",
-]
-
-JAR_MANIFESTS += [
-    "jar.mn",
-]

@@ -1,7 +1,0 @@
-
-DIRS += [
-    "../../browser/components/enterprisepolicies",
-]
-
-Library("browsercomps")
-FINAL_LIBRARY = "xul"

@@ -134,15 +134,21 @@ Preferences.addSetting({
 Preferences.addSetting({
   id: "librewolfIPv6",
   pref: "network.dns.disableIPv6",
-  get: (value) => !value,
-  set: (value) => !value,
+  get: (value) => value.value = !value,
+  set: (value) => value.value = !value,
 });
 
 // ===== Cross-Origin Referrers =====
 Preferences.addSetting({
   id: "librewolfCrossOrigin",
   pref: "network.http.referer.XOriginPolicy",
-  get: (value) => value >= 1,
+  get: (value) => {
+    if (value == 2) {
+      return true;
+    } else {
+      return false;
+    }
+  },
   set: (value) => value ? 2 : 0,
 });
 
@@ -160,8 +166,8 @@ Preferences.addSetting({
 Preferences.addSetting({
   id: "librewolfWebGL",
   pref: "webgl.disabled",
-  get: (value) => !value,
-  set: (value) => !value,
+  get: (value) => value.value = !value,
+  set: (value) => value.value = !value,
 });
 
 // ===== Google Safe Browsing =====

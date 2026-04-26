@@ -271,12 +271,18 @@ test-windows : $(lw_source_tarball)
 # 本地打包为多种格式的目标
 # ==========================================
 
-# 架构检测：从 BINARY_TARBALL 文件名自动推断，或通过 PKG_ARCH=aarch64 手动指定
-# 支持的值：x86_64, aarch64
-PKG_ARCH ?= $(shell echo "$(BINARY_TARBALL)" | grep -oE '(x86_64|aarch64)' | head -1)
-ifeq ($(PKG_ARCH),)
-PKG_ARCH := x86_64
-endif
+# 架构自动检测（按优先级）：
+#   1. 命令行显式传入：  make package-all PKG_ARCH=aarch64
+#   2. MOZCONFIG 文件里的 --target= 值（aarch64 / arm64 / x86_64）
+#   3. $(lw_source_dir)/obj-* 目录（取最新修改的）
+#   4. 兜底 x86_64
+PKG_ARCH ?= $(shell \
+  mozcfg="$(MOZCONFIG)"; \
+  srcdir="$(lw_source_dir)"; \
+  arch=""; \
+  [ -f "$$mozcfg" ] && arch=$$(grep -oE 'target=[^ \t]*' "$$mozcfg" 2>/dev/null | grep -oE '(aarch64|arm64|x86_64)' | head -1 | sed 's/arm64/aarch64/'); \
+  [ -z "$$arch" ] && arch=$$(ls -td "$$srcdir"/obj-* 2>/dev/null | head -1 | grep -oE '(x86_64|aarch64)'); \
+  echo "$${arch:-x86_64}")
 
 # 架构名映射
 ifeq ($(PKG_ARCH),aarch64)
@@ -397,23 +403,7 @@ package-tar : clean-packaging
 	@echo ">>> [TAR] Done: $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).portable.tar.gz"
 	@rm -rf $(APP_NAME)-portable
 
-# ==========================================
-# Windows 简体中文安装包目标
-# ==========================================
-package-zhcn :
-	@echo "=== 打包简体中文版本 ==="
-	(cd $(lw_source_dir) && ./mach package-multi-locale --locales zh-CN)
-	cp -v $(lw_source_dir)/obj-*/dist/librewolf-$(version)-$(release).zh-CN.*.zip . 2>/dev/null || true
-	cp -v $(lw_source_dir)/obj-*/dist/librewolf-$(version)-$(release).zh-CN.*.exe . 2>/dev/null || true
-	cp -v $(lw_source_dir)/obj-*/dist/librewolf-$(version)-$(release).zh-CN.*.tar.xz . 2>/dev/null || true
-	@echo "=== 简体中文打包完成 ==="
-	@echo "产物文件:"
-	@ls -lh librewolf-$(version)-$(release).zh-CN.* 2>/dev/null || echo "未找到产物文件"
-	
-	
-	
-	
 # 快捷目标：一次性生成所有格式
 package-all : package-deb package-appimage package-tar
-	@echo ">>> All packages generated successfully."
-	@ls -lh $(APP_NAME)*.$(version)*
+	@echo ">>> All packages generated successfully (arch: $(PKG_ARCH))."
+	@ls -lh $(APP_NAME)*$(version)* 2>/dev/null | grep -E '\.(deb|AppImage|tar\.gz|rpm)$$' || true

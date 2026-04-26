@@ -1,6 +1,14 @@
 --- a/browser/components/protections/content/protections.html
 +++ b/browser/components/protections/content/protections.html
-@@ -27,41 +27,46 @@
+@@ -23,50 +23,50 @@
+       type="module"
+       src="chrome://browser/content/protections.mjs"
+     ></script>
+-    <script
+-      type="module"
+-      src="chrome://browser/content/privacy-metrics-card.mjs"
+-    ></script>
+     <title data-l10n-id="protection-report-webpage-title"></title>
    </head>
  
    <body>
@@ -75,12 +83,13 @@
 -        role="link"
 -        tabindex="0"
 -      ></p>
+-      <privacy-metrics-card class="hidden"></privacy-metrics-card>
 +
 +      <!-- ETP card with graph -->
        <div class="card card-no-hover etp-card">
          <div class="card-header">
            <img
-@@ -283,300 +288,43 @@
+@@ -288,300 +288,42 @@
              <div id="graph-total-summary"></div>
            </div>
          </div>
@@ -373,7 +382,7 @@
 +              </div>
 +              <div class="protection-status-item">
 +                <span class="status-indicator" id="status-social"></span>
-+                <span data-l10n-id="vantage-dashboard-status-social">Social Tracking Protection</span>
++                <span data-l10n-id="vantage-dashboard-status-social">Social Tracker Blocking</span>
                </div>
 -              <p class="content" data-l10n-id="vpn-header-content"></p>
 -              <p
@@ -401,11 +410,9 @@
          </div>
 -      </section>
 +      </div>
-+
      </div>
    </body>
  </html>
-
 --- a/browser/components/protections/content/protections.mjs
 +++ b/browser/components/protections/content/protections.mjs
 @@ -2,10 +2,7 @@
@@ -420,7 +427,7 @@
  
  let cbCategory = RPMGetStringPref("browser.contentblocking.category");
  document.sendTelemetryEvent = (eventName, value = "") => {
-@@ -22,13 +19,35 @@
+@@ -22,9 +19,6 @@
    RPMSendAsyncMessage("RecordEntryPoint", {
      entrypoint: searchParams.get("entrypoint"),
    });
@@ -430,36 +437,7 @@
    searchParams.delete("entrypoint");
    searchParamsChanged = true;
  }
- 
-+function formatCount(n) {
-+  return n.toLocaleString();
-+}
-+
-+function animateCounter(element, target) {
-+  if (target === 0) {
-+    element.textContent = "0";
-+    return;
-+  }
-+  const duration = 800;
-+  const start = performance.now();
-+  const step = (now) => {
-+    const elapsed = now - start;
-+    const progress = Math.min(elapsed / duration, 1);
-+    const eased = 1 - Math.pow(1 - progress, 3);
-+    element.textContent = formatCount(Math.floor(target * eased));
-+    if (progress < 1) {
-+      requestAnimationFrame(step);
-+    } else {
-+      element.textContent = formatCount(target);
-+    }
-+  };
-+  requestAnimationFrame(step);
-+}
-+
- document.addEventListener("DOMContentLoaded", () => {
-   if (searchParamsChanged) {
-     let newURL = protocol + pathname;
-@@ -41,11 +60,9 @@
+@@ -41,11 +35,9 @@
    }
  
    RPMSendQuery("FetchEntryPoint", {}).then(entrypoint => {
@@ -471,120 +449,31 @@
    window.addEventListener("beforeunload", () => {
      document.sendTelemetryEvent("closeProtectionReport");
    });
-@@ -53,47 +70,100 @@
-   let todayInMs = Date.now();
-   let weekAgoInMs = todayInMs - 6 * 24 * 60 * 60 * 1000;
+@@ -88,12 +80,32 @@
+   legend.style.gridTemplateAreas =
+     "'social cookie tracker fingerprinter cryptominer'";
  
--  let dataTypes = [
--    "cryptominer",
--    "fingerprinter",
--    "tracker",
--    "cookie",
--    "social",
--  ];
-+  let dataTypes = ["cryptominer", "fingerprinter", "tracker", "cookie", "social"];
- 
-   let manageProtectionsLink = document.getElementById("protection-settings");
-   let manageProtections = document.getElementById("manage-protections");
-   let protectionSettingsEvtHandler = evt => {
-     if (evt.keyCode == evt.DOM_VK_RETURN || evt.type == "click") {
-       RPMSendAsyncMessage("OpenContentBlockingPreferences");
--      if (evt.target.id == "protection-settings") {
--        document.sendTelemetryEvent("clickSettingsLink", "header-settings");
--      } else if (evt.target.id == "manage-protections") {
--        document.sendTelemetryEvent(
--          "clickSettingsLink",
--          "custom-card-settings"
--        );
--      }
-     }
-   };
-   manageProtectionsLink.addEventListener("click", protectionSettingsEvtHandler);
--  manageProtectionsLink.addEventListener(
--    "keypress",
--    protectionSettingsEvtHandler
--  );
-+  manageProtectionsLink.addEventListener("keypress", protectionSettingsEvtHandler);
-   manageProtections.addEventListener("click", protectionSettingsEvtHandler);
-   manageProtections.addEventListener("keypress", protectionSettingsEvtHandler);
- 
-   let legend = document.getElementById("legend");
--  legend.style.gridTemplateAreas =
--    "'social cookie tracker fingerprinter cryptominer'";
-+  legend.style.gridTemplateAreas = "'social cookie tracker fingerprinter cryptominer'";
++  // Animate counter for stat cards
++  let animateCounter = (element, target) => {
++    let start = 0;
++    let duration = 1000;
++    let startTime = null;
 +
-+  // --- Protection status (independent of tracking data) ---
-+  let getProtectionStates = () => {
-+    let blockingCookies = RPMGetIntPref("network.cookie.cookieBehavior", 0) != 0;
-+    let cryptominingEnabled = RPMGetBoolPref("privacy.trackingprotection.cryptomining.enabled", false);
-+    let fingerprintingEnabled =
-+      RPMGetBoolPref("privacy.trackingprotection.fingerprinting.enabled", false) ||
-+      RPMGetBoolPref("privacy.fingerprintingProtection", false);
-+    let tpEnabled = RPMGetBoolPref("privacy.trackingprotection.enabled", false);
-+    let socialTracking = RPMGetBoolPref("privacy.trackingprotection.socialtracking.enabled", false);
-+    let socialCookies = RPMGetBoolPref("privacy.socialtracking.block_cookies.enabled", false);
-+    let socialEnabled = socialCookies && (blockingCookies || (tpEnabled && socialTracking));
-+    return { blockingCookies, cryptominingEnabled, fingerprintingEnabled, tpEnabled, socialEnabled };
++    let step = timestamp => {
++      if (!startTime) startTime = timestamp;
++      let progress = Math.min((timestamp - startTime) / duration, 1);
++      let eased = 1 - Math.pow(1 - progress, 3);
++      let current = Math.floor(eased * target);
++      element.textContent = current;
++      if (progress < 1) {
++        requestAnimationFrame(step);
++      } else {
++        element.textContent = target;
++      }
++    };
++    requestAnimationFrame(step);
 +  };
 +
-+  let updateProtectionStatus = () => {
-+    let { blockingCookies, cryptominingEnabled, fingerprintingEnabled, tpEnabled, socialEnabled } = getProtectionStates();
-+    document.getElementById("status-tp").classList.toggle("active", tpEnabled);
-+    document.getElementById("status-cookie").classList.toggle("active", blockingCookies);
-+    document.getElementById("status-fingerprint").classList.toggle("active", fingerprintingEnabled);
-+    document.getElementById("status-cryptominer").classList.toggle("active", cryptominingEnabled);
-+    document.getElementById("status-social").classList.toggle("active", socialEnabled);
-+  };
-+
-+  // Run immediately
-+  updateProtectionStatus();
-+
-+  let updateGraphLegend = () => {
-+    let { blockingCookies, cryptominingEnabled, fingerprintingEnabled, tpEnabled, socialEnabled } = getProtectionStates();
-+    let notBlocking = !blockingCookies && !cryptominingEnabled && !fingerprintingEnabled && !tpEnabled && !socialEnabled;
-+
-+    if (notBlocking) {
-+      document.getElementById("etp-card-content").setAttribute("data-l10n-id", "protection-report-etp-card-content-custom-not-blocking");
-+      document.querySelector(".etp-card .card-title").setAttribute("data-l10n-id", "etp-card-title-custom-not-blocking");
-+      document.getElementById("report-summary").setAttribute("data-l10n-id", "protection-report-page-summary");
-+      document.querySelector(".etp-card").classList.add("custom-not-blocking");
-+      manageProtectionsLink.style.display = "none";
-+    } else {
-+      if (!tpEnabled) {
-+        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace("tracker", "");
-+        document.getElementById("tab-tracker").setAttribute("disabled", true);
-+        document.querySelector("#tab-tracker ~ label").style.display = "none";
-+      }
-+      if (!socialEnabled) {
-+        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace("social", "");
-+        document.getElementById("tab-social").setAttribute("disabled", true);
-+        document.querySelector("#tab-social ~ label").style.display = "none";
-+      }
-+      if (!blockingCookies) {
-+        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace("cookie", "");
-+        document.getElementById("tab-cookie").setAttribute("disabled", true);
-+        document.querySelector("#tab-cookie ~ label").style.display = "none";
-+      }
-+      if (!cryptominingEnabled) {
-+        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace("cryptominer", "");
-+        document.getElementById("tab-cryptominer").setAttribute("disabled", true);
-+        document.querySelector("#tab-cryptominer ~ label").style.display = "none";
-+      }
-+      if (!fingerprintingEnabled) {
-+        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace("fingerprinter", "");
-+        document.getElementById("tab-fingerprinter").setAttribute("disabled", true);
-+        document.querySelector("#tab-fingerprinter ~ label").style.display = "none";
-+      }
-+
-+      let firstRadio = document.querySelector("input:enabled");
-+      if (firstRadio) {
-+        firstRadio.checked = true;
-+        document.body.setAttribute("focuseddatatype", firstRadio.dataset.type);
-+      }
-+      addListeners();
-+    }
-+  };
- 
    let createGraph = data => {
      let graph = document.getElementById("graph");
      let summary = document.getElementById("graph-total-summary");
@@ -594,29 +483,19 @@
      if (data.isPrivate) {
        graph.classList.add("private-window");
      } else {
-@@ -104,32 +174,21 @@
+@@ -104,8 +116,6 @@
        });
      }
  
 -    // Set a default top size for the height of the graph bars so that small
 -    // numbers don't fill the whole graph.
-+    // Update stats overview
-+    animateCounter(document.getElementById("stat-total-count"), data.sumEvents || 0);
-+
-+    let weekTypeCounts = { social: 0, cookie: 0, tracker: 0, fingerprinter: 0, cryptominer: 0 };
      let largest = 100;
      if (largest < data.largest) {
        largest = data.largest;
-     }
-     let weekCount = 0;
--    let weekTypeCounts = {
--      social: 0,
--      cookie: 0,
--      tracker: 0,
--      fingerprinter: 0,
--      cryptominer: 0,
--    };
--
+@@ -119,17 +129,11 @@
+       cryptominer: 0,
+     };
+ 
 -    // For accessibility clients, we turn the graph into a fake table with annotated text.
 -    // We use WAI-ARIA roles, properties, and states to mark up the table, rows and cells.
 -    // Each day becomes one row in the table.
@@ -625,7 +504,6 @@
 -    // But we need to caclulate the actual number of the most cells in a row to give accurate information.
      let maxColumnCount = 0;
      let date = new Date();
-+
      for (let i = 0; i <= 6; i++) {
        let dateString = date.toISOString().split("T")[0];
 -      let ariaOwnsString = ""; // Get the row's colummns in order
@@ -633,24 +511,14 @@
        let currentColumnCount = 0;
        let bar = document.createElement("div");
        bar.className = "graph-bar";
-@@ -143,22 +202,16 @@
-         count.id = "count" + i;
-         count.setAttribute("role", "cell");
-         count.textContent = content.total;
--        setTimeout(() => {
--          count.classList.add("animate");
--        }, 400);
-+        setTimeout(() => { count.classList.add("animate"); }, 400);
-         bar.appendChild(count);
-         ariaOwnsString = count.id;
+@@ -151,14 +155,12 @@
          currentColumnCount += 1;
          let barHeight = (content.total / largest) * 100;
          weekCount += content.total;
 -        // Add a short timeout to allow the elements to be added to the dom before triggering an animation.
--        setTimeout(() => {
--          bar.style.height = `${barHeight}%`;
--        }, 20);
-+        setTimeout(() => { bar.style.height = `${barHeight}%`; }, 20);
+         setTimeout(() => {
+           bar.style.height = `${barHeight}%`;
+         }, 20);
          for (let type of dataTypes) {
            if (content[type]) {
              let dataHeight = (content[type] / content.total) * 100;
@@ -658,35 +526,13 @@
              let cellSpan = document.createElement("span");
              cellSpan.id = type + i;
              cellSpan.setAttribute("role", "cell");
-@@ -168,16 +221,11 @@
-             div.setAttribute("data-type", type);
-             div.style.height = `${dataHeight}%`;
-             const messageIDs = {
--              social: "bar-tooltip-social",
--              cookie: "bar-tooltip-cookie",
--              tracker: "bar-tooltip-tracker",
--              cryptominer: "bar-tooltip-cryptominer",
-+              social: "bar-tooltip-social", cookie: "bar-tooltip-cookie",
-+              tracker: "bar-tooltip-tracker", cryptominer: "bar-tooltip-cryptominer",
-               fingerprinter: "bar-tooltip-fingerprinter",
-             };
--            document.l10n.setAttributes(div, messageIDs[type], {
--              count: content[type],
--              percentage: dataHeight,
--            });
-+            document.l10n.setAttributes(div, messageIDs[type], { count: content[type], percentage: dataHeight });
-             weekTypeCounts[type] += content[type];
-             cellSpan.appendChild(div);
-             innerBar.appendChild(cellSpan);
-@@ -185,31 +233,21 @@
-             currentColumnCount += 1;
+@@ -186,30 +188,22 @@
            }
          }
--        if (currentColumnCount > maxColumnCount) {
+         if (currentColumnCount > maxColumnCount) {
 -          // The current row has more than any previous rows
--          maxColumnCount = currentColumnCount;
--        }
-+        if (currentColumnCount > maxColumnCount) maxColumnCount = currentColumnCount;
+           maxColumnCount = currentColumnCount;
+         }
        } else {
 -        // There were no content blocking events on this day.
          bar.classList.add("empty");
@@ -713,7 +559,7 @@
        label.id = "day" + (6 - i);
        label.setAttribute("role", "rowheader");
        if (i == 6) {
-@@ -218,130 +256,29 @@
+@@ -218,48 +212,83 @@
          label.textContent = data.weekdays[(i + 1 + new Date().getDay()) % 7];
        }
        graph.append(label);
@@ -752,7 +598,16 @@
 -        "privacy.trackingprotection.fingerprinting.enabled",
 -        false
 -      ) || RPMGetBoolPref("privacy.fingerprintingProtection", false);
--    let tpEnabled = RPMGetBoolPref("privacy.trackingprotection.enabled", false);
++    // Update stat cards
++    animateCounter(document.getElementById("stat-total-count"), weekCount);
++    animateCounter(document.getElementById("stat-tracker-count"), weekTypeCounts.tracker);
++    animateCounter(document.getElementById("stat-cookie-count"), weekTypeCounts.cookie);
++    animateCounter(document.getElementById("stat-fingerprinter-count"), weekTypeCounts.fingerprinter);
++    animateCounter(document.getElementById("stat-cryptominer-count"), weekTypeCounts.cryptominer);
++    animateCounter(document.getElementById("stat-social-count"), weekTypeCounts.social);
++
++    // Update protection status indicators
+     let tpEnabled = RPMGetBoolPref("privacy.trackingprotection.enabled", false);
 -    let socialTracking = RPMGetBoolPref(
 -      "privacy.trackingprotection.socialtracking.enabled",
 -      false
@@ -763,67 +618,112 @@
 -    );
 -    let socialEnabled =
 -      socialCookies && (blockingCookies || (tpEnabled && socialTracking));
--    let notBlocking =
--      !blockingCookies &&
--      !cryptominingEnabled &&
--      !fingerprintingEnabled &&
--      !tpEnabled &&
--      !socialEnabled;
-+    // Update stat cards
-+    animateCounter(document.getElementById("stat-tracker-count"), weekTypeCounts.tracker);
-+    animateCounter(document.getElementById("stat-cookie-count"), weekTypeCounts.cookie);
-+    animateCounter(document.getElementById("stat-fingerprinter-count"), weekTypeCounts.fingerprinter);
-+    animateCounter(document.getElementById("stat-cryptominer-count"), weekTypeCounts.cryptominer);
-+    animateCounter(document.getElementById("stat-social-count"), weekTypeCounts.social);
++    let cryptominingEnabled = RPMGetBoolPref("privacy.trackingprotection.cryptomining.enabled", false);
++    let fingerprintingEnabled = RPMGetBoolPref("privacy.trackingprotection.fingerprinting.enabled", false) || RPMGetBoolPref("privacy.fingerprintingProtection", false);
++    let blockingCookies = RPMGetIntPref("network.cookie.cookieBehavior", 0) != 0;
++    let socialTracking = RPMGetBoolPref("privacy.trackingprotection.socialtracking.enabled", false);
++    let socialCookies = RPMGetBoolPref("privacy.socialtracking.block_cookies.enabled", false);
++    let socialEnabled = socialCookies && (blockingCookies || (tpEnabled && socialTracking));
++
++    let setIndicator = (id, enabled) => {
++      let el = document.getElementById(id);
++      if (el) {
++        el.classList.toggle("enabled", enabled);
++        el.classList.toggle("disabled", !enabled);
++      }
++    };
++    setIndicator("status-tp", tpEnabled);
++    setIndicator("status-cookie", blockingCookies);
++    setIndicator("status-fingerprint", fingerprintingEnabled);
++    setIndicator("status-cryptominer", cryptominingEnabled);
++    setIndicator("status-social", socialEnabled);
++
++    let addListeners = () => {
++      let wrapper = document.querySelector(".body-wrapper");
++      let triggerTabClick = ev => {
++        if (ev.originalTarget.dataset.type) {
++          document.getElementById(`tab-${ev.target.dataset.type}`).click();
++        }
++      };
++      let triggerTabFocus = ev => {
++        if (ev.originalTarget.dataset) wrapper.classList.add("hover-" + ev.originalTarget.dataset.type);
++      };
++      let triggerTabBlur = ev => {
++        if (ev.originalTarget.dataset) wrapper.classList.remove("hover-" + ev.originalTarget.dataset.type);
++      };
++      wrapper.addEventListener("mouseout", triggerTabBlur);
++      wrapper.addEventListener("mouseover", triggerTabFocus);
++      wrapper.addEventListener("click", triggerTabClick);
++
++      let radios = document.querySelectorAll("#legend input");
++      for (let radio of radios) {
++        radio.addEventListener("change", ev => {
++          document.body.setAttribute("focuseddatatype", ev.target.dataset.type);
++        });
++        radio.addEventListener("focus", ev => {
++          wrapper.classList.add("hover-" + ev.originalTarget.dataset.type);
++          document.body.setAttribute("focuseddatatype", ev.target.dataset.type);
++        });
++        radio.addEventListener("blur", ev => {
++          wrapper.classList.remove("hover-" + ev.originalTarget.dataset.type);
++        });
++      }
++    };
++
+     let notBlocking =
+       !blockingCookies &&
+       !cryptominingEnabled &&
+@@ -267,7 +296,6 @@
+       !tpEnabled &&
+       !socialEnabled;
  
 -    // User has turned off all blocking, show a different card.
--    if (notBlocking) {
--      document.l10n.setAttributes(
--        document.getElementById("etp-card-content"),
--        "protection-report-etp-card-content-custom-not-blocking"
--      );
--      document.l10n.setAttributes(
--        document.querySelector(".etp-card .card-title"),
--        "etp-card-title-custom-not-blocking"
--      );
--      document.l10n.setAttributes(
--        document.getElementById("report-summary"),
--        "protection-report-page-summary"
--      );
--      document.querySelector(".etp-card").classList.add("custom-not-blocking");
+     if (notBlocking) {
+       document.l10n.setAttributes(
+         document.getElementById("etp-card-content"),
+@@ -282,61 +310,35 @@
+         "protection-report-page-summary"
+       );
+       document.querySelector(".etp-card").classList.add("custom-not-blocking");
 -
 -      // Hide the link to settings from the header, so we are not showing two links.
--      manageProtectionsLink.style.display = "none";
--    } else {
+       manageProtectionsLink.style.display = "none";
+     } else {
 -      // Hide each type of tab if blocking of that type is off.
--      if (!tpEnabled) {
+       if (!tpEnabled) {
 -        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace(
 -          "tracker",
 -          ""
 -        );
 -        let radio = document.getElementById("tab-tracker");
 -        radio.setAttribute("disabled", true);
--        document.querySelector("#tab-tracker ~ label").style.display = "none";
--      }
--      if (!socialEnabled) {
++        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace("tracker", "");
++        document.getElementById("tab-tracker").setAttribute("disabled", true);
+         document.querySelector("#tab-tracker ~ label").style.display = "none";
+       }
+       if (!socialEnabled) {
 -        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace(
 -          "social",
 -          ""
 -        );
 -        let radio = document.getElementById("tab-social");
 -        radio.setAttribute("disabled", true);
--        document.querySelector("#tab-social ~ label").style.display = "none";
--      }
--      if (!blockingCookies) {
++        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace("social", "");
++        document.getElementById("tab-social").setAttribute("disabled", true);
+         document.querySelector("#tab-social ~ label").style.display = "none";
+       }
+       if (!blockingCookies) {
 -        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace(
 -          "cookie",
 -          ""
 -        );
 -        let radio = document.getElementById("tab-cookie");
 -        radio.setAttribute("disabled", true);
--        document.querySelector("#tab-cookie ~ label").style.display = "none";
--      }
--      if (!cryptominingEnabled) {
++        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace("cookie", "");
++        document.getElementById("tab-cookie").setAttribute("disabled", true);
+         document.querySelector("#tab-cookie ~ label").style.display = "none";
+       }
+       if (!cryptominingEnabled) {
 -        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace(
 -          "cryptominer",
 -          ""
@@ -832,8 +732,11 @@
 -        radio.setAttribute("disabled", true);
 -        document.querySelector("#tab-cryptominer ~ label").style.display =
 -          "none";
--      }
--      if (!fingerprintingEnabled) {
++        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace("cryptominer", "");
++        document.getElementById("tab-cryptominer").setAttribute("disabled", true);
++        document.querySelector("#tab-cryptominer ~ label").style.display = "none";
+       }
+       if (!fingerprintingEnabled) {
 -        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace(
 -          "fingerprinter",
 -          ""
@@ -842,46 +745,60 @@
 -        radio.setAttribute("disabled", true);
 -        document.querySelector("#tab-fingerprinter ~ label").style.display =
 -          "none";
--      }
--
--      let firstRadio = document.querySelector("input:enabled");
++        legend.style.gridTemplateAreas = legend.style.gridTemplateAreas.replace("fingerprinter", "");
++        document.getElementById("tab-fingerprinter").setAttribute("disabled", true);
++        document.querySelector("#tab-fingerprinter ~ label").style.display = "none";
+       }
+ 
+       let firstRadio = document.querySelector("input:enabled");
 -      // There will be no radio options if we are showing the
--      firstRadio.checked = true;
--      document.body.setAttribute("focuseddatatype", firstRadio.dataset.type);
--
--      addListeners();
--    }
-+    updateGraphLegend();
+       firstRadio.checked = true;
+       document.body.setAttribute("focuseddatatype", firstRadio.dataset.type);
+ 
+@@ -344,155 +346,8 @@
+     }
    };
  
-   let addListeners = () => {
-@@ -351,23 +288,16 @@
-         document.getElementById(`tab-${ev.target.dataset.type}`).click();
-       }
-     };
+-  let addListeners = () => {
+-    let wrapper = document.querySelector(".body-wrapper");
+-    let triggerTabClick = ev => {
+-      if (ev.originalTarget.dataset.type) {
+-        document.getElementById(`tab-${ev.target.dataset.type}`).click();
+-      }
+-    };
 -
-     let triggerTabFocus = ev => {
+-    let triggerTabFocus = ev => {
 -      if (ev.originalTarget.dataset) {
 -        wrapper.classList.add("hover-" + ev.originalTarget.dataset.type);
 -      }
-+      if (ev.originalTarget.dataset) wrapper.classList.add("hover-" + ev.originalTarget.dataset.type);
-     };
+-    };
 -
-     let triggerTabBlur = ev => {
+-    let triggerTabBlur = ev => {
 -      if (ev.originalTarget.dataset) {
 -        wrapper.classList.remove("hover-" + ev.originalTarget.dataset.type);
 -      }
-+      if (ev.originalTarget.dataset) wrapper.classList.remove("hover-" + ev.originalTarget.dataset.type);
-     };
-     wrapper.addEventListener("mouseout", triggerTabBlur);
-     wrapper.addEventListener("mouseover", triggerTabFocus);
-     wrapper.addEventListener("click", triggerTabClick);
- 
+-    };
+-    wrapper.addEventListener("mouseout", triggerTabBlur);
+-    wrapper.addEventListener("mouseover", triggerTabFocus);
+-    wrapper.addEventListener("click", triggerTabClick);
+-
 -    // Change the class on the body to change the color variable.
-     let radios = document.querySelectorAll("#legend input");
-     for (let radio of radios) {
-       radio.addEventListener("change", ev => {
-@@ -387,104 +317,4 @@
+-    let radios = document.querySelectorAll("#legend input");
+-    for (let radio of radios) {
+-      radio.addEventListener("change", ev => {
+-        document.body.setAttribute("focuseddatatype", ev.target.dataset.type);
+-      });
+-      radio.addEventListener("focus", ev => {
+-        wrapper.classList.add("hover-" + ev.originalTarget.dataset.type);
+-        document.body.setAttribute("focuseddatatype", ev.target.dataset.type);
+-      });
+-      radio.addEventListener("blur", ev => {
+-        wrapper.classList.remove("hover-" + ev.originalTarget.dataset.type);
+-      });
+-    }
+-  };
+-
+   RPMSendQuery("FetchContentBlockingEvents", {
      from: weekAgoInMs,
      to: todayInMs,
    }).then(createGraph);
@@ -977,6 +894,14 @@
 -  const proxyUI = document.querySelector(".proxy-card");
 -  proxyUI.dataset.enabled = proxyEnabled;
 -
+-  const privacyMetricsEnabled = RPMGetBoolPref(
+-    "browser.contentblocking.report.privacy_metrics.enabled",
+-    false
+-  );
+-  if (privacyMetricsEnabled) {
+-    document.querySelector("privacy-metrics-card").classList.remove("hidden");
+-  }
+-
 -  const VPNEnabled = RPMGetBoolPref("browser.vpn_promo.enabled", true);
 -  if (VPNEnabled) {
 -    const vpnCard = new VPNCard(document);
@@ -986,74 +911,52 @@
 -  const vpnUI = document.querySelector(".vpn-card");
 -  vpnUI.dataset.enabled = VPNEnabled;
  });
-
 --- a/browser/components/protections/content/protections.css
 +++ b/browser/components/protections/content/protections.css
-@@ -1153,3 +1153,125 @@
+@@ -1153,3 +1153,77 @@
  .vpn-card:not(.subscribed) #check-icon {
    display: none;
  }
 +
-+/* ===== Vantage Privacy Dashboard ===== */
++/* === Vantage Privacy Dashboard Styles === */
 +
++/* Stats overview cards */
 +#stats-overview {
 +  display: grid;
-+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-+  gap: 16px;
-+  margin: 24px 0;
-+  width: 100%;
-+  box-sizing: border-box;
++  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
++  gap: 12px;
++  margin-bottom: 24px;
 +}
 +
 +.stat-card {
 +  background: var(--in-content-box-background);
 +  border: 1px solid var(--in-content-box-border-color);
 +  border-radius: 8px;
-+  padding: 20px 16px;
++  padding: 16px;
 +  text-align: center;
-+  transition: transform 0.15s ease, box-shadow 0.15s ease;
-+  min-width: 0;
++  transition: transform 0.2s ease;
 +}
 +
 +.stat-card:hover {
 +  transform: translateY(-2px);
-+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 +}
 +
-+@media (prefers-color-scheme: dark) {
-+  .stat-card:hover {
-+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-+  }
-+}
-+
-+.stat-card .stat-icon {
-+  font-size: 28px;
++.stat-icon {
++  font-size: 24px;
 +  margin-bottom: 8px;
 +}
 +
-+.stat-card .stat-number {
-+  font-size: 32px;
++.stat-number {
++  font-size: 28px;
 +  font-weight: 700;
-+  color: var(--in-content-accent-color, #0061e0);
-+  line-height: 1.2;
-+  font-variant-numeric: tabular-nums;
++  color: var(--in-content-text-color);
++  margin-bottom: 4px;
 +}
 +
-+#stat-total .stat-number {
-+  font-size: 40px;
-+  color: #12bc00;
-+}
-+
-+@media (prefers-color-scheme: dark) {
-+  #stat-total .stat-number {
-+    color: #54d849;
-+  }
-+}
-+
-+.stat-card .stat-label {
-+  font-size: 13px;
-+  color: var(--in-content-deemphasized-text, #5b5b66);
-+  margin-top: 6px;
++.stat-label {
++  font-size: 12px;
++  color: var(--in-content-text-color);
++  opacity: 0.8;
 +}
 +
 +/* Protection status card */
@@ -1061,80 +964,30 @@
 +  margin-top: 24px;
 +}
 +
-+#protection-status-card .card-body {
-+  padding: 16px 20px;
-+}
-+
-+#protection-status-card .card-title {
-+  white-space: nowrap;
-+  min-width: max-content;
-+}
-+
 +#protection-status-list {
 +  display: flex;
-+  flex-wrap: wrap;
-+  gap: 8px 32px;
-+  width: 100%;
++  flex-direction: column;
++  gap: 12px;
 +}
 +
 +.protection-status-item {
 +  display: flex;
 +  align-items: center;
 +  gap: 10px;
-+  padding: 10px 0;
-+  font-size: 14px;
-+  white-space: nowrap;
-+  min-width: max-content;
++  padding: 8px 0;
 +}
 +
 +.status-indicator {
-+  width: 12px;
-+  height: 12px;
-+  min-width: 12px;
++  width: 10px;
++  height: 10px;
 +  border-radius: 50%;
-+  background: #d70022;
 +  flex-shrink: 0;
-+  transition: background 0.3s ease;
 +}
 +
-+.status-indicator.active {
-+  background: #12bc00;
++.status-indicator.enabled {
++  background-color: #2ac3a2;
 +}
 +
-+@media (prefers-color-scheme: dark) {
-+  .status-indicator {
-+    background: #ff6a75;
-+  }
-+  .status-indicator.active {
-+    background: #54d849;
-+  }
++.status-indicator.disabled {
++  background-color: #ff6b6b;
 +}
-+
-+/* Hide Mozilla service promotions */
-+.vpn-banner,
-+.monitor-card,
-+.lockwise-card,
-+.proxy-card,
-+.vpn-card,
-+#mobile-hanger {
-+  display: none !important;
-+}
-
---- a/browser/components/preferences/privacy.inc.xhtml
-+++ b/browser/components/preferences/privacy.inc.xhtml
-@@ -392,6 +392,14 @@
-       </vbox>
-     </hbox>
-   </vbox>
-+  <hbox id="vantage-dashboard-link-box" align="center" style="margin-top: 16px;">
-+    <html:a id="vantage-dashboard-link"
-+            href="about:protections"
-+            target="_blank"
-+            data-l10n-id="vantage-privacy-dashboard-link"
-+            class="accessory-button"
-+            style="display: inline-block; text-decoration: none; text-align: center;"/>
-+  </hbox>
- </groupbox>
- <html:setting-group id="nonTechnicalPrivacyGroup" groupid="nonTechnicalPrivacy" data-category="panePrivacy" hidden="true" data-srd-groupid="nonTechnicalPrivacy2"/>
- <html:setting-group groupid="nonTechnicalPrivacy2" data-category="panePrivacy" hidden="true"/>
-

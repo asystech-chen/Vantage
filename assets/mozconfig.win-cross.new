@@ -1,0 +1,69 @@
+# ==========================================
+# Vantage Browser - Windows x64 Cross-Compile (MinGW-clang)
+# Based on Firefox official browser/config/mozconfigs/win64/mingwclang
+# + Vantage privacy/branding customization from mozconfig.new
+# ==========================================
+
+# ---- 目标平台 ----
+ac_add_options --target=x86_64-pc-windows-gnu
+ac_add_options --host=x86_64-pc-linux-gnu
+ac_add_options --with-toolchain-prefix=x86_64-w64-mingw32-
+
+# ---- 启用 mach bootstrap 自动拉 clang-mingw 工具链 ----
+ac_add_options --enable-bootstrap
+
+# ---- 应用/品牌 ----
+ac_add_options --enable-application=browser
+ac_add_options --with-app-name=vantage
+ac_add_options --with-branding=browser/branding/vantage
+
+# ---- 构建优化（对齐 mozconfig.new）----
+ac_add_options --enable-release
+ac_add_options --disable-debug
+ac_add_options --disable-tests
+ac_add_options --enable-optimize
+ac_add_options --enable-rust-simd
+ac_add_options --disable-cargo-incremental
+ac_add_options --enable-hardening
+
+# ---- Vantage 隐私定制（对齐 mozconfig.new）----
+ac_add_options --allow-addon-sideload
+ac_add_options --disable-crashreporter
+ac_add_options --disable-default-browser-agent
+ac_add_options --disable-updater
+ac_add_options --with-unsigned-addon-scopes=app,system
+
+# ---- MinGW 必须禁用的东西（Tor/官方都这么干）----
+ac_add_options --disable-warnings-as-errors
+ac_add_options --disable-webrtc              # Bug 1393901
+ac_add_options --disable-geckodriver         # Bug 1489320
+ac_add_options --disable-update-agent        # Bug 1561797
+ac_add_options --disable-notification-server # toast 通知 mingw 编不过
+ac_add_options --disable-maintenance-service # Windows 服务，简化构建
+
+# ---- Tor 同款隐私增强（mingw 专属）----
+ac_add_options --enable-proxy-bypass-protection
+ac_add_options --enable-disk-remnant-avoidance
+
+# ---- MinGW 特需的编译参数 ----
+mk_add_options "export WIDL_TIME_OVERRIDE=0"
+export CFLAGS="-ftrivial-auto-var-init=zero -fwrapv -include _mingw.h"
+export CXXFLAGS="-ftrivial-auto-var-init=zero -fwrapv -fms-extensions -include _mingw.h"
+
+# ---- 语言包 ----
+ac_add_options --with-l10n-base=$PWD/lw/l10n
+
+# ---- 禁用 Mozilla 遥测 ----
+export MOZ_REQUIRE_SIGNING=
+mk_add_options MOZ_CRASHREPORTER=0
+mk_add_options MOZ_DATA_REPORTING=0
+mk_add_options MOZ_SERVICES_HEALTHREPORT=0
+mk_add_options MOZ_TELEMETRY_REPORTING=0
+
+# ---- ccache（如果可用）----
+if command -v ccache >/dev/null 2>&1; then
+    ac_add_options --with-ccache
+fi
+
+# ⚠️ 注意：不要自己指定 CC/CXX/HOST_CC/HOST_CXX
+# --enable-bootstrap + --with-toolchain-prefix 会让 mach 自动找 ~/.mozbuild/clang-mingw/bin/
