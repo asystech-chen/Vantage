@@ -1,5 +1,6 @@
 patches/allow-JXL-in-non-nightly-browser.patch
 patches/always-fetch-latest-toolchain-artifact.patch
+patches/autoconfig-setEnv.patch
 patches/custom-ubo-assets-bootstrap-location.patch
 patches/dbus_name.patch
 patches/disable-data-reporting-at-compile-time.patch
@@ -11,6 +12,7 @@ patches/hide-passwordmgr.patch
 patches/limit-access.patch
 patches/link-preview.patch
 patches/moz-configure.patch
+patches/moz-official.patch
 patches/mozilla_dirs.patch
 patches/msix.patch
 patches/newtab-fix.patch
@@ -24,12 +26,14 @@ patches/temp-macos-fix.patch
 patches/ui-patches/allow_cookies_for_site.patch
 patches/ui-patches/firefox-view.patch
 patches/ui-patches/handlers.patch
+patches/ui-patches/hide-default-browser.patch
 patches/ui-patches/hide-finish-setup-bookmark.patch
 patches/ui-patches/lw-logo-devtools.patch
 patches/ui-patches/pref-naming.patch
 patches/ui-patches/privacy-preferences.patch
 patches/ui-patches/remove-cfrprefs.patch
 patches/ui-patches/remove-organization-policy-banner.patch
+patches/ui-patches/trustpanel.patch
 patches/ui-patches/website-appearance-ui-rfp.patch
 patches/urlbarprovider-interventions.patch
 patches/vendor-name.patch
@@ -38,6 +42,7 @@ patches/windows-theming-bug.patch
 patches/xdg-dir.patch
 patches/installer-zhcn.patch
 patches/installer-locale.patch
+patches/installer-publisher.patch
 patches/uninstaller-cleanup.patch
 patches/macos-sdk-version.patch
 patches/dmg-fix-permissions.patch

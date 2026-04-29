@@ -23,31 +23,30 @@
         "install_url": "https://asystech.cn/vantage/uBlock.xpi",
         "installation_mode": "normal_installed",
         "private_browsing": true
-	  "firefox@tampermonkey.net": {
-        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/tampermonkey/addon.xpi",
-		"installation_mode": "normal_installed",
-		"private_browsing": false
-		"default_area": "unified_extensions"
-	  "idcac-pub@guus.ninja": {
+      },
+      "idcac-pub@guus.ninja": {
         "install_url": "https://addons.mozilla.org/firefox/downloads/file/4637154/istilldontcareaboutcookies-1.1.9.xpi",
-		"installation_mode": "normal_installed",
-		"private_browsing": false
-		"default_area": "unified_extensions"
-	  "{9350bc42-47fb-4598-ae0f-825e3dd9ceba}": {
+        "installation_mode": "normal_installed",
+        "private_browsing": false,
+        "default_area": "unified_extensions"
+      },
+      "{9350bc42-47fb-4598-ae0f-825e3dd9ceba}": {
         "install_url": "https://addons.mozilla.org/firefox/downloads/file/4274207/absolute_enable_right_click-1.3.9resigned1.xpi",
-		"installation_mode": "normal_installed",
-		"private_browsing": false
-		"default_area": "unified_extensions"
-	  "{9350bc42-47fb-4598-ae0f-825e3dd9ceba}": {
+        "installation_mode": "normal_installed",
+        "private_browsing": false,
+        "default_area": "unified_extensions"
+      },
+      "{b184d107-461b-4cfe-b4ba-771406e90c48}": {
         "install_url": "https://addons.mozilla.org/firefox/downloads/file/4274183/912887-1.1resigned1.xpi",
-		"installation_mode": "normal_installed",
-		"private_browsing": false
-		"default_area": "unified_extensions"
-	  "easyscreenshot@mozillaonline.com": {
+        "installation_mode": "normal_installed",
+        "private_browsing": false,
+        "default_area": "navbar"
+      },
+      "easyscreenshot@mozillaonline.com": {
         "install_url": "https://addons.mozilla.org/firefox/downloads/file/4049242/easyscreenshot-3.109.xpi",
-		"installation_mode": "normal_installed",
-		"private_browsing": false
-  },
+        "installation_mode": "normal_installed",
+        "private_browsing": false,
+        "default_area": "navbar"
       },
       "google@search.mozilla.org": { "installation_mode": "normal" },
       "bing@search.mozilla.org": { "installation_mode": "normal" },

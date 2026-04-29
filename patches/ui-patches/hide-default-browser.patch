@@ -12,28 +12,29 @@ diff --git a/browser/components/preferences/main.inc.xhtml b/browser/components/
  <html:setting-group id="startupGroup" groupid="startup" data-category="paneGeneral" hidden="true"/>
  
 diff --git a/browser/components/preferences/main.js b/browser/components/preferences/main.js
+index 8f8da3c..c45acc3 100644
 --- a/browser/components/preferences/main.js
 +++ b/browser/components/preferences/main.js
-@@ -2643,7 +2643,6 @@
+@@ -2688,10 +2688,6 @@ function createStartupConfig(hidden = false) {
+         control: "moz-message-bar",
+         l10nId: "startup-windows-launch-on-login-profile-disabled",
+       },
+-      {
+-        id: "alwaysCheckDefault",
+-        l10nId: "always-check-default",
+-      },
+     ],
+   };
+ }
+@@ -2753,7 +2749,6 @@ SettingGroupManager.registerGroups({
        },
      ],
    },
 -  defaultBrowser: createDefaultBrowserConfig(),
-   startup: {
-     l10nId: "startup-group",
-     headingLevel: 2,
-@@ -2682,10 +2681,6 @@
-         id: "windowsLaunchOnLoginDisabledProfileBox",
-         control: "moz-message-bar",
-         l10nId: "startup-windows-launch-on-login-profile-disabled",
--      },
--      {
--        id: "alwaysCheckDefault",
--        l10nId: "always-check-default",
-       },
-     ],
-   },
-@@ -5354,7 +5349,6 @@
+   startup: createStartupConfig(
+     Services.prefs.getBoolPref("browser.settings-redesign.enabled", false)
+   ),
+@@ -5227,7 +5222,6 @@ var gMainPane = {
      initSettingGroup("translations");
      initSettingGroup("spellCheck");
      initSettingGroup("performance");

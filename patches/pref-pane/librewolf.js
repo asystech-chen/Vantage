@@ -181,14 +181,14 @@ function setXOriginPolicySyncListeners(checkboxid, pref, onVals, offVals) {
 function setBoolSyncListeners(checkboxid, opts, vals) {
   setSyncFromPrefListener(checkboxid, () => readGenericBoolPrefs(opts, vals));
   setSyncToPrefListener(checkboxid, () => writeGenericBoolPrefs(opts, vals, document.getElementById(checkboxid).checked));
-  for (let i = 1; i < opts.length; i++) {
+  for (let i = 0; i < opts.length; i++) {
     Preferences.get(opts[i]).on("change", () => makeMasterCheckboxesReactive(checkboxid, () => readGenericBoolPrefs(opts, vals)));
   }
 }
 function setSyncListeners(checkboxid, opts, onVals, offVals) {
   setSyncFromPrefListener(checkboxid, () => readGenericPrefs(opts, onVals, offVals));
   setSyncToPrefListener(checkboxid, () => writeGenericPrefs(opts, onVals, offVals, document.getElementById(checkboxid).checked));
-  for (let i = 1; i < opts.length; i++) {
+  for (let i = 0; i < opts.length; i++) {
     Preferences.get(opts[i]).on("change", () => makeMasterCheckboxesReactive(checkboxid, () => readGenericPrefs(opts, onVals, offVals)));
   }
 }
