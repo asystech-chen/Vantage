@@ -1,5 +1,105 @@
 # Vantage Browser 更新日志
 
+## v150.0-1 — 2026-04-30
+
+### ⬆️ Firefox 150 上游升级
+
+- **升级至 Firefox 150.0** — 同步 Mozilla 上游最新安全修复与功能更新
+- **合并 LibreWolf 150.0-1 安全增强**（13 项配置 + 2 个新 patch）
+- **移除已废弃 patches**：
+  - `backport-build-fixes-from-150.patch` — 上游源码已原生包含
+  - `bootstrap.patch` — 文件路径已不存在
+  - `flatpak-autoconf.patch` — 上游已原生支持
+- **更新适配 patches** 以匹配 Firefox 150 新文件结构：
+  - `privacy-preferences.patch` — 移除已在主代码中的 hunk
+  - `webgl-permission.patch` — 移除尾随逗号修复（已存在）
+  - `vantage-privacy-dashboard.patch` — 完全重新生成
+  - 同步上游 patches：`rust-build`、`autoconfig-setEnv`、`moz-official`、`trustpanel`
+
+### 🎨 隐私仪表板重构
+
+- **`about:protections` 完全重写** — 适配 Firefox 150 新结构
+- **统计卡片** — 展示已阻止的 Trackers / Cookies / Fingerprinters / Cryptominers / Social Trackers 数量
+- **保护状态面板** — 显示每项保护的启用/禁用状态（绿色/红色指示器）
+- **ETP 图表** — Enhanced Tracking Protection 趋势图
+- **移除冗余组件**：VPN Banner、Mobile Hanger、Monitor Card、Lockwise Card、Proxy Card、VPN Card
+
+### 🔧 Pref-Pane 后端修复
+
+- **修复 checkbox 同步问题** —— `setBoolSyncListeners` / `setSyncListeners` 监听循环从 `i=1` 改为 `i=0`
+  - 影响范围：更新检查开关、IPv6 开关、同步开关等单 pref checkbox
+  - 修复前：配置修改无法保存到 `about:config`
+- **WebGL 设置**：`get/set` 使用 `value.value = !value`
+- **IPv6 设置**：同 WebGL 修复
+- **Cross-Origin Referrers**：`get` 正确判断 `value == 2`
+
+### 🔐 安全增强（来自 LibreWolf 150.0-1）
+
+**新增 Patches：**
+
+- `limit-access.patch` — 限制网页访问 `chrome://branding/` 资源，防止通过 branding 进行浏览器指纹识别
+- `rust-build.patch` — Rust 编译修复
+
+**新增配置（settings/librewolf.cfg）：**
+
+- **HTTPS 增强**：自动升级本地连接、提示不安全重定向
+- **DoH 隐私**：使用 POST 方法（代替 GET）进行 DoH 查询
+- **OCSP 禁用**：减少隐私泄露（已有 CRLite 补偿）
+- **企业根证书禁用**：防止企业/杀毒软件中间人攻击
+- **TLS 强化**：禁用 0-RTT（防重放攻击）、禁用弱加密套件
+- **证书固定强化**：`cert_pinning.enforcement_level = 2`
+- **CRLite 启用**：`crlite_filters.enabled = true`、`crlite_mode = 2`
+
+### 🏗️ Android 源码引入
+
+- **添加 IronFox Android 源码**（来自 `codeberg.org/ironfox-oss/IronFox`）
+  - 完整的 Android 构建系统：Dockerfile、build/CI 脚本、Gradle 配置
+  - 工程源码：定制版 Fenix（前端）+ Android Components + GeckoView
+  - 全面的隐私 patches：去 Mozilla 遥测/同步/Nimbus/崩溃上报/Glean
+  - 多架构支持：arm / arm64 / x86_64
+  - 20+ 语言本地化
+- 为后续 Vantage Android 版本做准备
+
+### 🪟 Windows 平台改进
+
+- **新增 `installer-publisher.patch`** — 设置 NSIS 安装器的 Publisher 名称为 Vantage
+- **新增 `installer-locale.patch`** — 优先读取 zh-CN locale 目录，安装器界面中文化
+- **修复 `policies.json`** — 修复 JSON 语法错误、ID 重复、结构错误
+- **NSIS 卸载器增强** — 移除 Mozilla 调查问卷，卸载后询问是否清理用户数据
+- **新增构建配置**：
+  - `assets/mozconfig.win-cross` / `mozconfig.win-cross.msvc` — 完整 Windows 交叉编译配置
+  - `assets/mozconfig.win-cross.new` / `mozconfig.win-cross.old` — 新旧版配置存档
+
+### 🍎 macOS 交叉编译
+
+- **x86_64 首次成功** — 产物通过 Rosetta 2 在 Apple Silicon MacBook Pro 真机测试
+- **ARM64 工具链就绪** — `assets/mozconfig.osx-cross-arm64` 配置已创建
+- 新增 patch：`macos-sdk-version.patch`、`dmg-fix-permissions.patch`
+
+### ⚙️ 功能改进
+
+- **更新检查**：移除 24 小时间隔限制，改为**每次启动时检查**
+- **about:debugging 按钮恢复** — pref-pane 面板中恢复显示
+- **默认固定扩展** — 截图工具等固定到工具栏
+- **移除 Tampermonkey 默认安装**
+- **修复扩展 ID** — `{b184d107-461b-4cfe-b4ba-771406e90c48}` 正确配置
+- **新增默认图标尺寸** — `default22.png`、`default24.png`、`default256.png`
+
+### 🇨🇳 本地化更新
+
+- **隐私仪表板 l10n** — en-US / zh-CN / zh-TW 均添加 `vantage-dashboard-*` 翻译
+- **安装器 l10n** — zh-CN / zh-TW NSIS 翻译通过 `.inc.properties` 追加
+- **aboutDialog 更新** — 完善品牌链接文字
+
+### 📦 打包改进
+
+- **ARM64 Linux 打包支持** — AppImage / deb / rpm / portable tar.gz
+- **新增 `build-fix-libc++.patch`** — 修复 libc++ 链接问题
+- 完善 `Makefile`，新增 `package-all` 目标
+- 新增 `migrate.bat` — Windows 用户数据迁移脚本
+
+---
+
 ## v149.0-2 — 2026-04-03
 
 ### 🤖 AI 侧边栏（实验功能）
@@ -104,7 +204,7 @@
 
 ## 技术细节
 
-- 基于 Firefox 149.0
-- 上游参考：LibreWolf 最新源码 + settings + bsys6
-- 编译方式：Linux 交叉编译 Windows (`x86_64-pc-mingw32`)
+- 基于 Firefox 150.0
+- 上游参考：LibreWolf 150.0-1 源码 + settings + bsys6
+- 编译方式：Linux 交叉编译 Windows (`x86_64-pc-mingw32`)、macOS (`x86_64-apple-darwin`)、Linux (x86_64 / aarch64)
 - 品牌信息：Vantage Browser, ASYS Technology, asystech.cn

@@ -1,7 +1,7 @@
 docker_targets=docker-build-image docker-run-build-job docker-remove-image
 woodpecker_targets=fetch-upstream-woodpecker check-patchfail-woodpecker
 testing_targets=full-test test test-linux test-macos test-windows
-.PHONY : help moztree check all clean veryclean distclean patches dir bootstrap fetch build package run update setup-wasi check-patchfail check-fuzz fixfuzz $(docker_targets) $(woodpecker_targets) $(testing_targets)
+.PHONY : help moztree check all clean veryclean distclean patches dir bootstrap fetch build package package-all package-deb package-rpm package-appimage package-tar checksum run update setup-wasi check-patchfail check-fuzz fixfuzz $(docker_targets) $(woodpecker_targets) $(testing_targets)
 
 version:=$(shell cat ./version)
 release:=$(shell cat ./release)
@@ -56,6 +56,8 @@ help :
 	@echo "                ready to build librewolf folder."
 	@echo "  build       - Build LibreWolf (requires bootstrapped build environment)."
 	@echo "  package     - Package LibreWolf (requires build)."
+	@echo "  package-all - Package as deb/rpm/AppImage/tar.gz (Linux only)."
+	@echo "  checksum    - Generate sha256/sha512 checksums for all packages."
 	@echo "  run         - Run LibreWolf (requires build)."
 	@echo ""
 	@echo "  check-patchfail - check patches for errors."
@@ -181,9 +183,39 @@ dir : $(lw_source_dir)
 build : $(lw_source_dir)
 	(cd $(lw_source_dir) && ./mach build)
 
+# 检测 Windows 编译类型（MSVC / MinGW）- 只对 Windows 构建有效
+WIN_VARIANT := $(shell mozcfg="$${MOZCONFIG:-$$(pwd)/assets/mozconfig}"; grep -qE 'windows-msvc|pc-windows-msvc' "$$mozcfg" 2>/dev/null && echo msvc || (grep -qE 'windows-gnu|pc-mingw32' "$$mozcfg" 2>/dev/null && echo mingw || true))
+
 package :
 	(cd $(lw_source_dir) && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales)
 	find $(lw_source_dir)/obj-*/dist/ -name "*.tar.xz" -exec cp -v {} . \;
+	find $(lw_source_dir)/obj-*/dist/ -name "*.zip" -exec cp -v {} . \;
+	# 只复制 dist/ 根目录下的安装程序 exe，忽略 dist/bin/ dist/firefox/ 等子目录中的辅助编译产物
+	find $(lw_source_dir)/obj-*/dist/ -maxdepth 1 -name "*setup*.exe" -exec cp -v {} . \;
+	@if [ -n "$(WIN_VARIANT)" ]; then \
+	  for f in $(APP_NAME)-$(version)-*.tar.xz $(APP_NAME)-$(version)-*.zip; do \
+	    if [ -f "$$f" ]; then \
+	      base=$$(basename "$$f" | sed 's/\.[^.]*$$//'); \
+	      ext=$$(basename "$$f" | sed 's/.*\.//'); \
+	      newname="$${base}-$(WIN_VARIANT).$$ext"; \
+	      [ "$$f" != "$$newname" ] && mv -v "$$f" "$$newname"; \
+	    fi; \
+	  done; \
+	  echo ">>> Windows package renamed with -$(WIN_VARIANT) suffix"; \
+	fi
+
+# 计算所有打包产物的校验和
+checksum :
+	@echo ">>> Generating checksums for all packages..."
+	@for f in $(APP_NAME)-$(version)*.tar.xz $(APP_NAME)-$(version)*.zip $(APP_NAME)-$(version)*.exe $(APP_NAME)_$(version)*.deb $(APP_NAME)-$(version)*.rpm $(APP_NAME)-$(version)*.AppImage $(APP_NAME)-$(version)*.portable.tar.gz; do \
+	  if [ -f "$$f" ]; then \
+	    sha256sum "$$f" > "$$f.sha256sum"; \
+	    sha512sum "$$f" > "$$f.sha512sum"; \
+	    echo "  $$f -> $$f.sha256sum, $$f.sha512sum"; \
+	  fi; \
+	done
+	@echo ">>> Done. Checksum files generated."
+	@ls -lh $(APP_NAME)*$(version)*.sha*sum 2>/dev/null || true
 
 run :
 	(cd $(lw_source_dir) && ./mach run)
@@ -356,10 +388,14 @@ package-rpm : clean-packaging
 		--description "$(APP_DISPLAY_NAME) Web Browser" \
 		--maintainer "Vantage Build" \
 		--url "https://vantage.local" \
+		-p $(APP_NAME)-$(version)-$(release).$(RPM_ARCH).rpm \
 		-C rpm_build \
 		opt/$(APP_NAME)
 	@echo ">>> [RPM] Done: $(APP_NAME)-$(version)-$(release).$(RPM_ARCH).rpm"
 	@rm -rf rpm_build
+
+# AppImage runtime 文件（用于离线构建）
+APPIMAGE_RUNTIME_aarch64 := $(CURDIR)/assets/appimage-runtime/runtime-aarch64
 
 # 打包为 .AppImage (通用)
 package-appimage : clean-packaging
@@ -389,7 +425,12 @@ package-appimage : clean-packaging
 	@echo 'Categories=Network;WebBrowser;' >> AppDir/$(APP_NAME).desktop
 	@cp AppDir/$(APP_NAME).desktop AppDir/usr/share/applications/
 	@echo ">>> [APPIMAGE] Running appimagetool..."
-	@ARCH=$(PKG_ARCH) appimagetool --no-appstream AppDir $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).AppImage
+	@runtime_opt=""; \
+	if [ "$(PKG_ARCH)" = "aarch64" ] && [ -f "$(APPIMAGE_RUNTIME_aarch64)" ]; then \
+		runtime_opt="--runtime-file=$(APPIMAGE_RUNTIME_aarch64)"; \
+		echo ">>> Using cached runtime: $(APPIMAGE_RUNTIME_aarch64)"; \
+	fi; \
+	ARCH=$(PKG_ARCH) appimagetool --no-appstream $$runtime_opt AppDir $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).AppImage
 	@echo ">>> [APPIMAGE] Done: $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).AppImage"
 	@rm -rf AppDir
 
@@ -404,6 +445,6 @@ package-tar : clean-packaging
 	@rm -rf $(APP_NAME)-portable
 
 # 快捷目标：一次性生成所有格式
-package-all : package-deb package-appimage package-tar
+package-all : package-deb package-appimage package-tar package-rpm
 	@echo ">>> All packages generated successfully (arch: $(PKG_ARCH))."
 	@ls -lh $(APP_NAME)*$(version)* 2>/dev/null | grep -E '\.(deb|AppImage|tar\.gz|rpm)$$' || true

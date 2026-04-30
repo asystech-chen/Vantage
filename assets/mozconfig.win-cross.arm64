@@ -1,0 +1,57 @@
+# ==========================================
+# Vantage Browser - Windows ARM64 Cross-Compile (MSVC via msvc-wine)
+# Based on mozconfig.win-cross, target changed to aarch64
+# ==========================================
+
+# ---- 目标平台：MSVC 路线 (ARM64) ----
+ac_add_options --target=aarch64-pc-windows-msvc
+
+# ---- 启用 mach bootstrap 自动管理 clang-cl / MSVC / Windows SDK ----
+ac_add_options --enable-bootstrap
+
+# ---- 应用/品牌 ----
+ac_add_options --enable-application=browser
+ac_add_options --with-app-name=vantage
+ac_add_options --with-branding=browser/branding/vantage
+
+# ---- 构建优化（对齐 mozconfig.new） ----
+ac_add_options --enable-release
+ac_add_options --disable-debug
+ac_add_options --disable-tests
+ac_add_options --enable-optimize
+ac_add_options --enable-rust-simd
+ac_add_options --disable-cargo-incremental
+ac_add_options --enable-hardening
+
+# ---- Vantage 隐私定制（对齐 mozconfig.new） ----
+ac_add_options --allow-addon-sideload
+ac_add_options --disable-crashreporter
+ac_add_options --disable-default-browser-agent
+ac_add_options --disable-updater
+ac_add_options --with-unsigned-addon-scopes=app,system
+
+# ---- Windows 专属：简化构建 ----
+ac_add_options --disable-maintenance-service  # Windows 服务，不需要
+
+# ---- 语言包 ----
+ac_add_options --with-l10n-base=$PWD/lw/l10n
+
+# ---- clang-cl 插件（Firefox 官方推荐） ----
+export ENABLE_CLANG_PLUGIN=1
+
+# ---- 禁用 Mozilla 遥测 ----
+export MOZ_REQUIRE_SIGNING=
+mk_add_options MOZ_CRASHREPORTER=0
+mk_add_options MOZ_DATA_REPORTING=0
+mk_add_options MOZ_SERVICES_HEALTHREPORT=0
+mk_add_options MOZ_TELEMETRY_REPORTING=0
+
+# ---- ccache（如果可用） ----
+if command -v ccache >/dev/null 2>&1; then
+    ac_add_options --with-ccache
+fi
+
+# ⚠️ 注意：ARM64 MSVC 路线：
+#   - clang-cl / MSVC headers / Windows SDK 都由 --enable-bootstrap 自动管理
+#   - 目标设备：Surface Pro X, Snapdragon 笔记本等 Windows ARM64 设备
+#   - 完整功能支持（WebRTC ✅、geckodriver ✅）
