@@ -188,20 +188,13 @@ WIN_VARIANT := $(shell mozcfg="$${MOZCONFIG:-$$(pwd)/assets/mozconfig}"; grep -q
 
 package :
 	(cd $(lw_source_dir) && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales)
-	find $(lw_source_dir)/obj-*/dist/ -name "*.tar.xz" -exec cp -v {} . \;
-	find $(lw_source_dir)/obj-*/dist/ -name "*.zip" -exec cp -v {} . \;
-	# 只复制 dist/ 根目录下的安装程序 exe，忽略 dist/bin/ dist/firefox/ 等子目录中的辅助编译产物
-	find $(lw_source_dir)/obj-*/dist/ -maxdepth 1 -name "*setup*.exe" -exec cp -v {} . \;
 	@if [ -n "$(WIN_VARIANT)" ]; then \
-	  for f in $(APP_NAME)-$(version)-*.tar.xz $(APP_NAME)-$(version)-*.zip; do \
-	    if [ -f "$$f" ]; then \
-	      base=$$(basename "$$f" | sed 's/\.[^.]*$$//'); \
-	      ext=$$(basename "$$f" | sed 's/.*\.//'); \
-	      newname="$${base}-$(WIN_VARIANT).$$ext"; \
-	      [ "$$f" != "$$newname" ] && mv -v "$$f" "$$newname"; \
-	    fi; \
-	  done; \
-	  echo ">>> Windows package renamed with -$(WIN_VARIANT) suffix"; \
+	  echo ">>> Windows build: copying installer only..."; \
+	  find $(lw_source_dir)/obj-*/dist/ -maxdepth 1 -name "*setup*.exe" -exec cp -v {} . \;; \
+	else \
+	  echo ">>> Non-Windows build: copying tar.xz and zip..."; \
+	  find $(lw_source_dir)/obj-*/dist/ -name "*.tar.xz" -exec cp -v {} . \;; \
+	  find $(lw_source_dir)/obj-*/dist/ -name "*.zip" -exec cp -v {} . \;; \
 	fi
 
 # 计算所有打包产物的校验和
@@ -209,13 +202,12 @@ checksum :
 	@echo ">>> Generating checksums for all packages..."
 	@for f in $(APP_NAME)-$(version)*.tar.xz $(APP_NAME)-$(version)*.zip $(APP_NAME)-$(version)*.exe $(APP_NAME)_$(version)*.deb $(APP_NAME)-$(version)*.rpm $(APP_NAME)-$(version)*.AppImage $(APP_NAME)-$(version)*.portable.tar.gz; do \
 	  if [ -f "$$f" ]; then \
-	    sha256sum "$$f" > "$$f.sha256sum"; \
 	    sha512sum "$$f" > "$$f.sha512sum"; \
-	    echo "  $$f -> $$f.sha256sum, $$f.sha512sum"; \
+	    echo "  $$f -> $$f.sha512sum"; \
 	  fi; \
 	done
 	@echo ">>> Done. Checksum files generated."
-	@ls -lh $(APP_NAME)*$(version)*.sha*sum 2>/dev/null || true
+	@ls -lh $(APP_NAME)*$(version)*.sha512sum 2>/dev/null || true
 
 run :
 	(cd $(lw_source_dir) && ./mach run)
