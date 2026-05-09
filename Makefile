@@ -151,6 +151,23 @@ $(lw_source_dir) : $(ff_source_tarball) ./version ./release scripts/librewolf-pa
 	tar xf $(ff_source_tarball)
 	mv $(ff_source_dir) $(lw_source_dir)
 	python3 scripts/librewolf-patches.py $(version) $(release)
+	$(MAKE) prepare-sfx-apply
+
+# 将预打补丁的 7zSD.sfx 复制到源码树（修复 Windows 安装包品牌）
+prepare-sfx: prepare-sfx-apply
+
+prepare-sfx-apply:
+	@if [ -d "$(lw_source_dir)/other-licenses/7zstub/firefox" ]; then \
+		echo ">>> [7zSFX] Applying Vantage branding to SFX stubs..."; \
+		for arch in Win32 ARM64; do \
+			src="assets/7zsfx/7zSD.$${arch}.sfx"; \
+			dst="$(lw_source_dir)/other-licenses/7zstub/firefox/7zSD.$${arch}.sfx"; \
+			if [ -f "$$src" ] && [ -f "$$dst" ]; then \
+				cp "$$src" "$$dst"; \
+				echo "    Patched: $$arch"; \
+			fi; \
+		done; \
+	fi
 
 $(lw_source_tarball) : $(lw_source_dir)
 	rm -f $(lw_source_tarball)
@@ -189,8 +206,9 @@ WIN_VARIANT := $(shell mozcfg="$${MOZCONFIG:-$$(pwd)/assets/mozconfig}"; grep -q
 package :
 	(cd $(lw_source_dir) && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales)
 	@if [ -n "$(WIN_VARIANT)" ]; then \
-	  echo ">>> Windows build: copying installer only..."; \
-	  find $(lw_source_dir)/obj-*/dist/ -maxdepth 1 -name "*setup*.exe" -exec cp -v {} . \;; \
+	  echo ">>> Windows build: copying installer and archive..."; \
+	  find $(lw_source_dir)/obj-*/dist/ -maxdepth 1 -name "*.exe" -exec cp -v {} . \;; \
+	  find $(lw_source_dir)/obj-*/dist/ -maxdepth 1 -name "*.zip" -exec cp -v {} . \;; \
 	else \
 	  echo ">>> Non-Windows build: copying tar.xz and zip..."; \
 	  find $(lw_source_dir)/obj-*/dist/ -name "*.tar.xz" -exec cp -v {} . \;; \
@@ -387,6 +405,7 @@ package-rpm : clean-packaging
 	@rm -rf rpm_build
 
 # AppImage runtime 文件（用于离线构建）
+APPIMAGE_RUNTIME_x86_64 := $(CURDIR)/assets/appimage-runtime/runtime-x86_64
 APPIMAGE_RUNTIME_aarch64 := $(CURDIR)/assets/appimage-runtime/runtime-aarch64
 
 # 打包为 .AppImage (通用)
@@ -418,7 +437,10 @@ package-appimage : clean-packaging
 	@cp AppDir/$(APP_NAME).desktop AppDir/usr/share/applications/
 	@echo ">>> [APPIMAGE] Running appimagetool..."
 	@runtime_opt=""; \
-	if [ "$(PKG_ARCH)" = "aarch64" ] && [ -f "$(APPIMAGE_RUNTIME_aarch64)" ]; then \
+	if [ "$(PKG_ARCH)" = "x86_64" ] && [ -f "$(APPIMAGE_RUNTIME_x86_64)" ]; then \
+		runtime_opt="--runtime-file=$(APPIMAGE_RUNTIME_x86_64)"; \
+		echo ">>> Using cached runtime: $(APPIMAGE_RUNTIME_x86_64)"; \
+	elif [ "$(PKG_ARCH)" = "aarch64" ] && [ -f "$(APPIMAGE_RUNTIME_aarch64)" ]; then \
 		runtime_opt="--runtime-file=$(APPIMAGE_RUNTIME_aarch64)"; \
 		echo ">>> Using cached runtime: $(APPIMAGE_RUNTIME_aarch64)"; \
 	fi; \

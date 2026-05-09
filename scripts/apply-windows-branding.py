@@ -8,13 +8,16 @@ import sys
 
 srcdir = sys.argv[1] if len(sys.argv) > 1 else "."
 
-# 1. Create setup.ico from vantage firefox.ico (for NSIS installer icon)
+# 1. Overwrite Firefox's original setup.ico with Vantage icon
+#    (TOOLKIT_NSIS_FILES copies this to instgen, so branding-dir copy gets overwritten)
 setup_ico_src = os.path.join(srcdir, "browser/branding/vantage/firefox.ico")
-setup_ico_dst = os.path.join(srcdir, "browser/branding/vantage/setup.ico")
+toolkit_setup_ico = os.path.join(srcdir, "toolkit/mozapps/installer/windows/nsis/setup.ico")
+branding_setup_ico = os.path.join(srcdir, "browser/branding/vantage/setup.ico")
 if os.path.exists(setup_ico_src):
     import shutil
-    shutil.copy2(setup_ico_src, setup_ico_dst)
-    print(f">>> Created {setup_ico_dst}")
+    shutil.copy2(setup_ico_src, toolkit_setup_ico)
+    shutil.copy2(setup_ico_src, branding_setup_ico)
+    print(f">>> setup.ico: replaced Firefox icon with Vantage icon")
 
 # 2. Update defines.nsi.in - replace Firefox references with Vantage
 defines_path = os.path.join(srcdir, "browser/installer/windows/nsis/defines.nsi.in")
@@ -45,22 +48,32 @@ if os.path.exists(defines_path):
 else:
     print(f">>> SKIP: {defines_path} not found")
 
-# 3. Add setup.ico to BRANDING_FILES in Makefile.in
-makefile_path = os.path.join(srcdir, "browser/installer/windows/Makefile.in")
-if os.path.exists(makefile_path):
-    with open(makefile_path, "r") as f:
-        lines = f.readlines()
+# 3. Replace Mozilla branding in module.ver (version info for vantage.exe)
+module_ver_path = os.path.join(srcdir, "browser/app/module.ver")
+if os.path.exists(module_ver_path):
+    with open(module_ver_path, "r", encoding="latin-1") as f:
+        content = f.read()
     
-    already_has_setup = any("setup.ico" in line for line in lines)
-    if not already_has_setup:
-        for i, line in enumerate(lines):
-            if line.strip() == "firefox64.ico \\":
-                lines.insert(i + 1, "\tsetup.ico \\\n")
-                with open(makefile_path, "w") as f:
-                    f.writelines(lines)
-                print(">>> Makefile.in: added setup.ico to BRANDING_FILES")
-                break
+    changed = False
+    replacements = [
+        ("WIN32_MODULE_COMPANYNAME=Mozilla Corporation",
+         "WIN32_MODULE_COMPANYNAME=ASYS Technology"),
+        ("WIN32_MODULE_COPYRIGHT=\xa9Firefox and Mozilla Developers; available under the MPL 2 license.",
+         "WIN32_MODULE_COPYRIGHT=\xa9ASYS Technology; available under the MPL 2 license."),
+        ("WIN32_MODULE_TRADEMARKS=Firefox is a Trademark of The Mozilla Foundation.",
+         "WIN32_MODULE_TRADEMARKS=Vantage is a Trademark of ASYS Technology."),
+    ]
+    for old, new in replacements:
+        if old in content:
+            content = content.replace(old, new)
+            changed = True
+            key = old.split("=")[0]
+            print(f">>> module.ver: replaced {key}")
+    
+    if changed:
+        with open(module_ver_path, "w", encoding="latin-1") as f:
+            f.write(content)
     else:
-        print(">>> Makefile.in: setup.ico already in BRANDING_FILES")
+        print(">>> module.ver: no changes needed (already branded)")
 else:
-    print(f">>> SKIP: {makefile_path} not found")
+    print(f">>> SKIP: {module_ver_path} not found")
