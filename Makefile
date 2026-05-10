@@ -205,20 +205,28 @@ WIN_VARIANT := $(shell mozcfg="$${MOZCONFIG:-$$(pwd)/assets/mozconfig}"; grep -q
 
 package :
 	(cd $(lw_source_dir) && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales)
-	@if [ -n "$(WIN_VARIANT)" ]; then \
+	@OBJDIR=$$(ls -td $(lw_source_dir)/obj-* 2>/dev/null | head -1); \
+	ARCH=$$(basename "$$OBJDIR" | grep -oE 'x86_64|aarch64|arm64' | head -1 | sed 's/^arm64$$/aarch64/'); \
+	echo ">>> Copying packages (arch: $$ARCH)..."; \
+	if [ -n "$(WIN_VARIANT)" ]; then \
 	  echo ">>> Windows build: copying installer and archive..."; \
-	  find $(lw_source_dir)/obj-*/dist/ -maxdepth 1 -name "*.exe" -exec cp -v {} . \;; \
-	  find $(lw_source_dir)/obj-*/dist/ -maxdepth 1 -name "*.zip" -exec cp -v {} . \;; \
+	  find $$OBJDIR/dist/ -maxdepth 1 -name "*.exe" | while read f; do \
+	    cp -v "$$f" "$(APP_NAME)-$(version)-$(release).$$ARCH-installer.exe"; \
+	  done; \
+	  find $$OBJDIR/dist/ -maxdepth 1 -name "*.zip" ! -name "*xpt_artifacts*" -exec cp -v {} . \;; \
 	else \
-	  echo ">>> Non-Windows build: copying tar.xz and zip..."; \
-	  find $(lw_source_dir)/obj-*/dist/ -name "*.tar.xz" -exec cp -v {} . \;; \
-	  find $(lw_source_dir)/obj-*/dist/ -name "*.zip" -exec cp -v {} . \;; \
+	  echo ">>> Non-Windows build: copying tar.xz, zip, dmg..."; \
+	  find $$OBJDIR/dist/ -name "*.tar.xz" -exec cp -v {} . \;; \
+	  find $$OBJDIR/dist/ -name "*.zip" ! -name "*xpt_artifacts*" -exec cp -v {} . \;; \
+	  find $$OBJDIR/dist/ -maxdepth 1 -name "*.dmg" | while read f; do \
+	    cp -v "$$f" "$(APP_NAME)-$(version)-$(release).$$ARCH.dmg"; \
+	  done; \
 	fi
 
 # 计算所有打包产物的校验和
 checksum :
 	@echo ">>> Generating checksums for all packages..."
-	@for f in $(APP_NAME)-$(version)*.tar.xz $(APP_NAME)-$(version)*.zip $(APP_NAME)-$(version)*.exe $(APP_NAME)_$(version)*.deb $(APP_NAME)-$(version)*.rpm $(APP_NAME)-$(version)*.AppImage $(APP_NAME)-$(version)*.portable.tar.gz; do \
+	@for f in $(APP_NAME)-$(version)*.tar.xz $(APP_NAME)-$(version)*.zip $(APP_NAME)-$(version)*.exe $(APP_NAME)-$(version)*.dmg $(APP_NAME)_$(version)*.deb $(APP_NAME)-$(version)*.rpm $(APP_NAME)-$(version)*.AppImage $(APP_NAME)-$(version)*.portable.tar.gz; do \
 	  if [ -f "$$f" ]; then \
 	    sha512sum "$$f" > "$$f.sha512sum"; \
 	    echo "  $$f -> $$f.sha512sum"; \

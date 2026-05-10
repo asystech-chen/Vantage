@@ -1,20 +1,7 @@
-diff --git a/other-licenses/7zstub/firefox/resource.rc b/other-licenses/7zstub/firefox/resource.rc
---- a/other-licenses/7zstub/firefox/resource.rc
-+++ b/other-licenses/7zstub/firefox/resource.rc
-@@ -1,7 +1,7 @@
- #include <windows.h>
- #include "../src/CPP/7zip/Bundles/SFXSetup/resource.h"
- #include "../src/C/7zVersion.rc"
- 
- LANGUAGE 9, 1
- 1 VERSIONINFO
-   FILEVERSION MY_VER
-@@ -11,14 +11,14 @@
-   FILEOS MY_VOS_NT_WINDOWS32
-   FILETYPE MY_VFT_APP
-   FILESUBTYPE 0x0L
- BEGIN
-   BLOCK "StringFileInfo"
+diff -Naur a/other-licenses/7zstub/firefox/resource.rc b/other-licenses/7zstub/firefox/resource.rc
+--- a/other-licenses/7zstub/firefox/resource.rc	2026-05-10 15:45:03.988832389 +0800
++++ b/other-licenses/7zstub/firefox/resource.rc	2026-05-10 15:45:03.992832658 +0800
+@@ -16,13 +16,13 @@
    BEGIN
        BLOCK "040904b0"
        BEGIN
@@ -32,4 +19,3 @@ diff --git a/other-licenses/7zstub/firefox/resource.rc b/other-licenses/7zstub/f
            VALUE "ProductVersion", MY_VERSION
        END
    END
-   BLOCK "VarFileInfo"

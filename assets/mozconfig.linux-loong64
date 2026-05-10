@@ -1,0 +1,77 @@
+# ==========================================
+# Vantage Browser - Linux LoongArch64 (loong64) Cross-Compile from x86_64
+#
+# 注意：不能使用 --enable-bootstrap，因为 Mozilla 预编译的 clang
+# 不支持 loongarch64。改用系统 clang + Debian 交叉 sysroot。
+#
+# 前置依赖：
+#   sudo apt install libc6-dev-loong64-cross libstdc++-14-dev-loong64-cross g++-loongarch64-linux-gnu lld
+#   rustup target add loongarch64-unknown-linux-gnu
+# ==========================================
+
+# Target - Linux LoongArch64
+ac_add_options --target=loongarch64-linux-gnu
+
+# ---- 交叉编译工具链 ----
+# 系统 clang 19 支持 loongarch64，用 Debian 交叉包作 sysroot
+# 必须用绝对路径，否则 Mozilla 构建系统会用 ~/.mozbuild/clang/bin/clang（不支持 loongarch64）
+export CC="/usr/bin/clang --target=loongarch64-linux-gnu --gcc-toolchain=/usr"
+export CXX="/usr/bin/clang++ --target=loongarch64-linux-gnu --gcc-toolchain=/usr"
+export HOST_CC=$HOME/.mozbuild/clang/bin/clang
+export HOST_CXX=$HOME/.mozbuild/clang/bin/clang++
+
+# 用 lld 链接器（系统 ld 不支持 loongarch64）+ 显式库路径（不用 sysroot，避免路径重复）
+export LDFLAGS="-fuse-ld=lld -L/usr/loongarch64-linux-gnu/lib"
+
+# 用 llvm 的 ar/nm/ranlib（支持 loongarch64）
+export AR=llvm-ar-19
+export NM=llvm-nm-19
+export RANLIB=llvm-ranlib-19
+
+# ---- 辅助工具（从 ~/.mozbuild 借用，避免 --enable-bootstrap） ----
+mk_add_options "export PATH=$HOME/.mozbuild/cbindgen:$HOME/.mozbuild/nasm:$HOME/.mozbuild/node/bin:$HOME/.mozbuild/pkgconf:$PATH"
+mk_add_options "export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig"
+
+# ---- 应用/品牌 ----
+ac_add_options --enable-application=browser
+ac_add_options --with-app-name=vantage
+ac_add_options --with-branding=browser/branding/vantage
+
+# ---- 构建优化 ----
+ac_add_options --enable-release
+ac_add_options --disable-debug
+ac_add_options --disable-tests
+ac_add_options --enable-optimize
+ac_add_options --enable-rust-simd
+ac_add_options --disable-cargo-incremental
+ac_add_options --disable-alsa  # 无 loong64 交叉编译 ALSA 包
+ac_add_options --enable-hardening
+ac_add_options --enable-stl-hardening
+ac_add_options --enable-replace-malloc
+ac_add_options --enable-jemalloc
+
+# ---- Vantage 隐私定制 ----
+ac_add_options --allow-addon-sideload
+ac_add_options --disable-crashreporter
+ac_add_options --disable-default-browser-agent
+ac_add_options --disable-updater
+ac_add_options --with-unsigned-addon-scopes=app,system
+
+# ---- 语言包 ----
+ac_add_options --with-l10n-base=$PWD/lw/l10n
+
+# ---- 禁用 Mozilla 遥测 ----
+export MOZ_REQUIRE_SIGNING=
+mk_add_options MOZ_CRASHREPORTER=0
+mk_add_options MOZ_DATA_REPORTING=0
+mk_add_options MOZ_SERVICES_HEALTHREPORT=0
+mk_add_options MOZ_TELEMETRY_REPORTING=0
+
+# ---- 编译安全选项 ----
+export CFLAGS="-ftrivial-auto-var-init=zero -fwrapv"
+export CXXFLAGS="-ftrivial-auto-var-init=zero -fwrapv"
+
+# ---- ccache（如果可用） ----
+if command -v ccache >/dev/null 2>&1; then
+    ac_add_options --with-ccache
+fi
