@@ -46,7 +46,6 @@ patches/webgl-permission.patch
 patches/windows-theming-bug.patch
 patches/xdg-dir.patch
 patches/macos-sdk-version.patch
-patches/vantage-ai-sidebar.patch
 patches/vantage-privacy-dashboard.patch
 patches/fix-7zsfx-branding.patch
 patches/ui-patches/hide-default-browser.patch

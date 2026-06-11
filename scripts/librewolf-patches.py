@@ -155,6 +155,8 @@ def librewolf_patches():
     exec('cp -v ../patches/ai-svg/qwen-color.svg browser/components/genai/assets/brands/qwen.svg')
     exec('cp -v ../patches/ai-svg/doubao-color.svg browser/components/genai/assets/brands/doubao.svg')
     exec("cp -v ../browser/components/genai/chat.js browser/components/genai/chat.js")
+    exec("cp -v ../browser/components/genai/GenAI.sys.mjs browser/components/genai/GenAI.sys.mjs")
+    exec("cp -v ../browser/components/genai/genai.ftl browser/locales/en-US/browser/genai.ftl")
 
     # provide a script that fetches and bootstraps Nightly and some mozconfigs
     exec('cp -v ../scripts/mozfetch.sh lw/')

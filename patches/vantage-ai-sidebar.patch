@@ -9,9 +9,10 @@
    reorderChatProviders
  );
  XPCOMUtils.defineLazyPreferenceGetter(
-@@ -138,6 +138,47 @@
+@@ -137,7 +137,48 @@
+   // Any chat provider can be used and those that match the URLs in this object
+   // will allow for additional UI shown such as populating dropdown with a name,
    // showing links, and other special behaviors needed for individual providers.
-   chatProviders: new Map([
 +    // --- 国产 AI ---
 +    [
 +      "https://chat.deepseek.com",
@@ -53,8 +54,8 @@
 +      },
 +    ],
 +    // --- 国际 AI ---
+   chatProviders: new Map([
      [
-       "https://claude.ai/new",
        {
          iconUrl: "chrome://browser/content/genai/assets/brands/claude.svg",
 @@ -170,19 +211,6 @@
