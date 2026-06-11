@@ -12,8 +12,7 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   ]);
 });
 
-try {
-    Preferences.addAll([
+  const prefsToAdd = [
   { id: "vantage.updateCheck.enabled", type: "bool" },
   { id: "browser.ml.chat.enabled", type: "bool" },
   { id: "browser.ai.control.sidebarChatbot", type: "string" },
@@ -32,9 +31,9 @@ try {
   { id: "browser.safebrowsing.provider.google.gethashURL", type: "string" },
   { id: "browser.safebrowsing.provider.google.updateURL", type: "string" },
   { id: "toolkit.legacyUserProfileCustomizations.stylesheets", type: "bool" },
-]);
-  } catch (e) {
-    console.warn("librewolf.js addAll (some prefs may be pre-registered):", e.message);
+];
+  for (let p of prefsToAdd) {
+    try { Preferences.add(p); } catch (e) { /* already registered */ }
   }
 
 var gLibrewolfPane = {
