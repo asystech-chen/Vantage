@@ -69,3 +69,5 @@ librewolf-config-link = 所有高级设置 (about:config)
 librewolf-open-profile = 打开用户配置文件目录
 librewolf-debug = 调试附加组件
 vantage-privacy-dashboard-link = 隐私保护仪表板
+
+content-blocking-section-top-level-description = Vantage 默认支持并启用严格模式下的增强跟踪保护。这是浏览器中最重要的设置之一，因为它提供状态分区、严格的阻止列表和其他精妙的隐私功能。我们不建议更改为其他模式。
