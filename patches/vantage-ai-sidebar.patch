@@ -12,7 +12,6 @@
 @@ -138,6 +138,47 @@
    // showing links, and other special behaviors needed for individual providers.
    chatProviders: new Map([
-     [
 +    // --- 国产 AI ---
 +    [
 +      "https://chat.deepseek.com",
