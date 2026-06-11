@@ -12,16 +12,30 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   ]);
 });
 
-Preferences.addAll([
-  // 其他 pref 由 librewolf-config.mjs SettingGroupManager 注册，不重复
+try {
+    Preferences.addAll([
+  { id: "vantage.updateCheck.enabled", type: "bool" },
+  { id: "browser.ml.chat.enabled", type: "bool" },
   { id: "browser.ai.control.sidebarChatbot", type: "string" },
+  { id: "network.dns.disableIPv6", type: "bool" },
+  { id: "identity.fxaccounts.enabled", type: "bool" },
+  { id: "webgl.disabled", type: "bool" },
+  { id: "extensions.update.enabled", type: "bool" },
+  { id: "extensions.update.autoUpdateDefault", type: "bool" },
+  { id: "clipboard.autocopy", type: "bool" },
+  { id: "middlemouse.paste", type: "bool" },
+  { id: "network.http.referer.XOriginPolicy", type: "int" },
+  { id: "privacy.resistFingerprinting.letterboxing", type: "bool" },
   { id: "browser.safebrowsing.blockedURIs.enabled", type: "bool" },
   { id: "browser.safebrowsing.provider.google4.gethashURL", type: "string" },
   { id: "browser.safebrowsing.provider.google4.updateURL", type: "string" },
   { id: "browser.safebrowsing.provider.google.gethashURL", type: "string" },
   { id: "browser.safebrowsing.provider.google.updateURL", type: "string" },
-  { id: "browser.safebrowsing.downloads.enabled", type: "bool" },
+  { id: "toolkit.legacyUserProfileCustomizations.stylesheets", type: "bool" },
 ]);
+  } catch (e) {
+    console.warn("librewolf.js addAll (some prefs may be pre-registered):", e.message);
+  }
 
 var gLibrewolfPane = {
   _pane: null,
