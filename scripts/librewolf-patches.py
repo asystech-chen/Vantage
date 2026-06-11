@@ -146,7 +146,6 @@ def librewolf_patches():
     exec('cp ../patches/pref-pane/librewolf.css browser/themes/shared/preferences/librewolf.css')
     exec('cp ../patches/pref-pane/librewolf.inc.xhtml browser/components/preferences/librewolf.inc.xhtml')
     exec('cp ../patches/pref-pane/librewolf.js browser/components/preferences/librewolf.js')
-    exec('cp ../patches/pref-pane/librewolf-config.mjs browser/components/preferences/librewolf-config.mjs')
     
     #
     # Vantage AI sidebar: copy brand icons for new providers
