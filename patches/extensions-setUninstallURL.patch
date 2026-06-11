@@ -1,0 +1,13 @@
+diff --git a/toolkit/components/extensions/parent/ext-runtime.js b/toolkit/components/extensions/parent/ext-runtime.js
+index 0d7a3e5..473e4f1 100644
+--- a/toolkit/components/extensions/parent/ext-runtime.js
++++ b/toolkit/components/extensions/parent/ext-runtime.js
+@@ -353,7 +353,7 @@ this.runtime = class extends ExtensionAPIPersistent {
+         },
+ 
+         setUninstallURL: function (url) {
+-          if (url === null || url.length === 0) {
++          if (true) {
+             extension.uninstallURL = null;
+             return Promise.resolve();
+           }

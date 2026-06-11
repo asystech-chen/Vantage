@@ -1,6 +1,5 @@
-diff -Naur a/other-licenses/7zstub/firefox/resource.rc b/other-licenses/7zstub/firefox/resource.rc
---- a/other-licenses/7zstub/firefox/resource.rc	2026-05-10 15:45:03.988832389 +0800
-+++ b/other-licenses/7zstub/firefox/resource.rc	2026-05-10 15:45:03.992832658 +0800
+--- a/other-licenses/7zstub/firefox/resource.rc
++++ b/other-licenses/7zstub/firefox/resource.rc
 @@ -16,13 +16,13 @@
    BEGIN
        BLOCK "040904b0"

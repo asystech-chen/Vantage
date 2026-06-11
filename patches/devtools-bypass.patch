@@ -1,22 +1,31 @@
 diff --git a/devtools/server/actors/thread.js b/devtools/server/actors/thread.js
-index d91f463..3c1ba5a 100644
+index 2d70647..fbc95fe 100644
 --- a/devtools/server/actors/thread.js
 +++ b/devtools/server/actors/thread.js
-@@ -386,7 +386,8 @@ class ThreadActor extends Actor {
+@@ -8,6 +8,7 @@
+ // error packets.
+ /* eslint-disable no-throw-literal */
+ 
++var flags = require("resource://devtools/shared/flags.js");
+ const { Actor } = require("resource://devtools/shared/protocol/Actor.js");
+ const { Pool } = require("resource://devtools/shared/protocol/Pool.js");
+ const { threadSpec } = require("resource://devtools/shared/specs/thread.js");
+@@ -390,7 +391,9 @@ class ThreadActor extends Actor {
    attach(options) {
      // Note that the client avoids trying to call attach if already attached.
      // But just in case, avoid any possible duplicate call to attach.
 -    if (this.alreadyAttached) {
-+    let forceDetach = Services.prefs.getBoolPref("librewolf.debugger.force_detach", false);
++    let forceDetach = flags.lwDetach;
++
 +    if (this.alreadyAttached || forceDetach) {
        return;
      }
  
 diff --git a/devtools/server/actors/webconsole/listeners/console-api.js b/devtools/server/actors/webconsole/listeners/console-api.js
-index 3e5d0bc..8260e2b 100644
+index cdf6a84..ccdd19e 100644
 --- a/devtools/server/actors/webconsole/listeners/console-api.js
 +++ b/devtools/server/actors/webconsole/listeners/console-api.js
-@@ -97,7 +97,8 @@ class ConsoleAPIListener {
+@@ -98,7 +98,8 @@ class ConsoleAPIListener {
     *        The message object receives from the ConsoleAPIStorage service.
     */
    onConsoleAPILogEvent(message) {
@@ -25,3 +34,14 @@ index 3e5d0bc..8260e2b 100644
 +    if (!this.handler || disableConsole) {
        return;
      }
+ 
+diff --git a/devtools/shared/flags.js b/devtools/shared/flags.js
+index 1b0ec26..942de1e 100644
+--- a/devtools/shared/flags.js
++++ b/devtools/shared/flags.js
+@@ -67,3 +67,5 @@ makePrefTrackedFlag(exports, "wantVerbose", "devtools.debugger.log.verbose");
+  * behaviors typically enable easier testing or enhanced debugging features.
+  */
+ makePrefTrackedFlag(exports, "testing", "devtools.testing");
++
++makePrefTrackedFlag(exports, "lwDetach", "librewolf.debugger.force_detach");

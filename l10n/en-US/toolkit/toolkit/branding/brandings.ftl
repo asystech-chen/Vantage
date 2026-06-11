@@ -4,4 +4,5 @@
 -firefox-suggest-brand-name = Suggestions
 -firefox-home-brand-name = Homepage
 -firefoxview-brand-name = Tab View
--firefoxlabs-brand-name = Experimental Features
+-firefoxlabs-brand-name = Firefox Labs by Mozilla
+-relay-brand-name = Relay by Mozilla

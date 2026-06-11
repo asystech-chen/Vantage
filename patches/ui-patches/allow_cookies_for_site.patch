@@ -70,4 +70,75 @@ index 768768c7d448..08602d9460c6 100644
 +        </toolbarbutton>
        </vbox>
      </panelview>
+
+diff --git a/browser/base/content/browser-trustPanel.js b/browser/base/content/browser-trustPanel.js
+index 04b7aa551c..f693dccc7a 100644
+--- a/browser/base/content/browser-trustPanel.js
++++ b/browser/base/content/browser-trustPanel.js
+@@ -261,6 +261,9 @@ class TrustPanel {
+       document
+         .getElementById("trustpanel-toggle")
+         .addEventListener("click", () => this.#toggleTrackingProtection());
++      document
++        .getElementById("identity-popup-allow-sitedata-button")
++        .addEventListener("click", () => this.#toggleCookiesAllowed());
+       document
+         .getElementById("identity-popup-remove-cert-exception")
+         .addEventListener("click", () => this.#removeCertException());
+@@ -272,6 +275,30 @@ class TrustPanel {
+     }
+   }
  
++  #toggleCookiesAllowed() {
++    const pressed = document.getElementById("identity-popup-allow-sitedata-toggle").toggleAttribute(
++      "pressed"
++    );
++
++    if (pressed) {
++      Services.perms.addFromPrincipal(
++        gBrowser.contentPrincipal,
++        "cookie",
++        Services.perms.ALLOW_ACTION,
++        Services.perms.EXPIRE_NEVER
++      );
++    } else {
++      Services.perms.removeFromPrincipal(gBrowser.contentPrincipal, "cookie");
++    }
++  }
++
++  #areCookiesAllowed() {
++    return Services.perms.testExactPermissionFromPrincipal(
++        gBrowser.contentPrincipal,
++        "cookie"
++      ) === Services.perms.ALLOW_ACTION;
++  }
++
+   async showPopup(opts = {}) {
+     this.#initializePopup();
+ 
+@@ -395,6 +422,9 @@ class TrustPanel {
+       { host: this.#host }
+     );
+ 
++    let toggleCookies = document.getElementById("identity-popup-allow-sitedata-toggle");
++    toggleCookies.toggleAttribute("pressed", this.#areCookiesAllowed());
++
+     let hostElement = document.getElementById("trustpanel-popup-host");
+     hostElement.setAttribute("value", this.#host);
+     hostElement.setAttribute("tooltiptext", this.#host);
+diff --git a/browser/components/controlcenter/content/trustPanel.inc.xhtml b/browser/components/controlcenter/content/trustPanel.inc.xhtml
+index f357daa0a8..7f80b2f010 100644
+--- a/browser/components/controlcenter/content/trustPanel.inc.xhtml
++++ b/browser/components/controlcenter/content/trustPanel.inc.xhtml
+@@ -69,6 +69,11 @@
+ 
+         <toolbarseparator></toolbarseparator>
+         <toolbarbutton data-l10n-id="trustpanel-clear-cookies-button" id="trustpanel-clear-cookies-button" class="subviewbutton subviewbutton-nav"></toolbarbutton>
++
++        <toolbarbutton id="identity-popup-allow-sitedata-button" class="subviewbutton">
++          <label data-l10n-id="identity-allow-site-data" flex="1"></label>
++          <html:moz-toggle id="identity-popup-allow-sitedata-toggle" style="pointer-events: none;"></html:moz-toggle>
++        </toolbarbutton>
+ 
+         <toolbarseparator></toolbarseparator>
+         <html:a id="trustpanel-privacy-link" data-l10n-id="trustpanel-privacy-link" role="link" class="trustpanel-section panel-subview-footer-button"></html:a>

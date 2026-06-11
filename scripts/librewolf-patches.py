@@ -48,7 +48,7 @@ def exec(cmd, exit_on_fail = True, do_print = True):
         return None
 
 def patch(patchfile):
-    cmd = "patch -p1 -i {}".format(patchfile)
+    cmd = "patch --binary -p1 -i {}".format(patchfile)
     print("\n*** -> {}".format(cmd))
     sys.stdout.flush()
     if not options.no_execute:
@@ -109,7 +109,6 @@ def librewolf_patches():
             patch('../'+line)
 
     # Fix cargo checksum for rust-build.patch (modifies x_user_defined.rs)
-    exec('sed -i "s/9456ca46168ef86c98399a2536f577ef7be3cdde90c0c51392d8ac48519d3fae/b9432f9ed39742015f4bb4c3e75c89a2b9a9eef943dd0fd7cd889fddd1e6d39c/g" third_party/rust/encoding_rs/.cargo-checksum.json')
 
     # Apply Windows NSIS branding fixes
     exec('python3 ../scripts/apply-windows-branding.py .')
@@ -155,6 +154,7 @@ def librewolf_patches():
     exec('cp -v ../patches/ai-svg/deepseek-color.svg browser/components/genai/assets/brands/deepseek.svg')
     exec('cp -v ../patches/ai-svg/qwen-color.svg browser/components/genai/assets/brands/qwen.svg')
     exec('cp -v ../patches/ai-svg/doubao-color.svg browser/components/genai/assets/brands/doubao.svg')
+    exec("cp -v ../browser/components/genai/chat.js browser/components/genai/chat.js")
 
     # provide a script that fetches and bootstraps Nightly and some mozconfigs
     exec('cp -v ../scripts/mozfetch.sh lw/')

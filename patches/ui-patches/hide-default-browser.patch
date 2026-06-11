@@ -10,12 +10,78 @@ diff --git a/browser/components/preferences/main.inc.xhtml b/browser/components/
 -
  <!-- Startup -->
  <html:setting-group id="startupGroup" groupid="startup" data-category="paneGeneral" hidden="true"/>
- 
+
 diff --git a/browser/components/preferences/main.js b/browser/components/preferences/main.js
-index 8f8da3c..c45acc3 100644
+index f1cebcb..0879c5e 100644
 --- a/browser/components/preferences/main.js
 +++ b/browser/components/preferences/main.js
-@@ -2688,10 +2688,6 @@ function createStartupConfig(hidden = false) {
+@@ -1530,65 +1530,6 @@ const DefaultBrowserHelper = {
+   },
+ };
+
+-Preferences.addSetting({
+-  id: "alwaysCheckDefault",
+-  pref: "browser.shell.checkDefaultBrowser",
+-  setup: emitChange => {
+-    if (!DefaultBrowserHelper.canCheck) {
+-      return;
+-    }
+-    DefaultBrowserHelper.pollForDefaultChanges(emitChange);
+-    // eslint-disable-next-line consistent-return
+-    return () => DefaultBrowserHelper.clearPollingForDefaultChanges();
+-  },
+-  /**
+-   * Show button for setting browser as default browser or information that
+-   * browser is already the default browser.
+-   */
+-  visible: () => DefaultBrowserHelper.canCheck,
+-  disabled: (_, setting) =>
+-    !DefaultBrowserHelper.canCheck ||
+-    setting.locked ||
+-    DefaultBrowserHelper.isBrowserDefault,
+-});
+-
+-Preferences.addSetting({
+-  id: "isDefaultPane",
+-  deps: ["alwaysCheckDefault"],
+-  visible: () =>
+-    DefaultBrowserHelper.canCheck && DefaultBrowserHelper.isBrowserDefault,
+-});
+-
+-Preferences.addSetting({
+-  id: "isNotDefaultPane",
+-  deps: ["alwaysCheckDefault"],
+-  visible: () =>
+-    DefaultBrowserHelper.canCheck && !DefaultBrowserHelper.isBrowserDefault,
+-  onUserClick: (e, { alwaysCheckDefault }) => {
+-    if (!DefaultBrowserHelper.canCheck) {
+-      return;
+-    }
+-    const setDefaultButton = /** @type {MozButton} */ (e.target);
+-
+-    if (!setDefaultButton) {
+-      return;
+-    }
+-    if (setDefaultButton.disabled) {
+-      return;
+-    }
+-
+-    /**
+-     * Disable the set default button, so that the user
+-     * doesn't try to hit it again while browser is being set to default.
+-     */
+-    setDefaultButton.disabled = true;
+-    alwaysCheckDefault.value = true;
+-    DefaultBrowserHelper.setDefaultBrowser().finally(() => {
+-      setDefaultButton.disabled = false;
+-    });
+-  },
+-});
+-
+ // Firefox support settings
+ Preferences.addSetting({
+   id: "supportLinksGroup",
+@@ -2567,10 +2567,6 @@ function createStartupConfig(hidden = false) {
          control: "moz-message-bar",
          l10nId: "startup-windows-launch-on-login-profile-disabled",
        },
@@ -26,19 +92,19 @@ index 8f8da3c..c45acc3 100644
      ],
    };
  }
-@@ -2753,7 +2749,6 @@ SettingGroupManager.registerGroups({
-       },
-     ],
-   },
+@@ -2576,7 +2517,6 @@ function createStartupConfig(hidden = false) {
+ }
+
+ SettingGroupManager.registerGroups({
 -  defaultBrowser: createDefaultBrowserConfig(),
    startup: createStartupConfig(
      Services.prefs.getBoolPref("browser.settings-redesign.enabled", false)
    ),
-@@ -5227,7 +5222,6 @@ var gMainPane = {
+@@ -3446,7 +3386,6 @@ var gMainPane = {
      initSettingGroup("translations");
      initSettingGroup("spellCheck");
      initSettingGroup("performance");
 -    initSettingGroup("defaultBrowser");
      initSettingGroup("startup");
      initSettingGroup("importBrowserData");
-     initSettingGroup("networkProxy");
+     initSettingGroup("tabs");

@@ -1,6 +1,9 @@
 translations-panel-disable-translations =
     .label = 完全禁用翻译
 translations-manage-enable =
-    .label = 启用整页翻译
+    .label = 启用网页翻译
 translations-manage-autopopup =
-    .label = 提示翻译非浏览器配置语言的页面
+    .label = 网页语言与浏览器配置不同时，提示翻译网页
+main-context-menu-translate-page =
+    .label = 翻译网页…(T)
+    .accesskey = T
