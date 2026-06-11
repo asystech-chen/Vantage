@@ -413,7 +413,7 @@ function showOnboarding(length) {
           action: { type: ACTIONS.CHATBOT_SELECT, config },
           id: config.id,
           label: config.name,
-          icon: { background: "url(" + config.iconUrl + ") no-repeat center/contain" },
+          icon: { backgroundImage: "url(" + config.iconUrl + ")", backgroundSize: "contain", backgroundRepeat: "no-repeat", backgroundPosition: "center", width: "32px", height: "32px" },
           tooltip: { string_id: config.tooltipId },
         })),
         // Default to nothing selected
