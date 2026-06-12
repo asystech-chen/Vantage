@@ -48,7 +48,6 @@ patches/xdg-dir.patch
 patches/macos-sdk-version.patch
 patches/vantage-privacy-dashboard.patch
 patches/fix-7zsfx-branding.patch
-patches/ui-patches/hide-default-browser.patch
 patches/ui-patches/home-preferences.patch
 patches/ui-patches/neterror.patch
 patches/ui-patches/add-translate-page-context-menu.patch
