@@ -19,14 +19,14 @@ ac_add_options --enable-optimize
 # Branding
 ac_add_options --enable-update-channel=release
 
-# theming bugs: ac_add_options --with-app-name=librewolf
+# theming bugs: ac_add_options --with-app-name=vantage
 # theming bugs: ac_add_options --with-app-basename=LibreWolf
-ac_add_options --with-app-name=librewolf
+ac_add_options --with-app-name=vantage
 ac_add_options --with-app-basename=LibreWolf
 
 
 
-ac_add_options --with-branding=browser/branding/librewolf
+ac_add_options --with-branding=browser/branding/vantage
 ac_add_options --with-distribution-id=io.gitlab.librewolf-community
 ac_add_options --with-unsigned-addon-scopes=app,system
 ac_add_options --allow-addon-sideload
