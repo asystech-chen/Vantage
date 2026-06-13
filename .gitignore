@@ -8,6 +8,7 @@ vantage-*.tar.xz
 *.rpm
 *.AppImage
 *.portable.tar.gz
+sha256sums
 
 # build artifacts
 rpm_build/
