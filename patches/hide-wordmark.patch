@@ -1,0 +1,12 @@
+diff --git a/browser/extensions/newtab/content-src/components/Logo/_Logo.scss b/browser/extensions/newtab/content-src/components/Logo/_Logo.scss
+index 0000000..0000000 100644
+--- a/browser/extensions/newtab/content-src/components/Logo/_Logo.scss
++++ b/browser/extensions/newtab/content-src/components/Logo/_Logo.scss
+@@ -52,7 +52,7 @@
+     background-size: $wordmark-size;
+     -moz-context-properties: fill;
+-    display: inline-block;
++    display: none;
+     fill: var(--newtab-wordmark-color);
+     height: $logo-size;
+     margin-inline-start: var(--space-large);
