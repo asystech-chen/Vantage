@@ -135,6 +135,31 @@ def librewolf_patches():
     exec('cp -v ../../settings/librewolf.cfg .')
     exec('cp -v ../../settings/distribution/policies.json .')
     exec('cp -v ../../settings/defaults/pref/local-settings.js .')
+
+    # distribution files for Windows installer optional extensions
+    exec('mkdir -p optional-extensions')
+    exec('cp -v ../../settings/distribution/setup.ini .')
+    exec('cp -v ../../settings/distribution/optional-extensions/*.xpi optional-extensions/ 2>/dev/null; true')
+
+    # Write moz.build to include distribution files in the build
+    with open('moz.build', 'w') as f:
+        f.write('FINAL_TARGET_FILES += [\n'
+                '  "librewolf.cfg",\n'
+                ']\n'
+                '\n'
+                'FINAL_TARGET_FILES.distribution += [\n'
+                '  "policies.json",\n'
+                '  "setup.ini",\n'
+                ']\n'
+                '\n'
+                'FINAL_TARGET_FILES.defaults.pref += [\n'
+                '  "local-settings.js",\n'
+                ']\n')
+        # Add each XPI individually to distribution
+        import glob as _g
+        for xpi in sorted(_g.glob('optional-extensions/*.xpi')):
+            f.write(f'FINAL_TARGET_FILES.distribution += ["{xpi}"]\n')
+
     leave_srcdir();
 
 
@@ -179,6 +204,14 @@ def librewolf_patches():
     print("-> Patching appstrings.properties")
     # Why is "Firefox" hardcoded there???
     exec("find . -path '*/appstrings.properties' -exec sed -i s/Firefox/Vantage/ {} \\;")
+
+    # Add optional extension distribution files to package manifest
+    print("-> Adding optional extensions to package-manifest.in")
+    manifest = 'browser/installer/package-manifest.in'
+    with open(manifest, 'a') as f:
+        f.write('\n# Vantage optional extensions\n')
+        f.write('@RESPATH@/distribution/setup.ini\n')
+        f.write('@RESPATH@/distribution/optional-extensions/*\n')
 
     print("-> Applying LibreWolf locales")
     l10n_dir = Path("..", "l10n")
