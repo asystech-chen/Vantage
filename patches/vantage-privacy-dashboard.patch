@@ -1,6 +1,15 @@
---- a/browser/components/protections/content/protections.html
-+++ b/browser/components/protections/content/protections.html
-@@ -23,50 +23,50 @@
+--- a/browser/components/protections/content/protections.html	2026-06-22 15:39:40.962808557 +0800
++++ b/browser/components/protections/content/protections.html	2026-06-22 15:42:19.939804186 +0800
+@@ -14,6 +14,8 @@
+     <link rel="localization" href="branding/brand.ftl" />
+     <link rel="localization" href="browser/protections.ftl" />
+     <link rel="localization" href="toolkit/branding/brandings.ftl" />
++    <!-- Temporary "en-US"-only l10n strings -->
++    <link rel="localization" href="preview/protections.ftl" />
+     <link rel="stylesheet" href="chrome://global/skin/in-content/common.css" />
+     <link rel="stylesheet" href="chrome://browser/content/protections.css" />
+     <link rel="icon" href="chrome://browser/skin/controlcenter/dashboard.svg" />
+@@ -21,56 +23,50 @@
        type="module"
        src="chrome://browser/content/protections.mjs"
      ></script>
@@ -17,13 +26,19 @@
 -        <img class="icon" src="chrome://browser/content/logos/vpn.svg" />
 -        <div class="wrapper">
 -          <div>
--            <h3 class="banner-title" data-l10n-id="vpn-banner-header"></h3>
--            <span class="content" data-l10n-id="vpn-banner-content"></span>
+-            <h3
+-              class="banner-title"
+-              data-l10n-id="protections-vpn-banner-header"
+-            ></h3>
+-            <span
+-              class="content"
+-              data-l10n-id="protections-vpn-banner-content"
+-            ></span>
 -          </div>
 -          <a
 -            target="_blank"
 -            id="vpn-banner-link"
--            data-l10n-id="get-vpn-link"
+-            data-l10n-id="protections-get-vpn-link"
 -          ></a>
 -          <button
 -            class="exit-icon"
@@ -89,7 +104,7 @@
        <div class="card card-no-hover etp-card">
          <div class="card-header">
            <img
-@@ -288,300 +288,42 @@
+@@ -292,282 +288,42 @@
              <div id="graph-total-summary"></div>
            </div>
          </div>
@@ -340,31 +355,6 @@
 -          </div>
 -        </div> -->
 -      </section>
--      <!-- Markup for Proxy card -->
--      <section class="card card-no-hover proxy-card hidden">
--        <div class="card-header">
--          <img
--            class="icon light"
--            src="chrome://browser/content/logos/proxy-light.svg"
--          />
--          <img
--            class="icon dark"
--            src="chrome://browser/content/logos/proxy-dark.svg"
--          />
--          <div class="wrapper">
--            <div>
--              <h3 class="card-title" data-l10n-id="proxy-title"></h3>
--              <p class="content" data-l10n-id="proxy-header-content"></p>
--            </div>
--            <a
--              target="_blank"
--              id="get-proxy-extension-link"
--              data-l10n-id="get-proxy-extension-link"
--            ></a>
--          </div>
--        </div>
--      </section>
--
 -      <section class="card card-no-hover vpn-card hidden">
 -        <div class="card-header">
 -          <img class="icon" src="chrome://browser/content/logos/vpn.svg" />
@@ -375,7 +365,10 @@
 -                  id="check-icon"
 -                  src="chrome://browser/skin/protections/resolved-breach.svg"
 -                />
--                <h3 class="card-title" data-l10n-id="vpn-title"></h3>
+-                <h3
+-                  class="card-title"
+-                  data-l10n-id="protections-vpn-title"
+-                ></h3>
 +              <div class="protection-status-item">
 +                <span class="status-indicator" id="status-cryptominer"></span>
 +                <span data-l10n-id="vantage-dashboard-status-cryptominer">Cryptominer Blocking</span>
@@ -384,27 +377,31 @@
 +                <span class="status-indicator" id="status-social"></span>
 +                <span data-l10n-id="vantage-dashboard-status-social">Social Tracker Blocking</span>
                </div>
--              <p class="content" data-l10n-id="vpn-header-content"></p>
+-              <p
+-                class="content"
+-                data-l10n-id="protections-vpn-header-content"
+-              ></p>
 -              <p
 -                class="content subscribed"
--                data-l10n-id="vpn-header-content-subscribed"
+-                data-l10n-id="protections-vpn-header-content-subscribed"
+-                data-l10n-args='{"count": 5}'
 -              >
 -                <a
 -                  target="_blank"
 -                  id="vpn-google-playstore-link"
--                  data-l10n-name="vpn-google-playstore-link"
+-                  data-l10n-name="playstore-link"
 -                ></a>
 -                <a
 -                  target="_blank"
 -                  id="vpn-app-store-link"
--                  data-l10n-name="vpn-app-store-link"
+-                  data-l10n-name="appstore-link"
 -                ></a>
 -              </p>
              </div>
 -            <a
 -              target="_blank"
 -              id="get-vpn-link"
--              data-l10n-id="get-vpn-link"
+-              data-l10n-id="protections-get-vpn-link"
 -            ></a>
            </div>
          </div>
@@ -413,21 +410,20 @@
      </div>
    </body>
  </html>
---- a/browser/components/protections/content/protections.mjs
-+++ b/browser/components/protections/content/protections.mjs
-@@ -2,10 +2,7 @@
+--- a/browser/components/protections/content/protections.mjs	2026-06-22 15:41:18.344053158 +0800
++++ b/browser/components/protections/content/protections.mjs	2026-06-22 15:42:00.001343649 +0800
+@@ -2,9 +2,7 @@
   * License, v. 2.0. If a copy of the MPL was not distributed with this
   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
  
 -import LockwiseCard from "./lockwise-card.mjs";
 -import MonitorCard from "./monitor-card.mjs";
--import ProxyCard from "./proxy-card.mjs";
 -import VPNCard from "./vpn-card.mjs";
 +/* Vantage Privacy Dashboard */
  
  let cbCategory = RPMGetStringPref("browser.contentblocking.category");
  document.sendTelemetryEvent = (eventName, value = "") => {
-@@ -22,9 +19,6 @@
+@@ -21,9 +19,6 @@
    RPMSendAsyncMessage("RecordEntryPoint", {
      entrypoint: searchParams.get("entrypoint"),
    });
@@ -437,7 +433,7 @@
    searchParams.delete("entrypoint");
    searchParamsChanged = true;
  }
-@@ -41,11 +35,9 @@
+@@ -40,11 +35,9 @@
    }
  
    RPMSendQuery("FetchEntryPoint", {}).then(entrypoint => {
@@ -449,7 +445,7 @@
    window.addEventListener("beforeunload", () => {
      document.sendTelemetryEvent("closeProtectionReport");
    });
-@@ -88,12 +80,32 @@
+@@ -87,12 +80,32 @@
    legend.style.gridTemplateAreas =
      "'social cookie tracker fingerprinter cryptominer'";
  
@@ -483,7 +479,7 @@
      if (data.isPrivate) {
        graph.classList.add("private-window");
      } else {
-@@ -104,8 +116,6 @@
+@@ -103,8 +116,6 @@
        });
      }
  
@@ -492,7 +488,7 @@
      let largest = 100;
      if (largest < data.largest) {
        largest = data.largest;
-@@ -119,17 +129,11 @@
+@@ -118,17 +129,11 @@
        cryptominer: 0,
      };
  
@@ -511,7 +507,7 @@
        let currentColumnCount = 0;
        let bar = document.createElement("div");
        bar.className = "graph-bar";
-@@ -151,14 +155,12 @@
+@@ -150,14 +155,12 @@
          currentColumnCount += 1;
          let barHeight = (content.total / largest) * 100;
          weekCount += content.total;
@@ -526,7 +522,7 @@
              let cellSpan = document.createElement("span");
              cellSpan.id = type + i;
              cellSpan.setAttribute("role", "cell");
-@@ -186,30 +188,22 @@
+@@ -185,30 +188,22 @@
            }
          }
          if (currentColumnCount > maxColumnCount) {
@@ -559,7 +555,7 @@
        label.id = "day" + (6 - i);
        label.setAttribute("role", "rowheader");
        if (i == 6) {
-@@ -218,48 +212,83 @@
+@@ -217,48 +212,83 @@
          label.textContent = data.weekdays[(i + 1 + new Date().getDay()) % 7];
        }
        graph.append(label);
@@ -673,7 +669,7 @@
      let notBlocking =
        !blockingCookies &&
        !cryptominingEnabled &&
-@@ -267,7 +296,6 @@
+@@ -266,7 +296,6 @@
        !tpEnabled &&
        !socialEnabled;
  
@@ -681,7 +677,7 @@
      if (notBlocking) {
        document.l10n.setAttributes(
          document.getElementById("etp-card-content"),
-@@ -282,61 +310,35 @@
+@@ -281,61 +310,35 @@
          "protection-report-page-summary"
        );
        document.querySelector(".etp-card").classList.add("custom-not-blocking");
@@ -755,7 +751,7 @@
        firstRadio.checked = true;
        document.body.setAttribute("focuseddatatype", firstRadio.dataset.type);
  
-@@ -344,155 +346,8 @@
+@@ -343,141 +346,9 @@
      }
    };
  
@@ -797,7 +793,7 @@
 -      });
 -    }
 -  };
--
+ 
    RPMSendQuery("FetchContentBlockingEvents", {
      from: weekAgoInMs,
      to: todayInMs,
@@ -880,20 +876,6 @@
 -  const monitorUI = document.querySelector(".monitor-card");
 -  monitorUI.dataset.enabled = monitorEnabled;
 -
--  const proxyEnabled = RPMGetBoolPref(
--    "browser.contentblocking.report.proxy.enabled",
--    true
--  );
--
--  if (proxyEnabled) {
--    const proxyCard = new ProxyCard(document);
--    proxyCard.init();
--  }
--
--  // For tests
--  const proxyUI = document.querySelector(".proxy-card");
--  proxyUI.dataset.enabled = proxyEnabled;
--
 -  const privacyMetricsEnabled = RPMGetBoolPref(
 -    "browser.contentblocking.report.privacy_metrics.enabled",
 -    false
@@ -911,9 +893,81 @@
 -  const vpnUI = document.querySelector(".vpn-card");
 -  vpnUI.dataset.enabled = VPNEnabled;
  });
---- a/browser/components/protections/content/protections.css
-+++ b/browser/components/protections/content/protections.css
-@@ -1153,3 +1153,77 @@
+--- a/browser/components/protections/content/protections.css	2026-06-22 15:39:40.962808557 +0800
++++ b/browser/components/protections/content/protections.css	2026-06-22 15:42:19.939804186 +0800
+@@ -98,6 +98,7 @@
+ #manage-protections,
+ .card-header > button,
+ #save-passwords-button,
++#get-proxy-extension-link,
+ #get-vpn-link,
+ #vpn-banner-link,
+ #manage-passwords-button,
+@@ -149,6 +150,7 @@
+ .etp-card.custom-not-blocking #protection-settings,
+ #manage-protections,
+ .etp-card .icon.dark,
++.proxy-card .icon.dark,
+ a.hidden,
+ .loading .card-body,
+ .lockwise-card.hidden,
+@@ -171,6 +173,7 @@
+ .loading a,
+ .loading button,
+ .loading .wrapper,
++.proxy-card.hidden,
+ .vpn-card.hidden,
+ .card-body.hidden,
+ .hidden {
+@@ -208,11 +211,13 @@
+     --feature-banner-color: var(--color-white-alpha-10);
+   }
+ 
+-  .etp-card .icon.dark {
++  .etp-card .icon.dark,
++  .proxy-card .icon.dark {
+     display: block;
+   }
+ 
+-  .etp-card .icon.light {
++  .etp-card .icon.light,
++  .proxy-card .icon.light {
+     display: none;
+   }
+ }
+@@ -991,6 +996,7 @@
+ 
+ #manage-protections,
+ #sign-up-for-monitor-link,
++#get-proxy-extension-link,
+ #get-vpn-link,
+ #vpn-banner-link,
+ .monitor-partial-breaches-link-wrapper,
+@@ -1006,6 +1012,7 @@
+ 
+ #manage-protections:hover,
+ #sign-up-for-monitor-link:hover,
++#get-proxy-extension-link:hover,
+ #get-vpn-link:hover,
+ #vpn-banner-link:hover,
+ #monitor-partial-breaches-link:hover,
+@@ -1017,6 +1024,7 @@
+ 
+ #manage-protections:hover:active,
+ #sign-up-for-monitor-link:hover:active,
++#get-proxy-extension-link:hover:active,
+ #get-vpn-link:hover:active,
+ #vpn-banner-link:hover:active,
+ #monitor-partial-breaches-link:hover:active,
+@@ -1028,6 +1036,7 @@
+ 
+ #manage-protections:focus-visible,
+ #sign-up-for-monitor-link:focus-visible,
++#get-proxy-extension-link:focus-visible,
+ #get-vpn-link:focus-visible,
+ #vpn-banner-link:focus-visible,
+ #monitor-partial-breaches-link:focus-visible,
+@@ -1144,3 +1153,77 @@
  .vpn-card:not(.subscribed) #check-icon {
    display: none;
  }
