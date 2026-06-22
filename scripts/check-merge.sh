@@ -68,6 +68,8 @@ VANTAGE_PATCHES=(
     "patches/vantage-ai-sidebar.patch"
     "patches/vantage-privacy-dashboard.patch"
     "patches/dmg-fix-permissions.patch"
+    "patches/hide-passwordmgr.patch"
+    "patches/fix-7zsfx-branding.patch"
 )
 
 for p in "${VANTAGE_PATCHES[@]}"; do
@@ -154,6 +156,28 @@ if grep -q "asystech.cn" settings/distribution/policies.json 2>/dev/null; then
     ok "uBlock xpi 指向 asystech.cn"
 else
     warn "uBlock xpi 地址可能被上游覆盖"
+fi
+
+# ==========================================
+# 总结
+# ==========================================
+echo ""
+echo -e "${BOLD}[extra] CRLF / LF 行尾检查${NC}"
+
+# fix-7zsfx-branding 必须是 CRLF
+if file patches/fix-7zsfx-branding.patch | grep -q "CRLF"; then
+    ok "fix-7zsfx-branding.patch 是 CRLF（正确）"
+else
+    warn "fix-7zsfx-branding.patch 不是 CRLF！目标文件是 Windows RC 文件"
+fi
+
+# 其他 patch 不能是 CRLF
+crlf_count=$(file patches/*.patch | grep -v "fix-7zsfx-branding" | grep -c "CRLF" || true)
+if [ "$crlf_count" -eq 0 ]; then
+    ok "其他 patch 无 CRLF（正确）"
+else
+    err "发现 $crlf_count 个 CRLF patch（fix-7zsfx-branding 除外），需要 dos2unix："
+    file patches/*.patch | grep -v "fix-7zsfx-branding" | grep "CRLF"
 fi
 
 # ==========================================

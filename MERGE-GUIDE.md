@@ -213,7 +213,7 @@ rm /tmp/vantage-patches-before.txt
 | 检查项 | 内容 |
 |--------|------|
 | [1/5] 路径残留 | `moz-configure.patch`、`mozilla_dirs.patch`、`windows-theming-bug.patch` 中是否残留 librewolf 引用 |
-| [2/5] patches.txt 完整性 | 7 个 Vantage 独有 patch 是否全部在册（installer-zhcn、installer-locale、installer-publisher、uninstaller-cleanup、vantage-ai-sidebar、vantage-privacy-dashboard、dmg-fix-permissions） |
+| [2/5] patches.txt 完整性 | 9 个 Vantage 独有 patch 是否全部在册（中文安装包 4 个 + AI 侧边栏 + privacy-dashboard + dmg-fix + hide-passwordmgr + fix-7zsfx-branding） |
 | [3/5] librewolf.cfg 关键内容 | 更新检查代码、NetUtil ESM 导入、`.vantage` 路径 |
 | [4/5] l10n 品牌文本 | en-US aboutDialog/preferences 中是否包含 Vantage 品牌文本 |
 | [5/5] policies.json | uBlock xpi 地址是否指向 asystech.cn |
