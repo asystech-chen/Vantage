@@ -1,21 +1,47 @@
 # Vantage 合并上游 LibreWolf 代码指南
 
-> 最后更新: 2026-03-31
+> 最后更新: 2026-06-22（补充 151.0.4 合并经验）
 
 合并 LibreWolf 上游代码时，以下文件**不能直接替换**，必须手动合并或跳过。
 
 ---
 
-## 🔴 绝对不能直接替换（包含 Vantage 定制内容）
+## 🔴 Vantage 独有补丁（合并时绝不可丢失！）
 
-### Patch 文件
+以下是**上游没有、Vantage 独有**的补丁。合并 `assets/patches.txt` 时**必须保留**这些条目，否则对应功能会丢失。
+
+### 中文安装包相关（重点！）
+
+| 文件 | 说明 |
+|------|------|
+| `patches/installer-zhcn.patch` | **强制安装器 AB_CD=zh-CN**，修改 `defines.nsi.in` 中 BrandFullName 为 Vantage。上游无此文件 |
+| `patches/installer-locale.patch` | **安装器语言文件**，修改 `Makefile.in` 使 `PPL_LOCALE_ARGS` 优先使用 `lw/l10n/zh-CN/browser/installer`。上游无此文件 |
+| `patches/installer-publisher.patch` | **注册表 Publisher** 从硬编码 `"Mozilla"` 改为 `"${CompanyName}"`（Windows 注册表显示 Vantage 发行商）。上游无此文件 |
+| `patches/uninstaller-cleanup.patch` | **移除卸载调查**，删除 Firefox 的退出问卷调查（Survey/SendPing），改为静默卸载。上游无此文件 |
+
+> **⚠️ 重要：** 这 4 个 patch 控制 Windows 安装包的中文界面、发行商信息和卸载行为。150→151 合并时曾因 `patches.txt` 被上游整体覆盖而全部丢失（commit `0f236d5`）。**每次合并后必须用 `check-merge.sh` 验证！**
+
+### 品牌/界面相关
+
+| 文件 | 说明 |
+|------|------|
+| `patches/vantage-ai-sidebar.patch` | **AI 侧边栏**：添加 DeepSeek/Qwen/豆包、移除 Copilot。涉及 GenAI.sys.mjs + chat.js + genai.ftl。上游无此文件 |
+| `patches/vantage-privacy-dashboard.patch` | **隐私仪表板**：重设计 about:protections 页面布局。上游无此文件 |
+| `patches/dmg-fix-permissions.patch` | **macOS 签名修复**。上游无此文件 |
+| `patches/fix-7zsfx-branding.patch` | **7zSFX 品牌替换**：`other-licenses/7zstub/firefox/resource.rc` 中 CompanyName/FileDescription 改为 Vantage。⚠️ **目标文件是 Windows RC 文件，patch 必须是 CRLF 行尾！** |
+| `patches/hide-passwordmgr.patch` | 隐藏密码管理器（Firefox Sync 特性，Vantage 不需要） |
+
+---
+
+## 🔴 不能直接替换（包含 Vantage 定制内容）
+
+### Patch 文件（与上游共用但需手动合并）
 
 | 文件 | 说明 |
 |------|------|
 | `patches/moz-configure.patch` | MOZ_APP_VENDOR=Vantage, MOZ_APP_PROFILE=vantage。上游是 LibreWolf/librewolf。**合并后需运行 `rebrand.sh`** |
 | `patches/mozilla_dirs.patch` | 8 处目录路径改为 Vantage/.vantage。上游是 LibreWolf/.librewolf。**合并后需运行 `rebrand.sh`** |
 | `patches/windows-theming-bug.patch` | exe manifest 改为 vantage.exe.manifest + name="Vantage"。上游是 librewolf |
-| `patches/installer-zhcn.patch` | **Vantage 独有**，强制安装器 AB_CD=zh-CN。上游没有此文件 |
 | `patches/pref-pane/librewolf.js` | 新增 vantage.updateCheck.enabled pref 注册和事件绑定；修复了 openAboutConfig 和 openProfileDirectory 函数。上游可能也会改这个文件 |
 | `patches/pref-pane/librewolf.inc.xhtml` | 新增"更新"设置区块。上游可能也会改这个文件 |
 
@@ -51,6 +77,52 @@
 
 ---
 
+## 🆕 FF151 兼容性变更（升级大版本时特别注意）
+
+### ESM 模块迁移
+
+Firefox 151 移除了大量 JSM 模块，改用 ESM。影响 Vantage 的关键项：
+
+| 旧版 | 新版 | 影响 |
+|------|------|------|
+| `chrome://global/content/NetUtil.jsm` | `resource://gre/modules/NetUtil.sys.mjs` | `librewolf.cfg` 更新检查功能 |
+| `ChromeUtils.import()` | `ChromeUtils.importESModule()` | 同上 |
+
+### autoconfig 沙箱限制（致命！）
+
+FF151 的 autoconfig 沙箱比旧版更严格，以下 API **不可用**：
+
+| API | 状态 | 替代方案 |
+|-----|------|----------|
+| `console.warn/log/debug` | ❌ 破坏文件首行解析 | 删除所有 console 调用 |
+| `Cc` / `Ci` / `Components.classes` | ❌ 无法创建 XHR | 用 `ChromeUtils.importESModule` + `NetUtil.asyncFetch` |
+| `XMLHttpRequest` | ❌ 不存在 | `NetUtil.asyncFetch()` |
+| `fetch()` | ❌ 不存在 | `NetUtil.asyncFetch()` |
+| `Services.prompt.alert()` | ❌ 不可用 | `gNotificationBox.appendNotification()` |
+| `dump()` | ⚠️ 不确定输出 | 不可依赖 |
+| `ChromeUtils.importESModule()` | ✅ 可用 | 唯一推荐的模块导入方式 |
+| `Services.*` 系列 | ✅ 可用 | prefs, obs, wm, io |
+| `NetUtil.asyncFetch()` | ✅ 可用 | 通过 importESModule 导入 |
+
+> **⚠️ 关键教训：** `librewolf.cfg` 首行必须是 `null;`（autoconfig 解析要求），且文件内不能有任何 console 调用。JSON.parse 在沙箱中可能出现编码问题，建议用正则表达式提取数据。
+
+### CRLF 行尾问题
+
+从 Windows 合并或通过某些工具复制 patch 时，行尾可能变成 CRLF。**Linux patch 命令不兼容 CRLF 文件。**
+
+```bash
+# 检查所有 patch 的行尾
+file patches/*.patch | grep CRLF
+
+# 批量修复（在 librewolf-patches.py 中已自动化）
+# 但合并后手动验证可以避免后续问题
+dos2unix patches/*.patch
+```
+
+**例外：** `fix-7zsfx-branding.patch` 的目标文件是 Windows RC 资源文件（CRLF），此 patch 需要保持 CRLF 行尾，不能 dos2unix。
+
+---
+
 ## 🟡 合并时需要注意（可能有上游更新）
 
 | 文件 | 注意事项 |
@@ -80,32 +152,71 @@
 ## 📋 合并上游的推荐流程
 
 ```bash
+# === 合并前 ===
 # 1. 备份当前代码
-git stash  # 或 git commit
+git add -A && git commit -m "pre-merge: 保存当前状态"
 
-# 2. 拉取上游更新（只拉取，不合并）
+# 2. 记录当前 Vantage 独有 patch 列表（供合并后对比）
+grep -E "vantage|installer|uninstaller|dmg|zhcn" assets/patches.txt > /tmp/vantage-patches-before.txt
+
+# === 合并过程 ===
+# 3. 拉取上游更新并合并
 git fetch upstream
+git merge upstream/main  # 或 cherry-pick
 
-# 3. 对比差异，重点关注上面列出的文件
-git diff HEAD upstream/main -- patches/ settings/ assets/ l10n/
+# 4. 对比 patches.txt，重点关注 Vantage 独有条目
+diff /tmp/vantage-patches-before.txt <(grep -E "vantage|installer|uninstaller|dmg|zhcn" assets/patches.txt)
 
-# 4. 手动合并需要注意的文件
+# 5. 手动合并需要注意的文件
 #    - 对于 patch 文件：看上游是否有新增/修改的逻辑，合入后运行 rebrand
 #    - 对于 librewolf.cfg：逐段对比，保留 Vantage 定制段
 #    - 对于 l10n：看上游是否有新增条目，追加翻译
 
-# 5. 运行 rebrand 脚本（自动处理路径替换）
-./scripts/rebrand.sh   # Linux
-# 或
-.\scripts\rebrand.ps1  # Windows
+# === 合并后 ===
+# 6. 处理 FF 大版本升级的特殊问题（如适用）
+#    - 检查 JSM→ESM 迁移（NetUtil.jsm → NetUtil.sys.mjs）
+#    - 检查 autoconfig 沙箱是否有新限制
+#    - 检查 gBrowser / gNotificationBox API 是否变化
 
-# 6. 检查残留
-grep -in 'librewolf' patches/moz-configure.patch patches/mozilla_dirs.patch
-grep -n 'overrides' settings/librewolf.cfg
+# 7. 修复 CRLF 行尾（fix-7zsfx-branding 除外）
+dos2unix patches/*.patch
 
-# 7. 编译验证
+# 8. 运行 rebrand 脚本（自动处理路径替换）
+./scripts/rebrand.sh
+
+# 9. 运行合并检查脚本（零副作用，只做检查）
+./scripts/check-merge.sh
+
+# 10. 编译验证
 make dir && make build && make package-zhcn
+
+# 11. 清理临时文件
+rm /tmp/vantage-patches-before.txt
 ```
+
+---
+
+## 🔍 check-merge.sh 合并检查脚本
+
+`scripts/check-merge.sh` 是零副作用的只读检查脚本，**合并后必须运行**。
+
+```bash
+# 基本检查（路径、patches.txt、cfg、l10n、policies）
+./scripts/check-merge.sh
+
+# 附带 patches.txt 差异对比（需要旧版本 tag）
+./scripts/check-merge.sh v150.0.2-1
+```
+
+**检查项目（5 项）：**
+
+| 检查项 | 内容 |
+|--------|------|
+| [1/5] 路径残留 | `moz-configure.patch`、`mozilla_dirs.patch`、`windows-theming-bug.patch` 中是否残留 librewolf 引用 |
+| [2/5] patches.txt 完整性 | 7 个 Vantage 独有 patch 是否全部在册（installer-zhcn、installer-locale、installer-publisher、uninstaller-cleanup、vantage-ai-sidebar、vantage-privacy-dashboard、dmg-fix-permissions） |
+| [3/5] librewolf.cfg 关键内容 | 更新检查代码、NetUtil ESM 导入、`.vantage` 路径 |
+| [4/5] l10n 品牌文本 | en-US aboutDialog/preferences 中是否包含 Vantage 品牌文本 |
+| [5/5] policies.json | uBlock xpi 地址是否指向 asystech.cn |
 
 ---
 
@@ -122,3 +233,28 @@ make dir && make build && make package-zhcn
 - `l10n/` 中的品牌文本
 - `aboutDialog.js` 中的 URL
 - `librewolf.cfg` 中的 app.support.baseURL、更新检查代码等
+
+---
+
+## 📜 历史合并记录
+
+| 版本 | 文档 | 关键问题 |
+|------|------|----------|
+| 150.0-1 | `MERGE-150-SECURITY.md` | 安全增强合并（13 项配置 + 2 个新 patch） |
+| 150.0-1 | `UPGRADE-150-COMPLETE.md` | Pref-Pane 修复、Privacy Dashboard 重构 |
+| 151.0.4 | 见 CHANGELOG.md | **CRLF 8 patch 失败、6 个 Vantage patch 丢失、autoconfig 沙箱适配、ESM 迁移** |
+
+---
+
+## ✅ 合并后快速核对清单
+
+- [ ] `./scripts/check-merge.sh` 全部通过（0 错误）
+- [ ] `assets/patches.txt` 中 Vantage 独有 9 个 patch 全部在册
+- [ ] `./scripts/rebrand.sh` 已运行且无残留
+- [ ] 中文安装包 4 个 patch（installer-zhcn/locale/publisher/uninstaller-cleanup）未丢失
+- [ ] `fix-7zsfx-branding.patch` 保持 CRLF（目标文件是 Windows RC）
+- [ ] 其他所有 patch 为 LF 行尾
+- [ ] `librewolf.cfg` 首行是 `null;`（autoconfig 要求）
+- [ ] `librewolf.cfg` 中 `NetUtil.sys.mjs` + `ChromeUtils.importESModule`（FF151+）
+- [ ] `settings/distribution/policies.json` 中 uBlock 地址指向 asystech.cn
+- [ ] `l10n/` 中 Vantage 品牌文本完整
