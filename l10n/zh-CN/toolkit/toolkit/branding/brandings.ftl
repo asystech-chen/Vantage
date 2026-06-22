@@ -5,3 +5,4 @@
 -firefox-home-brand-name = 主页
 -firefoxview-brand-name = 标签页视图
 -firefoxlabs-brand-name = 实验功能
+-relay-brand-name = Relay
