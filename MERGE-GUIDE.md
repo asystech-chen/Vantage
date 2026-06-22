@@ -1,6 +1,6 @@
 # Vantage 合并上游 LibreWolf 代码指南
 
-> 最后更新: 2026-06-22（补充 151.0.4 合并经验）
+> 最后更新: 2026-06-22（补充 151→152 合并经验）
 
 合并 LibreWolf 上游代码时，以下文件**不能直接替换**，必须手动合并或跳过。
 
@@ -28,7 +28,7 @@
 | `patches/vantage-ai-sidebar.patch` | **AI 侧边栏**：添加 DeepSeek/Qwen/豆包、移除 Copilot。涉及 GenAI.sys.mjs + chat.js + genai.ftl。上游无此文件 |
 | `patches/vantage-privacy-dashboard.patch` | **隐私仪表板**：重设计 about:protections 页面布局。上游无此文件 |
 | `patches/dmg-fix-permissions.patch` | **macOS 签名修复**。上游无此文件 |
-| `patches/fix-7zsfx-branding.patch` | **7zSFX 品牌替换**：`other-licenses/7zstub/firefox/resource.rc` 中 CompanyName/FileDescription 改为 Vantage。⚠️ **目标文件是 Windows RC 文件，patch 必须是 CRLF 行尾！** |
+| `patches/fix-7zsfx-branding.patch` | **7zSFX 品牌替换**：`other-licenses/7zstub/firefox/resource.rc` 中 CompanyName/FileDescription 改为 Vantage。⚠️ **需 LF 行尾！** 因为 `librewolf-patches.py` 在打补丁前会将所有源文件（含 .rc）转为 LF，CRLF patch 反而会导致 "different line endings" 错误。 |
 | `patches/hide-passwordmgr.patch` | 隐藏密码管理器（Firefox Sync 特性，Vantage 不需要） |
 
 ---
@@ -119,7 +119,33 @@ file patches/*.patch | grep CRLF
 dos2unix patches/*.patch
 ```
 
-**例外：** `fix-7zsfx-branding.patch` 的目标文件是 Windows RC 资源文件（CRLF），此 patch 需要保持 CRLF 行尾，不能 dos2unix。
+**注意：** `librewolf-patches.py` 会在打补丁前将所有源文件（含 .rc）统一转为 LF。因此所有 patch 都应保持 LF 行尾，包括 `fix-7zsfx-branding.patch`。CRLF patch 会导致 "different line endings" 错误。
+
+---
+
+## 🆕 FF152 兼容性变更
+
+### vantage-privacy-dashboard.patch 需重新生成
+
+Firefox 152 的 `protections.mjs` 移除了 `ProxyCard` 导入（仅保留 LockwiseCard/MonitorCard/VPNCard），导致旧 patch 的 imports hunk 和 tail section hunk 失败。必须基于 Firefox 152 干净源文件重新生成整个 patch。
+
+### pref-pane l10n id 变化
+
+上游 152 的 `pref-pane-small.patch` 将侧边栏 l10n id 从 `pane-librewolf-title` 改为 `pane-librewolf-title2`。Vantage 使用自己的 l10n 体系（`pane-librewolf-title = Vantage`），需要在合并后将该 id 改回。
+
+### pane 改名
+
+Vantage 将 pref-pane 内部名从 `paneLibrewolf` 改为 `paneVantage`，设置页面地址变为 `about:preferences#vantage`。涉及 `pref-pane-small.patch`、`librewolf.inc.xhtml`、`librewolf.js`。
+
+### 上游删除和新加
+
+| 操作 | 文件 | Vantage 处理 |
+|------|------|------|
+| 上游删除 | `allow-JXL-in-non-nightly-browser.patch` | 跟删（JXL 已进 FF152 主线） |
+| 上游新增 | `fix-canvas-extraction-permission.patch` | 跟加 |
+| 上游新增 | `languages.patch` | 跟加 |
+| 上游新增 | `remove-language-packs.patch` | **不跟！** Vantage 保留语言包给多语言用户 |
+| 上游新增设置 | WebGL popup 开关、OCSP 硬失败 | **不跟！** 与 Vantage 安全策略冲突 |
 
 ---
 
@@ -243,6 +269,7 @@ rm /tmp/vantage-patches-before.txt
 | 150.0-1 | `MERGE-150-SECURITY.md` | 安全增强合并（13 项配置 + 2 个新 patch） |
 | 150.0-1 | `UPGRADE-150-COMPLETE.md` | Pref-Pane 修复、Privacy Dashboard 重构 |
 | 151.0.4 | 见 CHANGELOG.md | **CRLF 8 patch 失败、6 个 Vantage patch 丢失、autoconfig 沙箱适配、ESM 迁移** |
+| 152.0.1 | 本次合并 | **vantage-privacy-dashboard 重新生成（ProxyCard 已移除）、fix-7zsfx-branding 改 LF、pref-pane l10n id 不跟 title2、pane 改名 vantage、不跟 remove-language-packs** |
 
 ---
 
@@ -252,8 +279,8 @@ rm /tmp/vantage-patches-before.txt
 - [ ] `assets/patches.txt` 中 Vantage 独有 9 个 patch 全部在册
 - [ ] `./scripts/rebrand.sh` 已运行且无残留
 - [ ] 中文安装包 4 个 patch（installer-zhcn/locale/publisher/uninstaller-cleanup）未丢失
-- [ ] `fix-7zsfx-branding.patch` 保持 CRLF（目标文件是 Windows RC）
-- [ ] 其他所有 patch 为 LF 行尾
+- [ ] `fix-7zsfx-branding.patch` 保持 LF（build 脚本先 dos2unix 源文件，CRLF 反而不匹配）
+- [ ] 所有 patch 为 LF 行尾
 - [ ] `librewolf.cfg` 首行是 `null;`（autoconfig 要求）
 - [ ] `librewolf.cfg` 中 `NetUtil.sys.mjs` + `ChromeUtils.importESModule`（FF151+）
 - [ ] `settings/distribution/policies.json` 中 uBlock 地址指向 asystech.cn

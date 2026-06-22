@@ -164,20 +164,18 @@ fi
 echo ""
 echo -e "${BOLD}[extra] CRLF / LF 行尾检查${NC}"
 
-# fix-7zsfx-branding 必须是 CRLF
+# 所有 patch 必须是 LF（librewolf-patches.py 会先 dos2unix 源文件）
 if file patches/fix-7zsfx-branding.patch | grep -q "CRLF"; then
-    ok "fix-7zsfx-branding.patch 是 CRLF（正确）"
-else
-    warn "fix-7zsfx-branding.patch 不是 CRLF！目标文件是 Windows RC 文件"
+    err "fix-7zsfx-branding.patch 是 CRLF！应改为 LF（build 脚本会先 dos2unix 源文件）"
 fi
 
-# 其他 patch 不能是 CRLF
-crlf_count=$(file patches/*.patch | grep -v "fix-7zsfx-branding" | grep -c "CRLF" || true)
+# 所有 patch 不能有 CRLF
+crlf_count=$(file patches/*.patch patches/ui-patches/*.patch patches/sed-patches/*.patch 2>/dev/null | grep -c "CRLF" || true)
 if [ "$crlf_count" -eq 0 ]; then
-    ok "其他 patch 无 CRLF（正确）"
+    ok "所有 patch 为 LF（正确）"
 else
-    err "发现 $crlf_count 个 CRLF patch（fix-7zsfx-branding 除外），需要 dos2unix："
-    file patches/*.patch | grep -v "fix-7zsfx-branding" | grep "CRLF"
+    err "发现 $crlf_count 个 CRLF patch，需要 dos2unix："
+    file patches/*.patch patches/ui-patches/*.patch patches/sed-patches/*.patch 2>/dev/null | grep "CRLF"
 fi
 
 # ==========================================
