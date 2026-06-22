@@ -71,19 +71,6 @@ index 4a4759e925..eefd978cfc 100644
    </vbox>
  </groupbox>
  <html:setting-group id="nonTechnicalPrivacyGroup" groupid="nonTechnicalPrivacy" data-category="panePrivacy" hidden="true" data-srd-groupid="nonTechnicalPrivacy2"/>
-diff --git a/browser/components/preferences/privacy.js b/browser/components/preferences/privacy.js
-index cb84b9206a..beb8e08cba 100644
---- a/browser/components/preferences/privacy.js
-+++ b/browser/components/preferences/privacy.js
-@@ -3428,7 +3428,7 @@ var gPrivacyPane = {
-     initSettingGroup("securityPrivacyStatus");
-     initSettingGroup("securityPrivacyWarnings");
-     initSettingGroup("httpsOnly");
--    initSettingGroup("browsingProtection");
-+    //initSettingGroup("browsingProtection");
-     initSettingGroup("cookiesAndSiteData");
-     initSettingGroup("cookiesAndSiteData2");
-     initSettingGroup("certificates");
 diff --git a/browser/locales/en-US/browser/preferences/preferences.ftl b/browser/locales/en-US/browser/preferences/preferences.ftl
 index 5091571fa6..3a008ecd66 100644
 --- a/browser/locales/en-US/browser/preferences/preferences.ftl
@@ -162,19 +149,56 @@ index 8b67ea2..1b34787 100644
        {
          id: "rememberHistory",
          l10nId: "history-remember-browser-option",
-@@ -2006,108 +1978,6 @@ SettingGroupManager.registerGroups({
+diff --git a/browser/components/preferences/preferences.js b/browser/components/preferences/preferences.js
+index 57add34..53a648c 100644
+--- a/browser/components/preferences/preferences.js
++++ b/browser/components/preferences/preferences.js
+@@ -363,7 +363,7 @@ const CONFIG_PANES = Object.freeze({
+   permissionsData: {
+     l10nId: "permissions-data-section",
+     iconSrc: "chrome://browser/skin/permissions.svg",
+-    groupIds: ["permissions", "dataCollection"],
++    groupIds: ["permissions"],
+     module: "chrome://browser/content/preferences/config/permissions-data.mjs",
+     visible: () => srdSectionEnabled("permissionsData"),
+   },
+diff --git a/browser/components/preferences/privacy.js b/browser/components/preferences/privacy.js
+index 08e25a2..26eb7be 100644
+--- a/browser/components/preferences/privacy.js
++++ b/browser/components/preferences/privacy.js
+@@ -618,7 +618,6 @@ var gPrivacyPane = {
+     initSettingGroup("securityPrivacyStatus");
+     initSettingGroup("securityPrivacyWarnings");
+     initSettingGroup("httpsOnly");
+-    initSettingGroup("browsingProtection");
+     initSettingGroup("cookiesAndSiteData");
+     initSettingGroup("cookiesAndSiteData2");
+     initSettingGroup("certificates");
+@@ -626,7 +625,6 @@ var gPrivacyPane = {
+     initSettingGroup("history");
+     initSettingGroup("history2");
+     initSettingGroup("permissions");
+-    initSettingGroup("dataCollection");
+     initSettingGroup("privacyPanel");
+     initSettingGroup("dnsOverHttps");
+     initSettingGroup("dnsOverHttpsAdvanced");
+diff --git a/browser/components/preferences/config/permissions-data.mjs b/browser/components/preferences/config/permissions-data.mjs
+index 8e0e6d5..9ac14aa 100644
+--- a/browser/components/preferences/config/permissions-data.mjs
++++ b/browser/components/preferences/config/permissions-data.mjs
+@@ -639,112 +639,4 @@ SettingGroupManager.registerGroups({
        },
      ],
    },
--  // Bug 1968118: move this elsewhere
 -  dataCollection: {
 -    items: [
 -      {
 -        id: "dataCollectionCategory",
 -        l10nId: "data-collection",
 -        control: "moz-fieldset",
+-        iconSrc: "chrome://global/skin/icons/trending.svg",
 -        controlAttrs: {
--          headinglevel: 1,
+-          headinglevel: 2,
 -          "data-l10n-attrs": "searchkeywords",
 -        },
 -        items: [
@@ -192,6 +216,9 @@ index 8b67ea2..1b34787 100644
 -            id: "preferencesPrivacyProfiles",
 -            control: "moz-message-bar",
 -            l10nId: "data-collection-preferences-across-profiles",
+-            controlAttrs: {
+-              role: "status",
+-            },
 -            items: [
 -              {
 -                id: "privacyProfilesLink",
@@ -211,6 +238,9 @@ index 8b67ea2..1b34787 100644
 -            control: "moz-message-bar",
 -            l10nId: "data-collection-health-report-telemetry-disabled",
 -            supportPage: "telemetry-clientid",
+-            controlAttrs: {
+-              role: "status",
+-            },
 -          },
 -          {
 -            id: "backup-multi-profile-warning-message-bar",
@@ -262,45 +292,10 @@ index 8b67ea2..1b34787 100644
 -            id: "automaticallySubmitCrashesBox",
 -            l10nId: "data-collection-backlogged-crash-reports",
 -            subcategory: "reports",
--            supportPage: "crash-report",
+-            supportPage: "crash-reports",
 -          },
 -        ],
 -      },
 -    ],
 -  },
-   // Bug 1968111: move this elsewhere
-   managePayments: {
-     items: [
-@@ -2956,7 +2826,7 @@ Preferences.addSetting({
  });
- 
- // Study opt out
--if (lazy.AppConstants.MOZ_DATA_REPORTING) {
-+if (true) {
-   Preferences.addAll([
-     // Preference instances for prefs that we need to monitor while the page is open.
-     { id: "app.shield.optoutstudies.enabled", type: "bool" },
-diff --git a/browser/components/preferences/preferences.js b/browser/components/preferences/preferences.js
-index 1ee6a8b..abacf35 100644
---- a/browser/components/preferences/preferences.js
-+++ b/browser/components/preferences/preferences.js
-@@ -315,7 +315,6 @@ const CONFIG_PANES = Object.freeze({
-       // Bug 1968118: move these elsewhere
-       "permissions",
-       // Bug 1968118: move these elsewhere
--      "dataCollection",
-       "nonTechnicalPrivacy2",
-       "dnsOverHttps",
-       "connectionLink",
-diff --git a/browser/components/preferences/privacy.js b/browser/components/preferences/privacy.js
-index f441458..6863b81 100644
---- a/browser/components/preferences/privacy.js
-+++ b/browser/components/preferences/privacy.js
-@@ -638,7 +626,6 @@ var gPrivacyPane = {
-     initSettingGroup("history");
-     initSettingGroup("history2");
-     initSettingGroup("permissions");
--    initSettingGroup("dataCollection");
-     initSettingGroup("dnsOverHttps");
-     initSettingGroup("dnsOverHttpsAdvanced");
-     initSettingGroup("etpStatus");

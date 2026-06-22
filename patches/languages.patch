@@ -1,0 +1,12 @@
+diff --git a/browser/locales/shipped-locales b/browser/locales/shipped-locales
+index 41ee3f7..7f501f4 100644
+--- a/browser/locales/shipped-locales
++++ b/browser/locales/shipped-locales
+@@ -57,6 +57,7 @@ kk
+ km
+ kn
+ ko
++ku
+ lij
+ lt
+ lv

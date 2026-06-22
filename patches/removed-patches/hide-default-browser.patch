@@ -12,13 +12,13 @@ diff --git a/browser/components/preferences/main.inc.xhtml b/browser/components/
  <html:setting-group id="startupGroup" groupid="startup" data-category="paneGeneral" hidden="true"/>
 
 diff --git a/browser/components/preferences/main.js b/browser/components/preferences/main.js
-index f1cebcb..0879c5e 100644
+index c86e54b..bdfcc7b 100644
 --- a/browser/components/preferences/main.js
 +++ b/browser/components/preferences/main.js
-@@ -1530,65 +1530,6 @@ const DefaultBrowserHelper = {
+@@ -494,65 +494,6 @@ const DefaultBrowserHelper = {
    },
  };
-
+ 
 -Preferences.addSetting({
 -  id: "alwaysCheckDefault",
 -  pref: "browser.shell.checkDefaultBrowser",
@@ -78,12 +78,12 @@ index f1cebcb..0879c5e 100644
 -  },
 -});
 -
- // Firefox support settings
+ // AI Control pref settings
  Preferences.addSetting({
-   id: "supportLinksGroup",
-@@ -2567,10 +2567,6 @@ function createStartupConfig(hidden = false) {
-         control: "moz-message-bar",
-         l10nId: "startup-windows-launch-on-login-profile-disabled",
+   id: "aiControlDefault",
+@@ -679,16 +620,11 @@ function createStartupConfig(hidden = false) {
+           role: "status",
+         },
        },
 -      {
 -        id: "alwaysCheckDefault",
@@ -92,15 +92,13 @@ index f1cebcb..0879c5e 100644
      ],
    };
  }
-@@ -2576,7 +2517,6 @@ function createStartupConfig(hidden = false) {
- }
-
+ 
  SettingGroupManager.registerGroups({
 -  defaultBrowser: createDefaultBrowserConfig(),
    startup: createStartupConfig(
-     Services.prefs.getBoolPref("browser.settings-redesign.enabled", false)
+     Services.prefs.getBoolPref("browser-settings-redesign.enabled", false)
    ),
-@@ -3446,7 +3386,6 @@ var gMainPane = {
+@@ -797,7 +733,6 @@ var gMainPane = {
      initSettingGroup("translations");
      initSettingGroup("spellCheck");
      initSettingGroup("performance");

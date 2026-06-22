@@ -1,42 +1,41 @@
 diff --git a/toolkit/content/errors/net-error-illustrations.mjs b/toolkit/content/errors/net-error-illustrations.mjs
-index a57d63d1b2..24e6026d94 100644
+index d785e43..24e6026 100644
 --- a/toolkit/content/errors/net-error-illustrations.mjs
 +++ b/toolkit/content/errors/net-error-illustrations.mjs
-@@ -3,12 +3,8 @@
+@@ -3,11 +3,8 @@
   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
  
  export const NET_ERROR_ILLUSTRATIONS = {
 -  noConnection: {
 -    src: "chrome://global/skin/illustrations/no-connection.svg",
--    alt: "fp-neterror-illustration-alt",
+-    className: "no-connection",
 -  },
 +  noConnection: {},
    securityError: {
 -    src: "chrome://global/skin/illustrations/security-error.svg",
--    alt: "fp-certerror-illustration-alt",
 +    src: "chrome://global/skin/illustrations/warning.svg",
    },
  };
 diff --git a/toolkit/content/net-error-card.mjs b/toolkit/content/net-error-card.mjs
-index 14054ccda9..f2b0b57bbf 100644
+index e86d1aa..b91a1b6 100644
 --- a/toolkit/content/net-error-card.mjs
 +++ b/toolkit/content/net-error-card.mjs
-@@ -1042,9 +1042,15 @@
+@@ -1092,9 +1092,15 @@ export class NetErrorCard extends MozLitElement {
          aria-labelledby="error-title"
          aria-describedby="error-intro whatCanYouDo"
        >
 -        <div class="img-container">
--          <img src=${src} data-l10n-id=${alt} data-l10n-attrs="alt" />
+-          <img src=${src} class=${ifDefined(className)} alt=${alt} />
 -        </div>
-+        ${src &&
-+        html`
-+          <div class="img-container">
-+            <img
-+              src=${src}
-+              ${alt && `data-l10n-id=${alt} data-l10n-attrs="alt"`}
-+            />
-+          </div>
-+        `}
++       ${src &&
++       html`
++         <div class="img-container">
++           <img
++             src=${src}
++             ${alt && `data-l10n-id=${alt} data-l10n-attrs="alt"`}
++           />
++         </div>
++       `}
          <div class="container">
            ${this.showCustomNetErrorCard
              ? html`${this.customNetErrorContainerTemplate()}`

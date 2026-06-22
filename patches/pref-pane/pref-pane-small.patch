@@ -1,35 +1,39 @@
+diff --git a/browser/components/preferences/jar.mn b/browser/components/preferences/jar.mn
+index 118709048e..51aeb42a23 100644
 --- a/browser/components/preferences/jar.mn
-+++ browser/components/preferences/jar.mn
-@@ -12,6 +12,7 @@
++++ b/browser/components/preferences/jar.mn
+@@ -11,6 +11,7 @@ browser.jar:
     content/browser/preferences/home.js
     content/browser/preferences/search.js
     content/browser/preferences/privacy.js
 +   content/browser/preferences/librewolf.js
     content/browser/preferences/containers.js
+    content/browser/preferences/translations.js
     content/browser/preferences/sync.js
-    content/browser/preferences/experimental.js
-
+diff --git a/browser/components/preferences/preferences.js b/browser/components/preferences/preferences.js
+index e4746e3408..3755be8a78 100644
 --- a/browser/components/preferences/preferences.js
-+++ browser/components/preferences/preferences.js
-@@ -8,6 +8,7 @@
- /* import-globals-from search.js */
++++ b/browser/components/preferences/preferences.js
+@@ -9,6 +9,7 @@
  /* import-globals-from containers.js */
+ /* import-globals-from translations.js */
  /* import-globals-from privacy.js */
 +/* import-globals-from librewolf.js */
  /* import-globals-from sync.js */
  /* import-globals-from experimental.js */
  /* import-globals-from moreFromMozilla.js */
-@@ -397,6 +398,7 @@
+@@ -196,6 +197,7 @@ function init_all() {
    register_module("paneHome", gHomePane);
    register_module("paneSearch", gSearchPane);
    register_module("panePrivacy", gPrivacyPane);
-+  register_module("paneLibrewolf", gLibrewolfPane);
++  register_module("paneVantage", gLibrewolfPane);
    register_module("paneContainers", gContainersPane);
  
-   if (ExperimentAPI.labsEnabled) {
-
+   if (Services.prefs.getBoolPref("browser.translations.newSettingsUI.enable")) {
+diff --git a/browser/components/preferences/preferences.xhtml b/browser/components/preferences/preferences.xhtml
+index 9760a4a..4ea4230 100644
 --- a/browser/components/preferences/preferences.xhtml
-+++ browser/components/preferences/preferences.xhtml
++++ b/browser/components/preferences/preferences.xhtml
 @@ -38,6 +38,7 @@
      href="chrome://browser/skin/preferences/containers.css"
    />
@@ -38,33 +42,34 @@
    <link rel="stylesheet" href="chrome://browser/content/preferences/widgets/setting-group.css" />
    <link rel="stylesheet" href="chrome://browser/content/preferences/widgets/setting-pane.css" />
    <link rel="stylesheet" href="chrome://browser/content/preferences/widgets/setting-control.css" />
-@@ -147,10 +148,10 @@
-         iconsrc="chrome://browser/skin/preferences/category-sync.svg"
-         data-l10n-id="pane-sync-title3">
+@@ -173,10 +174,10 @@
+         iconsrc="chrome://browser/skin/translations.svg"
+         data-l10n-id="pane-languages-title2">
        </html:moz-page-nav-button>
 -      <html:moz-page-nav-button id="category-ai-features"
 -        view="paneAi"
 -        iconsrc="chrome://global/skin/icons/highlights.svg"
--        data-l10n-id="pane-ai-controls-title">
+-        data-l10n-id="pane-ai-controls-title2">
 +      <html:moz-page-nav-button id="category-librewolf"
-+        view="paneLibrewolf"
++        view="paneVantage"
 +        iconsrc="chrome://browser/skin/preferences/category-librewolf.svg"
 +        data-l10n-id="pane-librewolf-title">
        </html:moz-page-nav-button>
-       <html:moz-page-nav-button id="category-experimental"
-         hidden="true"
-@@ -214,6 +215,7 @@
+       <html:moz-page-nav-button id="category-permissions-data"
+         view="panePermissionsData"
+@@ -250,6 +251,7 @@
  #include home.inc.xhtml
  #include search.inc.xhtml
  #include privacy.inc.xhtml
 +#include librewolf.inc.xhtml
  #include containers.inc.xhtml
  #include sync.inc.xhtml
- #include experimental.inc.xhtml
-
+ #include moreFromMozilla.inc.xhtml
+diff --git a/browser/themes/shared/jar.inc.mn b/browser/themes/shared/jar.inc.mn
+index c2bebf7e96..62ab632cec 100644
 --- a/browser/themes/shared/jar.inc.mn
-+++ browser/themes/shared/jar.inc.mn
-@@ -152,6 +152,7 @@
++++ b/browser/themes/shared/jar.inc.mn
+@@ -114,6 +114,7 @@
    skin/classic/browser/preferences/android-menu.svg            (../shared/preferences/android-menu.svg)
    skin/classic/browser/preferences/category-general.svg        (../shared/preferences/category-general.svg)
    skin/classic/browser/preferences/category-privacy-security.svg    (../shared/preferences/category-privacy-security.svg)
@@ -72,7 +77,7 @@
    skin/classic/browser/preferences/category-search.svg         (../shared/preferences/category-search.svg)
    skin/classic/browser/preferences/category-sync.svg           (../shared/preferences/category-sync.svg)
    skin/classic/browser/preferences/containers.css              (../shared/preferences/containers.css)
-@@ -170,6 +171,7 @@
+@@ -131,6 +132,7 @@
    skin/classic/browser/preferences/vpn-logo.svg                (../shared/preferences/vpn-logo.svg)
    skin/classic/browser/preferences/search.css                  (../shared/preferences/search.css)
    skin/classic/browser/preferences/siteDataSettings.css        (../shared/preferences/siteDataSettings.css)
@@ -80,3 +85,78 @@
    skin/classic/browser/translations/panel.css                  (../shared/translations/panel.css)
    skin/classic/browser/fxa/fxa-spinner.svg                     (../shared/fxa/fxa-spinner.svg)
    skin/classic/browser/fxa/sync-illustration.svg               (../shared/fxa/sync-illustration.svg)
+diff --git a/browser/components/preferences/main.js b/browser/components/preferences/main.js
+index c86e54b..752a38b 100644
+--- a/browser/components/preferences/main.js
++++ b/browser/components/preferences/main.js
+@@ -692,6 +692,70 @@ SettingGroupManager.registerGroups({
+   startup: createStartupConfig(
+     Services.prefs.getBoolPref("browser-settings-redesign.enabled", false)
+   ),
++  librewolfBehavior: {
++    l10nId: "librewolf-general-heading2",
++    headingLevel: 2,
++    items: [
++      {
++        id: "librewolfExtensionUpdate",
++        l10nId: "librewolf-extension-update-checkbox2",
++      },
++      {
++        id: "librewolfSync",
++        l10nId: "librewolf-sync-checkbox2",
++      },
++      {
++        id: "librewolfMiddleClick",
++        l10nId: "librewolf-autocopy-checkbox2",
++      },
++      {
++        id: "librewolfUserChrome",
++        l10nId: "librewolf-styling-checkbox2",
++      },
++    ],
++  },
++  librewolfNetworking: {
++    l10nId: "librewolf-network-heading2",
++    headingLevel: 2,
++    items: [
++      {
++        id: "librewolfIPv6",
++        l10nId: "librewolf-ipv6-checkbox2",
++      }
++    ],
++  },
++  librewolfPrivacy: {
++    l10nId: "librewolf-privacy-heading2",
++    headingLevel: 2,
++    items: [
++      {
++        id: "librewolfCrossOrigin",
++        l10nId: "librewolf-xorigin-ref-checkbox2",
++      },
++    ],
++  },
++  librewolfFingerprinting: {
++    l10nId: "librewolf-broken-heading2",
++    headingLevel: 2,
++    items: [
++      {
++        id: "librewolfRFP",
++        l10nId: "librewolf-rfp-checkbox2",
++      },
++      {
++        id: "librewolfLetterboxing",
++        l10nId: "librewolf-letterboxing-checkbox2",
++      },
++      {
++        id: "librewolfWebGLPrompt",
++        l10nId: "librewolf-webgl-checkbox2",
++      },
++      {
++        id: "librewolfWebGLPromptHide",
++        l10nId: "librewolf-webgl-prompt-checkbox2",
++      },
++    ],
++  },
+ });
+ 
+ /**

@@ -1,0 +1,11 @@
+permissions-site-webgl-window2 =
+    .title = 設定 - WebGL 權限
+    .style = { permissions-window2.style }
+permissions-site-webgl-desc = 下列網站已提出建立 WebGL 環境的請求。您可以指定允許哪些網站建立 WebGL 環境，亦可封鎖後續要求建立 WebGL 環境的新請求。
+permissions-site-eme-window2 =
+    .title = 設定 - EME 權限
+    .style = { permissions-window2.style }
+permissions-site-eme-desc = 下列網站已要求播放由 DRM 控制的內容。您可以指定允許哪些網站播放由 DRM 控制的內容。您也可以封鎖要求播放由 DRM 控制內容的新請求。
+permissions-site-eme-disable-label =
+    .label = 封鎖要求播放由 DRM 控制內容的新請求
+permissions-site-eme-disable-desc = 這將防止任何未列於上方的網站要求播放由 DRM 控制內容的權限。

@@ -41,7 +41,7 @@ var gLibrewolfPane = {
 
   // called when the document is first parsed
   init() {
-    this._pane = document.getElementById("paneLibrewolf");
+    this._pane = document.getElementById("paneVantage");
 
     // Set all event listeners on checkboxes
     // AI Sidebar: sync browser.ml.chat.enabled + browser.ai.control.sidebarChatbot

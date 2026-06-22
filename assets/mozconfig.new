@@ -33,8 +33,8 @@ mk_add_options MOZ_DATA_REPORTING=0
 mk_add_options MOZ_SERVICES_HEALTHREPORT=0
 mk_add_options MOZ_TELEMETRY_REPORTING=0
 
-export CFLAGS="-ftrivial-auto-var-init=zero -fwrapv"
-export CXXFLAGS="-ftrivial-auto-var-init=zero -fwrapv"
+export CFLAGS="-ftrivial-auto-var-init=zero -fwrapv -Wno-backend-plugin"
+export CXXFLAGS="-ftrivial-auto-var-init=zero -fwrapv -Wno-backend-plugin"
 #export LDFLAGS=
 
 # Add your own stuff, libraries, architecture, etc..

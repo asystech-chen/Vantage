@@ -1,7 +1,6 @@
-patches/allow-JXL-in-non-nightly-browser.patch
 patches/always-fetch-latest-toolchain-artifact.patch
-patches/bootstrap.patch
 patches/autoconfig-setEnv.patch
+patches/bootstrap.patch
 patches/custom-ubo-assets-bootstrap-location.patch
 patches/devtools-bypass.patch
 patches/dbus_name.patch
@@ -11,6 +10,8 @@ patches/fpp-canvas-fix.patch
 patches/eme-clearkey.patch
 patches/eme-permission.patch
 patches/extensions-setUninstallURL.patch
+patches/fix-canvas-extraction-permission.patch
+patches/languages.patch
 patches/lw-permissions.patch
 patches/profile-directory.patch
 patches/fullpage-translations-customization.patch

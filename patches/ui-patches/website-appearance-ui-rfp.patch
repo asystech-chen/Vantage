@@ -1,10 +1,10 @@
-diff --git a/browser/components/preferences/main.js b/browser/components/preferences/main.js
-index 0879c5e10d..e09fab02f6 100644
---- a/browser/components/preferences/main.js
-+++ b/browser/components/preferences/main.js
-@@ -759,6 +759,27 @@ Preferences.addSetting({
-   },
- });
+diff --git a/browser/components/preferences/config/appearance.mjs b/browser/components/preferences/config/appearance.mjs
+index 6a2a200..14fea29 100644
+--- a/browser/components/preferences/config/appearance.mjs
++++ b/browser/components/preferences/config/appearance.mjs
+@@ -94,6 +94,27 @@ Preferences.addSetting({
+
+ Preferences.addSetting({ id: "relatedSettingsBoxGroup" });
  
 +Preferences.addSetting({
 +  id: "librewolfRFPWarning",
@@ -27,12 +27,12 @@ index 0879c5e10d..e09fab02f6 100644
 +  },
 +});
 +
- Preferences.addSetting(
-   /** @type {{ themeNames: string[] } & SettingConfig}} */ ({
-     id: "web-appearance-chooser",
-@@ -2719,6 +2727,12 @@ SettingGroupManager.registerGroups({
-         l10nId: "preferences-web-appearance-override-warning3",
-         control: "moz-message-bar",
+ SettingGroupManager.registerGroups({
+   appearance: {
+     l10nId: "appearance-group2",
+@@ -108,6 +129,12 @@ SettingGroupManager.registerGroups({
+           role: "status",
+         },
        },
 +      {
 +        id: "librewolfRFPWarning",
