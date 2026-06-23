@@ -1,36 +1,39 @@
 # ==========================================
 # Vantage Browser - Linux LoongArch64 (loong64) Cross-Compile from x86_64
 #
-# 注意：不能使用 --enable-bootstrap，因为 Mozilla 预编译的 clang
-# 不支持 loongarch64。改用系统 clang + Debian 交叉 sysroot。
-#
 # 前置依赖：
-#   sudo apt install libc6-dev-loong64-cross libstdc++-14-dev-loong64-cross g++-loongarch64-linux-gnu lld
+#   sudo apt install qemu-user qemu-user-binfmt debootstrap lld
 #   rustup target add loongarch64-unknown-linux-gnu
+#   sudo debootstrap --arch=loong64 --no-check-gpg sid /sysroot-loong64 https://deb.debian.org/debian-ports
+#   sudo chroot /sysroot-loong64 apt install -y libgtk-3-dev libpango1.0-dev ... (见文档)
 # ==========================================
 
 # Target - Linux LoongArch64
 ac_add_options --target=loongarch64-linux-gnu
 
+# ---- 交叉编译 Sysroot ----
+ac_add_options --with-sysroot=/sysroot-loong64
+
 # ---- 交叉编译工具链 ----
-# 系统 clang 19 支持 loongarch64，用 Debian 交叉包作 sysroot
-# 必须用绝对路径，否则 Mozilla 构建系统会用 ~/.mozbuild/clang/bin/clang（不支持 loongarch64）
-export CC="/usr/bin/clang --target=loongarch64-linux-gnu --gcc-toolchain=/usr"
-export CXX="/usr/bin/clang++ --target=loongarch64-linux-gnu --gcc-toolchain=/usr"
+# 系统 clang 19 支持 loongarch64，搭配 sysroot 使用
+export CC="/usr/bin/clang --target=loongarch64-linux-gnu"
+export CXX="/usr/bin/clang++ --target=loongarch64-linux-gnu"
 export HOST_CC=$HOME/.mozbuild/clang/bin/clang
 export HOST_CXX=$HOME/.mozbuild/clang/bin/clang++
 
-# 用 lld 链接器（系统 ld 不支持 loongarch64）+ 显式库路径（不用 sysroot，避免路径重复）
-export LDFLAGS="-fuse-ld=lld -L/usr/loongarch64-linux-gnu/lib"
+# 用 lld 链接器
+export LDFLAGS="-fuse-ld=lld"
 
 # 用 llvm 的 ar/nm/ranlib（支持 loongarch64）
 export AR=llvm-ar-19
 export NM=llvm-nm-19
 export RANLIB=llvm-ranlib-19
 
+# ---- pkg-config 指向 sysroot 里的 loong64 库 ----
+mk_add_options "export PKG_CONFIG_LIBDIR=/sysroot-loong64/usr/lib/loongarch64-linux-gnu/pkgconfig:/sysroot-loong64/usr/share/pkgconfig"
+
 # ---- 辅助工具（从 ~/.mozbuild 借用，避免 --enable-bootstrap） ----
 mk_add_options "export PATH=$HOME/.mozbuild/cbindgen:$HOME/.mozbuild/nasm:$HOME/.mozbuild/node/bin:$HOME/.mozbuild/pkgconf:$PATH"
-mk_add_options "export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig"
 
 # ---- 应用/品牌 ----
 ac_add_options --enable-application=browser
@@ -44,7 +47,8 @@ ac_add_options --disable-tests
 ac_add_options --enable-optimize
 ac_add_options --enable-rust-simd
 ac_add_options --disable-cargo-incremental
-ac_add_options --disable-alsa  # 无 loong64 交叉编译 ALSA 包
+ac_add_options --disable-alsa
+ac_add_options --without-wasm-sandboxed-libraries
 ac_add_options --enable-hardening
 ac_add_options --enable-stl-hardening
 ac_add_options --enable-replace-malloc

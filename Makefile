@@ -209,10 +209,23 @@ package :
 	ARCH=$$(basename "$$OBJDIR" | grep -oE 'x86_64|aarch64|arm64' | head -1 | sed 's/^arm64$$/aarch64/'); \
 	echo ">>> Packaging (arch: $$ARCH)..."; \
 	if [ -n "$(WIN_VARIANT)" ]; then \
-	  echo ">>> Windows: copying .exe files only..."; \
+	  echo ">>> Windows: copying .exe and creating portable zip..."; \
 	  find $$OBJDIR/dist/ -maxdepth 1 -name "*.exe" | while read f; do \
 	    cp -v "$$f" "$(APP_NAME)-$(version)-$(release).$$ARCH-installer.exe"; \
 	  done; \
+	  WIN_ZIP=$$(ls -t $$OBJDIR/dist/*.zip 2>/dev/null | head -1); \
+	  if [ -n "$$WIN_ZIP" ]; then \
+	    mkdir -p $(APP_NAME)-portable/bin $(APP_NAME)-portable/Data; \
+	    unzip -q "$$WIN_ZIP" -d $(APP_NAME)-portable/bin; \
+	    printf '@echo off\r\n' > $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
+	    printf 'set "APPDATA=%%~dp0Data"\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
+	    printf 'set "LOCALAPPDATA=%%~dp0Data"\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
+	    printf 'if not exist "%%~dp0Data" mkdir "%%~dp0Data"\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
+	    printf 'start "" "%%~dp0bin\\$(APP_NAME)\\$(APP_NAME).exe" %%*\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
+	    zip -qr $(APP_NAME)-$(version)-$(release).en-US.win-$$ARCH.portable.zip $(APP_NAME)-portable; \
+	    rm -rf $(APP_NAME)-portable; \
+	    echo ">>> [WIN-PORTABLE] $(APP_NAME)-$(version)-$(release).en-US.win-$$ARCH.portable.zip"; \
+	  fi; \
 	else \
 	  echo ">>> Linux: copying .tar.xz and .tar.gz..."; \
 	  find $$OBJDIR/dist/ -maxdepth 1 -name "*.tar.xz" -exec cp -v {} . \;; \
@@ -223,7 +236,7 @@ package :
 checksum :
 	@echo ">>> Generating SHA256 checksums..."
 	@rm -f sha256sums
-	@for f in $(APP_NAME)*$(version)*.tar.xz $(APP_NAME)*$(version)*.tar.gz $(APP_NAME)*$(version)*.exe $(APP_NAME)*$(version)*.dmg $(APP_NAME)_$(version)*.deb $(APP_NAME)-$(version)*.rpm $(APP_NAME)-$(version)*.AppImage; do \
+	@for f in $(APP_NAME)*$(version)*.tar.xz $(APP_NAME)*$(version)*.tar.gz $(APP_NAME)*$(version)*.zip $(APP_NAME)*$(version)*.exe $(APP_NAME)*$(version)*.dmg $(APP_NAME)_$(version)*.deb $(APP_NAME)-$(version)*.rpm $(APP_NAME)-$(version)*.AppImage; do \
 	  if [ -f "$$f" ]; then \
 	    sha256sum "$$f" >> sha256sums; \
 	    echo "  $$f"; \
@@ -327,12 +340,15 @@ PKG_ARCH ?= $(shell \
   mozcfg="$(MOZCONFIG)"; \
   srcdir="$(lw_source_dir)"; \
   arch=""; \
-  [ -f "$$mozcfg" ] && arch=$$(grep -oE 'target=[^ \t]*' "$$mozcfg" 2>/dev/null | grep -oE '(aarch64|arm64|x86_64)' | head -1 | sed 's/arm64/aarch64/'); \
-  [ -z "$$arch" ] && arch=$$(ls -td "$$srcdir"/obj-* 2>/dev/null | head -1 | grep -oE '(x86_64|aarch64)'); \
+  [ -f "$$mozcfg" ] && arch=$$(grep -oE 'target=[^ \t]*' "$$mozcfg" 2>/dev/null | grep -oE '(aarch64|arm64|loongarch64|x86_64)' | head -1 | sed 's/arm64/aarch64/'); \
+  [ -z "$$arch" ] && arch=$$(ls -td "$$srcdir"/obj-* 2>/dev/null | head -1 | grep -oE '(x86_64|aarch64|loongarch64)'); \
   echo "$${arch:-x86_64}")
 
 # 架构名映射
-ifeq ($(PKG_ARCH),aarch64)
+ifeq ($(PKG_ARCH),loongarch64)
+DEB_ARCH := loong64
+RPM_ARCH := loongarch64
+else ifeq ($(PKG_ARCH),aarch64)
 DEB_ARCH := arm64
 RPM_ARCH := aarch64
 else
@@ -415,6 +431,9 @@ APPIMAGE_RUNTIME_aarch64 := $(CURDIR)/assets/appimage-runtime/runtime-aarch64
 
 # 打包为 .AppImage (通用)
 package-appimage : clean-packaging
+ifeq ($(PKG_ARCH),loongarch64)
+	@echo ">>> [APPIMAGE] Skipped: no loongarch64 runtime (use .deb or .tar.gz)"
+else
 	@if [ -z "$(BINARY_TARBALL)" ]; then echo "Error: No binary tarball found."; exit 1; fi
 	@echo ">>> [APPIMAGE] Creating package from $(BINARY_TARBALL)..."
 	@if ! command -v appimagetool >/dev/null 2>&1; then \
@@ -452,13 +471,21 @@ package-appimage : clean-packaging
 	ARCH=$(PKG_ARCH) appimagetool --no-appstream $$runtime_opt AppDir $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).AppImage
 	@echo ">>> [APPIMAGE] Done: $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).AppImage"
 	@rm -rf AppDir
+endif
 
 # 打包为 .tar.gz (Arch/Gentoo/通用)
 package-tar : clean-packaging
 	@if [ -z "$(BINARY_TARBALL)" ]; then echo "Error: No binary tarball found."; exit 1; fi
 	@echo ">>> [TAR] Creating portable tar.gz..."
-	@mkdir -p $(APP_NAME)-portable
-	@tar -xf $(BINARY_TARBALL) -C $(APP_NAME)-portable --strip-components=1
+	@mkdir -p $(APP_NAME)-portable/bin
+	@mkdir -p $(APP_NAME)-portable/Data
+	@tar -xf $(BINARY_TARBALL) -C $(APP_NAME)-portable/bin --strip-components=1
+	@printf '#!/bin/sh\n' > $(APP_NAME)-portable/$(APP_NAME)-portable
+	@printf 'HERE="$$(cd "$$(dirname "$$0")" && pwd)"\\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
+	@printf 'export HOME="$$HERE/Data"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
+	@printf 'mkdir -p "$$HOME"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
+	@printf 'exec "$$HERE/bin/$(APP_NAME)" "$$@"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
+	@chmod +x $(APP_NAME)-portable/$(APP_NAME)-portable
 	@tar -czf $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).portable.tar.gz $(APP_NAME)-portable
 	@echo ">>> [TAR] Done: $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).portable.tar.gz"
 	@rm -rf $(APP_NAME)-portable

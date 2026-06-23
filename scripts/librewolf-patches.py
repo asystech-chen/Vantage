@@ -211,7 +211,7 @@ def librewolf_patches():
     with open(manifest, 'a') as f:
         f.write('\n# Vantage optional extensions\n')
         f.write('@RESPATH@/distribution/setup.ini\n')
-        f.write('@RESPATH@/distribution/optional-extensions/*\n')
+        f.write('@RESPATH@/distribution/*.xpi\n')
 
     print("-> Applying LibreWolf locales")
     l10n_dir = Path("..", "l10n")
