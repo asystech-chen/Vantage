@@ -1,26 +1,32 @@
 # Vantage 152.0.2-1 更新日志
 
-## 构建系统
+## 上游合并
 
-- **Makefile WIN_VARIANT 检测修复**：平台检测 fallback 从硬编码 `assets/mozconfig`（Windows 交叉编译配置）改为优先使用源码树 mozconfig + `$MOZCONFIG` 环境变量，解决 Linux 构建时 `make package` 误判为 Windows 的问题
-- **`librewolf-patches.py` 修复**：`import glob as _g` 移至顶部全局导入，删除函数内重复导入，修复 `UnboundLocalError` 崩溃
-- **可选扩展逻辑优化**：无 XPI 文件时跳过 `distribution/*.xpi` 写入 `package-manifest.in`，避免构建警告
+- 基于 **Firefox 152.0.2**
 
 ## 修复
 
-- **隐私仪表板 (`about:protections`)**：移除 `preview/protections.ftl` 引用（文件不存在导致 l10n 加载异常、页面排版混乱）。所有 Vantage 仪表板字符串已内置于 `browser/protections.ftl`
-- **`vantage-privacy-dashboard.patch`**：修复删除 l10n 引用后产生的空操作 hunk，`make dir` 不再报 `malformed patch`
-- **首选项面板**：页脚链接添加 `flex="1"` 属性，四列等宽对齐；缩进格式统一
+### 构建系统
+- **Makefile WIN_VARIANT 检测修复**：平台检测 fallback 从硬编码 `assets/mozconfig`（Windows 交叉编译配置）改为优先使用源码树 mozconfig + `$MOZCONFIG` 环境变量，解决 Linux 构建时 `make package` 误判为 Windows 的问题
+- **`librewolf-patches.py`**：修复 `import glob as _g` 导致的 `UnboundLocalError` 崩溃；无 XPI 文件时跳过 `distribution/*.xpi` 写入，避免构建警告
+- **`vantage-privacy-dashboard.patch`**：修复空操作 hunk 导致 `make dir` 报 `malformed patch`
+
+### 隐私仪表板 (`about:protections`)
+- 移除不存在的 `preview/protections.ftl` 引用，修复 l10n 加载异常和页面排版混乱
+- 所有 Vantage 仪表板字符串已内置于 `browser/protections.ftl`
+
+### 首选项面板
+- 页脚链接添加 `flex="1"` 属性，四列等宽对齐
 
 ## 品牌
 
-- **图标优化**：所有尺寸的 PNG 图标优化压缩（文件大小减小 40-55%）
+- **图标优化**：所有尺寸的 PNG 图标压缩优化（文件大小减小 40-55%）
 - **about-logo.svg**：替换为简洁版本
 - **firefox-wordmark.svg**：修复 viewBox
 
 ## 语言
 
-- **en-US / zh-CN**：`librewolf-open-profile` 从 "Open user profile directory" 改为 "Troubleshooting Information (about:support)"
+- **en-US / zh-CN**：`librewolf-open-profile` 改为 "Troubleshooting Information (about:support)" 使链接指向 `about:support` 而非打开用户配置目录
 
 ## 文档
 
