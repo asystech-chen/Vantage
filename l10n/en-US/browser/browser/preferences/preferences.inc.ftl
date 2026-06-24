@@ -89,7 +89,7 @@ librewolf-goog-safe-download-warning1 = All the checks happen locally.
 # Footer
 librewolf-footer = Useful links
 librewolf-config-link = All advanced settings (about:config)
-librewolf-open-profile = Open user profile directory
+librewolf-open-profile = Troubleshooting Information (about:support)
 
 librewolf-debug = Debug Add-ons
 vantage-privacy-dashboard-link = Privacy Dashboard

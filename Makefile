@@ -201,7 +201,7 @@ build : $(lw_source_dir)
 	(cd $(lw_source_dir) && ./mach build)
 
 # 检测 Windows 编译类型（MSVC / MinGW）- 只对 Windows 构建有效
-WIN_VARIANT := $(shell mozcfg="$${MOZCONFIG:-$$(pwd)/assets/mozconfig}"; grep -qE 'windows-msvc|pc-windows-msvc' "$$mozcfg" 2>/dev/null && echo msvc || (grep -qE 'windows-gnu|pc-mingw32' "$$mozcfg" 2>/dev/null && echo mingw || true))
+WIN_VARIANT := $(shell mozcfg="$${MOZCONFIG:-$(lw_source_dir)/mozconfig}"; [ -f "$$mozcfg" ] || mozcfg="$$(pwd)/assets/mozconfig"; grep -qE 'windows-msvc|pc-windows-msvc' "$$mozcfg" 2>/dev/null && echo msvc || (grep -qE 'windows-gnu|pc-mingw32' "$$mozcfg" 2>/dev/null && echo mingw || true))
 
 package :
 	(cd $(lw_source_dir) && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales)

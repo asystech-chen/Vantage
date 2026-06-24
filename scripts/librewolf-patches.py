@@ -7,8 +7,10 @@
 
 import os
 import sys
+import json
 import optparse
 import time
+import glob as _g
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -141,6 +143,23 @@ def librewolf_patches():
     exec('cp -v ../../settings/distribution/setup.ini .')
     exec('cp -v ../../settings/distribution/optional-extensions/*.xpi optional-extensions/ 2>/dev/null; true')
 
+    # Window, windows builds use setup.ini for optional extensions,
+    # so strip them from policies.json to avoid force-installing duplicates.
+    if _g.glob('optional-extensions/*.xpi'):
+        print("-> Windows build detected: stripping optional extensions from policies.json")
+        _pj = 'policies.json'
+        with open(_pj) as f:
+            _data = json.load(f)
+        _ext = _data['policies']['ExtensionSettings']
+        for _id in list(_ext.keys()):
+            if _id.startswith('idcac-pub@') or _id.startswith('{9350bc42-') \
+               or _id.startswith('{b184d107-') or _id == 'easyscreenshot@mozillaonline.com':
+                del _ext[_id]
+                print(f"   removed: {_id}")
+        with open(_pj, 'w') as f:
+            json.dump(_data, f, indent=2)
+            f.write('\n')
+
     # Write moz.build to include distribution files in the build
     with open('moz.build', 'w') as f:
         f.write('FINAL_TARGET_FILES += [\n'
@@ -156,7 +175,6 @@ def librewolf_patches():
                 '  "local-settings.js",\n'
                 ']\n')
         # Add each XPI individually to distribution
-        import glob as _g
         for xpi in sorted(_g.glob('optional-extensions/*.xpi')):
             f.write(f'FINAL_TARGET_FILES.distribution += ["{xpi}"]\n')
 
@@ -207,11 +225,15 @@ def librewolf_patches():
 
     # Add optional extension distribution files to package manifest
     print("-> Adding optional extensions to package-manifest.in")
+    _xpifiles = _g.glob('optional-extensions/*.xpi')
     manifest = 'browser/installer/package-manifest.in'
     with open(manifest, 'a') as f:
         f.write('\n# Vantage optional extensions\n')
         f.write('@RESPATH@/distribution/setup.ini\n')
-        f.write('@RESPATH@/distribution/*.xpi\n')
+        if _xpifiles:
+            f.write('@RESPATH@/distribution/*.xpi\n')
+        else:
+            print("   (no XPI files found, skipping distribution/*.xpi)")
 
     print("-> Applying LibreWolf locales")
     l10n_dir = Path("..", "l10n")

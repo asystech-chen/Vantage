@@ -1,11 +1,9 @@
 --- a/browser/components/protections/content/protections.html	2026-06-22 15:39:40.962808557 +0800
 +++ b/browser/components/protections/content/protections.html	2026-06-22 15:42:19.939804186 +0800
-@@ -14,6 +14,8 @@
+@@ -14,6 +14,6 @@
      <link rel="localization" href="branding/brand.ftl" />
      <link rel="localization" href="browser/protections.ftl" />
      <link rel="localization" href="toolkit/branding/brandings.ftl" />
-+    <!-- Temporary "en-US"-only l10n strings -->
-+    <link rel="localization" href="preview/protections.ftl" />
      <link rel="stylesheet" href="chrome://global/skin/in-content/common.css" />
      <link rel="stylesheet" href="chrome://browser/content/protections.css" />
      <link rel="icon" href="chrome://browser/skin/controlcenter/dashboard.svg" />
