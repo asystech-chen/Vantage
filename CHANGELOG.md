@@ -9,6 +9,7 @@
 ## 修复
 
 - **隐私仪表板 (`about:protections`)**：移除 `preview/protections.ftl` 引用（文件不存在导致 l10n 加载异常、页面排版混乱）。所有 Vantage 仪表板字符串已内置于 `browser/protections.ftl`
+- **`vantage-privacy-dashboard.patch`**：修复删除 l10n 引用后产生的空操作 hunk，`make dir` 不再报 `malformed patch`
 - **首选项面板**：页脚链接添加 `flex="1"` 属性，四列等宽对齐；缩进格式统一
 
 ## 品牌
@@ -20,6 +21,10 @@
 ## 语言
 
 - **en-US / zh-CN**：`librewolf-open-profile` 从 "Open user profile directory" 改为 "Troubleshooting Information (about:support)"
+
+## 文档
+
+- **README**：补全路线图、核心特性、系统架构、安装指南
 
 ## 扩展策略
 
