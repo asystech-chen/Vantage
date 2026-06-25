@@ -3,10 +3,9 @@
    file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #aboutDialog {
-  border-bottom: #ffffff 2px solid;
-  /* 添加漂亮的渐变色背景 */
-  background: linear-gradient(135deg, #5A95F6 0%, #4db6f7 40%, #30D4C0 70%, #FFFFFF 100%);
-  /* 确保背景覆盖整个窗口 */
+  /* Vantage blue-green gradient, full coverage */
+  background: linear-gradient(135deg, #3B82F6 0%, #2563EB 35%, #0EA5A0 70%, #10B981 100%);
+  /* ensure background covers entire window */
   background-attachment: fixed;
 }
 
