@@ -13,7 +13,7 @@ vantage-update-checkbox =
     .label = Automatically check for updates
 vantage-theme-checkbox =
     .label = Enable Vantage Theme
-vantage-theme-description = Applies a modern visual theme with rounded corners and platform-appropriate styling. Windows gets Mica blur, macOS gets vibrant titlebar, Linux gets a muted dark palette. Requires restart of any open windows to take full effect.
+vantage-theme-description = Writes the Vantage theme CSS to your profile. Requires a browser restart to take effect. Includes rounded address bar, rounded tabs, and a clean toolbar. Disabling removes the theme file automatically.
 
 vantage-update-description = Check for new versions of Vantage on startup. You will be notified when a new version is available, but updates will not be installed automatically.
 

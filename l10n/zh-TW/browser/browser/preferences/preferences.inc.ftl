@@ -7,7 +7,7 @@ vantage-update-checkbox =
     .label = 自動檢查更新
 vantage-theme-checkbox =
     .label = 啟用 Vantage 主題
-vantage-theme-description = 套用現代化視覺主題，包含圓角和平台適配樣式。Windows 使用 Mica 毛玻璃效果，macOS 使用 vibrant 標題欄，Linux 使用深色柔光配色。需要重新啟動已開啟的視窗才能完全生效。
+vantage-theme-description = 自動將 Vantage 主題 CSS 寫入設定檔目錄，開啟後需重新啟動瀏覽器才能生效。包含圓角網址列、圓角分頁、去分隔線等樣式。關閉後自動清理主題檔案。
 
 vantage-update-description = 啟動時自動檢查 Vantage 是否有新版本。發現新版本時會在視窗頂部顯示通知，但不會自動安裝更新。
 
