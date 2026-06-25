@@ -4,7 +4,7 @@
 
 #aboutDialog {
   /* Vantage blue-green gradient, full coverage */
-  background: linear-gradient(135deg, #5A95F6 0%, #4DB6F7 35%, #30D4C0 70%, #3DD6B8 100%);
+  background: linear-gradient(135deg, #5A95F6 0%, #4db6f7 40%, #30D4C0 70%, #10B981 100%);
   /* ensure background covers entire window */
   background-attachment: fixed;
 }
