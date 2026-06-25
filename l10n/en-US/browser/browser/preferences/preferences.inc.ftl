@@ -38,6 +38,13 @@ librewolf-ipv6-checkbox =
     .label = Enable IPv6
 
 librewolf-privacy-heading = Privacy
+librewolf-webrtc-ip-checkbox =
+    .label = Limit WebRTC local IP exposure
+librewolf-webrtc-ip-description = Restrict WebRTC to use only the default network interface, preventing local IP address leaks.
+librewolf-font-vis-checkbox =
+    .label = Limit font visibility
+librewolf-font-vis-description = Only expose base system fonts to websites, preventing font fingerprinting. Does not affect how fonts are rendered on pages.
+
 librewolf-xorigin-ref-checkbox =
     .label = Limit cross-origin referrers
 
@@ -80,19 +87,20 @@ librewolf-tabs-search-checkbox =
 librewolf-tabs-ctrlTab-checkbox =
     .label = Ctrl+Tab by recent use
 
-librewolf-styling-description = Enable this if you want to customize the UI with a manually loaded theme.
-librewolf-styling-warning1 = Make sure you trust the provider of the theme.
+librewolf-styling-description = When enabled: Customize the browser appearance (toolbar, tabs, etc.) via a userChrome.css file. Ideal for advanced users who want a personalized look.
+librewolf-styling-warning1 = When disabled: Uses the default browser appearance. Only load CSS themes from trusted sources — malicious stylesheets could capture your input.
 
-librewolf-xorigin-ref-description = Send a referrer only on same-origin.
-librewolf-xorigin-ref-warning1 = This may cause breakage. Additionally, even when sent referrers will still be trimmed.
+librewolf-xorigin-ref-description = When enabled: Only sends source page info when navigating within the same website. External sites won't know which page you came from.
+librewolf-xorigin-ref-warning1 = When disabled: All websites can see which page you came from. Some websites that require referrer validation may break when this is enabled.
 
-librewolf-webgl-description = WebGL is a strong fingerprinting vector.
-librewolf-webgl-warning1 = If you need to enable it, consider using an extension like Canvas Blocker.
+librewolf-webgl-description = When enabled: Websites can use WebGL for 3D graphics, but it may also be used to identify your device (fingerprinting).
+librewolf-webgl-warning1 = When disabled: Better privacy, but websites using WebGL (3D maps, browser games) may not work correctly.
 
-librewolf-rfp-description = ResistFingerprinting is the best in class anti-fingerprinting tool.
-librewolf-rfp-warning1 = If you need to disable it, consider using an extension like Canvas Blocker.
+librewolf-rfp-description = When enabled: Hides browser characteristics (screen resolution, timezone, fonts, language, etc.), making you look identical to other users. Greatly enhances privacy.
+librewolf-rfp-warning1 = When disabled: Your browser characteristics are fully exposed, making you easily trackable. Some websites rely on these for normal operation.
 
-librewolf-letterboxing-description = Letterboxing applies margins around your windows, in order to return a limited set of rounded resolutions.
+librewolf-letterboxing-description = When enabled: Window size is rounded to standard values, preventing websites from tracking you by your window dimensions. Black bars may appear on the sides.
+librewolf-letterboxing-warning1 = When disabled: Websites can use your window size to help identify you. Requires ResistFingerprinting to be enabled first.
 
 librewolf-goog-safe-description = If you are worried about malware and phishing, consider enabling it.
 librewolf-goog-safe-warning1 = Disabled over censorship concerns but recommended for less advanced users. All the checks happen locally.

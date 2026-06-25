@@ -37,6 +37,8 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "browser.tabs.loadBookmarksInTabs", type: "bool" },
   { id: "browser.search.openintab", type: "bool" },
   { id: "browser.ctrlTab.sortByRecentlyUsed", type: "bool" },
+  { id: "media.peerconnection.ice.default_address_only", type: "bool" },
+  { id: "layout.css.font-visibility.level", type: "int" },
 ];
   for (let p of prefsToAdd) {
     try { Preferences.add(p); } catch (e) { /* already registered */ }
@@ -127,6 +129,27 @@ var gLibrewolfPane = {
     setBoolSyncListeners(
       "librewolf-tabs-ctrlTab-checkbox",
       ["browser.ctrlTab.sortByRecentlyUsed"],
+      [true],
+    );
+
+    // font-visibility uses int pref (0=all, 1=base, 2=lang), sync manually
+    setSyncFromPrefListener("librewolf-font-vis-checkbox", () => {
+      return Services.prefs.getIntPref("layout.css.font-visibility.level", 0) >= 1;
+    });
+    setSyncToPrefListener("librewolf-font-vis-checkbox", () => {
+      let checked = document.getElementById("librewolf-font-vis-checkbox").checked;
+      Services.prefs.setIntPref("layout.css.font-visibility.level", checked ? 1 : 0);
+      return checked;
+    });
+    Preferences.get("layout.css.font-visibility.level").on("change", () => {
+      makeMasterCheckboxesReactive("librewolf-font-vis-checkbox", () =>
+        Services.prefs.getIntPref("layout.css.font-visibility.level", 0) >= 1
+      );
+    });
+
+    setBoolSyncListeners(
+      "librewolf-webrtc-ip-checkbox",
+      ["media.peerconnection.ice.default_address_only"],
       [true],
     );
 
