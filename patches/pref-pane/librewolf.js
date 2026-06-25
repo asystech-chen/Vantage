@@ -37,6 +37,7 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "browser.tabs.loadBookmarksInTabs", type: "bool" },
   { id: "browser.search.openintab", type: "bool" },
   { id: "browser.ctrlTab.sortByRecentlyUsed", type: "bool" },
+  { id: "vantage.theme.enabled", type: "bool" },
   { id: "media.peerconnection.ice.default_address_only", type: "bool" },
   { id: "layout.css.font-visibility.level", type: "int" },
 ];
@@ -146,6 +147,12 @@ var gLibrewolfPane = {
         Services.prefs.getIntPref("layout.css.font-visibility.level", 0) >= 1
       );
     });
+
+    setBoolSyncListeners(
+      "vantage-theme-checkbox",
+      ["vantage.theme.enabled"],
+      [true],
+    );
 
     setBoolSyncListeners(
       "librewolf-webrtc-ip-checkbox",

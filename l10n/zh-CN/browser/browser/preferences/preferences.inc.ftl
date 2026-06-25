@@ -11,6 +11,10 @@ librewolf-warning-description = 我们仔细选择默认设置，专注于隐私
 vantage-update-heading = 更新
 vantage-update-checkbox =
     .label = 自动检查更新
+vantage-theme-checkbox =
+    .label = 启用 Vantage 主题
+vantage-theme-description = 应用现代化视觉主题，包含圆角和平台适配样式。Windows 使用 Mica 毛玻璃效果，macOS 使用 vibrant 标题栏，Linux 使用深色柔光配色。需要重启已打开的窗口才能完全生效。
+
 vantage-update-description = 在启动时检查 Vantage 新版本。发现新版本时会通知您，但不会自动安装更新。
 
 vantage-ai-heading = AI 侧边栏

@@ -11,6 +11,10 @@ category-librewolf =
 vantage-update-heading = Update
 vantage-update-checkbox =
     .label = Automatically check for updates
+vantage-theme-checkbox =
+    .label = Enable Vantage Theme
+vantage-theme-description = Applies a modern visual theme with rounded corners and platform-appropriate styling. Windows gets Mica blur, macOS gets vibrant titlebar, Linux gets a muted dark palette. Requires restart of any open windows to take full effect.
+
 vantage-update-description = Check for new versions of Vantage on startup. You will be notified when a new version is available, but updates will not be installed automatically.
 
 vantage-ai-heading = AI Sidebar
