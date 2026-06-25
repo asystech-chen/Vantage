@@ -481,7 +481,7 @@ package-tar : clean-packaging
 	@mkdir -p $(APP_NAME)-portable/Data
 	@tar -xf $(BINARY_TARBALL) -C $(APP_NAME)-portable/bin --strip-components=1
 	@printf '#!/bin/sh\n' > $(APP_NAME)-portable/$(APP_NAME)-portable
-	@printf 'HERE="$$(cd "$$(dirname "$$0")" && pwd)"\\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
+	@printf 'HERE="$$(cd "$$(dirname "$$0")" && pwd)"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
 	@printf 'export HOME="$$HERE/Data"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
 	@printf 'mkdir -p "$$HOME"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
 	@printf 'exec "$$HERE/bin/$(APP_NAME)" "$$@"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable

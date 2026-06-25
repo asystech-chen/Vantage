@@ -31,6 +31,12 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "browser.safebrowsing.provider.google.gethashURL", type: "string" },
   { id: "browser.safebrowsing.provider.google.updateURL", type: "string" },
   { id: "toolkit.legacyUserProfileCustomizations.stylesheets", type: "bool" },
+  { id: "toolkit.tabbox.switchByScrolling", type: "bool" },
+  { id: "browser.tabs.closeTabByDblclick", type: "bool" },
+  { id: "browser.urlbar.openintab", type: "bool" },
+  { id: "browser.tabs.loadBookmarksInTabs", type: "bool" },
+  { id: "browser.search.openintab", type: "bool" },
+  { id: "browser.ctrlTab.sortByRecentlyUsed", type: "bool" },
 ];
   for (let p of prefsToAdd) {
     try { Preferences.add(p); } catch (e) { /* already registered */ }
@@ -91,6 +97,37 @@ var gLibrewolfPane = {
       "librewolf-styling-checkbox",
       ["toolkit.legacyUserProfileCustomizations.stylesheets"],
       [true,                                                ],
+    );
+
+    setBoolSyncListeners(
+      "librewolf-tabs-scroll-checkbox",
+      ["toolkit.tabbox.switchByScrolling"],
+      [true],
+    );
+    setBoolSyncListeners(
+      "librewolf-tabs-dblclick-checkbox",
+      ["browser.tabs.closeTabByDblclick"],
+      [true],
+    );
+    setBoolSyncListeners(
+      "librewolf-tabs-urlbar-checkbox",
+      ["browser.urlbar.openintab"],
+      [true],
+    );
+    setBoolSyncListeners(
+      "librewolf-tabs-bookmarks-checkbox",
+      ["browser.tabs.loadBookmarksInTabs"],
+      [true],
+    );
+    setBoolSyncListeners(
+      "librewolf-tabs-search-checkbox",
+      ["browser.search.openintab"],
+      [true],
+    );
+    setBoolSyncListeners(
+      "librewolf-tabs-ctrlTab-checkbox",
+      ["browser.ctrlTab.sortByRecentlyUsed"],
+      [true],
     );
 
     setBoolSyncListeners(

@@ -66,6 +66,20 @@ librewolf-sync-warning1 = Firefox Sync encrypts data locally before transmitting
 
 librewolf-autocopy-description = Select some text to copy it, then paste it with a middle-mouse click.
 
+librewolf-tabs-heading = Tab Behavior
+librewolf-tabs-scroll-checkbox =
+    .label = Scroll to switch tabs
+librewolf-tabs-dblclick-checkbox =
+    .label = Double-click to close tab
+librewolf-tabs-urlbar-checkbox =
+    .label = Open address bar in new tab
+librewolf-tabs-bookmarks-checkbox =
+    .label = Open bookmarks in new tab
+librewolf-tabs-search-checkbox =
+    .label = Open search in new tab
+librewolf-tabs-ctrlTab-checkbox =
+    .label = Ctrl+Tab by recent use
+
 librewolf-styling-description = Enable this if you want to customize the UI with a manually loaded theme.
 librewolf-styling-warning1 = Make sure you trust the provider of the theme.
 
