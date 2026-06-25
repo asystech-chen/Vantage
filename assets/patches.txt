@@ -58,3 +58,4 @@ patches/installer-publisher.patch
 patches/uninstaller-cleanup.patch
 patches/vantage-ai-sidebar.patch
 patches/dmg-fix-permissions.patch
+patches/ui-patches/vantage-infobar-accent.patch
