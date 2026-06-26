@@ -4,37 +4,40 @@
 
 - 基于 **Firefox 152.0.2**
 
-## 新功能
+## 新功能开关
 
-### Vantage 主题
-- **默认启用**，跨平台统一视觉风格，可在 `about:preferences#vantage` 中关闭
-- **蓝绿色调**：替换 Firefox 红紫强调色，菜单分割线、通知栏渐变条、新标签页搜索框统一改用 Vantage 品牌色
-- **圆角设计**：导航栏、标签栏（四角全圆）、书签栏、侧边栏
-- **自动注入**：通过 `librewolf.cfg` autoconfig 写入 `userChrome.css`（界面样式）+ `userContent.css`（新标签页去紫光），无需手动开启 `toolkit.legacyUserProfileCustomizations.stylesheets`
-- 主题仅修改外观样式，不影响浏览器功能；切换后需重启生效
+- `vantage.theme.enabled` — 启用 Vantage 主题（默认开启）
+- `toolkit.tabbox.switchByScrolling` — 滚轮切换标签页
+- `browser.tabs.closeTabByDblclick` — 双击关闭标签页
+- `browser.urlbar.openintab` — 地址栏回车在新标签页打开
+- `browser.tabs.loadBookmarksInTabs` — 书签在新标签页打开
+- `browser.search.openintab` — 搜索在新标签页打开
+- `browser.ctrlTab.sortByRecentlyUsed` — Ctrl+Tab 按最近使用排序
+- `media.peerconnection.ice.default_address_only` — 限制 WebRTC 本地 IP 暴露
+- `layout.css.font-visibility.level` — 限制字体可见性
 
-### 标签页行为设置
-- `about:preferences#vantage` 新增「标签页」区块，提供 6 个开关（均默认关闭）：
-  - 滚轮切换标签页
-  - 双击关闭标签页
-  - 地址栏回车在新标签页打开
-  - 书签在新标签页打开
-  - 搜索在新标签页打开
-  - Ctrl+Tab 按最近使用排序
+以上开关均可在 `about:preferences#vantage` 中控制，中英繁三语同步。
 
-### 隐私设置增强
-- 新增「限制 WebRTC 本地 IP 暴露」和「限制字体可见性」开关，放入隐私区块
-- 所有隐私开关说明文案重写：统一为「开启后…关闭后…」格式，清楚解释每种选择的影响（WebGL、RFP、letterboxing、跨域引用、userChrome.css）
-- 中英繁三语同步
+## Vantage 主题
+
+- 默认启用，跨平台统一视觉风格
+- 蓝绿色调替换 Firefox 红紫强调色，覆盖菜单分割线、通知栏渐变条、新标签页搜索框
+- 圆角设计：导航栏、标签栏（四角全圆）、书签栏、侧边栏
+- 通过 `librewolf.cfg` autoconfig 自动写入 `userChrome.css` + `userContent.css`，无需手动开启 `toolkit.legacyUserProfileCustomizations.stylesheets`
+- 仅修改外观，不影响功能；切换后需重启生效
+
+## 隐私设置
+
+- 所有隐私开关说明文案重写：统一「开启后…关闭后…」格式，覆盖 WebGL、RFP、letterboxing、跨域引用、userChrome.css 等
 
 ## 修复
 
-- **关于对话框无样式**：`themes/browser/branding/vantage/content/aboutDialog.css` 此前为空文件，编译后对话框一片空白。现补全蓝绿渐变背景、logo、版本号等完整样式
+- **关于对话框无样式**：`aboutDialog.css` 此前为空文件，编译后对话框一片空白。现补全蓝绿渐变背景、logo、版本号等完整样式
 - **Linux portable 启动脚本**：修复 Makefile 中换行符字面量 `\n` → 实际换行
 
 ## 清理
 
-- `vantage-infobar-accent.patch` → `removed-patches/`：FF152 中 infobar.css 路径变化，补丁不再适用，改用 CSS 变量覆盖方式
+- `vantage-infobar-accent.patch` → `removed-patches/`：FF152 中 infobar.css 路径变化，补丁不再适用，改用 CSS 变量覆盖
 - 删除 `patches/.orig/` 下 3 个过期备份文件（`protections.css` / `protections.html` / `protections.mjs`，共 2240 行死代码）
 
 ---
