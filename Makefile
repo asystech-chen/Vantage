@@ -222,13 +222,16 @@ package :
 	    printf 'set "LOCALAPPDATA=%%~dp0Data"\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
 	    printf 'if not exist "%%~dp0Data" mkdir "%%~dp0Data"\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
 	    printf 'start "" "%%~dp0bin\\$(APP_NAME)\\$(APP_NAME).exe" %%*\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
-	    zip -qr $(APP_NAME)-$(version)-$(release).en-US.win-$$ARCH.portable.zip $(APP_NAME)-portable; \
+	    zip -qr $(APP_NAME)-$(version)-$(release).win-$$ARCH.portable.zip $(APP_NAME)-portable; \
 	    rm -rf $(APP_NAME)-portable; \
-	    echo ">>> [WIN-PORTABLE] $(APP_NAME)-$(version)-$(release).en-US.win-$$ARCH.portable.zip"; \
+	    echo ">>> [WIN-PORTABLE] $(APP_NAME)-$(version)-$(release).win-$$ARCH.portable.zip"; \
 	  fi; \
 	else \
-	  echo ">>> Linux: copying .tar.xz and .tar.gz..."; \
-	  find $$OBJDIR/dist/ -maxdepth 1 -name "*.tar.xz" -exec cp -v {} . \;; \
+	  echo ">>> Linux: copying and renaming .tar.xz and .tar.gz..."; \
+	  for f in $$OBJDIR/dist/*.tar.xz; do \
+	    dest=$$(basename "$$f" | sed 's/.en-US//'); \
+	    cp -v "$$f" "./$$dest"; \
+	  done; \
 	  find $$OBJDIR/dist/ -maxdepth 1 -name "*.tar.gz" -exec cp -v {} . \;; \
 	fi
 
