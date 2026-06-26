@@ -6,14 +6,14 @@
 
 ## 新功能
 
-### 🎨 Vantage 主题
+### Vantage 主题
 - **默认启用**，跨平台统一视觉风格，可在 `about:preferences#vantage` 中关闭
 - **蓝绿色调**：替换 Firefox 红紫强调色，菜单分割线、通知栏渐变条、新标签页搜索框统一改用 Vantage 品牌色
 - **圆角设计**：导航栏、标签栏（四角全圆）、书签栏、侧边栏
 - **自动注入**：通过 `librewolf.cfg` autoconfig 写入 `userChrome.css`（界面样式）+ `userContent.css`（新标签页去紫光），无需手动开启 `toolkit.legacyUserProfileCustomizations.stylesheets`
 - 主题仅修改外观样式，不影响浏览器功能；切换后需重启生效
 
-### ⚙️ 标签页行为设置
+### 标签页行为设置
 - `about:preferences#vantage` 新增「标签页」区块，提供 6 个开关（均默认关闭）：
   - 滚轮切换标签页
   - 双击关闭标签页
@@ -22,9 +22,9 @@
   - 搜索在新标签页打开
   - Ctrl+Tab 按最近使用排序
 
-### 🛡️ 隐私设置增强
+### 隐私设置增强
 - 新增「限制 WebRTC 本地 IP 暴露」和「限制字体可见性」开关，放入隐私区块
-- **所有隐私开关说明文案重写**：统一为「开启后…关闭后…」格式，清楚解释每种选择的影响（WebGL、RFP、letterboxing、跨域引用、userChrome.css）
+- 所有隐私开关说明文案重写：统一为「开启后…关闭后…」格式，清楚解释每种选择的影响（WebGL、RFP、letterboxing、跨域引用、userChrome.css）
 - 中英繁三语同步
 
 ## 修复
