@@ -152,8 +152,7 @@ def librewolf_patches():
             _data = json.load(f)
         _ext = _data['policies']['ExtensionSettings']
         for _id in list(_ext.keys()):
-            if _id.startswith('idcac-pub@') or _id.startswith('{9350bc42-') \
-               or _id.startswith('{b184d107-') or _id == 'easyscreenshot@mozillaonline.com':
+            if _id.startswith('idcac-pub@') or _id.startswith('{9350bc42-') or _id.startswith('{b184d107-'):
                 del _ext[_id]
                 print(f"   removed: {_id}")
         with open(_pj, 'w') as f:

@@ -1,7 +1,7 @@
 docker_targets=docker-build-image docker-run-build-job docker-remove-image
 woodpecker_targets=fetch-upstream-woodpecker check-patchfail-woodpecker
 testing_targets=full-test test test-linux test-macos test-windows
-.PHONY : help moztree check all clean veryclean distclean patches dir bootstrap fetch build package package-all package-deb package-rpm package-appimage package-tar checksum run update setup-wasi check-patchfail check-fuzz fixfuzz $(docker_targets) $(woodpecker_targets) $(testing_targets)
+.PHONY : help moztree check all clean veryclean distclean patches dir bootstrap fetch build package package-all package-deb package-rpm package-appimage package-tar package-pe-sfx package-msix checksum run update setup-wasi check-patchfail check-fuzz fixfuzz $(docker_targets) $(woodpecker_targets) $(testing_targets)
 
 version:=$(shell cat ./version)
 release:=$(shell cat ./release)
@@ -217,6 +217,8 @@ package :
 	  if [ -n "$$WIN_ZIP" ]; then \
 	    mkdir -p $(APP_NAME)-portable/bin $(APP_NAME)-portable/Data; \
 	    unzip -q "$$WIN_ZIP" -d $(APP_NAME)-portable/bin; \
+	    echo ">>> Bundling VC++ runtime DLLs..."; \
+	    ./scripts/bundle-vcrt.sh $(APP_NAME)-portable/bin/$(APP_NAME)/ 2>&1 || true; \
 	    printf '@echo off\r\n' > $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
 	    printf 'set "APPDATA=%%~dp0Data"\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
 	    printf 'set "LOCALAPPDATA=%%~dp0Data"\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
@@ -236,6 +238,86 @@ package :
 	fi
 
 # 计算所有打包产物的 SHA256 校验和，写入单个 sha256sums 文件
+# PE-SFX: 将 Windows 便携版裁剪后打包为自解压 exe
+# 依赖: package 必须先完成 (需要 portable.zip 产物)
+#       7z (p7zip-full), zip, unzip
+package-pe-sfx :
+	@echo ">>> [PE-SFX] 开始制作 PE 自解压包..."
+	@PORTABLE_ZIP=$$(ls -t $(APP_NAME)*.win-x86_64.portable.zip 2>/dev/null | head -1); \
+	if [ -z "$$PORTABLE_ZIP" ]; then \
+	  echo "错误: 找不到 portable.zip，请先运行 'make package'"; \
+	  exit 1; \
+	fi; \
+	echo "    源包: $$PORTABLE_ZIP"; \
+	TMPDIR=$$(mktemp -d /tmp/vantage-pe-build.XXXXXX); \
+	trap "rm -rf $$TMPDIR" EXIT; \
+	unzip -q "$$PORTABLE_ZIP" -d "$$TMPDIR"; \
+	echo ">>> [PE-SFX] 运行裁剪脚本..."; \
+	./scripts/strip-for-pe.sh "$$TMPDIR/$(APP_NAME)-portable"; \
+	echo ">>> [PE-SFX] 创建 7z 压缩包 (LZMA2 mx=7)..."; \
+	cd "$$TMPDIR" && 7z a -mx=7 -mfb=273 -md=256m -ms=128m -mmt=1 "$$TMPDIR/vantage-pe.7z" $(APP_NAME)-portable/ >/dev/null; \
+	SFX_STUB="assets/7zsfx/7zS2.sfx"; \
+	if [ ! -f "$$SFX_STUB" ]; then \
+	  echo ">>> [PE-SFX] 下载 SFX 模块..."; \
+	  ./scripts/fetch-pe-sfx.sh; \
+	fi; \
+	SFX_CFG="assets/7zsfx/sfx-config-pe.txt"; \
+	OUT_EXE="$(APP_NAME)-$(version)-$(release).win-x86_64.pe-sfx.exe"; \
+	echo ">>> [PE-SFX] 组装自解压 exe..."; \
+	cat "$$SFX_STUB" "$$SFX_CFG" "$$TMPDIR/vantage-pe.7z" > "$$OUT_EXE"; \
+	ls -lh "$$OUT_EXE"; \
+	echo ">>> [PE-SFX] ✅ 完成: $$OUT_EXE"
+
+# MSIX: 将 Windows 包重新打包为 MSIX (Microsoft Store 格式)
+# 依赖: package 必须先完成
+# 签发给 Store 前，修改 PUBLISHER 为 Partner Center 注册的 CN
+MSIX_PUBLISHER ?= CN=Vantage, O=Vantage, L=Beijing, C=CN
+MSIX_PUBLISHER_DISPLAY ?= Vantage Browser
+MSIX_IDENTITY ?= Vantage.VantageBrowser
+
+package-msix :
+	@OBJDIR=$$(ls -td $(lw_source_dir)/obj-*pc-windows* 2>/dev/null | head -1); \
+	WIN_ZIP=$$(ls -t $$OBJDIR/dist/*.zip 2>/dev/null | grep -v xpt_artifacts | head -1); \
+	if [ -z "$$WIN_ZIP" ]; then \
+	  echo "错误: 找不到 Windows dist .zip，请先运行 'make package'"; \
+	  exit 1; \
+	fi; \
+	ARCH="$$(echo $$OBJDIR | grep -oE 'x86_64|aarch64' | head -1)"; \
+	ABS_ZIP="$$(realpath "$$WIN_ZIP")"; \
+	ABS_OUT="$$(realpath .)/$(APP_NAME)-$(version)-$(release).$$ARCH.msix"; \
+	PREPKG_ZIP="$$(realpath .)/$(APP_NAME)-$(version)-$(release).$$ARCH.msix-prepackage.zip"; \
+	echo ">>> [MSIX] 输入: $$ABS_ZIP ($$ARCH)"; \
+	echo "    Publisher: $(MSIX_PUBLISHER)"; \
+	echo "    Identity:  $(MSIX_IDENTITY)"; \
+	MKX="$$(realpath scripts/wine-makeappx)"; \
+	cd $(lw_source_dir) && ./mach repackage msix \
+	    --input "$$ABS_ZIP" \
+	    --channel unofficial \
+	    --vendor Vantage \
+	    --identity-name "$(MSIX_IDENTITY)" \
+	    --publisher "$(MSIX_PUBLISHER)" \
+	    --publisher-display-name "$(MSIX_PUBLISHER_DISPLAY)" \
+	    --arch $$ARCH \
+	    --unsigned \
+	    --makeappx "$$MKX" \
+	    --output "$$ABS_OUT" 2>&1 || true; \
+	MSIX_DIR=$$(ls -td $$HOME/.mozbuild/cache/mach-msix/msix-temp-* 2>/dev/null | head -1); \
+	if [ -z "$$MSIX_DIR" ]; then \
+	  echo ">>> [MSIX] 预打包目录未生成"; exit 1; \
+	fi; \
+	cd "$$(dirname "$$MSIX_DIR")" && zip -0qr "$$PREPKG_ZIP" "$$(basename "$$MSIX_DIR")" && cd - >/dev/null; \
+	ls -lh "$$PREPKG_ZIP"; \
+	if [ -f "$$ABS_OUT" ]; then \
+	  echo ">>> [MSIX] ✅ MSIX 包已生成: $$ABS_OUT"; \
+	else \
+	  echo ""; \
+	  echo "================================================"; \
+	  echo "  📦 MSIX 预打包: $$PREPKG_ZIP"; \
+	  echo "  ▶ 在 Windows 上完成最终打包:"; \
+	  echo "    1. 解压此 zip"; \
+	  echo "    2. makeappx pack /d <解压目录> /p vantage.msix /overwrite"; \
+	  echo "================================================"; \
+	fi
 checksum :
 	@echo ">>> Generating SHA256 checksums..."
 	@rm -f sha256sums

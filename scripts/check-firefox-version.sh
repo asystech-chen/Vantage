@@ -1,9 +1,9 @@
 #!/bin/bash
 # 检查 Firefox Release / ESR 最新版本，仅在版本变化时输出
-# 状态文件: /tmp/vantage-version-check/ff-state.json
+# 状态文件: ~/.cache/vantage-version-check/ff-state.json
 
 API="https://product-details.mozilla.org/1.0/firefox_versions.json"
-STATE_FILE="/tmp/vantage-version-check/ff-state.json"
+STATE_FILE="$HOME/.cache/vantage-version-check/ff-state.json"
 mkdir -p "$(dirname "$STATE_FILE")"
 
 DATA=$(curl -s "$API")

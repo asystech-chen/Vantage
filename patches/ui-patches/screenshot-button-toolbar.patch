@@ -1,0 +1,19 @@
+--- a/browser/components/customizableui/CustomizableUI.sys.mjs	2026-07-08 19:08:44.768146452 +0800
++++ b/browser/components/customizableui/CustomizableUI.sys.mjs	2026-07-08 19:08:44.792147812 +0800
+@@ -357,14 +357,13 @@
+       "back-button",
+       "forward-button",
+       "stop-reload-button",
+-      Services.policies.isAllowed("removeHomeButtonByDefault")
+-        ? null
+-        : "home-button",
++      "home-button",
+       "spring",
+       "vertical-spacer",
+       "urlbar-container",
+       "spring",
+       "downloads-button",
++      "screenshot-button",
+       AppConstants.MOZ_DEV_EDITION ? "developer-button" : null,
+       lazy.ippEnabled ? "ipprotection-button" : null,
+       "fxa-toolbar-menu-button",

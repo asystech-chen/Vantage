@@ -42,12 +42,6 @@
         "private_browsing": false,
         "default_area": "navbar"
       },
-      "easyscreenshot@mozillaonline.com": {
-        "install_url": "https://addons.mozilla.org/firefox/downloads/file/4049242/easyscreenshot-3.109.xpi",
-        "installation_mode": "normal_installed",
-        "private_browsing": false,
-        "default_area": "navbar"
-      },
       "google@search.mozilla.org": { "installation_mode": "normal" },
       "bing@search.mozilla.org": { "installation_mode": "normal" },
       "amazondotcom@search.mozilla.org": { "installation_mode": "normal" },
