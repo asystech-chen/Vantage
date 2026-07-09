@@ -1,7 +1,7 @@
 docker_targets=docker-build-image docker-run-build-job docker-remove-image
 woodpecker_targets=fetch-upstream-woodpecker check-patchfail-woodpecker
 testing_targets=full-test test test-linux test-macos test-windows
-.PHONY : help moztree check all clean veryclean distclean patches dir bootstrap fetch build package package-all package-deb package-rpm package-appimage package-tar package-pe-sfx package-msix checksum run update setup-wasi check-patchfail check-fuzz fixfuzz $(docker_targets) $(woodpecker_targets) $(testing_targets)
+.PHONY : help moztree check all clean veryclean distclean patches dir bootstrap fetch build package package-all package-deb package-rpm package-appimage package-tar package-msix checksum run update setup-wasi check-patchfail check-fuzz fixfuzz $(docker_targets) $(woodpecker_targets) $(testing_targets)
 
 version:=$(shell cat ./version)
 release:=$(shell cat ./release)
@@ -238,35 +238,11 @@ package :
 	fi
 
 # 计算所有打包产物的 SHA256 校验和，写入单个 sha256sums 文件
-# PE-SFX: 将 Windows 便携版裁剪后打包为自解压 exe
-# 依赖: package 必须先完成 (需要 portable.zip 产物)
-#       7z (p7zip-full), zip, unzip
-package-pe-sfx :
-	@echo ">>> [PE-SFX] 开始制作 PE 自解压包..."
-	@PORTABLE_ZIP=$$(ls -t $(APP_NAME)*.win-x86_64.portable.zip 2>/dev/null | head -1); \
-	if [ -z "$$PORTABLE_ZIP" ]; then \
-	  echo "错误: 找不到 portable.zip，请先运行 'make package'"; \
-	  exit 1; \
-	fi; \
-	echo "    源包: $$PORTABLE_ZIP"; \
-	TMPDIR=$$(mktemp -d /tmp/vantage-pe-build.XXXXXX); \
-	trap "rm -rf $$TMPDIR" EXIT; \
-	unzip -q "$$PORTABLE_ZIP" -d "$$TMPDIR"; \
-	echo ">>> [PE-SFX] 运行裁剪脚本..."; \
-	./scripts/strip-for-pe.sh "$$TMPDIR/$(APP_NAME)-portable"; \
-	echo ">>> [PE-SFX] 创建 7z 压缩包 (LZMA2 mx=7)..."; \
-	cd "$$TMPDIR" && 7z a -mx=7 -mfb=273 -md=256m -ms=128m -mmt=1 "$$TMPDIR/vantage-pe.7z" $(APP_NAME)-portable/ >/dev/null; \
-	SFX_STUB="assets/7zsfx/7zS2.sfx"; \
-	if [ ! -f "$$SFX_STUB" ]; then \
-	  echo ">>> [PE-SFX] 下载 SFX 模块..."; \
-	  ./scripts/fetch-pe-sfx.sh; \
-	fi; \
-	SFX_CFG="assets/7zsfx/sfx-config-pe.txt"; \
-	OUT_EXE="$(APP_NAME)-$(version)-$(release).win-x86_64.pe-sfx.exe"; \
-	echo ">>> [PE-SFX] 组装自解压 exe..."; \
-	cat "$$SFX_STUB" "$$SFX_CFG" "$$TMPDIR/vantage-pe.7z" > "$$OUT_EXE"; \
-	ls -lh "$$OUT_EXE"; \
-	echo ">>> [PE-SFX] ✅ 完成: $$OUT_EXE"
+# PE-SFX: 已禁用（注释掉），不再打包自解压 exe
+#
+# package-pe-sfx :
+# 	... (disabled)
+#
 
 # MSIX: 将 Windows 包重新打包为 MSIX (Microsoft Store 格式)
 # 依赖: package 必须先完成
@@ -321,7 +297,7 @@ package-msix :
 checksum :
 	@echo ">>> Generating SHA256 checksums..."
 	@rm -f sha256sums
-	@for f in $(APP_NAME)*$(version)*.tar.xz $(APP_NAME)*$(version)*.tar.gz $(APP_NAME)*$(version)*.zip $(APP_NAME)*$(version)*.exe $(APP_NAME)*$(version)*.dmg $(APP_NAME)_$(version)*.deb $(APP_NAME)-$(version)*.rpm $(APP_NAME)-$(version)*.AppImage; do \
+	@for f in $(APP_NAME)*$(version)*.tar.xz $(APP_NAME)*$(version)*.tar.gz $(APP_NAME)*$(version)*.portable.zip $(APP_NAME)*$(version)*.exe $(APP_NAME)*$(version)*.dmg $(APP_NAME)_$(version)*.deb $(APP_NAME)-$(version)*.rpm $(APP_NAME)-$(version)*.AppImage; do \
 	  if [ -f "$$f" ]; then \
 	    sha256sum "$$f" >> sha256sums; \
 	    echo "  $$f"; \

@@ -193,6 +193,13 @@ build_target() {
     make package-all || red "⚠️  $label package-all 失败（非致命）"
   fi
 
+  # 对 Windows 目标额外执行 package-msix
+  if [[ "$os_type" == "windows" ]]; then
+    echo ""
+    green ">>> Windows 目标：执行 make package-msix..."
+    make package-msix || red "⚠️  $label package-msix 失败（非致命）"
+  fi
+
   # 验证产物
   echo ""
   green ">>> 当前根目录下的打包产物:"
