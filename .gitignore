@@ -18,3 +18,5 @@ deb_build/
 
 # Downloaded XPI files for Windows installer
 settings/distribution/optional-extensions/*.xpi
+*.msix-prepackage.zip
+*.exe
