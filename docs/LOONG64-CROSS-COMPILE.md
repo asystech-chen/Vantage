@@ -1,5 +1,7 @@
 # Vantage LoongArch64 (loong64) Linux 交叉编译指南
 
+> 此指南旨在帮助所有用户在任意x86设备上完成Vantage或者其他firefox分支的交叉编译。如果你在实际折腾过程中有新的踩坑经验，欢迎提PR！以下是桶哥自己的踩坑经验，仅供参考。
+
 ## 前置条件
 
 - x86_64 Debian 13 宿主机
@@ -105,16 +107,16 @@ MOZCONFIG=$(pwd)/assets/mozconfig.linux-loong64 make package
 
 ## 踩坑记录
 
-| 问题 | 原因 | 解决 |
-|------|------|------|
-| configure 报 GTK/Pango/pkg-config 找不到 | sysroot 没装桌面库 dev 包 | 装 `libgtk-3-dev` 等 |
-| `fatal error: 'cstddef' file not found` | sysroot 缺 C++ 头文件 | `apt install g++` |
-| `Package alsa was not found` | `--disable-alsa` 没完全跳过检查，且 sid 里 libasound2-dev 有版本冲突 | 手动提取 `libasound.so.2` + 写假 `alsa.pc` + stub 头文件 |
-| `fatal error: 'alsa/asoundlib.h' file not found` | MIDI 模块需要 ALSA 头 | stub 头文件 |
-| `wasm-ld: error: cannot open libclang_rt.builtins.a` | 系统 clang 缺 wasm32 runtime | `--without-wasm-sandboxed-libraries` |
-| `ld.lld: unable to find library -lasound` | sysroot 没有 libasound | 提取 `libasound2t64.deb` 中的 so |
-| `undefined symbol: snd_seq_*` | 旧 stub `libasound.so`（无 sequencer 符号）没被替换 | `rm libasound.so && ln -s libasound.so.2 libasound.so` |
-| `optional-extensions/*` 缺失（Windows 打包用） | `librewolf-patches.py` 里 manifest 和 moz.build 路径不一致 | 改 `@RESPATH@/distribution/optional-extensions/*` → `@RESPATH@/distribution/*.xpi`（已修） |
+| 问题                                                   | 原因                                                    | 解决                                                                                    |
+| ---------------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| configure 报 GTK/Pango/pkg-config 找不到                 | sysroot 没装桌面库 dev 包                                   | 装 `libgtk-3-dev` 等                                                                    |
+| `fatal error: 'cstddef' file not found`              | sysroot 缺 C++ 头文件                                     | `apt install g++`                                                                     |
+| `Package alsa was not found`                         | `--disable-alsa` 没完全跳过检查，且 sid 里 libasound2-dev 有版本冲突 | 手动提取 `libasound.so.2` + 写假 `alsa.pc` + stub 头文件                                       |
+| `fatal error: 'alsa/asoundlib.h' file not found`     | MIDI 模块需要 ALSA 头                                      | stub 头文件                                                                              |
+| `wasm-ld: error: cannot open libclang_rt.builtins.a` | 系统 clang 缺 wasm32 runtime                             | `--without-wasm-sandboxed-libraries`                                                  |
+| `ld.lld: unable to find library -lasound`            | sysroot 没有 libasound                                  | 提取 `libasound2t64.deb` 中的 so                                                          |
+| `undefined symbol: snd_seq_*`                        | 旧 stub `libasound.so`（无 sequencer 符号）没被替换             | `rm libasound.so && ln -s libasound.so.2 libasound.so`                                |
+| `optional-extensions/*` 缺失（Windows 打包用）              | `librewolf-patches.py` 里 manifest 和 moz.build 路径不一致   | 改 `@RESPATH@/distribution/optional-extensions/*` → `@RESPATH@/distribution/*.xpi`（已修） |
 
 ## 注意事项
 
