@@ -20,3 +20,7 @@ deb_build/
 settings/distribution/optional-extensions/*.xpi
 *.msix-prepackage.zip
 *.exe
+
+# Repo signing (private key never commit)
+*-repo-private-key.asc
+.gnupg/
