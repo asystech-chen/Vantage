@@ -291,6 +291,19 @@
     </vbox>
   </vbox>
 
+  <hbox>
+    <checkbox id="librewolf-signatures-checkbox" data-l10n-id="librewolf-signatures-checkbox" preference="xpinstall.signatures.required" flex="1" />
+    <html:label for="librewolf-signatures-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
+  </hbox>
+  <vbox class="librewolf-collapse indent">
+    <html:input type="checkbox" id="librewolf-signatures-collapse" />
+    <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
+      <label data-l10n-id="librewolf-signatures-description" />
+      <html:div> <image src="chrome://browser/skin/warning.svg" /> <label data-l10n-id="librewolf-signatures-warning1" class="librewolf-warning" /> </html:div>
+      <checkbox preference="xpinstall.signatures.required" label="xpinstall.signatures.required" />
+    </vbox>
+  </vbox>
+
 </groupbox>
 
 <hbox class="subcategory" hidden="true" data-category="paneVantage">

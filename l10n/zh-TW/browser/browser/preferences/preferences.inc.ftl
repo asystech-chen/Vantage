@@ -92,6 +92,11 @@ librewolf-goog-safe-description = 如果您擔心惡意軟體和網路釣魚，�
 librewolf-goog-safe-warning1 = 因擔心審查而禁用，但推薦給不太高階的使用者。所有檢查都在本地進行。
 librewolf-goog-safe-download-description = 允許安全瀏覽掃描您的下載，以識別可疑檔案。
 librewolf-goog-safe-download-warning1 = 所有檢查都在本地進行。
+
+librewolf-signatures-checkbox =
+    .label = 要求擴充套件簽名
+librewolf-signatures-description = 開啟後：僅允許安裝經 Mozilla 簽名的擴充套件，防止惡意擴充套件侵害瀏覽器安全。
+librewolf-signatures-warning1 = 關閉後：允許安裝未簽名擴充套件，方便開發者測試自編擴充套件。請謹慎安裝來源不明的擴充套件。
 librewolf-config-link = 所有高階設定 (about:config)
 librewolf-open-profile = 疑難排解資訊 (about:support)
 content-blocking-section-top-level-description = Vantage 預設支援並啟用嚴格模式下的增強跟蹤保護。這是瀏覽器中最重要的設定之一，因為它提供狀態分割槽、嚴格的阻止列表和其他精妙的隱私功能。我們不建議更改為其他模式。

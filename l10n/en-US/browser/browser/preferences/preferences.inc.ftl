@@ -112,6 +112,11 @@ librewolf-goog-safe-warning1 = Disabled over censorship concerns but recommended
 librewolf-goog-safe-download-description = Allow Safe Browsing to scan your downloads to identify suspicious files.
 librewolf-goog-safe-download-warning1 = All the checks happen locally.
 
+librewolf-signatures-checkbox =
+    .label = Require signed add-ons
+librewolf-signatures-description = When enabled: Only add-ons signed by Mozilla can be installed, protecting you from potentially malicious extensions.
+librewolf-signatures-warning1 = When disabled: Unsigned add-ons can be installed, which is useful for developers testing their own extensions. Exercise caution with add-ons from unknown sources.
+
 # Footer
 librewolf-footer = Useful links
 librewolf-config-link = All advanced settings (about:config)

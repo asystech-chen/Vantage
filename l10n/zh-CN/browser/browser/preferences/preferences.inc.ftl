@@ -91,6 +91,11 @@ librewolf-goog-safe-description = 如果您担心恶意软件和网络钓鱼，�
 librewolf-goog-safe-warning1 = 因审查顾虑而默认禁用，但推荐普通用户开启。所有检查在本地进行。
 librewolf-goog-safe-download-description = 允许安全浏览扫描下载文件以识别可疑内容。
 librewolf-goog-safe-download-warning1 = 所有检查在本地进行。
+
+librewolf-signatures-checkbox =
+    .label = 要求扩展签名
+librewolf-signatures-description = 开启后：仅允许安装经 Mozilla 签名的扩展，防止恶意扩展侵害浏览器安全。
+librewolf-signatures-warning1 = 关闭后：允许安装未签名扩展，方便开发者测试自编扩展。请谨慎安装来源不明的扩展。
 librewolf-config-link = 所有高级设置 (about:config)
 librewolf-open-profile = 故障排除信息 (about:support)
 librewolf-debug = 调试附加组件

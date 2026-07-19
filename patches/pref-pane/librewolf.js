@@ -38,6 +38,7 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "browser.search.openintab", type: "bool" },
   { id: "browser.ctrlTab.sortByRecentlyUsed", type: "bool" },
   { id: "vantage.theme.enabled", type: "bool" },
+  { id: "xpinstall.signatures.required", type: "bool" },
   { id: "media.peerconnection.ice.default_address_only", type: "bool" },
   { id: "layout.css.font-visibility.level", type: "int" },
 ];
@@ -177,6 +178,11 @@ var gLibrewolfPane = {
       [true                                       ],
     );
 
+    setBoolSyncListeners(
+      "librewolf-signatures-checkbox",
+      ["xpinstall.signatures.required"],
+      [true],
+    );
     setSyncListeners(
       "librewolf-goog-safe-checkbox",
       [
