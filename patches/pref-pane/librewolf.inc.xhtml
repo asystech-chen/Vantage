@@ -125,6 +125,19 @@
     </vbox>
   </vbox>
 
+  <hbox>
+    <checkbox id="librewolf-download-tmp-checkbox" data-l10n-id="librewolf-download-tmp-checkbox" preference="browser.download.start_downloads_in_tmp_dir" flex="1" />
+    <html:label for="librewolf-download-tmp-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
+  </hbox>
+  <vbox class="librewolf-collapse indent">
+    <html:input type="checkbox" id="librewolf-download-tmp-collapse" />
+    <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
+      <label data-l10n-id="librewolf-download-tmp-description" />
+      <html:div> <image src="chrome://browser/skin/warning.svg" /> <label data-l10n-id="librewolf-download-tmp-warning1" class="librewolf-warning" /> </html:div>
+      <checkbox preference="browser.download.start_downloads_in_tmp_dir" label="browser.download.start_downloads_in_tmp_dir" />
+    </vbox>
+  </vbox>
+
   <html:h2 data-l10n-id="librewolf-tabs-heading" />
 
   <hbox>
@@ -301,6 +314,19 @@
       <label data-l10n-id="librewolf-signatures-description" />
       <html:div> <image src="chrome://browser/skin/warning.svg" /> <label data-l10n-id="librewolf-signatures-warning1" class="librewolf-warning" /> </html:div>
       <checkbox preference="xpinstall.signatures.required" label="xpinstall.signatures.required" />
+    </vbox>
+  </vbox>
+
+  <hbox>
+    <checkbox id="librewolf-pdfjs-scripting-checkbox" data-l10n-id="librewolf-pdfjs-scripting-checkbox" preference="pdfjs.enableScripting" flex="1" />
+    <html:label for="librewolf-pdfjs-scripting-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
+  </hbox>
+  <vbox class="librewolf-collapse indent">
+    <html:input type="checkbox" id="librewolf-pdfjs-scripting-collapse" />
+    <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
+      <label data-l10n-id="librewolf-pdfjs-scripting-description" />
+      <html:div> <image src="chrome://browser/skin/warning.svg" /> <label data-l10n-id="librewolf-pdfjs-scripting-warning1" class="librewolf-warning" /> </html:div>
+      <checkbox preference="pdfjs.enableScripting" label="pdfjs.enableScripting" />
     </vbox>
   </vbox>
 

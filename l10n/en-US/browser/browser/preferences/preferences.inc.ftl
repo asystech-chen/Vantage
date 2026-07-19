@@ -77,6 +77,11 @@ librewolf-sync-warning1 = Firefox Sync encrypts data locally before transmitting
 
 librewolf-autocopy-description = Select some text to copy it, then paste it with a middle-mouse click.
 
+librewolf-download-tmp-checkbox =
+    .label = Save downloads to temporary directory
+librewolf-download-tmp-description = When enabled: Downloaded files are saved to the system temporary directory and automatically cleaned up when the browser closes, preventing data traces.
+librewolf-download-tmp-warning1 = When disabled: Files are saved directly to your download folder for easier access. Note that downloaded files may leave recoverable traces even after deletion.
+
 librewolf-tabs-heading = Tab Behavior
 librewolf-tabs-scroll-checkbox =
     .label = Scroll to switch tabs
@@ -116,6 +121,11 @@ librewolf-signatures-checkbox =
     .label = Require signed add-ons
 librewolf-signatures-description = When enabled: Only add-ons signed by Mozilla can be installed, protecting you from potentially malicious extensions.
 librewolf-signatures-warning1 = When disabled: Unsigned add-ons can be installed, which is useful for developers testing their own extensions. Exercise caution with add-ons from unknown sources.
+
+librewolf-pdfjs-scripting-checkbox =
+    .label = Allow JavaScript in PDF viewer
+librewolf-pdfjs-scripting-description = When enabled: PDF files can execute JavaScript, enabling interactive forms and dynamic content. Some PDF forms require this to function correctly.
+librewolf-pdfjs-scripting-warning1 = When disabled: JavaScript execution in PDF files is blocked, protecting you from PDF-based attacks. Most PDF documents will still display correctly.
 
 # Footer
 librewolf-footer = Useful links

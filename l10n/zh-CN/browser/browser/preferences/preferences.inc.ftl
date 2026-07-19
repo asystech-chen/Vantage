@@ -63,6 +63,11 @@ librewolf-ipv6-warning1 = 与其在浏览器中阻止 IPv6，我们建议在您�
 librewolf-sync-description = 将数据与其它浏览器同步。需要重新启动。
 librewolf-sync-warning1 = Firefox 同步在传输到服务器之前在本地加密数据。
 librewolf-autocopy-description = 选择文本后自动复制，鼠标中键粘贴。
+
+librewolf-download-tmp-checkbox =
+    .label = 下载文件存入临时目录
+librewolf-download-tmp-description = 开启后：下载的文件存入系统临时目录，关闭浏览器后自动清理，避免数据残留。
+librewolf-download-tmp-warning1 = 关闭后：文件直接存入下载文件夹，方便管理。注意即使手动删除，下载文件仍可能被恢复工具找回。
 librewolf-tabs-heading = 标签页行为
 librewolf-tabs-scroll-checkbox =
     .label = 滚轮切换标签页
@@ -96,6 +101,11 @@ librewolf-signatures-checkbox =
     .label = 要求扩展签名
 librewolf-signatures-description = 开启后：仅允许安装经 Mozilla 签名的扩展，防止恶意扩展侵害浏览器安全。
 librewolf-signatures-warning1 = 关闭后：允许安装未签名扩展，方便开发者测试自编扩展。请谨慎安装来源不明的扩展。
+
+librewolf-pdfjs-scripting-checkbox =
+    .label = 允许 PDF 查看器执行脚本
+librewolf-pdfjs-scripting-description = 开启后：PDF 文件可执行 JavaScript，支持交互式表单和动态内容。部分 PDF 表单依赖此功能。
+librewolf-pdfjs-scripting-warning1 = 关闭后：禁止 PDF 文件执行脚本，防止基于 PDF 的安全攻击。绝大多数 PDF 文档仍可正常查看。
 librewolf-config-link = 所有高级设置 (about:config)
 librewolf-open-profile = 故障排除信息 (about:support)
 librewolf-debug = 调试附加组件

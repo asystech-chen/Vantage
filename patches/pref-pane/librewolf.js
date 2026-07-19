@@ -39,6 +39,8 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "browser.ctrlTab.sortByRecentlyUsed", type: "bool" },
   { id: "vantage.theme.enabled", type: "bool" },
   { id: "xpinstall.signatures.required", type: "bool" },
+  { id: "browser.download.start_downloads_in_tmp_dir", type: "bool" },
+  { id: "pdfjs.enableScripting", type: "bool" },
   { id: "media.peerconnection.ice.default_address_only", type: "bool" },
   { id: "layout.css.font-visibility.level", type: "int" },
 ];
@@ -156,6 +158,12 @@ var gLibrewolfPane = {
     );
 
     setBoolSyncListeners(
+      "librewolf-download-tmp-checkbox",
+      ["browser.download.start_downloads_in_tmp_dir"],
+      [true],
+    );
+
+    setBoolSyncListeners(
       "librewolf-webrtc-ip-checkbox",
       ["media.peerconnection.ice.default_address_only"],
       [true],
@@ -182,6 +190,11 @@ var gLibrewolfPane = {
       "librewolf-signatures-checkbox",
       ["xpinstall.signatures.required"],
       [true],
+    );
+    setBoolSyncListeners(
+      "librewolf-pdfjs-scripting-checkbox",
+      ["pdfjs.enableScripting"],
+      [false],
     );
     setSyncListeners(
       "librewolf-goog-safe-checkbox",

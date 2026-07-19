@@ -82,6 +82,11 @@ librewolf-xorigin-ref-description = 開啟後：只在同一網站內跳轉時�
 librewolf-xorigin-ref-warning1 = 關閉後：所有網站都能看到您從哪個頁面跳轉而來。部分需要驗證來源的網站可能無法正常訪問。
 librewolf-sync-warning1 = Firefox 同步在傳輸到伺服器之前在本地加密資料。
 librewolf-autocopy-description = 選擇一些文字複製，然後用滑鼠中鍵貼上。
+
+librewolf-download-tmp-checkbox =
+    .label = 下載檔案存入暫存目錄
+librewolf-download-tmp-description = 開啟後：下載的檔案存入系統暫存目錄，關閉瀏覽器後自動清理，避免資料殘留。
+librewolf-download-tmp-warning1 = 關閉後：檔案直接存入下載資料夾，方便管理。注意即使手動刪除，下載檔案仍可能被復原工具找回。
 librewolf-webgl-description = 開啟後：網頁可以使用 WebGL 渲染 3D 圖形，但可能被用來識別您的裝置（指紋追蹤）。
 librewolf-webgl-warning1 = 關閉後：增強隱私，但使用 WebGL 的網頁（如 3D 地圖、線上遊戲）可能無法正常顯示。
 librewolf-rfp-description = 開啟後：統一隱藏瀏覽器特徵（螢幕解析度、時區、字型、語言等），使您看起來與其他使用者相同，極大增強隱私。
@@ -97,6 +102,11 @@ librewolf-signatures-checkbox =
     .label = 要求擴充套件簽名
 librewolf-signatures-description = 開啟後：僅允許安裝經 Mozilla 簽名的擴充套件，防止惡意擴充套件侵害瀏覽器安全。
 librewolf-signatures-warning1 = 關閉後：允許安裝未簽名擴充套件，方便開發者測試自編擴充套件。請謹慎安裝來源不明的擴充套件。
+
+librewolf-pdfjs-scripting-checkbox =
+    .label = 允許 PDF 檢視器執行指令碼
+librewolf-pdfjs-scripting-description = 開啟後：PDF 檔案可執行 JavaScript，支援互動式表單和動態內容。部分 PDF 表單依賴此功能。
+librewolf-pdfjs-scripting-warning1 = 關閉後：禁止 PDF 檔案執行指令碼，防止基於 PDF 的安全攻擊。絕大多數 PDF 文件仍可正常檢視。
 librewolf-config-link = 所有高階設定 (about:config)
 librewolf-open-profile = 疑難排解資訊 (about:support)
 content-blocking-section-top-level-description = Vantage 預設支援並啟用嚴格模式下的增強跟蹤保護。這是瀏覽器中最重要的設定之一，因為它提供狀態分割槽、嚴格的阻止列表和其他精妙的隱私功能。我們不建議更改為其他模式。
