@@ -24,3 +24,6 @@ settings/distribution/optional-extensions/*.xpi
 # Repo signing (private key never commit)
 *-repo-private-key.asc
 .gnupg/
+# Generated detached signatures (don't commit)
+/*.asc
+scripts/check-firefox-version.sh

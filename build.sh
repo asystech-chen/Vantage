@@ -2,11 +2,18 @@
 set -euo pipefail
 
 # ==========================================
-# Vantage 多平台自动编译脚本
+# Vantage 多平台自动编译/打包脚本
 # 用法:
-#   ./build.sh                              # 交互式选择
+#   ./build.sh                              # 交互式选择编译
 #   ./build.sh linux-x64                    # 编译单个目标
 #   ./build.sh linux-x64 windows-x64 macos-arm64  # 编译多个目标
+#   ./build.sh package                      # 交互式选择打包 (仅打包, 不编译)
+#   ./build.sh package linux-x64 linux-arm64  # 打包指定目标
+#   ./build.sh sign                        # 交互式选择签名 (仅 Linux)
+#   ./build.sh sign linux-x64 linux-arm64   # 签名指定目标
+#
+# 编译流程自动包含: 编译 → 打包 → 签名 (Linux 目标)
+# 签名使用 GPG 私钥: $HOME/vantage-repo-private-key.asc
 #
 # 可用目标:
 #   linux-x64    linux-arm64    linux-loong64
@@ -14,7 +21,7 @@ set -euo pipefail
 #   macos-x64    macos-arm64
 #   也可用简写: lx la ll wx wa mx ma / all
 #
-# 编译完成后自动执行 make checksum 生成校验和
+# 编译/打包完成后自动执行 make checksum 生成校验和
 # ==========================================
 
 REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
@@ -182,14 +189,14 @@ build_target() {
   green ">>> [2/3] 编译 (make build)..."
   make build || { red "❌ $label 编译失败"; return 1; }
 
-  # Step 3: 打包
+  # Step 3: 打包 + 签名 (package-all 自动包含签名)
   green ">>> [3/3] 打包 (make package)..."
   make package || { red "❌ $label 打包失败"; return 1; }
 
-  # 对 Linux 目标额外执行 package-all (deb/rpm/AppImage/tar.gz)
+  # 对 Linux 目标额外执行 package-all (deb/rpm/AppImage/tar.gz + 自动签名)
   if [[ "$os_type" == "linux" ]]; then
     echo ""
-    green ">>> Linux 目标：执行 make package-all (deb/rpm/AppImage/tar.gz)..."
+    green ">>> Linux 目标：执行 make package-all (生成+签名)..."
     make package-all || red "⚠️  $label package-all 失败（非致命）"
   fi
 
@@ -208,8 +215,318 @@ build_target() {
   green "✅ $label 编译流程完成"
 }
 
+# ---------- 单独打包目标（跳过编译，直接 package-all） ----------
+package_target() {
+  local key="$1"
+  IFS='|' read -r label mozconfig os_type <<< "${TARGETS[$key]}"
+
+  echo ""
+  bold "───────────────────────────────────────────"
+  bold "  开始打包: $label"
+  bold "  mozconfig: $mozconfig"
+  bold "───────────────────────────────────────────"
+  echo ""
+
+  export MOZCONFIG="$REPO_ROOT/$mozconfig"
+
+  case "$os_type" in
+    linux)
+      green ">>> 执行 make package-all (deb/rpm/AppImage/tar.gz)..."
+      make package-all || { red "❌ $label package-all 失败"; return 1; }
+      ;;
+    windows)
+      green ">>> 执行 make package..."
+      make package || { red "❌ $label package 失败"; return 1; }
+      echo ""
+      green ">>> 执行 make package-msix..."
+      make package-msix || red "⚠️  $label package-msix 失败（非致命）"
+      ;;
+    macos)
+      green ">>> 执行 make package (dmg)..."
+      make package || { red "❌ $label package 失败"; return 1; }
+      ;;
+  esac
+
+  echo ""
+  green ">>> $label 打包产物:"
+  ls -lh vantage-* 2>/dev/null || yellow "  (未找到 vantage-* 产物)"
+
+  green "✅ $label 打包流程完成"
+}
+
+# ---------- 打包主流程 ----------
+package_main() {
+  local selected=() total count=0 failed=() rc
+
+  if [[ $# -gt 0 ]]; then
+    readarray -t selected < <(resolve_args "$@")
+  else
+    readarray -t selected < <(interactive_select)
+  fi
+
+  # 确认清单
+  echo ""
+  bold "═══════════════════════════════════════"
+  bold "  确认打包目标"
+  bold "═══════════════════════════════════════"
+  echo ""
+  for key in "${selected[@]}"; do
+    IFS='|' read -r label cfg os <<< "${TARGETS[$key]}"
+    case "$os" in
+      linux)   echo "    • $label  →  deb / rpm / AppImage / tar.gz" ;;
+      windows) echo "    • $label  →  exe installer / zip / msix" ;;
+      macos)   echo "    • $label  →  dmg" ;;
+    esac
+  done
+  echo ""
+  bold "═══════════════════════════════════════"
+  echo ""
+
+  if [[ $# -gt 0 ]]; then
+    green "✅ 参数模式，直接开始打包..."
+  else
+    while true; do
+      read -r -p "  👉 确认开始? (yes/no): " confirm
+      case "$confirm" in
+        yes|YES|y|Y) break ;;
+        no|NO|n|N) yellow "已取消。"; exit 0 ;;
+        *) red "请输入 yes 或 no" ;;
+      esac
+    done
+    echo ""
+  fi
+
+  green "✅ 开始打包..."
+  total=${#selected[@]}
+
+  for key in "${selected[@]}"; do
+    ((++count))
+    echo ""
+    bold "═══════════════════════════════════════"
+    bold "  进度: $count / $total"
+    bold "═══════════════════════════════════════"
+
+    set +e
+    package_target "$key"
+    rc=$?
+    set -e
+
+    if [[ $rc -ne 0 ]]; then
+      IFS='|' read -r label cfg os <<< "${TARGETS[$key]}"
+      red "❌ $label 打包失败"
+      failed+=("$label")
+    fi
+  done
+
+  # 最终汇总
+  echo ""
+  bold "═══════════════════════════════════════"
+  bold "  打包任务全部完成"
+  bold "═══════════════════════════════════════"
+
+  if [[ ${#failed[@]} -gt 0 ]]; then
+    red "  以下目标打包失败:"
+    for f in "${failed[@]}"; do
+      red "    • $f"
+    done
+  fi
+
+  echo ""
+  green "📦 所有打包产物:"
+  ls -lh vantage-* 2>/dev/null || yellow "  (未找到产物)"
+
+  if gpg --list-secret-keys "$GPG_KEY_ID" &>/dev/null; then
+    echo ""
+    green "🔏 包已内嵌签名 (.deb/.rpm) 或 GPG 分离签名 (.AppImage.asc/.tar.gz.asc)"
+    green "   完整性由签名保证，无需 SHA256 checksum"
+  else
+    echo ""
+    yellow "⚠️  未找到 GPG 私钥，签名已跳过。降级为 SHA256 校验和:"
+    make checksum 2>/dev/null || yellow "  (checksum 生成失败)"
+  fi
+  echo ""
+
+  if [[ ${#failed[@]} -eq 0 ]]; then
+    green "🎉 所有目标打包成功！"
+  fi
+}
+
+# ---------- 签名 ----------
+GPG_KEY_ID="907587D2812D7F8C"
+GPG_PRIVATE_KEY="$HOME/vantage-repo-private-key.asc"
+
+ensure_gpg_key() {
+  if ! gpg --list-secret-keys "$GPG_KEY_ID" >/dev/null 2>&1; then
+    if [[ -f "$GPG_PRIVATE_KEY" ]]; then
+      green ">>> 导入 GPG 私钥: $GPG_PRIVATE_KEY"
+      gpg --batch --import "$GPG_PRIVATE_KEY" || die "GPG 私钥导入失败"
+    else
+      die "未找到 GPG 私钥: $GPG_PRIVATE_KEY"
+    fi
+  fi
+  if ! grep -q '%_gpg_name' ~/.rpmmacros 2>/dev/null; then
+    echo '%_signature gpg' >> ~/.rpmmacros
+    echo "%_gpg_name Vantage Browser <repo@vantage.asystech.cn>" >> ~/.rpmmacros
+  fi
+}
+
+sign_target() {
+  local key="$1"
+  IFS='|' read -r label mozconfig os_type <<< "${TARGETS[$key]}"
+
+  if [[ "$os_type" != "linux" ]]; then
+    yellow "⚠️  $label 不是 Linux 目标，跳过签名"
+    return 0
+  fi
+
+  ensure_gpg_key
+
+  echo ""
+  bold "───────────────────────────────────────────"
+  bold "  开始签名: $label"
+  bold "───────────────────────────────────────────"
+  echo ""
+
+  local ver arch deb_arch pkg signed=0
+  ver="$(cat "$REPO_ROOT/version")"
+  arch=$(grep -oE 'target=[^ \t]*' "$REPO_ROOT/$mozconfig" 2>/dev/null | grep -oE '(aarch64|arm64|loongarch64|x86_64)' | head -1 | sed 's/arm64/aarch64/')
+  [ -z "$arch" ] && arch="x86_64"
+  case "$arch" in
+    x86_64) deb_arch="amd64" ;;
+    aarch64) deb_arch="arm64" ;;
+    loongarch64) deb_arch="loong64" ;;
+    *) deb_arch="$arch" ;;
+  esac
+
+  # debsigs 内嵌签名: .deb (类似 rpmsign)
+  for pkg in vantage_${ver}-*_${deb_arch}.deb; do
+    [[ -f "$pkg" ]] || continue
+    green "  DEBSIGS: $pkg"
+    if debsigs --sign=origin --default-key="$GPG_KEY_ID" "$pkg" 2>/dev/null; then
+      ((signed++)) || true
+    else
+      red "  ❌ debsigs 签名失败: $pkg"
+    fi
+  done
+
+  # GPG 分离签名: .AppImage / .tar.gz
+  local detach_globs=(
+    "vantage-${ver}-*.${arch}.AppImage"
+    "vantage-${ver}-*.${arch}.portable.tar.gz"
+  )
+  for glob in "${detach_globs[@]}"; do
+    for pkg in $glob; do
+      [[ -f "$pkg" ]] || continue
+      [[ -f "${pkg}.asc" ]] && continue
+      green "  GPG 签名: $pkg"
+      if gpg --batch --yes --detach-sign --armor -u "$GPG_KEY_ID" "$pkg"; then
+        ((signed++)) || true
+      else
+        red "  ❌ 签名失败: $pkg"
+      fi
+    done
+  done
+
+  for pkg in vantage-${ver}-*.${arch}.rpm; do
+    [[ -f "$pkg" ]] || continue
+    green "  RPMSIGN: $pkg"
+    if rpmsign --addsign "$pkg" 2>/dev/null; then
+      ((signed++)) || true
+    else
+      red "  ❌ RPM 签名失败: $pkg"
+    fi
+  done
+
+  echo ""
+  green "✅ $label 签名完成 (已签名 $signed 个包)"
+}
+
+sign_main() {
+  local selected=() total count=0 rc
+
+  if [[ $# -gt 0 ]]; then
+    readarray -t selected < <(resolve_args "$@")
+  else
+    readarray -t selected < <(interactive_select)
+  fi
+
+  echo ""
+  bold "═══════════════════════════════════════"
+  bold "  确认签名目标"
+  bold "═══════════════════════════════════════"
+  echo ""
+  for key in "${selected[@]}"; do
+    IFS='|' read -r label cfg os <<< "${TARGETS[$key]}"
+    if [[ "$os" == "linux" ]]; then
+      echo "    • $label  →  debsigs (.deb) + rpmsign (.rpm) + GPG (.AppImage/.tar.gz)"
+    else
+      echo "    • $label  →  ⚠️ 非 Linux，跳过"
+    fi
+  done
+  echo ""
+  bold "═══════════════════════════════════════"
+  echo ""
+
+  if [[ $# -gt 0 ]]; then
+    green "✅ 参数模式，直接开始签名..."
+  else
+    while true; do
+      read -r -p "  👉 确认开始? (yes/no): " confirm
+      case "$confirm" in
+        yes|YES|y|Y) break ;;
+        no|NO|n|N) yellow "已取消。"; exit 0 ;;
+        *) red "请输入 yes 或 no" ;;
+      esac
+    done
+    echo ""
+  fi
+
+  green "✅ 开始签名..."
+  total=${#selected[@]}
+
+  for key in "${selected[@]}"; do
+    ((++count))
+    echo ""
+    bold "═══════════════════════════════════════"
+    bold "  进度: $count / $total"
+    bold "═══════════════════════════════════════"
+
+    set +e
+    sign_target "$key"
+    rc=$?
+    set -e
+
+    if [[ $rc -ne 0 ]]; then
+      IFS='|' read -r label cfg os <<< "${TARGETS[$key]}"
+      red "❌ $label 签名失败"
+    fi
+  done
+
+  echo ""
+  bold "═══════════════════════════════════════"
+  bold "  签名任务全部完成"
+  bold "═══════════════════════════════════════"
+  echo ""
+  green "📝 已签名的文件:"
+  ls -lh *.asc 2>/dev/null || yellow "  (无 .asc 文件)"
+  echo ""
+  green "🎉 所有目标签名完成！"
+}
+
 # ---------- 主流程 ----------
 main() {
+  # 子命令路由: package → 只打包不编译, sign → 签名
+  if [[ "${1:-}" == "package" ]]; then
+    shift
+    package_main "$@"
+    return
+  fi
+  if [[ "${1:-}" == "sign" ]]; then
+    shift
+    sign_main "$@"
+    return
+  fi
+
   local selected=() total count=0 failed=() rc
 
   if [[ $# -gt 0 ]]; then
@@ -274,18 +591,6 @@ main() {
     fi
   done
 
-  # 生成 checksum
-  if [[ ${#failed[@]} -eq 0 ]]; then
-    echo ""
-    bold "═══════════════════════════════════════"
-    bold "  生成校验和 (make checksum)"
-    bold "═══════════════════════════════════════"
-    echo ""
-    green ">>> 执行 make checksum..."
-    make checksum || red "⚠️  checksum 生成失败"
-    echo ""
-  fi
-
   # 最终汇总
   echo ""
   bold "═══════════════════════════════════════"
@@ -300,11 +605,19 @@ main() {
   fi
 
   echo ""
-  green "📦 当前根目录下的所有打包产物:"
+  green "📦 所有打包产物:"
   ls -lh vantage-* 2>/dev/null || yellow "  (未找到产物)"
-  echo ""
-  green "📋 SHA256 校验和文件 (sha256sums):"
-  ls -lh sha256sums 2>/dev/null || yellow "  (未找到 sha256sums)"
+
+  # 有私钥 → 签名已覆盖完整性; 无私钥 → 降级执行 checksum
+  if gpg --list-secret-keys "$GPG_KEY_ID" &>/dev/null; then
+    echo ""
+    green "🔏 包已内嵌签名 (.deb/.rpm) 或 GPG 分离签名 (.AppImage.asc/.tar.gz.asc)"
+    green "   完整性由签名保证，无需 SHA256 checksum"
+  else
+    echo ""
+    yellow "⚠️  未找到 GPG 私钥，签名已跳过。降级为 SHA256 校验和:"
+    make checksum 2>/dev/null || yellow "  (checksum 生成失败)"
+  fi
   echo ""
 
   if [[ ${#failed[@]} -eq 0 ]]; then

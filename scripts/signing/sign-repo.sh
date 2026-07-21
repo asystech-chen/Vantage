@@ -6,15 +6,17 @@
 # Expected structure:
 #   repo-root/
 #     pool/              ← throw .deb/.rpm here
-#     dists/stable/      ← apt metadata (generated)
-#     vantage-el9/       ← RPM repo (generated)
+#     dists/stable/      ← APT metadata (generated)
+#     rpm/               ← RPM repo (generated, all distros)
 #
 # GPG key: 907587D2812D7F8C (Vantage Browser <repo@vantage.asystech.cn>)
+#   Override for third-party repos:  GPG_KEY=YOUR_ID ./scripts/signing/sign-repo.sh ...
 # Public key: keys/vantage-archive-keyring.asc
 
 set -euo pipefail
 
-GPG_KEY="907587D2812D7F8C"
+# GPG_KEY can be overridden via environment for third-party repos
+GPG_KEY="${GPG_KEY:-907587D2812D7F8C}"
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m'
@@ -34,11 +36,16 @@ if [ ! -d "$REPO_ROOT" ]; then
     exit 1
 fi
 
-# Check GPG key exists
-if ! gpg --list-secret-keys "$GPG_KEY" &>/dev/null; then
-    warn "GPG key $GPG_KEY not found. Import it first:"
-    warn "  gpg --import vantage-repo-private-key.asc"
-    exit 1
+# Check GPG key (warn if missing — third parties can bring their own)
+HAS_GPG_KEY=false
+if gpg --list-secret-keys "$GPG_KEY" &>/dev/null; then
+    HAS_GPG_KEY=true
+else
+    warn "GPG key $GPG_KEY not found in keyring."
+    warn "  APT Release signing and RPM repo signing will be skipped."
+    warn "  To use Vantage official key: gpg --import vantage-repo-private-key.asc"
+    warn "  To use your own key:  GPG_KEY=YOUR_KEY_ID ./scripts/signing/sign-repo.sh ..."
+    echo ""
 fi
 
 DEB_COUNT=$(find "$REPO_ROOT/pool" -name '*.deb' 2>/dev/null | wc -l)
@@ -86,71 +93,56 @@ if [ "$DEB_COUNT" -gt 0 ]; then
     apt-ftparchive release . > Release
     log "  Release generated"
 
-    # Sign: InRelease (clearsign, modern) + Release.gpg (detached, legacy)
-    gpg --armor --detach-sign --sign-with "$GPG_KEY" \
-        -o Release.gpg Release
-    gpg --armor --clearsign --sign-with "$GPG_KEY" \
-        -o InRelease Release
-    log "  APT repo signed ✓"
+    # Sign Release (if GPG key available)
+    if $HAS_GPG_KEY; then
+        gpg --armor --detach-sign --sign-with "$GPG_KEY" \
+            -o Release.gpg Release
+        gpg --armor --clearsign --sign-with "$GPG_KEY" \
+            -o InRelease Release
+        log "  APT repo signed ✓"
+    else
+        warn "  APT repo NOT signed (no GPG key)"
+    fi
     popd > /dev/null
 fi
 
 # ─────────────────────────────────────────────
 # RPM Repository
 # ─────────────────────────────────────────────
+# Note: RPM packages are expected to be pre-signed (build.sh does this).
+# This script only generates repo metadata (signed by createrepo_c).
 if [ "$RPM_COUNT" -gt 0 ]; then
     log "=== Building RPM repository ==="
 
-    # Sign each RPM individually
+    # Ensure rpm macros for createrepo signing
+    if ! grep -q '%_gpg_name' ~/.rpmmacros 2>/dev/null; then
+        echo '%_signature gpg' >> ~/.rpmmacros
+        echo "%_gpg_name Vantage Browser <repo@vantage.asystech.cn>" >> ~/.rpmmacros
+    fi
+
+    RPM_DIR="$REPO_ROOT/rpm"
+    mkdir -p "$RPM_DIR"
+
+    # Copy pre-signed RPMs as-is (no re-signing)
     for rpm in "$REPO_ROOT/pool"/*.rpm; do
         [ -f "$rpm" ] || continue
-        log "  Signing: $(basename "$rpm")"
-        rpmsign --addsign --signfiles \
-            --fskpath <(gpg --export-secret-key "$GPG_KEY" 2>/dev/null) \
-            "$rpm" 2>/dev/null || {
-            # Fallback: use gpg directly
-            rpm --resign "$rpm" 2>/dev/null || {
-                warn "  Could not sign $rpm with rpmsign, trying alternative..."
-                # Use rpmsign with default GPG keyring
-                rpmsign --addsign "$rpm" 2>/dev/null || warn "  ⚠ RPM signing skipped for $rpm (rpmsign not available)"
-            }
-        }
+        cp "$rpm" "$RPM_DIR/"
+        log "  Copied: $(basename "$rpm")"
     done
 
-    # Detect distro versions from RPM filenames
-    # Group by dist (el8, el9, fc40, fc41, etc.)
-    declare -A RPM_DISTS
-    for rpm in "$REPO_ROOT/pool"/*.rpm; do
-        [ -f "$rpm" ] || continue
-        if [[ "$rpm" =~ \.el[0-9]+ ]]; then
-            dist=$(echo "$rpm" | grep -oP '\.el\d+')
-        elif [[ "$rpm" =~ \.fc[0-9]+ ]]; then
-            dist=$(echo "$rpm" | grep -oP '\.fc\d+')
-        else
-            dist=".generic"
-        fi
-        RPM_DISTS["$dist"]=1
-    done
-
-    for dist in "${!RPM_DISTS[@]}"; do
-        DIST_DIR="$REPO_ROOT/vantage${dist}"
-        mkdir -p "$DIST_DIR"
-        # Copy matching RPMs
-        for rpm in "$REPO_ROOT/pool"/*.rpm; do
-            [ -f "$rpm" ] || continue
-            # Match dist or copy all if generic
-            [[ "$dist" == ".generic" || "$rpm" == *"${dist}."* || "$rpm" == *"${dist}.noarch"* ]] && \
-                cp "$rpm" "$DIST_DIR/"
-        done
-        pushd "$DIST_DIR" > /dev/null
-        createrepo_c . 2>/dev/null || createrepo . 2>/dev/null || {
-            warn "  createrepo not found, skipping RPM metadata"
-            popd > /dev/null
-            continue
-        }
-        log "  RPM repo ($dist) created and signed ✓"
-        popd > /dev/null
-    done
+    # Generate repo metadata (createrepo_c signs repodata with GPG)
+    pushd "$RPM_DIR" > /dev/null
+    if command -v createrepo_c >/dev/null 2>&1; then
+        createrepo_c .
+        log "  RPM repo metadata generated (createrepo_c) ✓"
+    elif command -v createrepo >/dev/null 2>&1; then
+        createrepo .
+        log "  RPM repo metadata generated (createrepo) ✓"
+    else
+        warn "  createrepo_c not found. Install: apt install createrepo-c"
+        warn "  RPM repo metadata NOT generated"
+    fi
+    popd > /dev/null
 fi
 
 echo ""
@@ -160,17 +152,25 @@ echo "  ├── pool/                           ← source .deb/.rpm files"
 echo "  ├── dists/stable/                   ← APT repo"
 echo "  │   ├── Release / InRelease / Release.gpg"
 echo "  │   └── main/binary-{amd64,arm64,loong64}/"
-echo "  └── vantage{el9,fc41,...}/          ← RPM repos"
+echo "  └── rpm/                            ← RPM repo (all distros)"
+echo "      └── repodata/                   ← createrepo_c metadata"
 
 echo ""
 log "Users install with:"
 echo ""
 echo "  # APT (Debian/Ubuntu)"
-echo "  curl -fsSL https://your-server/vantage-archive-keyring.asc | sudo apt-key add -"
-echo "  echo 'deb https://your-server/repo stable main' | sudo tee /etc/apt/sources.list.d/vantage.list"
+echo "  curl -fsSL https://your-server/vantage-archive-keyring.asc | sudo tee /etc/apt/trusted.gpg.d/vantage.asc"
+echo "  echo 'deb [signed-by=/etc/apt/trusted.gpg.d/vantage.asc] https://your-server/repo stable main' | sudo tee /etc/apt/sources.list.d/vantage.list"
 echo "  sudo apt update && sudo apt install vantage"
 echo ""
-echo "  # RPM (Fedora)"
+echo "  # RPM (Fedora/RHEL)"
 echo "  sudo rpm --import https://your-server/vantage-archive-keyring.asc"
-echo "  sudo dnf config-manager --add-repo https://your-server/vantage.repo"
+echo "  sudo tee /etc/yum.repos.d/vantage.repo <<'EOF'"
+echo "  [vantage]"
+echo "  name=Vantage Browser"
+echo "  baseurl=https://your-server/repo/rpm"
+echo "  enabled=1"
+echo "  gpgcheck=1"
+echo "  gpgkey=https://your-server/vantage-archive-keyring.asc"
+echo "  EOF"
 echo "  sudo dnf install vantage"

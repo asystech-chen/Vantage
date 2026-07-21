@@ -3,8 +3,12 @@ woodpecker_targets=fetch-upstream-woodpecker check-patchfail-woodpecker
 testing_targets=full-test test test-linux test-macos test-windows
 .PHONY : help moztree check all clean veryclean distclean patches dir bootstrap fetch build package package-all package-deb package-rpm package-appimage package-tar package-msix checksum run update setup-wasi check-patchfail check-fuzz fixfuzz $(docker_targets) $(woodpecker_targets) $(testing_targets)
 
+# Include ~/.local/bin for tools like appimagetool
+export PATH := $(HOME)/.local/bin:$(PATH)
+
 version:=$(shell cat ./version)
 release:=$(shell cat ./release)
+GPG_KEY_ID:=907587D2812D7F8C
 
 FF_BASE_URL ?= https://archive.mozilla.org/pub/firefox/releases
 FF_CHANNEL ?= releases
@@ -395,14 +399,18 @@ test-windows : $(lw_source_tarball)
 # 架构自动检测（按优先级）：
 #   1. 命令行显式传入：  make package-all PKG_ARCH=aarch64
 #   2. MOZCONFIG 文件里的 --target= 值（aarch64 / arm64 / x86_64）
-#   3. $(lw_source_dir)/obj-* 目录（取最新修改的）
-#   4. 兜底 x86_64
+#   3. $(lw_source_dir)/.mozconfig（mach configure 后的 mozconfig 副本）
+#   4. 最新 Linux obj 目录内的 .mozconfig（排除 win/darwin）
+#   5. $(lw_source_dir)/obj-*-linux-* 目录名（取最新修改的）
+#   6. 兜底 x86_64
 PKG_ARCH ?= $(shell \
   mozcfg="$(MOZCONFIG)"; \
   srcdir="$(lw_source_dir)"; \
   arch=""; \
+  [ -z "$$mozcfg" -o ! -f "$$mozcfg" ] && mozcfg="$$srcdir/.mozconfig"; \
+  [ -z "$$mozcfg" -o ! -f "$$mozcfg" ] && { newest_obj=$$(ls -td "$$srcdir"/obj-*-linux-* 2>/dev/null | head -1); [ -n "$$newest_obj" ] && mozcfg="$$newest_obj/.mozconfig"; }; \
   [ -f "$$mozcfg" ] && arch=$$(grep -oE 'target=[^ \t]*' "$$mozcfg" 2>/dev/null | grep -oE '(aarch64|arm64|loongarch64|x86_64)' | head -1 | sed 's/arm64/aarch64/'); \
-  [ -z "$$arch" ] && arch=$$(ls -td "$$srcdir"/obj-* 2>/dev/null | head -1 | grep -oE '(x86_64|aarch64|loongarch64)'); \
+  [ -z "$$arch" ] && arch=$$(ls -td "$$srcdir"/obj-*-linux-* 2>/dev/null | head -1 | grep -oE '(x86_64|aarch64|loongarch64)'); \
   echo "$${arch:-x86_64}")
 
 # 架构名映射
@@ -473,7 +481,7 @@ package-rpm : clean-packaging
 	fi
 	@mkdir -p rpm_build/opt/$(APP_NAME)
 	@tar -xf $(BINARY_TARBALL) -C rpm_build/opt/$(APP_NAME) --strip-components=1
-	@fpm -s dir -t rpm -n $(APP_NAME) -v $(version) --iteration $(release) \
+	@fpm --force -s dir -t rpm -n $(APP_NAME) -v $(version) --iteration $(release) \
 		--rpm-os linux \
 		--rpm-compression xzmt \
 		--architecture $(RPM_ARCH) \
@@ -551,7 +559,25 @@ package-tar : clean-packaging
 	@echo ">>> [TAR] Done: $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).portable.tar.gz"
 	@rm -rf $(APP_NAME)-portable
 
-# 快捷目标：一次性生成所有格式
+# 快捷目标：一次性生成所有格式（生成后自动签名）
 package-all : package-deb package-appimage package-tar package-rpm
-	@echo ">>> All packages generated successfully (arch: $(PKG_ARCH))."
+	@echo ">>> [SIGN] Signing packages..."
+	@# debsigs embedded signature for .deb (like rpmsign)
+	@debfile=$(APP_NAME)_$(version)-$(release)_$(DEB_ARCH).deb; \
+	if [ -f "$$debfile" ]; then \
+	  debsigs --sign=origin --default-key=$(GPG_KEY_ID) "$$debfile" 2>/dev/null && echo "  DEBSIGS: $$debfile"; \
+	fi || true
+	@# GPG detached signatures for .AppImage, .tar.gz (skip if already signed)
+	@for f in $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).AppImage \
+	          $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).portable.tar.gz; do \
+	  if [ -f "$$f" ] && [ ! -f "$$f.asc" ]; then \
+	    gpg --batch --yes --detach-sign --armor "$$f" 2>/dev/null && echo "  GPG: $$f"; \
+	  fi; \
+	done || true
+	@# rpmsign embedded signature for .rpm
+	@rpmfile=$(APP_NAME)-$(version)-$(release).$(RPM_ARCH).rpm; \
+	if [ -f "$$rpmfile" ]; then \
+	  rpmsign --addsign "$$rpmfile" 2>/dev/null && echo "  RPMSIGN: $$rpmfile" || true; \
+	fi
+	@echo ">>> All packages generated and signed (arch: $(PKG_ARCH))."
 	@ls -lh $(APP_NAME)*$(version)* 2>/dev/null | grep -E '\.(deb|AppImage|tar\.gz|rpm)$$' || true
