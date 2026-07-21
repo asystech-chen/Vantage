@@ -42,12 +42,16 @@ Vantage 目前跟随 Firefox Release 通道（每 4 周发布一个版本），�
 
 | 优先级 | 功能 | 实现方式 | 状态 |
 |:---:|---|------|:---:|
-| 🔥 | 滚轮切换标签页 | `toolkit.tabbox.switchByScrolling` pref | 待加入 |
-| 🔥 | 双击关闭标签页 | `browser.tabs.closeTabByDblclick` pref | 待加入 |
-| 🔥 | 地址栏回车新标签页 | `browser.urlbar.openintab` pref | 待加入 |
-| 🔥 | 书签新标签页打开 | `browser.tabs.loadBookmarksInTabs` pref | 待加入 |
-| 🔥 | 搜索新标签页打开 | `browser.search.openintab` pref | 待加入 |
-| 🔥 | Ctrl+Tab 最近使用优先 | `browser.ctrlTab.sortByRecentlyUsed` pref | 待加入 |
+| ✅ | 滚轮切换标签页 | `toolkit.tabbox.switchByScrolling` pref | 已加入 (152.0.2) |
+| ✅ | 双击关闭标签页 | `browser.tabs.closeTabByDblclick` pref | 已加入 (152.0.2) |
+| ✅ | 地址栏回车新标签页 | `browser.urlbar.openintab` pref | 已加入 (152.0.2) |
+| ✅ | 书签新标签页打开 | `browser.tabs.loadBookmarksInTabs` pref | 已加入 (152.0.2) |
+| ✅ | 搜索新标签页打开 | `browser.search.openintab` pref | 已加入 (152.0.2) |
+| ✅ | Ctrl+Tab 最近使用优先 | `browser.ctrlTab.sortByRecentlyUsed` pref | 已加入 (152.0.2) |
+| ✅ | 限制扩展签名 | `xpinstall.signatures.required` pref | 已加入 (152.0.6) |
+| ✅ | 下载存入临时目录 | `browser.download.start_downloads_in_tmp_dir` pref | 已加入 (152.0.6) |
+| ✅ | 限制 WebRTC 本地 IP | `media.peerconnection.ice.default_address_only` | 已加入 (152.0.6) |
+| ✅ | 限制字体可见性 | `layout.css.font-visibility.level` | 已加入 (152.0.6) |
 | 🛠 | 复制为 Markdown 链接 | 右键菜单扩展 | 计划中 |
 | 🛠 | 右键关闭标签页 | CSS 注入 | 计划中 |
 | 💭 | 下载完成提示音 | autoconfig observer | 评估中 |
@@ -94,7 +98,9 @@ Vantage 目前跟随 Firefox Release 通道（每 4 周发布一个版本），�
 - **依赖库**：安装包已包含常见依赖
 
 ### macOS
-> 📋 macOS 版本列入未来适配计划
+- **Apple Silicon (ARM64)**：macOS 12+
+- **Intel (x86_64)**：macOS 11+
+- 提供 DMG 安装包 / Homebrew cask
 
 ---
 
@@ -144,6 +150,48 @@ ln -s /opt/vantage/vantage /usr/local/bin/vantage
 ```
 
 
+
+---
+
+## 🔨 构建指南
+
+### 使用 build.sh
+
+```bash
+# 交互式选择编译目标
+./build.sh
+
+# 指定目标编译
+./build.sh linux-x64 linux-arm64 linux-loong64
+./build.sh windows-x64 macos-arm64
+
+# 简写
+./build.sh lx      # linux-x64
+./build.sh ll      # linux-loong64
+./build.sh wx      # windows-x64
+./build.sh mx      # macos-x64
+
+# 仅打包（跳过编译）
+./build.sh package linux-x64
+
+# 仅签名已生成产物（跳过编译和打包）
+./build.sh sign linux-x64
+```
+
+编译流程自动包含：**编译 → 打包 → 签名**（Linux 目标生成 deb/rpm/AppImage/tar.gz 四格式并内嵌/附加 GPG 签名）。
+
+### 手动编译
+
+```bash
+MOZCONFIG=$(pwd)/assets/mozconfig.linux-x86_64 make build   # Linux x86_64
+MOZCONFIG=$(pwd)/assets/mozconfig.linux-loong64 make build  # Linux LoongArch64
+MOZCONFIG=$(pwd)/assets/mozconfig.windows-x86_64 make build # Windows
+MOZCONFIG=$(pwd)/assets/mozconfig.macos-arm64 make build    # macOS ARM
+```
+
+### LoongArch64 交叉编译
+
+详见 [`docs/LOONG64-CROSS-COMPILE.md`](docs/LOONG64-CROSS-COMPILE.md)
 
 ---
 

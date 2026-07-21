@@ -1,4 +1,31 @@
-# Vantage 152.0.5-1 更新日志
+# Vantage 152.0.6-1 更新日志
+
+## 上游合并
+
+- 基于 **Firefox 152.0.6**
+
+## Vantage 主题增强
+
+- 主题 accent 色全面覆盖：菜单高亮、按钮主色、焦点环、通知栏渐变条等
+- 隐私窗口背景色优化：深蓝灰替代 Firefox 默认紫色渐变
+- 新标签页壁纸分类名修正为英文
+
+## pref-pane 新增开关
+
+以下开关均可在 `about:preferences#vantage` 中控制，三语言同步：
+
+- **要求扩展签名** (`xpinstall.signatures.required`) — 禁止安装未签名扩展，默认开启
+- **下载文件存入临时目录** (`browser.download.start_downloads_in_tmp_dir`) — 增强隐私，默认开启
+- **允许 PDF 查看器执行脚本** (`pdfjs.enableScripting`) — 安全考虑默认关闭
+- **限制 WebRTC 本地 IP 暴露** (`media.peerconnection.ice.default_address_only`) — 默认开启
+- **限制字体可见性** (`layout.css.font-visibility.level`) — 减少指纹特征
+
+## GPG 签名
+
+- 全格式包签名：debsigs 内嵌 (.deb)、rpmsign 内嵌 (.rpm)、GPG 分离签名 (.AppImage/.tar.gz)
+- 仓库签名脚本 `scripts/signing/sign-repo.sh` 重构：RPM 统一 `rpm/` 目录，支持第三方密钥覆盖
+- `Makefile` `package-all` 目标自动签名，无需手动操作
+- 有签名则跳过 SHA256 checksum（完整性由签名保证）
 
 ## 上游合并
 

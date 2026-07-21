@@ -239,7 +239,9 @@ package :
 	    cp -v "$$f" "./$$dest"; \
 	  done; \
 	  find $$OBJDIR/dist/ -maxdepth 1 -name "*.tar.gz" -exec cp -v {} . \;; \
-	fi
+	fi; \
+	echo ""; \
+	$(MAKE) checksum
 
 # 计算所有打包产物的 SHA256 校验和，写入单个 sha256sums 文件
 # PE-SFX: 已禁用（注释掉），不再打包自解压 exe
@@ -299,16 +301,37 @@ package-msix :
 	  echo "================================================"; \
 	fi
 checksum :
-	@echo ">>> Generating SHA256 checksums..."
-	@rm -f sha256sums
-	@for f in $(APP_NAME)*$(version)*.tar.xz $(APP_NAME)*$(version)*.tar.gz $(APP_NAME)*$(version)*.portable.zip $(APP_NAME)*$(version)*.exe $(APP_NAME)*$(version)*.dmg $(APP_NAME)_$(version)*.deb $(APP_NAME)-$(version)*.rpm $(APP_NAME)-$(version)*.AppImage; do \
+	@echo ">>> [CHECKSUM] Generating SHA256SUMS..."
+	@rm -f SHA256SUMS SHA256SUMS.asc
+	@count=0; \
+	for f in $(APP_NAME)*$(version)*.tar.xz \
+	         $(APP_NAME)*$(version)*.tar.gz \
+	         $(APP_NAME)*$(version)*.portable.zip \
+	         $(APP_NAME)*$(version)*.exe \
+	         $(APP_NAME)*$(version)*.dmg \
+	         $(APP_NAME)_$(version)*.deb \
+	         $(APP_NAME)-$(version)*.rpm \
+	         $(APP_NAME)-$(version)*.AppImage \
+	         $(APP_NAME)*$(version)*.msix; do \
 	  if [ -f "$$f" ]; then \
-	    sha256sum "$$f" >> sha256sums; \
+	    sha256sum "$$f" >> SHA256SUMS; \
 	    echo "  $$f"; \
+	    count=$$((count + 1)); \
 	  fi; \
-	done
-	@echo ">>> Done: sha256sums"
-	@cat sha256sums
+	done; \
+	if [ $$count -eq 0 ]; then \
+	  echo ">>> [CHECKSUM] No packages found to checksum"; \
+	else \
+	  echo ">>> [CHECKSUM] $$count packages hashed"; \
+	  echo ""; \
+	  cat SHA256SUMS; \
+	  echo ""; \
+	  echo ">>> [CHECKSUM] Signing SHA256SUMS with GPG..."; \
+	  gpg --batch --yes --detach-sign --armor -u $(GPG_KEY_ID) SHA256SUMS 2>/dev/null && \
+	    echo "  ✅ SHA256SUMS.asc created" || \
+	    echo "  ⚠️  GPG signing skipped (key not available)"; \
+	fi
+	@echo ">>> [CHECKSUM] Done"
 
 run :
 	(cd $(lw_source_dir) && ./mach run)
@@ -581,3 +604,5 @@ package-all : package-deb package-appimage package-tar package-rpm
 	fi
 	@echo ">>> All packages generated and signed (arch: $(PKG_ARCH))."
 	@ls -lh $(APP_NAME)*$(version)* 2>/dev/null | grep -E '\.(deb|AppImage|tar\.gz|rpm)$$' || true
+	@echo ""
+	@$(MAKE) checksum

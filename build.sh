@@ -338,10 +338,10 @@ package_main() {
   if gpg --list-secret-keys "$GPG_KEY_ID" &>/dev/null; then
     echo ""
     green "🔏 包已内嵌签名 (.deb/.rpm) 或 GPG 分离签名 (.AppImage.asc/.tar.gz.asc)"
-    green "   完整性由签名保证，无需 SHA256 checksum"
+    make checksum 2>/dev/null
   else
     echo ""
-    yellow "⚠️  未找到 GPG 私钥，签名已跳过。降级为 SHA256 校验和:"
+    yellow "⚠️  未找到 GPG 私钥，跳过文件签名。仅生成 SHA256SUMS:"
     make checksum 2>/dev/null || yellow "  (checksum 生成失败)"
   fi
   echo ""
@@ -608,14 +608,14 @@ main() {
   green "📦 所有打包产物:"
   ls -lh vantage-* 2>/dev/null || yellow "  (未找到产物)"
 
-  # 有私钥 → 签名已覆盖完整性; 无私钥 → 降级执行 checksum
+  # 总是生成 SHA256SUMS（有 GPG 密钥时附带签名）
   if gpg --list-secret-keys "$GPG_KEY_ID" &>/dev/null; then
     echo ""
     green "🔏 包已内嵌签名 (.deb/.rpm) 或 GPG 分离签名 (.AppImage.asc/.tar.gz.asc)"
-    green "   完整性由签名保证，无需 SHA256 checksum"
+    make checksum 2>/dev/null
   else
     echo ""
-    yellow "⚠️  未找到 GPG 私钥，签名已跳过。降级为 SHA256 校验和:"
+    yellow "⚠️  未找到 GPG 私钥，跳过文件签名。仅生成 SHA256SUMS:"
     make checksum 2>/dev/null || yellow "  (checksum 生成失败)"
   fi
   echo ""
