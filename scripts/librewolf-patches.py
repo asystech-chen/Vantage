@@ -108,9 +108,10 @@ def librewolf_patches():
     # copy the right search-config.json file
     exec('cp -v ../assets/search-config.json services/settings/dumps/main/search-config.json')
 
-    # 统一转为 LF 行尾，避免 CRLF patch 在 Linux 下失败
-    print("-> Converting all source files to LF line endings...")
-    exec('find . -type f \( -name "*.cpp" -o -name "*.h" -o -name "*.c" -o -name "*.js" -o -name "*.nsi" -o -name "*.nsh" -o -name "*.rc" -o -name "*.py" -o -name "Makefile.in" -o -name "*.in" \) | xargs -r dos2unix -q 2>/dev/null; true')
+    # .rc 文件可能来自 Windows 端，转换为 LF 避免 fix-7zsfx-branding 失败
+    # (patch --binary 已处理其他文件的 CRLF 兼容)
+    print("-> Converting .rc files to LF...")
+    exec('find . -name "*.rc" | xargs -r dos2unix -q 2>/dev/null; true')
 
     # read lines of .txt file into 'patches'
     with open('../assets/patches.txt'.format(version), "r") as f:
