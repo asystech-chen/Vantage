@@ -24,8 +24,7 @@
 
 - 全格式包签名：debsigs 内嵌 (.deb)、rpmsign 内嵌 (.rpm)、GPG 分离签名 (.AppImage/.tar.gz)
 - 仓库签名脚本 `scripts/signing/sign-repo.sh` 重构：RPM 统一 `rpm/` 目录，支持第三方密钥覆盖
-- `Makefile` `package-all` 目标自动签名，无需手动操作
-- 有签名则跳过 SHA256 checksum（完整性由签名保证）
+- `Makefile` `package-all` 目标自动签名 + 生成 SHA256SUMS（附带 GPG 签名）
 
 ## 上游合并
 

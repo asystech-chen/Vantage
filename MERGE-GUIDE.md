@@ -1,6 +1,6 @@
 # Vantage 合并上游 LibreWolf 代码指南
 
-> 最后更新: 2026-06-22（补充 151→152 合并经验）
+> 最后更新: 2026-07-23（补充 152→153 合并经验）
 
 合并 LibreWolf 上游代码时，以下文件**不能直接替换**，必须手动合并或跳过。
 
@@ -149,6 +149,53 @@ Vantage 将 pref-pane 内部名从 `paneLibrewolf` 改为 `paneVantage`，设置
 
 ---
 
+## 🆕 FF153 兼容性变更
+
+### 轻量合并 — 无重大 FF 源码结构变化
+
+与 FF151（ESM 迁移）和 FF152（ProxyCard 移除）不同，FF153 的 Firefox 源码没有影响 Vantage patch 的重大结构变化。
+
+### 上游删除
+
+| 操作 | 文件 | Vantage 处理 |
+|------|------|------|
+| 上游删除 | `patches/eme-clearkey.patch` | 跟删（功能已合并进 `eme-permission.patch`） |
+| 上游删除 | `scripts/fetch-pref-pane-patch.sh` | 跟删（Vantage pref-pane 独立维护，无人引用） |
+
+### 上游新增
+
+| 操作 | 文件 | Vantage 处理 |
+|------|------|------|
+| 上游新增 | `patches/ui-patches/settings-redesign.patch` | **不跟** — Vantage pref-pane 完全定制 |
+| 上游新增 | `patches/macos-relaunch-without-updater.patch` | **不跟** — macOS 暂不维护 |
+| 上游新增 | `patches/hide-default-browser.patch` | **不跟** — Vantage 恢复默认浏览器检查 |
+| 上游新增 | `patches/remove-language-packs.patch` | **不跟** — Vantage 保留语言包 |
+
+### 共享 patch — 大部分可直接替换
+
+本次 11 个共享 patch 中，Vantage **从未修改过**的有 8 个，直接 cp 上游即可。仅有 `moz-configure.patch`、`mozilla_dirs.patch`、`windows-theming-bug.patch` 包含 Vantage 品牌定制，但上游 152→153 对这三个 patch **没有任何改动**，因此也无需操作。
+
+### librewolf.cfg — 隐私策略取舍原则
+
+上游 153 大幅收紧隐私策略（RFP 开启、安全浏览关闭、磁盘缓存禁用等）。Vantage 的策略是：
+- **保留易用性**：RFP 关闭、安全浏览开启、磁盘缓存开启、密码保存开启、WebGPU 开启、系统定位开启
+- **跟进零争议安全加固**：query stripping 重新启用、QWAC 禁用、LNA 局域网防护、Cookie 分区、WebSerial 禁用、TLS 0-RTT 关闭（修了注释和值矛盾的 bug）、tracking protection allow_list 收紧
+
+### librewolf-patches.py 变更
+
+上游 3 处改进：
+- `import shutil` + gpatch 优先（BSD 兼容）
+- `line.strip()` 防尾随空格
+- 删除 glean sed（已移入 disable-data-reporting patch）
+
+Vantage 保留 wget（不跟 curl）。
+
+### 新增翻译
+
+上游为 EME 权限界面新增了 en-US/zh-TW 翻译字符串，Vantage 三语均已齐全（之前合并时已加入）。`pane-librewolf-title2` 不跟。
+
+---
+
 ## 🟡 合并时需要注意（可能有上游更新）
 
 | 文件 | 注意事项 |
@@ -270,6 +317,7 @@ rm /tmp/vantage-patches-before.txt
 | 150.0-1 | `UPGRADE-150-COMPLETE.md` | Pref-Pane 修复、Privacy Dashboard 重构 |
 | 151.0.4 | 见 CHANGELOG.md | **CRLF 8 patch 失败、6 个 Vantage patch 丢失、autoconfig 沙箱适配、ESM 迁移** |
 | 152.0.1 | 本次合并 | **vantage-privacy-dashboard 重新生成（ProxyCard 已移除）、fix-7zsfx-branding 改 LF、pref-pane l10n id 不跟 title2、pane 改名 vantage、不跟 remove-language-packs** |
+| 153.0 | 本次合并 | **轻量合并：无 FF 源码大改。emoji-clearkey 被上游合并入 eme-permission。新增 settings-redesign 不跟。librewolf.cfg 大量隐私策略收紧，Vantage 刻意保持易用性（保留 RFP 关闭、安全浏览开启、磁盘缓存等）。librewolf-patches.py 加 gpatch 支持和 strip()。** |
 
 ---
 

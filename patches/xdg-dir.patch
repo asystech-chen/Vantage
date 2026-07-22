@@ -1,8 +1,8 @@
 diff --git a/toolkit/xre/nsXREDirProvider.cpp b/toolkit/xre/nsXREDirProvider.cpp
-index 3cf7073..b1c782a 100644
+index b54980f..7ca2406 100644
 --- a/toolkit/xre/nsXREDirProvider.cpp
 +++ b/toolkit/xre/nsXREDirProvider.cpp
-@@ -1283,9 +1283,11 @@ nsresult nsXREDirProvider::AppendFromAppData(nsIFile* aFile, bool aIsDotted) {
+@@ -1333,9 +1333,11 @@ nsresult nsXREDirProvider::AppendFromAppData(nsIFile* aFile, bool aIsDotted) {
    // Similar to nsXREDirProvider::AppendProfilePath.
    // TODO: Bug 1990407 - Evaluate if refactoring might be required there in the
    // future?
@@ -15,18 +15,31 @@ index 3cf7073..b1c782a 100644
      MOZ_TRY(aFile->AppendRelativeNativePath(profile));
    } else {
      nsAutoCString vendor;
-@@ -1295,8 +1297,8 @@ nsresult nsXREDirProvider::AppendFromAppData(nsIFile* aFile, bool aIsDotted) {
+@@ -1345,8 +1347,6 @@ nsresult nsXREDirProvider::AppendFromAppData(nsIFile* aFile, bool aIsDotted) {
      ToLowerCase(vendor);
      ToLowerCase(appName);
  
 -    MOZ_TRY(aFile->AppendRelativeNativePath(aIsDotted ? ("."_ns + vendor)
 -                                                      : vendor));
-+    //MOZ_TRY(aFile->AppendRelativeNativePath(aIsDotted ? ("."_ns + vendor)
-+    //                                                  : vendor));
      MOZ_TRY(aFile->AppendRelativeNativePath(appName));
    }
  
-@@ -1435,28 +1437,22 @@ nsresult nsXREDirProvider::GetLegacyOrXDGHomePath(const char* aHomeDir,
+@@ -1382,6 +1382,14 @@ bool nsXREDirProvider::LegacyHomeExists(nsIFile** aFile) {
+   rv = localDir->Exists(&exists);
+   NS_ENSURE_SUCCESS(rv, false);
+ 
++  if (exists) {
++    rv = localDir->AppendNative("profiles.ini"_ns);
++    NS_ENSURE_SUCCESS(rv, false);
++
++    rv = localDir->Exists(&exists);
++    NS_ENSURE_SUCCESS(rv, false);
++  }
++
+   // Give a chance to (3)
+   if (!exists) {
+     nsCOMPtr<nsIFile> userDir;
+@@ -1512,28 +1520,22 @@ nsresult nsXREDirProvider::GetLegacyOrXDGHomePath(const char* aHomeDir,
        return NS_OK;
      }
  
@@ -48,7 +61,7 @@ index 3cf7073..b1c782a 100644
  
 +  // The profile root directory needs to exists at that point.
 +  MOZ_TRY(EnsureDirectoryExists(localDir));
-+  
++
    // If required return the parent directory that matches the profile root
    // directory.
    if (aFile) {
@@ -62,4 +75,3 @@ index 3cf7073..b1c782a 100644
    return NS_OK;
  }
  #endif  // defined(MOZ_WIDGET_GTK)
-

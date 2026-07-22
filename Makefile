@@ -143,11 +143,11 @@ update :
 fetch : $(ff_source_tarball)
 
 $(ff_source_tarball) :
-	wget -qO public_key.asc "https://keys.openpgp.org/vks/v1/by-fingerprint/14F26682D0916CDD81E37B6D61B7B526D98F0353"
+	aria2c -q -o public_key.asc "https://keys.openpgp.org/vks/v1/by-fingerprint/14F26682D0916CDD81E37B6D61B7B526D98F0353"
 	gpg --import public_key.asc
 	rm -f public_key.asc
-	wget -qO $(ff_source_tarball).asc "$(ff_source_url).asc"
-	wget -qO $(ff_source_tarball) "$(ff_source_url)"
+	aria2c -q -o $(ff_source_tarball).asc "$(ff_source_url).asc"
+	aria2c -o $(ff_source_tarball) "$(ff_source_url)"
 	gpg --verify $(ff_source_tarball).asc $(ff_source_tarball)
 
 $(lw_source_dir) : $(ff_source_tarball) ./version ./release scripts/librewolf-patches.py assets/mozconfig assets/patches.txt
