@@ -64,33 +64,30 @@ if [ "$DEB_COUNT" -gt 0 ]; then
              "$DIST_DIR"/main/binary-loong64
 
     # Map deb arches to pool dirs
-    for deb in "$REPO_ROOT/pool"/*.deb; do
-        [ -f "$deb" ] || continue
-        if   [[ "$deb" =~ _amd64\.deb$ ]]; then   ARCH_DIR="$DIST_DIR/main/binary-amd64"
-        elif [[ "$deb" =~ _arm64\.deb$ ]]; then   ARCH_DIR="$DIST_DIR/main/binary-arm64"
-        elif [[ "$deb" =~ _loong64\.deb$ ]]; then ARCH_DIR="$DIST_DIR/main/binary-loong64"
-        else
-            warn "Unknown arch for $deb, skipping"
-            continue
-        fi
-        cp "$deb" "$ARCH_DIR/"
-        log "  APT: $(basename "$deb") → $(basename "$ARCH_DIR")/"
-    done
-
-    # Generate Packages files
-    for arch_dir in "$DIST_DIR"/main/binary-*; do
+    
+# Generate Packages files (直接站在根目录扫描 pool，生成绝对正确的相对路径)
+    pushd "$REPO_ROOT" > /dev/null
+    for arch_dir in dists/stable/main/binary-*; do
         [ -d "$arch_dir" ] || continue
         arch=$(basename "$arch_dir" | sed 's/binary-//')
-        pushd "$arch_dir" > /dev/null
-        dpkg-scanpackages -m . /dev/null > Packages
-        gzip -9c Packages > Packages.gz
+        
+        # 核心改动：用 -a 指定架构，直接扫描 pool 目录，把账本写进对应的 dists 文件夹里
+        dpkg-scanpackages -m -a "$arch" pool/ > "$arch_dir/Packages"
+        gzip -9c "$arch_dir/Packages" > "$arch_dir/Packages.gz"
+        
         log "  Packages + Packages.gz generated for $arch"
-        popd > /dev/null
     done
+    popd > /dev/null
 
     # Generate Release
     pushd "$DIST_DIR" > /dev/null
-    apt-ftparchive release . > Release
+    apt-ftparchive \
+	-o APT::FTPArchive::Release::Suite=stable \
+	-o APT::FTPArchive::Release::Codename=stable \
+	-o APT::FTPArchive::Release::Architectures="amd64 arm64 loong64" \
+	-o APT::FTPArchive::Release::Components="main" \
+	-o APT::FTPArchive::Release::Description="Vantage Browser Repository" \
+  release . > Release
     log "  Release generated"
 
     # Sign Release (if GPG key available)
@@ -130,13 +127,31 @@ if [ "$RPM_COUNT" -gt 0 ]; then
         log "  Copied: $(basename "$rpm")"
     done
 
-    # Generate repo metadata (createrepo_c signs repodata with GPG)
+    # Generate repo metadata with GPG signature
     pushd "$RPM_DIR" > /dev/null
+    
+    # 拼装签名参数：如果有 GPG Key，就让 createrepo 带着密钥直接签名
+    CREATEREPO_ARGS="--"
+    if $HAS_GPG_KEY; then
+        CREATEREPO_ARGS="--update --gpgign --databases"
+        # 或者直接通过环境变量指定签名用的 key
+        export _GPG_NAME="$GPG_KEY"
+    fi
+
     if command -v createrepo_c >/dev/null 2>&1; then
-        createrepo_c .
-        log "  RPM repo metadata generated (createrepo_c) ✓"
+        # 强制所有情况都使用 gz 压缩，完美兼容 CentOS 7 等老系统
+        if $HAS_GPG_KEY; then
+            createrepo_c --compress-type gz --general-compress-type gz --database .
+        else
+            createrepo_c --compress-type gz --general-compress-type gz .
+        fi
+        log "  RPM repo metadata generated (createrepo_c with gz) ✓"
     elif command -v createrepo >/dev/null 2>&1; then
-        createrepo .
+        if $HAS_GPG_KEY; then
+            createrepo --update --database .
+        else
+            createrepo .
+        fi
         log "  RPM repo metadata generated (createrepo) ✓"
     else
         warn "  createrepo_c not found. Install: apt install createrepo-c"
