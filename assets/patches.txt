@@ -10,6 +10,7 @@ patches/fpp-canvas-fix.patch
 patches/eme-permission.patch
 patches/extensions-setUninstallURL.patch
 patches/fix-canvas-extraction-permission.patch
+patches/webgl-permission-helper.patch
 patches/languages.patch
 patches/lw-permissions.patch
 patches/profile-directory.patch
@@ -42,7 +43,6 @@ patches/ui-patches/trustpanel.patch
 patches/ui-patches/website-appearance-ui-rfp.patch
 patches/urlbarprovider-interventions.patch
 patches/vendor-name.patch
-patches/webgl-permission.patch
 patches/windows-theming-bug.patch
 patches/xdg-dir.patch
 patches/vantage-privacy-dashboard.patch
@@ -55,5 +55,7 @@ patches/installer-locale.patch
 patches/installer-publisher.patch
 patches/uninstaller-cleanup.patch
 patches/vantage-ai-sidebar.patch
+patches/vantage-infobar-accent.patch
 patches/dmg-fix-permissions.patch
 patches/ui-patches/screenshot-button-toolbar.patch
+patches/installer-winupdater.patch

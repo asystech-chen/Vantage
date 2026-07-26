@@ -194,7 +194,7 @@ var gLibrewolfPane = {
     setBoolSyncListeners(
       "librewolf-pdfjs-scripting-checkbox",
       ["pdfjs.enableScripting"],
-      [false],
+      [true],
     );
     setSyncListeners(
       "librewolf-goog-safe-checkbox",

@@ -53,12 +53,14 @@ def exec(cmd, exit_on_fail = True, do_print = True):
 PATCH_BIN = shutil.which("gpatch") or "patch"
 
 def patch(patchfile):
-    cmd = "{} --binary -p1 -i {}".format(PATCH_BIN, patchfile)
+    cmd = "{} --forward --binary -p1 -i {}".format(PATCH_BIN, patchfile)
     print("\n*** -> {}".format(cmd))
     sys.stdout.flush()
     if not options.no_execute:
         retval = os.system(cmd)
-        if retval != 0:
+        actual_rc = retval >> 8 if retval > 255 else retval
+        # --forward returns 1 when patch already applied (safe to skip)
+        if actual_rc > 1:
             print("fatal error: patch '{}' failed".format(patchfile))
             sys.stdout.flush()
             script_exit(1)
@@ -216,11 +218,36 @@ def librewolf_patches():
         with open(file, "w") as f:
             f.write("{}-{}".format(version,release))
 
-    print("-> Downloading locales from https://github.com/mozilla-l10n/firefox-l10n")
-    with TemporaryDirectory() as tmpdir:
-        exec(f"curl -sLo {tmpdir}/l10n.zip 'https://codeload.github.com/mozilla-l10n/firefox-l10n/zip/refs/heads/main'")
-        exec(f"unzip -qo {tmpdir}/l10n.zip -d {tmpdir}/l10n")
-        exec(f"mv {tmpdir}/l10n/firefox-l10n-main lw/l10n")
+    # Cache l10n to avoid re-downloading 200MB+ from GitHub every build
+    print("-> Preparing locales from https://github.com/mozilla-l10n/firefox-l10n")
+    l10n_cache = Path("..", ".cache", "l10n")
+    l10n_cache.mkdir(parents=True, exist_ok=True)
+
+    # Verify cached extraction is complete (key directory must exist with content)
+    cache_ok = (l10n_cache / "firefox-l10n-main" / "browser").is_dir()
+    if not cache_ok:
+        l10n_zip = l10n_cache / "l10n.zip"
+        # Verify cached zip integrity with unzip -t
+        zip_ok = False
+        if l10n_zip.exists():
+            ret = os.system(f"unzip -tq {l10n_zip} > /dev/null 2>&1")
+            zip_ok = (ret == 0)
+            if not zip_ok:
+                print("   cached l10n.zip is corrupt, re-downloading...")
+                l10n_zip.unlink()
+        if not zip_ok:
+            print("   downloading l10n.zip (this may take a while on first run)...")
+            exec(f"curl -sLo {l10n_zip} 'https://codeload.github.com/mozilla-l10n/firefox-l10n/zip/refs/heads/main'")
+        # Clean stale extraction before re-extracting
+        stale = l10n_cache / "firefox-l10n-main"
+        if stale.exists():
+            shutil.rmtree(stale)
+        with TemporaryDirectory() as tmpdir:
+            exec(f"unzip -qo {l10n_zip} -d {tmpdir}")
+            exec(f"mv {tmpdir}/firefox-l10n-main {l10n_cache}/")
+    else:
+        print("   using cached locales")
+    exec(f"cp -r {l10n_cache}/firefox-l10n-main lw/l10n")
 
     print("-> Patching appstrings.properties")
     # Why is "Firefox" hardcoded there???

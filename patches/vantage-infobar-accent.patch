@@ -1,8 +1,7 @@
-diff --git a/toolkit/content/global/elements/infobar.css b/toolkit/content/global/elements/infobar.css
-index 0000000..0000000 100644
---- a/toolkit/content/global/elements/infobar.css
-+++ b/toolkit/content/global/elements/infobar.css
-@@ -58,7 +58,7 @@
+diff --git a/toolkit/content/widgets/infobar.css b/toolkit/content/widgets/infobar.css
+--- a/toolkit/content/widgets/infobar.css
++++ b/toolkit/content/widgets/infobar.css
+@@ -59,7 +59,7 @@
      color: var(--info-bar-text-color);
  
      &::before {

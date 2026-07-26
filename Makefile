@@ -17,14 +17,22 @@ FF_BUILD ?= build1
 # beta minor suffix (e.g "b9")
 FF_BETA_SUFFIX ?=
 
-ff_source_tarball := firefox-$(version)$(FF_BETA_SUFFIX).source.tar.xz
+# Set FF_ESR=1 to use Firefox ESR source instead of Release
+FF_ESR ?= 0
+ifeq ($(FF_ESR),1)
+ff_esr_suffix := esr
+else
+ff_esr_suffix :=
+endif
+
+ff_source_tarball := firefox-$(version)$(ff_esr_suffix)$(FF_BETA_SUFFIX).source.tar.xz
 
 ifeq ($(FF_CHANNEL),candidates)
 ff_source_url := https://archive.mozilla.org/pub/firefox/candidates/$(version)-candidates/$(FF_BUILD)/source/$(ff_source_tarball)
 else ifeq ($(FF_CHANNEL),beta)
 ff_source_url := https://archive.mozilla.org/pub/firefox/candidates/$(version)$(FF_BETA_SUFFIX)-candidates/$(FF_BUILD)/source/$(ff_source_tarball)
 else
-ff_source_url := $(FF_BASE_URL)/$(version)/source/$(ff_source_tarball)
+ff_source_url := $(FF_BASE_URL)/$(version)$(ff_esr_suffix)/source/$(ff_source_tarball)
 endif
 
 ## simplistic archive format selection
@@ -35,7 +43,7 @@ archive_create:=tar cfz
 ext:=.tar.gz
 
 ff_source_dir:=firefox-$(version)
-ff_source_tarball:=firefox-$(version).source.tar.xz
+ff_source_tarball:=firefox-$(version)$(ff_esr_suffix).source.tar.xz
 
 lw_source_dir:=librewolf-$(version)-$(release)
 lw_source_tarball:=librewolf-$(version)-$(release).source$(ext)
@@ -208,6 +216,17 @@ build : $(lw_source_dir)
 WIN_VARIANT := $(shell mozcfg="$${MOZCONFIG:-$(lw_source_dir)/mozconfig}"; [ -f "$$mozcfg" ] || mozcfg="$$(pwd)/assets/mozconfig"; grep -qE 'windows-msvc|pc-windows-msvc' "$$mozcfg" 2>/dev/null && echo msvc || (grep -qE 'windows-gnu|pc-mingw32' "$$mozcfg" 2>/dev/null && echo mingw || true))
 
 package :
+	@OBJDIR=$$(ls -td $(lw_source_dir)/obj-* 2>/dev/null | head -1); \
+	if [ -n "$(WIN_VARIANT)" ] && [ -f winupdater/Vantage-WinUpdater.exe ]; then \
+	  echo ">>> Injecting WinUpdater into dist for NSIS installer..."; \
+	  mkdir -p $$OBJDIR/dist/bin/winupdater && \
+	  cp winupdater/Vantage-WinUpdater.exe \
+	     winupdater/Vantage-WinUpdater.ico \
+	     winupdater/ScheduledTask-Create.ps1 \
+	     winupdater/ScheduledTask-Remove.ps1 \
+	     $$OBJDIR/dist/bin/winupdater/; \
+	  echo "    Done ($$OBJDIR/dist/bin/winupdater/)."; \
+	fi
 	(cd $(lw_source_dir) && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales)
 	@OBJDIR=$$(ls -td $(lw_source_dir)/obj-* 2>/dev/null | head -1); \
 	ARCH=$$(basename "$$OBJDIR" | grep -oE 'x86_64|aarch64|arm64' | head -1 | sed 's/^arm64$$/aarch64/'); \
@@ -223,6 +242,17 @@ package :
 	    unzip -q "$$WIN_ZIP" -d $(APP_NAME)-portable/bin; \
 	    echo ">>> Bundling VC++ runtime DLLs..."; \
 	    ./scripts/bundle-vcrt.sh $(APP_NAME)-portable/bin/$(APP_NAME)/ 2>&1 || true; \
+	    echo ">>> Bundling WinUpdater..."; \
+	    if [ -f winupdater/Vantage-WinUpdater.exe ]; then \
+	      mkdir -p $(APP_NAME)-portable/bin/$(APP_NAME)/winupdater; \
+	      cp winupdater/Vantage-WinUpdater.exe $(APP_NAME)-portable/bin/$(APP_NAME)/winupdater/; \
+	      cp winupdater/Vantage-WinUpdater.ico $(APP_NAME)-portable/bin/$(APP_NAME)/winupdater/; \
+	      cp winupdater/ScheduledTask-Create.ps1 $(APP_NAME)-portable/bin/$(APP_NAME)/winupdater/; \
+	      cp winupdater/ScheduledTask-Remove.ps1 $(APP_NAME)-portable/bin/$(APP_NAME)/winupdater/; \
+	      echo "    WinUpdater files bundled in portable package."; \
+	    else \
+	      echo "    (WinUpdater .exe not found, skipping)"; \
+	    fi; \
 	    printf '@echo off\r\n' > $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
 	    printf 'set "APPDATA=%%~dp0Data"\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
 	    printf 'set "LOCALAPPDATA=%%~dp0Data"\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
@@ -240,8 +270,7 @@ package :
 	  done; \
 	  find $$OBJDIR/dist/ -maxdepth 1 -name "*.tar.gz" -exec cp -v {} . \;; \
 	fi; \
-	echo ""; \
-	$(MAKE) checksum
+	echo ""
 
 # 计算所有打包产物的 SHA256 校验和，写入单个 sha256sums 文件
 # PE-SFX: 已禁用（注释掉），不再打包自解压 exe
@@ -605,4 +634,3 @@ package-all : package-deb package-appimage package-tar package-rpm
 	@echo ">>> All packages generated and signed (arch: $(PKG_ARCH))."
 	@ls -lh $(APP_NAME)*$(version)* 2>/dev/null | grep -E '\.(deb|AppImage|tar\.gz|rpm)$$' || true
 	@echo ""
-	@$(MAKE) checksum

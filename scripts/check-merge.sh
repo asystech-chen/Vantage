@@ -67,6 +67,7 @@ VANTAGE_PATCHES=(
     "patches/uninstaller-cleanup.patch"
     "patches/vantage-ai-sidebar.patch"
     "patches/vantage-privacy-dashboard.patch"
+    "patches/vantage-infobar-accent.patch"
     "patches/dmg-fix-permissions.patch"
     "patches/hide-passwordmgr.patch"
     "patches/fix-7zsfx-branding.patch"

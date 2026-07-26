@@ -26,5 +26,12 @@ mk_add_options MOZ_DATA_REPORTING=0
 mk_add_options MOZ_SERVICES_HEALTHREPORT=0
 mk_add_options MOZ_TELEMETRY_REPORTING=0
 
+# ---- 编译加速 ----
+mk_add_options MOZ_PARALLEL_BUILD=24
+ac_add_options --enable-linker=lld
+if command -v ccache >/dev/null 2>&1; then
+    ac_add_options --with-ccache
+fi
+
 # Add your own stuff, libraries, architecture, etc..
 # ex: `cat mozconfig.orig mozconfig.my > mozconfig`

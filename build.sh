@@ -203,6 +203,7 @@ build_target() {
   # 对 Windows 目标额外执行 package-msix
   if [[ "$os_type" == "windows" ]]; then
     echo ""
+    green ">>> Windows 目标：WinUpdater 自动随 make package 打包"
     green ">>> Windows 目标：执行 make package-msix..."
     make package-msix || red "⚠️  $label package-msix 失败（非致命）"
   fi
@@ -235,7 +236,7 @@ package_target() {
       make package-all || { red "❌ $label package-all 失败"; return 1; }
       ;;
     windows)
-      green ">>> 执行 make package..."
+      green ">>> 执行 make package（含 WinUpdater 自动打包）..."
       make package || { red "❌ $label package 失败"; return 1; }
       echo ""
       green ">>> 执行 make package-msix..."

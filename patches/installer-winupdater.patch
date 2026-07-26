@@ -1,0 +1,13 @@
+diff --git a/browser/installer/windows/nsis/installer.nsi b/browser/installer/windows/nsis/installer.nsi
+--- a/browser/installer/windows/nsis/installer.nsi
++++ b/browser/installer/windows/nsis/installer.nsi
+@@ -847,6 +847,10 @@
+   ${If} ${Silent}
+     Call SendPingIfApplicable
+   ${EndIf}
++  ; Auto-register Vantage WinUpdater scheduled task for automatic updates
++  IfFileExists "$INSTDIR\winupdater\ScheduledTask-Create.ps1" 0 +2
++    ExecWait 'powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$INSTDIR\winupdater\ScheduledTask-Create.ps1"'
++
+ SectionEnd
+ 

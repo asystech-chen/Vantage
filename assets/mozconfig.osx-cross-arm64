@@ -65,6 +65,9 @@ export WASM_CXX="$HOME/.mozbuild/clang/bin/clang++"
 export SDKROOT="$CCTOOLS/SDK/MacOSX26.1.sdk"
 
 # ccache (if available)
+# ---- 编译加速 ----
+mk_add_options MOZ_PARALLEL_BUILD=24
+
 if command -v ccache >/dev/null 2>&1; then
     ac_add_options --with-ccache
 fi

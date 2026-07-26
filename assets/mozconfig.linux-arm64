@@ -43,6 +43,10 @@ export CFLAGS="-ftrivial-auto-var-init=zero -fwrapv"
 export CXXFLAGS="-ftrivial-auto-var-init=zero -fwrapv"
 
 # ccache (if available)
+# ---- 编译加速 ----
+mk_add_options MOZ_PARALLEL_BUILD=24
+ac_add_options --enable-linker=lld
+
 if command -v ccache >/dev/null 2>&1; then
     ac_add_options --with-ccache
 fi

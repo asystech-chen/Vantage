@@ -12,6 +12,9 @@ vantage-*.tar.xz
 sha256sums
 SHA256SUMS
 
+# L10n download cache
+.cache/
+
 # build artifacts
 rpm_build/
 AppDir/
@@ -21,6 +24,10 @@ deb_build/
 settings/distribution/optional-extensions/*.xpi
 *.msix-prepackage.zip
 *.exe
+
+# WinUpdater artifact files (copied to root by make package)
+/Vantage-WinUpdater.*
+/ScheduledTask-*.ps1
 
 # Repo signing (private key never commit)
 *-repo-private-key.asc

@@ -90,7 +90,13 @@ if [ "$DEB_COUNT" -gt 0 ]; then
 
     # Generate Release
     pushd "$DIST_DIR" > /dev/null
-    apt-ftparchive release . > Release
+    apt-ftparchive \
+        -o APT::FTPArchive::Release::Suite=stable \
+        -o APT::FTPArchive::Release::Codename=stable \
+        -o APT::FTPArchive::Release::Architectures="amd64 arm64 loong64" \
+        -o APT::FTPArchive::Release::Components="main" \
+        -o APT::FTPArchive::Release::Description="Vantage Browser Repository" \
+        release . > Release
     log "  Release generated"
 
     # Sign Release (if GPG key available)
