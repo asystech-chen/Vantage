@@ -18,7 +18,7 @@ FF_BUILD ?= build1
 FF_BETA_SUFFIX ?=
 
 # Set FF_ESR=1 to use Firefox ESR source instead of Release
-FF_ESR ?= 0
+FF_ESR ?= 1
 ifeq ($(FF_ESR),1)
 ff_esr_suffix := esr
 else
