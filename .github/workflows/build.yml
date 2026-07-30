@@ -1,0 +1,119 @@
+name: Build Vantage
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: '选择 tag（如 v153.0.2）'
+        required: true
+        type: string
+      linux-x64:
+        description: '🐧 Linux x64'
+        type: boolean
+        default: true
+      linux-arm64:
+        description: '🐧 Linux arm64（交叉编译）'
+        type: boolean
+        default: false
+      linux-loong64:
+        description: '🐧 Linux loong64（交叉编译）'
+        type: boolean
+        default: false
+      windows-x64:
+        description: '🪟 Windows x64（交叉编译）'
+        type: boolean
+        default: false
+      windows-arm64:
+        description: '🪟 Windows arm64（交叉编译）'
+        type: boolean
+        default: false
+      macos-x64:
+        description: '🍎 macOS x64（交叉编译）'
+        type: boolean
+        default: false
+      macos-arm64:
+        description: '🍎 macOS arm64（交叉编译）'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  authorize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检查权限
+        run: |
+          ALLOWED="asystech-chen Liangchenxu"
+          if echo "$ALLOWED" | grep -qw "${{ github.actor }}"; then
+            echo "✅ 授权用户: ${{ github.actor }}"
+          else
+            echo "❌ ${{ github.actor }} 无权限，构建已拒绝"
+            exit 1
+          fi
+
+  build:
+    needs: authorize
+    runs-on: [self-hosted, vantage-builder]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - name: Build
+        timeout-minutes: 720
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            TARGETS="linux-x64 linux-arm64 linux-loong64 windows-x64 windows-arm64"
+          else
+            TARGETS=""
+            [ "${{ github.event.inputs['linux-x64'] }}" = "true" ] && TARGETS="$TARGETS linux-x64"
+            [ "${{ github.event.inputs['linux-arm64'] }}" = "true" ] && TARGETS="$TARGETS linux-arm64"
+            [ "${{ github.event.inputs['linux-loong64'] }}" = "true" ] && TARGETS="$TARGETS linux-loong64"
+            [ "${{ github.event.inputs['windows-x64'] }}" = "true" ] && TARGETS="$TARGETS windows-x64"
+            [ "${{ github.event.inputs['windows-arm64'] }}" = "true" ] && TARGETS="$TARGETS windows-arm64"
+            [ "${{ github.event.inputs['macos-x64'] }}" = "true" ] && TARGETS="$TARGETS macos-x64"
+            [ "${{ github.event.inputs['macos-arm64'] }}" = "true" ] && TARGETS="$TARGETS macos-arm64"
+          fi
+          echo "编译目标: $TARGETS"
+          ./build.sh $TARGETS
+
+      - name: Create Release & Upload
+        env:
+          GITHUB_TOKEN: *** secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -n "${{ github.event.inputs.tag }}" ]; then
+            TAG="${{ github.event.inputs.tag }}"
+          else
+            TAG="${GITHUB_REF#refs/tags/}"
+          fi
+
+          # 从 CHANGELOG.md 提取对应版本日志
+          VERSION="${TAG#v}"
+          awk -v ver="$VERSION" '
+            /^# Vantage / {
+              if (found) exit
+              if (index($0, "Vantage " ver)) { found=1; next }
+            }
+            found
+          ' CHANGELOG.md > /tmp/release-notes.md
+
+          if [ -s /tmp/release-notes.md ]; then
+            echo "使用 CHANGELOG.md 作为发布说明"
+            gh release create "$TAG" \
+              vantage-*.tar.xz \
+              vantage-*.sha256sum \
+              --title "Vantage $TAG" \
+              --notes-file /tmp/release-notes.md
+          else
+            echo "CHANGELOG 中未找到 $VERSION，使用自动生成"
+            gh release create "$TAG" \
+              vantage-*.tar.xz \
+              vantage-*.sha256sum \
+              --title "Vantage $TAG" \
+              --generate-notes
+          fi
