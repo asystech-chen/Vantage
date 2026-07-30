@@ -96,7 +96,7 @@ jobs:
           awk -v ver="$VERSION" '
             /^# Vantage / {
               if (found) exit
-              if (index($0, "Vantage " ver)) { found=1; next }
+              if (index($0, "Vantage " ver " ")) { found=1; next }
             }
             found
           ' CHANGELOG.md > /tmp/release-notes.md
