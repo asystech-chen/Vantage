@@ -17,15 +17,35 @@ Requires [AutoHotkey v1.1](https://www.autohotkey.com/):
 Ahk2Exe.exe /in Vantage-WinUpdater.ahk /out Vantage-WinUpdater.exe /icon Vantage-WinUpdater.ico
 ```
 
+Place the compiled `.exe` in `winupdater/` before running `make package` on Linux.
+
 ## Distribution
 
-Bundle with Vantage Windows installer:
-- `Vantage-WinUpdater.exe`
+The following files are bundled into the Windows NSIS installer automatically during `make package`:
+
+- `Vantage-WinUpdater.exe` (must exist before packaging)
+- `Vantage-WinUpdater.ico`
 - `ScheduledTask-Create.ps1`
 - `ScheduledTask-Remove.ps1`
-- `Vantage-WinUpdater.ico`
 
-The NSIS installer can offer "Enable automatic updates" option that copies these files to the install directory.
+### Packaging flow
+
+```
+make package (with Windows mozconfig)
+  ├→ Makefile injects files into objdir/dist/bin/winupdater/
+  ├→ librewolf-patches.py adds @RESPATH@/winupdater/* to package-manifest.in
+  └→ mach package includes them in the NSIS installer
+
+NSIS post-install (installer-winupdater.patch):
+  ├→ Silent install (/S): skipped (winget handles updates)
+  └→ Interactive: runs ScheduledTask-Create.ps1 (hidden, no popup)
+```
+
+### Silent install (/S)
+
+- Taskbar pin is disabled (`$AddTaskbarSC = "0"`) to avoid OS confirmation dialog
+- WinUpdater scheduled task registration is skipped during silent install to avoid UAC prompt
+- PowerShell windows are hidden (`-WindowStyle Hidden`, no `ReadKey`)
 
 ## vd.json Format
 

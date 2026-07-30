@@ -1,14 +1,13 @@
 <?xml version="1.0"?> <!-- -*- Mode: HTML -*- -->
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
 <?xml-stylesheet href="chrome://browser/content/aboutDialog.css" type="text/css"?>
 <window xmlns:html="http://www.w3.org/1999/xhtml"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         id="aboutDialog"
         windowtype="Browser:About"
-        onload="init(event);"
 #ifdef XP_MACOSX
         inwindowmenu="false"
 #else
@@ -57,7 +56,7 @@
   </div>
 
   <keyset>
-    <key keycode="VK_ESCAPE" oncommand="window.close();"/>
+    <key keycode="VK_ESCAPE" id="escapeKey"/>
   </keyset>
 
 </window>

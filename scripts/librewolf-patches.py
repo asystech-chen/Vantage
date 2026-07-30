@@ -266,7 +266,9 @@ def librewolf_patches():
             print("   (no XPI files found, skipping distribution/*.xpi)")
 
     # WinUpdater files for Windows installer auto-update (Windows only)
-    if _xpifiles:
+    # Check objdir name contains windows target triple
+    objdir = Path.cwd().name
+    if _xpifiles and 'windows' in objdir:
         print("-> Adding WinUpdater to package-manifest.in")
         with open(manifest, 'a') as f:
             f.write('\n# Vantage WinUpdater\n')
