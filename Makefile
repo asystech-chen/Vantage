@@ -155,7 +155,7 @@ $(ff_source_tarball) :
 	gpg --import public_key.asc
 	rm -f public_key.asc
 	aria2c -q -o $(ff_source_tarball).asc "$(ff_source_url).asc"
-	aria2c -o $(ff_source_tarball) "$(ff_source_url)"
+	aria2c -x 16 -s 16 -o $(ff_source_tarball) "$(ff_source_url)"
 	gpg --verify $(ff_source_tarball).asc $(ff_source_tarball)
 
 $(lw_source_dir) : $(ff_source_tarball) ./version ./release scripts/librewolf-patches.py assets/mozconfig assets/patches.txt
