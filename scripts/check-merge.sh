@@ -71,6 +71,7 @@ VANTAGE_PATCHES=(
     "patches/dmg-fix-permissions.patch"
     "patches/hide-passwordmgr.patch"
     "patches/fix-7zsfx-branding.patch"
+    "patches/installer-winupdater.patch"
 )
 
 for p in "${VANTAGE_PATCHES[@]}"; do
@@ -91,7 +92,7 @@ if [ $# -ge 1 ]; then
         if [ -n "$removed" ]; then
             warn "以下 patch 在合并中被移除，请确认是否故意:"
             echo "$removed" | while read line; do
-                if echo "$line" | grep -qE "vantage|installer|uninstaller|dmg-fix|zhcn|locale|publisher"; then
+                if echo "$line" | grep -qE "vantage|installer|uninstaller|dmg-fix|zhcn|locale|publisher|winupdater"; then
                     err "  $line  ← Vantage 独有！"
                 else
                     info "  $line (可能是上游废弃)"

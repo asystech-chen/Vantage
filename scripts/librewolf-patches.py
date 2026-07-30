@@ -265,6 +265,12 @@ def librewolf_patches():
         else:
             print("   (no XPI files found, skipping distribution/*.xpi)")
 
+    # WinUpdater files for Windows installer auto-update
+    print("-> Adding WinUpdater to package-manifest.in")
+    with open(manifest, 'a') as f:
+        f.write('\n# Vantage WinUpdater\n')
+        f.write('@RESPATH@/winupdater/*\n')
+
     print("-> Applying LibreWolf locales")
     l10n_dir = Path("..", "l10n")
     for source_path in l10n_dir.rglob("*"):

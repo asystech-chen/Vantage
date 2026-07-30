@@ -30,6 +30,7 @@
 | `patches/dmg-fix-permissions.patch` | **macOS 签名修复**。上游无此文件 |
 | `patches/fix-7zsfx-branding.patch` | **7zSFX 品牌替换**：`other-licenses/7zstub/firefox/resource.rc` 中 CompanyName/FileDescription 改为 Vantage。⚠️ **需 LF 行尾！** 因为 `librewolf-patches.py` 在打补丁前会将所有源文件（含 .rc）转为 LF，CRLF patch 反而会导致 "different line endings" 错误。 |
 | `patches/hide-passwordmgr.patch` | 隐藏密码管理器（Firefox Sync 特性，Vantage 不需要） |
+| `patches/installer-winupdater.patch` | **WinUpdater 自动更新**：NSIS 安装器 post-install 钩子，自动注册 ScheduledTask-Create.ps1 计划任务。配合 `librewolf-patches.py` 注入的 `@RESPATH@/winupdater/*` manifest 条目和 Makefile 的 dist 注入。上游无此文件 |
 
 ---
 
@@ -73,7 +74,7 @@
 | `assets/mozconfig.new` | --with-app-name=vantage, --with-branding=browser/branding/vantage。不能替换 |
 | `assets/patches.txt` | 包含 Vantage 独有 patch（installer-zhcn.patch），且移除了 hide-default-browser.patch。**合并时 diff 对比，新增的上游 patch 追加，不要整体替换** |
 | `Makefile` | package-zhcn 目标有 Vantage 定制。上游新增目标可以合入，但不要覆盖已有的 |
-| `scripts/librewolf-patches.py` | appstrings sed 改为 Firefox→Vantage（上游是→LibreWolf）。其他部分可以跟上游 |
+| `scripts/librewolf-patches.py` | appstrings sed 改为 Firefox→Vantage（上游是→LibreWolf）。包含 WinUpdater 的 `package-manifest.in` 注入（`@RESPATH@/winupdater/*`）。其他部分可以跟上游 |
 
 ---
 
@@ -190,6 +191,8 @@ Vantage 将 pref-pane 内部名从 `paneLibrewolf` 改为 `paneVantage`，设置
 
 Vantage 保留 wget（不跟 curl）。
 
+Vantage 独有新增：WinUpdater `package-manifest.in` 注入（`@RESPATH@/winupdater/*`），配合 Makefile 的 dist 注入和 NSIS post-install 钩子，实现安装后自动注册计划任务。合并时不要丢失此段。
+
 ### 新增翻译
 
 上游为 EME 权限界面新增了 en-US/zh-TW 翻译字符串，Vantage 三语均已齐全（之前合并时已加入）。`pane-librewolf-title2` 不跟。
@@ -286,7 +289,7 @@ rm /tmp/vantage-patches-before.txt
 | 检查项 | 内容 |
 |--------|------|
 | [1/5] 路径残留 | `moz-configure.patch`、`mozilla_dirs.patch`、`windows-theming-bug.patch` 中是否残留 librewolf 引用 |
-| [2/5] patches.txt 完整性 | 9 个 Vantage 独有 patch 是否全部在册（中文安装包 4 个 + AI 侧边栏 + privacy-dashboard + dmg-fix + hide-passwordmgr + fix-7zsfx-branding） |
+| [2/5] patches.txt 完整性 | 11 个 Vantage 独有 patch 是否全部在册（中文安装包 4 个 + 品牌 5 个 + 工具 2 个） |
 | [3/5] librewolf.cfg 关键内容 | 更新检查代码、NetUtil ESM 导入、`.vantage` 路径 |
 | [4/5] l10n 品牌文本 | en-US aboutDialog/preferences 中是否包含 Vantage 品牌文本 |
 | [5/5] policies.json | uBlock xpi 地址是否指向 asystech.cn |
@@ -317,17 +320,18 @@ rm /tmp/vantage-patches-before.txt
 | 150.0-1 | `UPGRADE-150-COMPLETE.md` | Pref-Pane 修复、Privacy Dashboard 重构 |
 | 151.0.4 | 见 CHANGELOG.md | **CRLF 8 patch 失败、6 个 Vantage patch 丢失、autoconfig 沙箱适配、ESM 迁移** |
 | 152.0.1 | 本次合并 | **vantage-privacy-dashboard 重新生成（ProxyCard 已移除）、fix-7zsfx-branding 改 LF、pref-pane l10n id 不跟 title2、pane 改名 vantage、不跟 remove-language-packs** |
-| 153.0 | 本次合并 | **轻量合并：无 FF 源码大改。emoji-clearkey 被上游合并入 eme-permission。新增 settings-redesign 不跟。librewolf.cfg 大量隐私策略收紧，Vantage 刻意保持易用性（保留 RFP 关闭、安全浏览开启、磁盘缓存等）。librewolf-patches.py 加 gpatch 支持和 strip()。** |
+| 153.0 | 本次合并 | **轻量合并：无 FF 源码大改。emoji-clearkey 被上游合并入 eme-permission。新增 settings-redesign 不跟。librewolf.cfg 大量隐私策略收紧，Vantage 刻意保持易用性（保留 RFP 关闭、安全浏览开启、磁盘缓存等）。librewolf-patches.py 加 gpatch 支持和 strip()。WinUpdater package-manifest.in 注入（`@RESPATH@/winupdater/*`）。installer-winupdater.patch 纳入 check-merge 检查。** |
 
 ---
 
 ## ✅ 合并后快速核对清单
 
 - [ ] `./scripts/check-merge.sh` 全部通过（0 错误）
-- [ ] `assets/patches.txt` 中 Vantage 独有 9 个 patch 全部在册
+- [ ] `assets/patches.txt` 中 Vantage 独有 11 个 patch 全部在册
 - [ ] `./scripts/rebrand.sh` 已运行且无残留
 - [ ] 中文安装包 4 个 patch（installer-zhcn/locale/publisher/uninstaller-cleanup）未丢失
 - [ ] `fix-7zsfx-branding.patch` 保持 LF（build 脚本先 dos2unix 源文件，CRLF 反而不匹配）
+- [ ] `librewolf-patches.py` 中 WinUpdater package-manifest.in 注入代码段未丢失
 - [ ] 所有 patch 为 LF 行尾
 - [ ] `librewolf.cfg` 首行是 `null;`（autoconfig 要求）
 - [ ] `librewolf.cfg` 中 `NetUtil.sys.mjs` + `ChromeUtils.importESModule`（FF151+）
