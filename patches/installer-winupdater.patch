@@ -1,8 +1,7 @@
 diff --git a/browser/installer/windows/nsis/installer.nsi b/browser/installer/windows/nsis/installer.nsi
 --- a/browser/installer/windows/nsis/installer.nsi
 +++ b/browser/installer/windows/nsis/installer.nsi
-@@ -417,6 +417,10 @@
-   ${EndIf}
+@@ -416,7 +416,9 @@
  
    ; Default for adding a Taskbar pin (1 = pin, 0 = don't pin)
    ${If} $AddTaskbarSC == ""
@@ -13,7 +12,7 @@ diff --git a/browser/installer/windows/nsis/installer.nsi b/browser/installer/wi
    ${EndIf}
  
    ${LogHeader} "Adding Registry Entries"
-@@ -847,6 +851,13 @@
+@@ -847,6 +849,14 @@
    ${If} ${Silent}
      Call SendPingIfApplicable
    ${EndIf}
@@ -27,3 +26,4 @@ diff --git a/browser/installer/windows/nsis/installer.nsi b/browser/installer/wi
 +
  SectionEnd
  
+ ################################################################################
