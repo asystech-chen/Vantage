@@ -83,9 +83,8 @@ jobs:
           ./build.sh $TARGETS
 
       - name: Create Release & Upload
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
           if [ -n "${{ github.event.inputs.tag }}" ]; then
             TAG="${{ github.event.inputs.tag }}"
           else
