@@ -1,13 +1,29 @@
 diff --git a/browser/installer/windows/nsis/installer.nsi b/browser/installer/windows/nsis/installer.nsi
 --- a/browser/installer/windows/nsis/installer.nsi
 +++ b/browser/installer/windows/nsis/installer.nsi
-@@ -847,6 +847,10 @@
+@@ -417,6 +417,10 @@
+   ${EndIf}
+ 
+   ; Default for adding a Taskbar pin (1 = pin, 0 = don't pin)
+   ${If} $AddTaskbarSC == ""
+-    ${GetPinningSupportedByWindowsVersionWithoutSystemPopup} $AddTaskbarSC
++    ; Vantage: never pin to taskbar. The OS-level pin dialog breaks
++    ; silent install (/S) and is unnecessary for Vantage.
++    StrCpy $AddTaskbarSC "0"
+   ${EndIf}
+ 
+   ${LogHeader} "Adding Registry Entries"
+@@ -847,6 +851,13 @@
    ${If} ${Silent}
      Call SendPingIfApplicable
    ${EndIf}
-+  ; Auto-register Vantage WinUpdater scheduled task for automatic updates
-+  IfFileExists "$INSTDIR\winupdater\ScheduledTask-Create.ps1" 0 +2
-+    ExecWait 'powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$INSTDIR\winupdater\ScheduledTask-Create.ps1"'
++  ; Auto-register Vantage WinUpdater scheduled task for automatic updates.
++  ; Skip during silent install (/S) — UAC elevation would block, and winget
++  ; handles updates on its own.
++  ${IfNot} ${Silent}
++    IfFileExists "$INSTDIR\winupdater\ScheduledTask-Create.ps1" 0 +2
++      ExecWait 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "$INSTDIR\winupdater\ScheduledTask-Create.ps1"'
++  ${EndIf}
 +
  SectionEnd
  

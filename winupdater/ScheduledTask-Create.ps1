@@ -7,7 +7,7 @@ If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
   $User = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
   $UserName = [Environment]::UserName
   $Script = $MyInvocation.MyCommand.Path
-  Start-Process powershell.exe -Verb RunAs "-ExecutionPolicy RemoteSigned -File `"$PSCommandPath`" `"${User}`" `"${UserName}`""
+  Start-Process powershell.exe -Verb RunAs -WindowStyle Hidden "-ExecutionPolicy RemoteSigned -File `"$PSCommandPath`" `"${User}`" `"${UserName}`""
   Exit
 }
 
@@ -20,5 +20,4 @@ $User     = If ($Args[0]) {$Args[0]} Else {[System.Security.Principal.WindowsIde
 $UserName = If ($Args[1]) {$Args[1]} Else {[Environment]::UserName}
 
 Register-ScheduledTask -TaskName "$Title ($UserName)" -Action $Action -Settings $Settings -Trigger $4Hours,$AtLogon -User $User -RunLevel Highest -Force
-Write-Output "Done. Press any key to close this window."
-[Console]::ReadKey()
+Write-Output "Done."

@@ -216,7 +216,11 @@ build : $(lw_source_dir)
 WIN_VARIANT := $(shell mozcfg="$${MOZCONFIG:-$(lw_source_dir)/mozconfig}"; [ -f "$$mozcfg" ] || mozcfg="$$(pwd)/assets/mozconfig"; grep -qE 'windows-msvc|pc-windows-msvc' "$$mozcfg" 2>/dev/null && echo msvc || (grep -qE 'windows-gnu|pc-mingw32' "$$mozcfg" 2>/dev/null && echo mingw || true))
 
 package :
-	@OBJDIR=$$(ls -td $(lw_source_dir)/obj-* 2>/dev/null | head -1); \
+	@if [ -n "$(WIN_VARIANT)" ]; then \
+	  OBJDIR=$$(ls -td $(lw_source_dir)/obj-*pc-windows* 2>/dev/null | head -1); \
+	else \
+	  OBJDIR=$$(ls -td $(lw_source_dir)/obj-* 2>/dev/null | head -1); \
+	fi; \
 	if [ -n "$(WIN_VARIANT)" ] && [ -f winupdater/Vantage-WinUpdater.exe ]; then \
 	  echo ">>> Injecting WinUpdater into dist for NSIS installer..."; \
 	  mkdir -p $$OBJDIR/dist/bin/winupdater && \
@@ -228,7 +232,11 @@ package :
 	  echo "    Done ($$OBJDIR/dist/bin/winupdater/)."; \
 	fi
 	(cd $(lw_source_dir) && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales)
-	@OBJDIR=$$(ls -td $(lw_source_dir)/obj-* 2>/dev/null | head -1); \
+	@if [ -n "$(WIN_VARIANT)" ]; then \
+	  OBJDIR=$$(ls -td $(lw_source_dir)/obj-*pc-windows* 2>/dev/null | head -1); \
+	else \
+	  OBJDIR=$$(ls -td $(lw_source_dir)/obj-* 2>/dev/null | head -1); \
+	fi; \
 	ARCH=$$(basename "$$OBJDIR" | grep -oE 'x86_64|aarch64|arm64' | head -1 | sed 's/^arm64$$/aarch64/'); \
 	echo ">>> Packaging (arch: $$ARCH)..."; \
 	if [ -n "$(WIN_VARIANT)" ]; then \
