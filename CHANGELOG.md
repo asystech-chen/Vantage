@@ -1,3 +1,37 @@
+# Vantage 153.0-3 更新日志
+
+## 上游合并
+
+- 基于 **Firefox 153.0 ESR**
+- **迁移至 ESR 通道** — 与 Firefox 企业版同步安全更新，稳定可靠，适合长期部署
+
+## 新功能
+
+- **Windows 自动更新** — 安装后自动注册计划任务，登录时及每 4 小时检查新版本，检测到更新自动静默安装
+- **apt / rpm 软件仓库** — 支持 Debian/Ubuntu（apt）和 Fedora/RHEL（rpm）通过包管理器安装和更新
+- **WebGL 权限控制** — 网站请求 WebGL 时弹出权限提示，可选择允许或拒绝
+
+## 新增平台支持
+
+- **Linux LoongArch64** — 支持龙芯 3A6000 等国产处理器
+- **macOS ARM64 (Apple Silicon)** — 原生支持 M1/M2/M3 系列芯片
+- **Windows ARM64** — 支持骁龙 X Elite 等 ARM 设备
+
+## 隐私与安全
+
+- 新增 query stripping 参数过滤，默认启用（减少 URL 跟踪参数）
+- 新增 Local Network Access 防护（阻止公网站点探测局域网设备）
+- TLS 0-RTT 默认关闭（修复注释与值矛盾的旧 bug）
+- Cookie 分区默认启用
+- 禁用 QWAC 证书、WebSerial 接口
+
+## 修复
+
+- **关于页面版本检查** — 此前"检查更新"不显示任何状态文字，现已修复
+
+
+---
+
 # Vantage 152.0.6-1 更新日志
 
 ## 上游合并
