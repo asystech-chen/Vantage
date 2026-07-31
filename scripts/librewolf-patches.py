@@ -266,8 +266,8 @@ def librewolf_patches():
             print("   (no XPI files found, skipping distribution/*.xpi)")
 
     # WinUpdater files for Windows installer auto-update (Windows only)
-    # Gated by _xpifiles: .xpi only exists on Windows builds
-    if _xpifiles:
+    # Gated by WIN_VARIANT env (set by Makefile based on mozconfig target)
+    if os.environ.get('WIN_VARIANT'):
         print("-> Adding WinUpdater to package-manifest.in")
         with open(manifest, 'a') as f:
             f.write('\n# Vantage WinUpdater\n')

@@ -162,7 +162,7 @@ $(lw_source_dir) : $(ff_source_tarball) ./version ./release scripts/librewolf-pa
 	rm -rf $(ff_source_dir) $(lw_source_dir)
 	tar xf $(ff_source_tarball)
 	mv $(ff_source_dir) $(lw_source_dir)
-	python3 scripts/librewolf-patches.py $(version) $(release)
+	WIN_VARIANT="$(WIN_VARIANT)" python3 scripts/librewolf-patches.py $(version) $(release)
 	$(MAKE) prepare-sfx-apply
 
 # 将预打补丁的 7zSD.sfx 复制到源码树（修复 Windows 安装包品牌）
