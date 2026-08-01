@@ -59,6 +59,7 @@ jobs:
   build:
     needs: authorize
     runs-on: [self-hosted, vantage-builder]
+    timeout-minutes: 1440
     steps:
       - uses: actions/checkout@v4
         with:
