@@ -92,6 +92,17 @@ jobs:
             TAG="${GITHUB_REF#refs/tags/}"
           fi
 
+          # 收集所有构建产物 + SHA256SUMS 校验文件（nullglob 防止无匹配时传入字面量）
+          shopt -s nullglob
+          RELEASE_ASSETS=(vantage-* vantage_* SHA256SUMS)
+          [ -f SHA256SUMS.asc ] && RELEASE_ASSETS+=(SHA256SUMS.asc)
+          if [ ${#RELEASE_ASSETS[@]} -eq 0 ]; then
+            echo "❌ 未找到任何构建产物，无法创建 release"
+            exit 1
+          fi
+          echo "📦 待上传产物:"
+          ls -lh "${RELEASE_ASSETS[@]}"
+
           # 从 CHANGELOG.md 提取对应版本日志
           VERSION="${TAG#v}"
           awk -v ver="$VERSION" '
@@ -104,16 +115,12 @@ jobs:
 
           if [ -s /tmp/release-notes.md ]; then
             echo "使用 CHANGELOG.md 作为发布说明"
-            gh release create "$TAG" \
-              vantage-*.tar.xz \
-              vantage-*.sha256sum \
+            gh release create "$TAG" "${RELEASE_ASSETS[@]}" \
               --title "Vantage $TAG" \
               --notes-file /tmp/release-notes.md
           else
             echo "CHANGELOG 中未找到 $VERSION，使用自动生成"
-            gh release create "$TAG" \
-              vantage-*.tar.xz \
-              vantage-*.sha256sum \
+            gh release create "$TAG" "${RELEASE_ASSETS[@]}" \
               --title "Vantage $TAG" \
               --generate-notes
           fi

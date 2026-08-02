@@ -1,0 +1,73 @@
+name: Release Only
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: '发布 tag（如 v153.0-3）'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  authorize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检查权限
+        run: |
+          ALLOWED="asystech-chen Liangchenxu"
+          if echo "$ALLOWED" | grep -qw "${{ github.actor }}"; then
+            echo "✅ 授权用户: ${{ github.actor }}"
+          else
+            echo "❌ ${{ github.actor }} 无权限，发布已拒绝"
+            exit 1
+          fi
+
+  release:
+    needs: authorize
+    runs-on: [self-hosted, vantage-builder]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          clean: false # 保留 runner 上已有的构建产物（上次 Build 成功但 Release 失败）
+          ref: ${{ github.event.inputs.tag }}
+
+      - name: Release & Upload（仅发布，不构建）
+        run: |
+          export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          TAG="${{ github.event.inputs.tag }}"
+          VERSION="${TAG#v}"
+
+          # 收集 runner 上残留的构建产物 + SHA256SUMS 校验文件
+          shopt -s nullglob
+          RELEASE_ASSETS=(vantage-* vantage_* SHA256SUMS)
+          [ -f SHA256SUMS.asc ] && RELEASE_ASSETS+=(SHA256SUMS.asc)
+          if [ ${#RELEASE_ASSETS[@]} -eq 0 ]; then
+            echo "❌ 未找到任何构建产物（runner 工作区已被清理？），请先跑完整构建"
+            exit 1
+          fi
+          echo "📦 待上传产物:"
+          ls -lh "${RELEASE_ASSETS[@]}"
+
+          # 从 CHANGELOG.md 提取对应版本日志
+          awk -v ver="$VERSION" '
+            /^# Vantage / {
+              if (found) exit
+              if (index($0, "Vantage " ver " ")) { found=1; next }
+            }
+            found
+          ' CHANGELOG.md > /tmp/release-notes.md
+
+          if [ -s /tmp/release-notes.md ]; then
+            echo "使用 CHANGELOG.md 作为发布说明"
+            gh release create "$TAG" "${RELEASE_ASSETS[@]}" \
+              --title "Vantage $TAG" \
+              --notes-file /tmp/release-notes.md
+          else
+            echo "CHANGELOG 中未找到 $VERSION，使用自动生成"
+            gh release create "$TAG" "${RELEASE_ASSETS[@]}" \
+              --title "Vantage $TAG" \
+              --generate-notes
+          fi
