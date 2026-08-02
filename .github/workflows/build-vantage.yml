@@ -61,6 +61,9 @@ jobs:
     runs-on: [self-hosted, vantage-builder]
     timeout-minutes: 1440
     steps:
+      - name: 加固 git 网络（HTTP/1.1，规避 HTTP2 framing 错误）
+        run: git config --global http.version HTTP/1.1
+
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.tag || github.ref }}

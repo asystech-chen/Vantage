@@ -29,16 +29,17 @@ jobs:
     needs: authorize
     runs-on: [self-hosted, vantage-builder]
     steps:
-      - uses: actions/checkout@v4
-        with:
-          clean: false # 保留 runner 上已有的构建产物（上次 Build 成功但 Release 失败）
-          ref: ${{ github.event.inputs.tag }}
-
       - name: Release & Upload（仅发布，不构建）
         run: |
           export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
           TAG="${{ github.event.inputs.tag }}"
           VERSION="${TAG#v}"
+
+          # 不 checkout：产物和 CHANGELOG.md 都来自上次构建留下的 workspace，避免 git fetch 网络失败
+          if [ ! -f CHANGELOG.md ]; then
+            echo "❌ workspace 中没有 CHANGELOG.md（runner 工作区被清理？），请先跑完整构建"
+            exit 1
+          fi
 
           # 收集 runner 上残留的构建产物 + SHA256SUMS 校验文件
           shopt -s nullglob
