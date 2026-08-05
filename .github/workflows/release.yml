@@ -41,12 +41,12 @@ jobs:
             exit 1
           fi
 
-          # 收集 runner 上残留的构建产物 + SHA256SUMS 校验文件
+          # 收集 runner 上残留的构建产物（精确匹配：只传当前版本 + 正式产物，排除 prepackage/旧版本残留）
           shopt -s nullglob
-          RELEASE_ASSETS=(vantage-* vantage_* SHA256SUMS)
+          RELEASE_ASSETS=(vantage-${VERSION}*.tar.xz vantage-${VERSION}*.tar.gz vantage-${VERSION}*.portable.zip vantage-${VERSION}*.exe vantage-${VERSION}*.dmg vantage_${VERSION}_*.deb vantage-${VERSION}*.rpm vantage-${VERSION}*.AppImage vantage-${VERSION}*.msix vantage-${VERSION}*.asc SHA256SUMS)
           [ -f SHA256SUMS.asc ] && RELEASE_ASSETS+=(SHA256SUMS.asc)
           if [ ${#RELEASE_ASSETS[@]} -eq 0 ]; then
-            echo "❌ 未找到任何构建产物（runner 工作区已被清理？），请先跑完整构建"
+            echo "❌ 未找到 $VERSION 的构建产物（runner 工作区已被清理？），请先跑完整构建"
             exit 1
           fi
           echo "📦 待上传产物:"
@@ -61,14 +61,31 @@ jobs:
             found
           ' CHANGELOG.md > /tmp/release-notes.md
 
+          # 先建 release（不带资产），再并行上传各文件（规避单连接限速）
           if [ -s /tmp/release-notes.md ]; then
             echo "使用 CHANGELOG.md 作为发布说明"
-            gh release create "$TAG" "${RELEASE_ASSETS[@]}" \
-              --title "Vantage $TAG" \
-              --notes-file /tmp/release-notes.md
+            gh release create "$TAG" --title "Vantage $TAG" --notes-file /tmp/release-notes.md || {
+              gh release view "$TAG" >/dev/null 2>&1 || { echo "❌ release 创建失败"; exit 1; }
+              echo "⚠️ release 已存在，直接上传资产"
+            }
           else
             echo "CHANGELOG 中未找到 $VERSION，使用自动生成"
-            gh release create "$TAG" "${RELEASE_ASSETS[@]}" \
-              --title "Vantage $TAG" \
-              --generate-notes
+            gh release create "$TAG" --title "Vantage $TAG" --generate-notes || {
+              gh release view "$TAG" >/dev/null 2>&1 || { echo "❌ release 创建失败"; exit 1; }
+              echo "⚠️ release 已存在，直接上传资产"
+            }
           fi
+
+          echo "🔄 并行上传 ${#RELEASE_ASSETS[@]} 个文件（4 并发）..."
+          printf '%s\n' "${RELEASE_ASSETS[@]}" | xargs -P 4 -I{} bash -c '
+            tag="$1"; f="$2"
+            echo "⬆️ 开始: $(basename "$f") ($(du -h "$f" | cut -f1))"
+            t0=$(date +%s)
+            gh release upload "$tag" "$f" --clobber 2>&1 | sed "s/^/    /"
+            if [ ${PIPESTATUS[0]} -ne 0 ]; then
+              echo "❌ 失败: $(basename "$f")"
+              exit 1
+            fi
+            echo "✅ 完成: $(basename "$f") ($(($(date +%s)-t0))s)"
+          ' _ "$TAG" {}
+          echo "✅ 全部上传完成"

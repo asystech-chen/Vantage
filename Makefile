@@ -229,6 +229,14 @@ package :
 	     winupdater/ScheduledTask-Create.ps1 \
 	     winupdater/ScheduledTask-Remove.ps1 \
 	     $$OBJDIR/dist/bin/winupdater/; \
+	  echo ">>> Ensuring WinUpdater entries in package-manifest.in..."; \
+	  MF=$(lw_source_dir)/browser/installer/package-manifest.in; \
+	  if ! grep -q "@RESPATH@/winupdater" "$$MF"; then \
+	    printf '\n# Vantage WinUpdater\n@RESPATH@/winupdater/*\n' >> "$$MF"; \
+	    echo "    Appended winupdater entries to $$MF"; \
+	  else \
+	    echo "    package-manifest.in already has winupdater entries"; \
+	  fi; \
 	  echo "    Done ($$OBJDIR/dist/bin/winupdater/)."; \
 	fi
 	(cd $(lw_source_dir) && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales)
