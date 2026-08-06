@@ -41,9 +41,32 @@ jobs:
             exit 1
           fi
 
-          # 收集 runner 上残留的构建产物（精确匹配：只传当前版本 + 正式产物，排除 prepackage/旧版本残留）
+          # 收集构建产物：以构建生成的 SHA256SUMS 为权威清单（自动匹配当前版本），
+          # 只上传正式发布资产，排除 msix 预打包产物
           shopt -s nullglob
-          RELEASE_ASSETS=(vantage-${VERSION}*.tar.xz vantage-${VERSION}*.tar.gz vantage-${VERSION}*.portable.zip vantage-${VERSION}*.exe vantage-${VERSION}*.dmg vantage_${VERSION}_*.deb vantage-${VERSION}*.rpm vantage-${VERSION}*.AppImage vantage-${VERSION}*.msix vantage-${VERSION}*.asc SHA256SUMS)
+          RELEASE_ASSETS=()
+          if [ -f SHA256SUMS ]; then
+            echo "📋 使用 SHA256SUMS 作为资产清单（版本 $VERSION）"
+            while read -r _ f; do
+              [ -n "$f" ] || continue
+              case "$f" in
+                *.msix|*.msix-prepackage.zip)
+                  echo "⏭️ 跳过 msix 预打包产物: $f"
+                  continue
+                  ;;
+              esac
+              if [ -f "$f" ]; then
+                RELEASE_ASSETS+=("$f")
+              else
+                echo "⚠️ SHA256SUMS 中列出的文件不存在: $f"
+              fi
+            done < SHA256SUMS
+          else
+            echo "❌ 未找到 SHA256SUMS（构建产物清单，runner 工作区已被清理？），请先跑完整构建"
+            exit 1
+          fi
+          # 附带校验和文件本身及其 GPG 签名
+          RELEASE_ASSETS+=(SHA256SUMS)
           [ -f SHA256SUMS.asc ] && RELEASE_ASSETS+=(SHA256SUMS.asc)
           if [ ${#RELEASE_ASSETS[@]} -eq 0 ]; then
             echo "❌ 未找到 $VERSION 的构建产物（runner 工作区已被清理？），请先跑完整构建"
