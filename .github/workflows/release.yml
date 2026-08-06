@@ -45,6 +45,7 @@ jobs:
           # 只上传正式发布资产，排除 msix 预打包产物
           shopt -s nullglob
           RELEASE_ASSETS=()
+          FOUND=0
           if [ -f SHA256SUMS ]; then
             echo "📋 使用 SHA256SUMS 作为资产清单（版本 $VERSION）"
             while read -r _ f; do
@@ -57,12 +58,18 @@ jobs:
               esac
               if [ -f "$f" ]; then
                 RELEASE_ASSETS+=("$f")
+                FOUND=$((FOUND + 1))
               else
                 echo "⚠️ SHA256SUMS 中列出的文件不存在: $f"
               fi
             done < SHA256SUMS
           else
             echo "❌ 未找到 SHA256SUMS（构建产物清单，runner 工作区已被清理？），请先跑完整构建"
+            exit 1
+          fi
+          # 清单内正式产物一个都不存在 → 明确失败，避免静默只传 SHA256SUMS
+          if [ $FOUND -eq 0 ]; then
+            echo "❌ SHA256SUMS 中列出的产物全部缺失（runner 工作区被清理？），请先跑完整构建"
             exit 1
           fi
           # 附带校验和文件本身及其 GPG 签名
