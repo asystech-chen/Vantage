@@ -38,6 +38,7 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "browser.search.openintab", type: "bool" },
   { id: "browser.ctrlTab.sortByRecentlyUsed", type: "bool" },
   { id: "vantage.theme.enabled", type: "bool" },
+  { id: "browser.nova.enabled", type: "bool" },
   { id: "xpinstall.signatures.required", type: "bool" },
   { id: "browser.download.start_downloads_in_tmp_dir", type: "bool" },
   { id: "pdfjs.enableScripting", type: "bool" },

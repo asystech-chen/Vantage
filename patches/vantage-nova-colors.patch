@@ -1,0 +1,337 @@
+--- a/toolkit/themes/shared/design-system/dist/tokens-shared.css	2026-07-17 00:59:08.000000000 +0800
++++ b/toolkit/themes/shared/design-system/dist/tokens-shared.css	2026-08-07 18:18:05.548056537 +0800
+@@ -220,7 +220,7 @@
+     --color-cyan-90: oklch(34% 0.14 205);
+     --color-cyan-100: oklch(27% 0.1 205);
+     --color-cyan-110: oklch(20% 0.05 205);
+-    --color-gray-0: #fbfbfe;
++    --color-gray-0: #f8fafc;
+     --color-gray-20: #f0f0f4;
+     --color-gray-30: #bac2ca;
+     --color-gray-50: #bfbfc9;
+@@ -817,7 +817,7 @@
+       --color-cyan-70: #034554;
+       --color-cyan-80: #002d38;
+       --color-cyan-90: #011c23;
+-      --color-gray-0: #fcfbff;
++      --color-gray-0: #f8fafc;
+       --color-gray-10: #efedf2;
+       --color-gray-15: #e3e2e7;
+       --color-gray-20: #d6d5da;
+@@ -885,26 +885,29 @@
+       --color-red-70: #69172d;
+       --color-red-80: #42121f;
+       --color-red-90: #211014;
+-      --color-violet-0: #f5ecff;
+-      --color-violet-10: #eaddff;
+-      --color-violet-20: #d4c1ff;
+-      --color-violet-30: #b89cff;
+-      --color-violet-40: #9871ff;
+-      --color-violet-50: #764edd;
+-      --color-violet-60: #5939a8;
+-      --color-violet-70: #3e2976;
+-      --color-violet-80: #271c48;
+-      --color-violet-90: #161423;
+-      --color-violet-desaturated-0: #f2f0f8;
+-      --color-violet-desaturated-10: #e7e1f8;
+-      --color-violet-desaturated-20: #d2c8ec;
+-      --color-violet-desaturated-30: #b6aad9;
+-      --color-violet-desaturated-40: #9687c0;
+-      --color-violet-desaturated-50: #75669f;
+-      --color-violet-desaturated-60: #584a7d;
+-      --color-violet-desaturated-70: #3e315f;
+-      --color-violet-desaturated-80: #281d44;
+-      --color-violet-desaturated-90: #180e30;
++      /* Vantage: Nova 默认紫色强调色 → Vantage 蓝（light: #3B82F6 系 / dark: #60A5FA 系） */
++      --color-violet-0: #eef4ff;
++      --color-violet-10: #dbeafe;
++      --color-violet-20: #93c5fd;
++      --color-violet-30: #60a5fa;
++      --color-violet-40: #3b82f6;
++      --color-violet-50: #3b82f6;
++      --color-violet-60: #2563eb;
++      --color-violet-70: #1d4ed8;
++      --color-violet-80: #1e3a8a;
++      --color-violet-90: #172554;
++      --color-violet-100: #0f1e40;
++      --color-violet-110: #0a1428;
++      --color-violet-desaturated-0: #f3f6fc;
++      --color-violet-desaturated-10: #e5edf9;
++      --color-violet-desaturated-20: #cfdcf0;
++      --color-violet-desaturated-30: #aec2de;
++      --color-violet-desaturated-40: #8ba3c8;
++      --color-violet-desaturated-50: #6680a8;
++      --color-violet-desaturated-60: #4d628a;
++      --color-violet-desaturated-70: #37486b;
++      --color-violet-desaturated-80: #232f4d;
++      --color-violet-desaturated-90: #151d33;
+       --color-yellow-0: #f9f5e6;
+       --color-yellow-10: #fde8b5;
+       --color-yellow-20: #fbcc77;
+@@ -978,8 +981,9 @@
+       --toolbar-padding-inline: 6px;
+ 
+       /** toolbarbutton **/
+-      --toolbarbutton-background-color-hover: light-dark(rgba(117, 102, 159, 0.25), rgba(182, 170, 217, 0.25));
+-      --toolbarbutton-background-color-active: light-dark(rgba(117, 102, 159, 0.4), rgba(182, 170, 217, 0.4));
++      /* Vantage: 按钮 hover 紫 → 跟随调色板的蓝 */
++      --toolbarbutton-background-color-hover: light-dark(color-mix(in srgb, var(--color-violet-50) 25%, transparent), color-mix(in srgb, var(--color-violet-30) 25%, transparent));
++            --toolbarbutton-background-color-active: light-dark(color-mix(in srgb, var(--color-violet-50) 40%, transparent), color-mix(in srgb, var(--color-violet-30) 40%, transparent));
+       --toolbarbutton-icon-fill: light-dark(var(--color-violet-desaturated-50), var(--color-violet-desaturated-10));
+       --toolbarbutton-icon-fill-attention: var(--color-accent-primary);
+       --toolbarbutton-opacity-disabled: 0.4;
+--- a/layout/style/res/ua.css	2026-07-17 00:13:45.000000000 +0800
++++ b/layout/style/res/ua.css	2026-08-07 15:31:58.683764402 +0800
+@@ -165,15 +165,17 @@
+ }
+ 
+ :link {
+-  color: LinkText;
++  /* Vantage: 默认链接蓝（原 LinkText 系统色，避免系统紫色 visited） */
++  color: #3b82f6;
+ }
+ 
+ :visited {
+-  color: VisitedText;
++  /* Vantage: 已访问链接用灰蓝色，替代 Firefox 默认紫色 */
++  color: #64748b;
+ }
+ 
+ :any-link:active {
+-  color: ActiveText;
++  color: #2563eb;
+ }
+ 
+ :any-link:read-write {
+--- a/browser/themes/shared/tabbrowser/content-area.css	2026-07-17 00:59:07.000000000 +0800
++++ b/browser/themes/shared/tabbrowser/content-area.css	2026-08-07 16:44:38.169509034 +0800
+@@ -12,7 +12,8 @@
+     --tabpanel-background-color: #2b2a33;
+   }
+   &[privatebrowsingmode="temporary"] {
+-    --tabpanel-background-color: linear-gradient(45deg, #722291 0%, #45278d 50%, #393473 100%) !important;
++    /* Vantage: 隐私窗口紫色渐变 → 深蓝绿（与 about:privatebrowsing 一致） */
++    --tabpanel-background-color: linear-gradient(45deg, #172A45 0%, #1E293B 50%, #153D3A 100%) !important;
+   }
+ }
+ 
+@@ -61,7 +62,7 @@
+     overflow: clip;
+     outline: none;
+     box-shadow: none;
+-    border: 1px solid var(--chrome-content-separator-color);
++    border: 1px solid light-dark(rgb(157, 180, 208), rgb(42, 50, 64));
+   }
+ 
+   /* Splitter between split-view panels. The active panel's 2px focus outline
+@@ -97,7 +98,7 @@
+ }
+ 
+ #navigator-toolbox {
+-  border-bottom: 0.01px solid var(--chrome-content-separator-color);
++  border-bottom: 0.01px solid light-dark(rgb(157, 180, 208), rgb(42, 50, 64));
+ 
+   @media -moz-pref("sidebar.revamp") {
+     /* This reserves space for the content area outline */
+@@ -109,7 +110,7 @@
+   }
+ 
+   @media -moz-pref("browser.nova.enabled") {
+-    border-bottom: 1px solid var(--chrome-content-separator-color);
++    border-bottom: 1px solid light-dark(rgb(157, 180, 208), rgb(42, 50, 64));
+   }
+ }
+ 
+@@ -160,7 +161,7 @@
+   background: var(--tabpanel-background-color);
+ 
+   @media -moz-pref("sidebar.revamp") {
+-    outline: 0.01px solid var(--chrome-content-separator-color);
++    outline: 0.01px solid light-dark(rgb(157, 180, 208), rgb(42, 50, 64));
+     box-shadow: var(--content-area-shadow);
+   }
+ 
+@@ -356,7 +357,7 @@
+   }
+ 
+   #tabbrowser-tabpanels[splitview] .split-view-panel:not(.deck-selected) > .browserContainer {
+-    border: var(--border-width) solid var(--chrome-content-separator-color);
++    border: var(--border-width) solid light-dark(rgb(157, 180, 208), rgb(42, 50, 64));
+   }
+ 
+   /* Align split-view panels with the sidebar's block edges. The surrounding
+--- a/browser/themes/shared/tabbrowser/tab.tokens.css	2026-07-17 00:59:07.000000000 +0800
++++ b/browser/themes/shared/tabbrowser/tab.tokens.css	2026-08-07 16:04:18.640920139 +0800
+@@ -113,8 +113,9 @@
+       --tab-background-color-hover: color-mix(in srgb, currentColor 11%, transparent);
+       --tab-block-margin: 6px;
+       --tab-border-color-accent: linear-gradient(96deg, var(--tab-border-color-selected-leading) 20.68%, var(--tab-border-color-selected-trailing) 79.34%);
+-      --tab-border-color-selected-leading: var(--color-violet-30);
+-      --tab-border-color-selected-trailing: light-dark(var(--color-orange-30), var(--color-violet-50));
++      /* Vantage: 标签渐变紫橙 → 蓝绿（默认值，不依赖 userChrome 覆盖） */
++      --tab-border-color-selected-leading: #3b82f6;
++      --tab-border-color-selected-trailing: light-dark(#10b981, #34d399);
+       --tab-border-radius: var(--border-radius-circle);
+       --tab-selected-shadow: none;
+     }
+--- a/browser/themes/shared/smartbar.css	2026-07-17 00:59:07.000000000 +0800
++++ b/browser/themes/shared/smartbar.css	2026-08-07 17:07:15.858743701 +0800
+@@ -11,10 +11,11 @@
+   --smartbar-background-color: light-dark(white, var(--color-violet-110));
+   --smartbar-inactive-background-color: color-mix(in srgb, var(--smartbar-background-color) 95%, var(--color-white));
+   /* If this changes, you must also update the tokens referenced in the render in smartbar-glow.mjs */
+-  --smartbar-border-color-gradient: linear-gradient(95deg, var(--color-violet-50) 1.22%, var(--color-pink-40) 49.98%, var(--color-yellow-30) 99.68%);
++  /* Vantage: 紫-粉-黄彩虹边框 → 蓝绿渐变 */
++  --smartbar-border-color-gradient: linear-gradient(95deg, #3b82f6 1.22%, #10b981 49.98%, #34d399 99.68%);
+   --smartbar-border-style-gradient: var(--border-width) solid;
+   --smartbar-box-shadow: var(--smartwindow-shadow, var(--box-shadow-level-2));
+-  --smartbar-glow-color: color-mix(in srgb, var(--color-violet-40) 50%, transparent);
++  --smartbar-glow-color: color-mix(in srgb, #3b82f6 50%, transparent);
+   --smartbar-max-height: 50vh;
+   --smartbar-max-visible-rows: 7;
+   --smartbar-max-width: calc(var(--size-item-xlarge) * 12);
+@@ -41,7 +42,7 @@
+     --urlbarview-background-color-selected: light-dark(var(--color-violet-10), var(--button-background-color-active));
+     --urlbarview-text-color-selected: var(--toolbar-field-focus-color);
+     --urlbarView-secondary-text-color: light-dark(color-mix(in srgb, var(--color-gray-100) 69%, transparent), var(--color-violet-desaturated-20));
+-    --link-color: light-dark(var(--color-violet-70), var(--color-violet-30));
++    --link-color: light-dark(#3b82f6, #60a5fa);
+ 
+     &:is(:hover, :focus-within, [focused], [open]) > .urlbar-background {
+       outline: none;
+--- a/browser/themes/shared/browser-colors.css	2026-07-17 00:59:07.000000000 +0800
++++ b/browser/themes/shared/browser-colors.css	2026-08-07 16:44:38.173509266 +0800
+@@ -28,7 +28,8 @@
+ 
+   @media not -moz-pref("sidebar.revamp"), -moz-pref("browser.nova.enabled") {
+     &:not([lwtheme]) {
+-      --chrome-content-separator-color: ThreeDShadow;
++      /* Vantage: 原来 ThreeDShadow 系统色在部分环境渲染成紫色 #584A7D → 蓝灰 */
++      --chrome-content-separator-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64));
+     }
+   }
+ 
+@@ -61,7 +62,8 @@
+     }
+ 
+     @media -moz-pref("browser.nova.enabled") {
+-      --chrome-content-separator-color: light-dark(rgb(201, 192, 227), rgb(16, 17, 24));
++      /* Vantage: Nova 默认淡紫分隔线 → Vantage 蓝灰 */
++      --chrome-content-separator-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64));
+     }
+   }
+ }
+--- a/browser/themes/shared/browser-shared.css	2026-07-17 00:59:07.000000000 +0800
++++ b/browser/themes/shared/browser-shared.css	2026-08-07 17:19:53.491192542 +0800
+@@ -230,7 +230,7 @@
+     box-shadow: var(--content-area-shadow);
+     /* Variables defined in browser-colors.css will be updated to use design tokens, see bug 1952566. */
+     /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+-    border-bottom-color: var(--chrome-content-separator-color);
++    border-bottom-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64));
+   }
+ }
+ 
+@@ -291,6 +291,11 @@
+   background-size: var(--toolbox-background-size);
+ }
+ 
++/* Vantage: 隐私窗口窗口底色（gap 区域）→ 蓝系，避免 Firefox 默认紫色调 */
++:root[privatebrowsingmode="temporary"] body {
++  background-color: light-dark(#eef2f8, #1e293b);
++}
++
+ @media -moz-pref("browser.nova.enabled") {
+   :root[lwtheme]:not([theme-image-in-toolbox]) #navigator-toolbox {
+     color: inherit;
+@@ -304,7 +309,7 @@
+     /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+     border-radius: var(--chrome-block-radius);
+     /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+-    border: 1px solid var(--chrome-content-separator-color);
++    border: 1px solid light-dark(rgb(157, 180, 208), rgb(42, 50, 64));
+     overflow: clip;
+ 
+     &:-moz-window-inactive {
+@@ -563,7 +568,7 @@
+   @media -moz-pref("browser.nova.enabled") {
+     :root:not([lwtheme]) & {
+       /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+-      border-top: 1px solid var(--chrome-content-separator-color);
++      border-top: 1px solid light-dark(rgb(157, 180, 208), rgb(42, 50, 64));
+       background-color: var(--toolbar-background-color);
+       color: var(--toolbar-text-color);
+     }
+@@ -719,7 +724,7 @@
+   color-scheme: var(--toolbar-color-scheme);
+   /* Variables defined in browser-colors.css will be updated to use design tokens, see bug 1952566. */
+   /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+-  border-top-color: var(--chrome-content-separator-color);
++  border-top-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64));
+ 
+   :root[lwtheme] & {
+     background-color: var(--lwt-accent-color); /* Known opaque */
+--- a/browser/themes/shared/privatebrowsing/aboutPrivateBrowsing.css	2026-07-17 00:59:07.000000000 +0800
++++ b/browser/themes/shared/privatebrowsing/aboutPrivateBrowsing.css	2026-08-07 16:54:45.896010811 +0800
+@@ -49,6 +49,8 @@
+ 
+ .container {
+   max-width: 768px;
++  /* Vantage: 固定宽度，避免 flex 下收缩成内容宽度导致信息框过窄 */
++  width: min(768px, calc(100vw - 96px));
+ }
+ 
+ p {
+@@ -77,7 +79,9 @@
+   background-size: 172px;
+   margin-inline-start: 15px;
+   -moz-context-properties: fill;
+-  fill: currentColor;
++  /* Vantage: 固定近白色，避免 currentColor 在深色背景上不可见 */
++  fill: #fbfbfe;
++  color: #fbfbfe;
+   height: 96px;
+   width: 172px;
+ }
+@@ -225,6 +229,8 @@
+   border-radius: var(--border-radius-medium);
+   margin-top: 64px;
+   padding: 17px;
++  /* Vantage: 信息框撑满容器 */
++  width: 100%;
+ 
+   @media not (prefers-contrast) {
+     box-shadow: 0 2px 6px 0 rgba(58, 57, 68, 0.2);
+@@ -509,14 +515,16 @@
+   }
+ 
+   .logo-and-wordmark .wordmark {
+-    display: none;
++    /* Vantage: 官方 Nova 隐藏 wordmark，恢复显示（fill 已固定近白） */
++    display: inline-block;
+   }
+ 
+   .logo {
+-    background: url("chrome://browser/skin/privatebrowsing/pbm-logo.svg") no-repeat center center;
+-    background-size: var(--size-item-xlarge);
+-    height: var(--size-item-xlarge);
+-    width: var(--size-item-xlarge);
++    /* Vantage: 直接用 Vantage logo（与亮色模式一致），不显示 Firefox 面具 */
++    background: image-set(url("chrome://branding/content/about-logo-private.png"), url("chrome://branding/content/about-logo-private@2x.png") 2x) no-repeat center center;
++    background-size: var(--size-image-xxlarge);
++    height: var(--size-image-xxlarge);
++    width: var(--size-image-xxlarge);
+   }
+ 
+   .nova-tagline {
+--- a/browser/themes/shared/customizableui/panelUI-shared.css	2026-07-17 00:59:07.000000000 +0800
++++ b/browser/themes/shared/customizableui/panelUI-shared.css	2026-08-07 16:40:05.953545294 +0800
+@@ -31,7 +31,7 @@
+   --panel-and-palette-icon-size: var(--icon-size-small);
+ 
+   &:not([lwtheme]) {
+-    --panel-separator-zap-gradient: linear-gradient(90deg, #9059ff 0%, #ff4aa2 52.08%, #ffbd4f 100%);
++    --panel-separator-zap-gradient: linear-gradient(90deg, #3B82F6 0%, #0EA5A0 52%, #10B981 100%);
+   }
+ 
+   &[uidensity="compact"] {
