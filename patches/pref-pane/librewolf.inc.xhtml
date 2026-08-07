@@ -126,6 +126,17 @@
   </vbox>
 
   <hbox>
+    <checkbox id="vantage-nova-checkbox" data-l10n-id="vantage-nova-checkbox" preference="browser.nova.enabled" flex="1" />
+    <html:label for="vantage-nova-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
+  </hbox>
+  <vbox class="librewolf-collapse indent">
+    <html:input type="checkbox" id="vantage-nova-collapse" />
+    <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
+      <label data-l10n-id="vantage-nova-description" />
+    </vbox>
+  </vbox>
+
+  <hbox>
     <checkbox id="librewolf-download-tmp-checkbox" data-l10n-id="librewolf-download-tmp-checkbox" preference="browser.download.start_downloads_in_tmp_dir" flex="1" />
     <html:label for="librewolf-download-tmp-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
   </hbox>

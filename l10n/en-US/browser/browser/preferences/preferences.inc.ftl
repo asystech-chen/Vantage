@@ -136,3 +136,7 @@ librewolf-debug = Debug Add-ons
 vantage-privacy-dashboard-link = Privacy Dashboard
 
 content-blocking-section-top-level-description = Vantage supports and enables Enhanced Tracking Protection in strict mode by default. This is one of the most important settings in the browser, as it provides state partitioning, strict blocklists, and other nuanced privacy features. We do not recommend changing to a different mode.
+
+vantage-nova-checkbox =
+    .label = Enable Nova interface
+vantage-nova-description = Nova is the new Firefox 153 appearance (rounded tabs, floating toolbar). When enabled, the Vantage theme switches to its Nova-adapted colors (blue-green gradient title bar). Takes effect immediately.

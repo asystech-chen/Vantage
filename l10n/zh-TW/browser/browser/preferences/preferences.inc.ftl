@@ -114,3 +114,7 @@ content-blocking-section-top-level-description = Vantage 預設支援並啟用�
 ## Privacy Dashboard
 vantage-privacy-dashboard-link = 檢視隱私儀表板
 librewolf-debug = 打開調試頁面
+
+vantage-nova-checkbox =
+    .label = 啟用 Nova 新介面
+vantage-nova-description = Nova 是 Firefox 153 引入的新外觀（圓潤分頁、浮動工具列）。開啟後 Vantage 主題會自動切換為 Nova 適配配色（藍綠漸變標題欄）。切換即時生效。
