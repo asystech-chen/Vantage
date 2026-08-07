@@ -212,8 +212,12 @@ dir : $(lw_source_dir)
 build : $(lw_source_dir)
 	(cd $(lw_source_dir) && ./mach build)
 
-# 检测 Windows 编译类型（MSVC / MinGW）- 只对 Windows 构建有效
-WIN_VARIANT := $(shell mozcfg="$${MOZCONFIG:-$(lw_source_dir)/mozconfig}"; [ -f "$$mozcfg" ] || mozcfg="$$(pwd)/assets/mozconfig"; grep -qE 'windows-msvc|pc-windows-msvc' "$$mozcfg" 2>/dev/null && echo msvc || (grep -qE 'windows-gnu|pc-mingw32' "$$mozcfg" 2>/dev/null && echo mingw || true))
+# 检测 Windows 编译类型（MSVC / MinGW）- 只对 Windows 构建有效。
+# 仅当 MOZCONFIG 显式指定或 lw_source_dir/mozconfig 已存在时才检测；
+# 否则按 Linux 处理（assets/mozconfig 是 Windows 配置，若在 make dir
+# 阶段回退到它会误判 WIN_VARIANT，导致以 Windows 模式跑补丁脚本、
+# 污染 Linux 构建树）。
+WIN_VARIANT := $(shell mozcfg="$${MOZCONFIG:-$(lw_source_dir)/mozconfig}"; if [ ! -f "$$mozcfg" ]; then mozcfg=""; fi; if [ -n "$$mozcfg" ]; then grep -qE 'windows-msvc|pc-windows-msvc' "$$mozcfg" 2>/dev/null && echo msvc || (grep -qE 'windows-gnu|pc-mingw32' "$$mozcfg" 2>/dev/null && echo mingw || true); fi)
 
 package :
 	@if [ -n "$(WIN_VARIANT)" ]; then \
@@ -228,6 +232,7 @@ package :
 	     winupdater/Vantage-WinUpdater.ico \
 	     winupdater/ScheduledTask-Create.ps1 \
 	     winupdater/ScheduledTask-Remove.ps1 \
+	     winupdater/Uninstall.ps1 \
 	     $$OBJDIR/dist/bin/winupdater/; \
 	  echo ">>> Ensuring WinUpdater entries in package-manifest.in..."; \
 	  MF=$(lw_source_dir)/browser/installer/package-manifest.in; \
@@ -238,6 +243,15 @@ package :
 	    echo "    package-manifest.in already has winupdater entries"; \
 	  fi; \
 	  echo "    Done ($$OBJDIR/dist/bin/winupdater/)."; \
+	else \
+	  # 多平台共享同一源码目录：非 Windows 打包时移除 winupdater 条目，\
+	  # 防止 Windows 平台注入的 manifest 残留污染 Linux/macOS 包。\
+	  MF=$(lw_source_dir)/browser/installer/package-manifest.in; \
+	  if grep -q "@RESPATH@/winupdater" "$$MF" 2>/dev/null; then \
+	    echo ">>> Removing WinUpdater entries from package-manifest.in (non-Windows target)..."; \
+	    sed -i '/# Vantage WinUpdater/d; /@RESPATH@\/winupdater/d' "$$MF"; \
+	    echo "    Cleaned winupdater entries from $$MF"; \
+	  fi; \
 	fi
 	(cd $(lw_source_dir) && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales)
 	@if [ -n "$(WIN_VARIANT)" ]; then \
@@ -265,6 +279,7 @@ package :
 	      cp winupdater/Vantage-WinUpdater.ico $(APP_NAME)-portable/bin/$(APP_NAME)/winupdater/; \
 	      cp winupdater/ScheduledTask-Create.ps1 $(APP_NAME)-portable/bin/$(APP_NAME)/winupdater/; \
 	      cp winupdater/ScheduledTask-Remove.ps1 $(APP_NAME)-portable/bin/$(APP_NAME)/winupdater/; \
+	      cp winupdater/Uninstall.ps1 $(APP_NAME)-portable/bin/$(APP_NAME)/winupdater/; \
 	      echo "    WinUpdater files bundled in portable package."; \
 	    else \
 	      echo "    (WinUpdater .exe not found, skipping)"; \

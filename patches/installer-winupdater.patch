@@ -1,5 +1,5 @@
 diff --git a/browser/installer/windows/nsis/installer.nsi b/browser/installer/windows/nsis/installer.nsi
-index 785e5cc..44e1750 100755
+index 785e5cc..6952236 100755
 --- a/browser/installer/windows/nsis/installer.nsi
 +++ b/browser/installer/windows/nsis/installer.nsi
 @@ -46,6 +46,7 @@ Var AddDesktopLauncher
@@ -10,36 +10,49 @@ index 785e5cc..44e1750 100755
  Var ExtensionRecommender
  Var PageName
  Var PreventRebootRequired
-@@ -273,6 +274,11 @@ Section "-InstallStartCleanup"
+@@ -200,6 +201,9 @@ ShowInstDetails nevershow
+ ; Custom Options Page
+ Page custom preOptions leaveOptions
+ 
++; Custom WinUpdater Page (Vantage)
++Page custom preWinUpdater leaveWinUpdater
++
+ ; Select Install Directory Page
+ !define MUI_PAGE_CUSTOMFUNCTION_PRE preDirectory
+ !define MUI_PAGE_CUSTOMFUNCTION_LEAVE leaveDirectory
+@@ -273,6 +277,13 @@ Section "-InstallStartCleanup"
    ${If} $R9 == "0"
      StrCpy $R9 "false"
    ${EndIf}
-+  ; Vantage: allow silent installs to opt out of WinUpdater (/WinUpdater=0)
-+  ${GetOptions} "$R8" "/WinUpdater=" $R9
-+  ${IfNot} ${Errors}
-+    StrCpy $InstallWinUpdater $R9
++  ; Vantage: fresh silent installs (/S) never install WinUpdater.
++  ; Silent upgrades of an existing install that already has it are left
++  ; alone — otherwise the auto-updater would uninstall itself mid-update.
++  ${If} ${Silent}
++  ${AndIfNot} ${FileExists} "$INSTDIR\winupdater"
++    StrCpy $InstallWinUpdater "0"
 +  ${EndIf}
    ${InstallGetOption} $R8 "PreventRebootRequired" $PreventRebootRequired
    ${If} $PreventRebootRequired == "1"
      StrCpy $PreventRebootRequired "true"
-@@ -356,6 +362,16 @@ Section "-Application" APP_IDX
+@@ -356,6 +367,17 @@ Section "-Application" APP_IDX
    ${CopyFilesFromDir} "$EXEDIR\core" "$INSTDIR" \
                        "$(ERROR_CREATE_DIRECTORY_PREFIX)" \
                        "$(ERROR_CREATE_DIRECTORY_SUFFIX)"
-+  ; Vantage: honor the WinUpdater opt-out — remove the files and the
-+  ; scheduled task when the user unchecked the Options page box (or
-+  ; /WinUpdater=0 on the command line).
++  ; Vantage: honor the WinUpdater opt-out — remove the files, the
++  ; scheduled task, the runtime copy under %APPDATA%, and the Add/Remove
++  ; Programs entry when the user unchecked the WinUpdater page box, or on
++  ; a fresh silent install.
 +  ${If} $InstallWinUpdater == "0"
 +    ${LogHeader} "Removing WinUpdater (opted out)"
-+    IfFileExists "$INSTDIR\winupdater\ScheduledTask-Remove.ps1" 0 +3
-+      ExecWait 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "$INSTDIR\winupdater\ScheduledTask-Remove.ps1"'
++    IfFileExists "$INSTDIR\winupdater\Uninstall.ps1" 0 +3
++      ExecWait 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "$INSTDIR\winupdater\Uninstall.ps1"'
 +    IfFileExists "$INSTDIR\winupdater" 0 +2
 +      RmDir /r "$INSTDIR\winupdater"
 +  ${EndIf}
  
    ; Register DLLs
    ; XXXrstrong - AccessibleMarshal.dll can be used by multiple applications but
-@@ -416,7 +432,9 @@ Section "-Application" APP_IDX
+@@ -416,7 +438,9 @@ Section "-Application" APP_IDX
  
    ; Default for adding a Taskbar pin (1 = pin, 0 = don't pin)
    ${If} $AddTaskbarSC == ""
@@ -50,61 +63,105 @@ index 785e5cc..44e1750 100755
    ${EndIf}
  
    ${LogHeader} "Adding Registry Entries"
-@@ -847,6 +865,12 @@ Section "-InstallEndCleanup"
+@@ -847,6 +871,26 @@ Section "-InstallEndCleanup"
    ${If} ${Silent}
      Call SendPingIfApplicable
    ${EndIf}
-+  ; Auto-register Vantage WinUpdater scheduled task for automatic updates.
-+  ; Runs on fresh installs and silent upgrades alike — Create.ps1 handles
-+  ; both elevated and non-elevated contexts without blocking on a UAC prompt.
-+  IfFileExists "$INSTDIR\winupdater\ScheduledTask-Create.ps1" 0 +2
-+    ExecWait 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "$INSTDIR\winupdater\ScheduledTask-Create.ps1"'
++  ; Vantage: when WinUpdater is being installed (interactive install with
++  ; the checkbox ticked, or silent upgrade of an existing install), register
++  ; the scheduled task and add an Add/Remove Programs entry so the user can
++  ; uninstall the component from the Windows app list. Uninstalling there
++  ; runs Uninstall.ps1 which removes the task, the %APPDATA% copy, the
++  ; registry entry, and the component folder.
++  ${If} $InstallWinUpdater != "0"
++    IfFileExists "$INSTDIR\winupdater\ScheduledTask-Create.ps1" 0 +2
++      ExecWait 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "$INSTDIR\winupdater\ScheduledTask-Create.ps1"'
++    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "DisplayName" "Vantage WinUpdater"
++    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "DisplayVersion" "${AppVersion}"
++    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "Publisher" "${CERTIFICATE_NAME}"
++    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "InstallLocation" "$INSTDIR\winupdater"
++    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "DisplayIcon" "$INSTDIR\winupdater\Vantage-WinUpdater.ico"
++    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "UninstallString" 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "$INSTDIR\winupdater\Uninstall.ps1"'
++    WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "NoModify" 1
++    WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "NoRepair" 1
++    WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "EstimatedSize" 2048
++  ${EndIf}
 +
  SectionEnd
  
  ################################################################################
-@@ -1219,6 +1243,7 @@ Function leaveOptions
-   ${MUI_INSTALLOPTIONS_READ} $R0 "options.ini" "Field 3" "State"
-   StrCmp $R0 "1" +1 +2
-   StrCpy $InstallType ${INSTALLTYPE_CUSTOM}
-+  ${MUI_INSTALLOPTIONS_READ} $InstallWinUpdater "options.ini" "Field 6" "State"
+@@ -1227,6 +1271,27 @@ Function leaveOptions
+   ${EndIf}
+ FunctionEnd
  
-   ${LeaveOptionsCommon}
- 
-@@ -1622,7 +1647,7 @@ Function .onInit
++; Vantage: dedicated page asking whether to install the WinUpdater
++; background auto-update component. Shown on every interactive install
++; (Standard and Custom); skipped entirely in silent mode, where fresh
++; installs never get WinUpdater (see InstallStartCleanup).
++Function preWinUpdater
++  StrCpy $PageName "WinUpdater"
++  ${If} ${Silent}
++    Abort
++  ${EndIf}
++  !insertmacro MUI_HEADER_TEXT "$(WINUPDATER_PAGE_TITLE)" "$(WINUPDATER_PAGE_SUBTITLE)"
++  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "winupdater.ini"
++FunctionEnd
++
++Function leaveWinUpdater
++  ${MUI_INSTALLOPTIONS_READ} $0 "winupdater.ini" "Settings" "State"
++  ${If} $0 != 0
++    Abort
++  ${EndIf}
++  ${MUI_INSTALLOPTIONS_READ} $InstallWinUpdater "winupdater.ini" "Field 2" "State"
++FunctionEnd
++
+ Function preDirectory
+   StrCpy $PageName "Directory"
+   ${PreDirectoryCommon}
+@@ -1621,6 +1686,7 @@ Function .onInit
+   !insertmacro InitInstallOptionsFile "components.ini"
    !insertmacro InitInstallOptionsFile "extensions.ini"
    !insertmacro InitInstallOptionsFile "summary.ini"
++  !insertmacro InitInstallOptionsFile "winupdater.ini"
  
--  WriteINIStr "$PLUGINSDIR\options.ini" "Settings" NumFields "5"
-+  WriteINIStr "$PLUGINSDIR\options.ini" "Settings" NumFields "6"
+   WriteINIStr "$PLUGINSDIR\options.ini" "Settings" NumFields "5"
  
-   WriteINIStr "$PLUGINSDIR\options.ini" "Field 1" Type   "label"
-   WriteINIStr "$PLUGINSDIR\options.ini" "Field 1" Text   "$(OPTIONS_SUMMARY)"
-@@ -1661,6 +1686,13 @@ Function .onInit
+@@ -1661,6 +1727,23 @@ Function .onInit
    WriteINIStr "$PLUGINSDIR\options.ini" "Field 5" Right  "-1"
    WriteINIStr "$PLUGINSDIR\options.ini" "Field 5" Top    "67"
    WriteINIStr "$PLUGINSDIR\options.ini" "Field 5" Bottom "87"
-+  WriteINIStr "$PLUGINSDIR\options.ini" "Field 6" Type   "checkbox"
-+  WriteINIStr "$PLUGINSDIR\options.ini" "Field 6" Text   "$(OPTIONS_WINUPDATER_CHECKBOX_DESC)"
-+  WriteINIStr "$PLUGINSDIR\options.ini" "Field 6" Left   "15"
-+  WriteINIStr "$PLUGINSDIR\options.ini" "Field 6" Right  "-1"
-+  WriteINIStr "$PLUGINSDIR\options.ini" "Field 6" Top    "90"
-+  WriteINIStr "$PLUGINSDIR\options.ini" "Field 6" Bottom "100"
-+  WriteINIStr "$PLUGINSDIR\options.ini" "Field 6" State  "1"
++  WriteINIStr "$PLUGINSDIR\winupdater.ini" "Settings" NumFields "2"
++
++  WriteINIStr "$PLUGINSDIR\winupdater.ini" "Field 1" Type   "label"
++  WriteINIStr "$PLUGINSDIR\winupdater.ini" "Field 1" Text   "$(WINUPDATER_DESCRIPTION)"
++  WriteINIStr "$PLUGINSDIR\winupdater.ini" "Field 1" Left   "0"
++  WriteINIStr "$PLUGINSDIR\winupdater.ini" "Field 1" Right  "-1"
++  WriteINIStr "$PLUGINSDIR\winupdater.ini" "Field 1" Top    "5"
++  WriteINIStr "$PLUGINSDIR\winupdater.ini" "Field 1" Bottom "45"
++
++  WriteINIStr "$PLUGINSDIR\winupdater.ini" "Field 2" Type   "checkbox"
++  WriteINIStr "$PLUGINSDIR\winupdater.ini" "Field 2" Text   "$(WINUPDATER_CHECKBOX_DESC)"
++  WriteINIStr "$PLUGINSDIR\winupdater.ini" "Field 2" Left   "0"
++  WriteINIStr "$PLUGINSDIR\winupdater.ini" "Field 2" Right  "-1"
++  WriteINIStr "$PLUGINSDIR\winupdater.ini" "Field 2" Top    "55"
++  WriteINIStr "$PLUGINSDIR\winupdater.ini" "Field 2" Bottom "65"
++  WriteINIStr "$PLUGINSDIR\winupdater.ini" "Field 2" State  "1"
++  WriteINIStr "$PLUGINSDIR\winupdater.ini" "Field 2" Flags  "GROUP"
  
    ${If} ${IsPinningSupportedByWindowsVersionWithoutSystemPopup}
      WriteINIStr "$PLUGINSDIR\shortcuts.ini" "Settings" NumFields "4"
 diff --git a/browser/installer/windows/nsis/uninstaller.nsi b/browser/installer/windows/nsis/uninstaller.nsi
-index becbb0f..aaf53b3 100755
+index becbb0f..428ff14 100755
 --- a/browser/installer/windows/nsis/uninstaller.nsi
 +++ b/browser/installer/windows/nsis/uninstaller.nsi
-@@ -616,6 +616,13 @@ Section "Uninstall"
+@@ -616,6 +616,14 @@ Section "Uninstall"
    ${If} ${FileExists} "$INSTDIR\distribution"
      RmDir /r /REBOOTOK "$INSTDIR\distribution"
    ${EndIf}
-+  ; Vantage: remove the WinUpdater scheduled task and its files
-+  ${If} ${FileExists} "$INSTDIR\winupdater\ScheduledTask-Remove.ps1"
-+    ExecWait 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "$INSTDIR\winupdater\ScheduledTask-Remove.ps1"'
++  ; Vantage: remove the WinUpdater scheduled task, its files, the
++  ; %APPDATA% copy, and the Add/Remove Programs entry (Uninstall.ps1).
++  ${If} ${FileExists} "$INSTDIR\winupdater\Uninstall.ps1"
++    ExecWait 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "$INSTDIR\winupdater\Uninstall.ps1"'
 +  ${EndIf}
 +  ${If} ${FileExists} "$INSTDIR\winupdater"
 +    RmDir /r /REBOOTOK "$INSTDIR\winupdater"
