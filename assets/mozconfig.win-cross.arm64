@@ -48,7 +48,7 @@ mk_add_options MOZ_TELEMETRY_REPORTING=0
 
 # ---- ccache（如果可用） ----
 # ---- 编译加速 ----
-mk_add_options MOZ_PARALLEL_BUILD=12
+mk_add_options MOZ_PARALLEL_BUILD=16
 
 if command -v ccache >/dev/null 2>&1; then
     ac_add_options --with-ccache

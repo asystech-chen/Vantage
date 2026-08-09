@@ -210,7 +210,13 @@ setup-wasi :
 dir : $(lw_source_dir)
 
 build : $(lw_source_dir)
-	(cd $(lw_source_dir) && ./mach build)
+	@if [ -n "$${VANTAGE_JOBS}" ]; then \
+	  echo ">>> mach build -j$${VANTAGE_JOBS} (VANTAGE_JOBS 覆盖)"; \
+	  (cd $(lw_source_dir) && ./mach build -j$${VANTAGE_JOBS}); \
+	else \
+	  echo ">>> mach build (并行度由 mozconfig MOZ_PARALLEL_BUILD 决定)"; \
+	  (cd $(lw_source_dir) && ./mach build); \
+	fi
 
 # 检测 Windows 编译类型（MSVC / MinGW）- 只对 Windows 构建有效。
 # 仅当 MOZCONFIG 显式指定或 lw_source_dir/mozconfig 已存在时才检测；
