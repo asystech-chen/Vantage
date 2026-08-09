@@ -12,6 +12,8 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   ]);
 });
 
+// Note: IOUtils is a native (WebIDL) global in Firefox 153+, no import needed.
+
   const prefsToAdd = [
   { id: "vantage.updateCheck.enabled", type: "bool" },
   { id: "browser.ml.chat.enabled", type: "bool" },
@@ -235,8 +237,337 @@ var gLibrewolfPane = {
       [0]
     );
 
+    // Profile backup buttons (CSP forbids inline oncommand handlers)
+    let exportBtn = document.getElementById("vantage-backup-export-button");
+    if (exportBtn) {
+      exportBtn.addEventListener("command", () => this.exportProfile());
+    }
+    let importBtn = document.getElementById("vantage-backup-import-button");
+    if (importBtn) {
+      importBtn.addEventListener("command", () => this.importProfile());
+    }
+
     // Notify observers that the UI is now ready
     Services.obs.notifyObservers(window, "librewolf-pane-loaded");
+  },
+
+  // ---- Profile backup & restore ----
+
+  _backupExcludeDirs: new Set([
+    "cache2", "startupCache", "thumbnails", "crashes", "minidumps",
+    "datareporting", "safebrowsing", "shader-cache", "OfflineCache",
+    "storage", "saved-telemetry-pings", "jumpListCache", "mediacapabilities",
+    "security_state", "reporting", "graphics", "webappstore", "kinto", "settings",
+  ]),
+  _backupExcludeFiles: new Set([
+    "lock", "parent.lock", "compatibility.ini", "Cache", "Cache2",
+    "logins.db", "logins.json",
+  ]),
+
+  async _l10n(id, args) {
+    try {
+      return await L10n.formatValue(id, args);
+    } catch (e) {
+      return id;
+    }
+  },
+
+  async exportProfile() {
+    try {
+      let win = this._getPaneWindow();
+      if (!win) {
+        this._showError("No window available");
+        return;
+      }
+      let profDir = Services.dirsvc.get("ProfD", Ci.nsIFile);
+
+      let fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
+      let bc = win.browsingContext || (win.docShell && win.docShell.browsingContext);
+      fp.init(bc, await this._l10n("vantage-backup-export-title"), Ci.nsIFilePicker.modeSave);
+      fp.defaultString = "vantage-profile-" + new Date().toISOString().slice(0, 10) + ".zip";
+      fp.appendFilter("ZIP (*.zip)", "*.zip");
+      let rv = await new Promise(resolve => fp.open(resolve));
+      if (rv !== Ci.nsIFilePicker.returnOK) return;
+
+      let zipFile = fp.file;
+
+      // Warn about sensitive data before packing
+      let proceed = Services.prompt.confirm(
+        win,
+        await this._l10n("vantage-backup-export-confirm-title"),
+        await this._l10n("vantage-backup-export-confirm")
+      );
+      if (!proceed) {
+        return;
+      }
+
+      try {
+        if (zipFile.exists()) {
+          zipFile.remove(false);
+        }
+        zipFile.create(Ci.nsIFile.NORMAL_FILE_TYPE, 0o600);
+        let zipWriter = Cc["@mozilla.org/zipwriter;1"].createInstance(Ci.nsIZipWriter);
+        zipWriter.open(zipFile, 0x2A); // PR_CREATE_FILE | PR_TRUNCATE | PR_WRONLY
+        this._backupCount = 0;
+        this._backupErrors = [];
+        this._addDirToZip(zipWriter, profDir, "");
+        zipWriter.close();
+        dump("Vantage backup: exported " + this._backupCount + " files to " + zipFile.path + "\n");
+        if (this._backupCount === 0) {
+          throw new Error("No files were added to the archive. Errors: " + this._backupErrors.join(" | "));
+        }
+      } catch (e) {
+        Services.prompt.alert(
+          win,
+          await this._l10n("vantage-backup-export-title"),
+          await this._l10n("vantage-backup-export-fail", { error: String(e) })
+        );
+        return;
+      }
+
+      Services.prompt.alert(
+        win,
+        await this._l10n("vantage-backup-export-title"),
+        await this._l10n("vantage-backup-export-success")
+      );
+    } catch (e) {
+      this._showError("exportProfile: " + e + "\n" + (e && e.stack ? e.stack : ""));
+    }
+  },
+
+  _getPaneWindow() {
+    // librewolf.js runs inside the preferences document: the global
+    // `window` IS the parent window the file picker needs.
+    try {
+      if (typeof window !== "undefined" && window) {
+        return window;
+      }
+    } catch (e) {}
+    try {
+      if (this._pane && this._pane.ownerGlobal) {
+        return this._pane.ownerGlobal;
+      }
+    } catch (e) {}
+    try {
+      return Services.wm.getMostRecentWindow("navigator:browser");
+    } catch (e) {}
+    return null;
+  },
+
+  _showError(msg) {
+    try {
+      let win = this._getPaneWindow();
+      Services.prompt.alert(win, "Vantage Backup Error", String(msg));
+    } catch (e) {
+      dump("Vantage backup error: " + msg + "\n");
+    }
+  },
+
+  _addDirToZip(zipWriter, dir, prefix) {
+    let entries = dir.directoryEntries;
+    while (entries.hasMoreElements()) {
+      let child = entries.getNext().QueryInterface(Ci.nsIFile);
+      let name = prefix ? prefix + "/" + child.leafName : child.leafName;
+      if (child.isDirectory()) {
+        if (this._backupExcludeDirs.has(child.leafName)) {
+          continue;
+        }
+        this._addDirToZip(zipWriter, child, name);
+      } else {
+        if (this._backupExcludeFiles.has(child.leafName)) {
+          continue;
+        }
+        try {
+          zipWriter.addEntryFile(name, Ci.nsIZipWriter.COMPRESSION_DEFAULT, child, false);
+          this._backupCount++;
+        } catch (e) {
+          dump("Vantage backup: addEntryFile FAILED " + name + " -> " + e + "\n");
+          if (this._backupErrors.length < 10) {
+            this._backupErrors.push(name + " -> " + e);
+          }
+        }
+      }
+    }
+  },
+
+  async importProfile() {
+    try {
+    let win = this._getPaneWindow();
+    if (!win) {
+      this._showError("No window available");
+      return;
+    }
+    let profDir = Services.dirsvc.get("ProfD", Ci.nsIFile);
+
+    let fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
+    let bc = win.browsingContext || (win.docShell && win.docShell.browsingContext);
+    fp.init(bc, await this._l10n("vantage-backup-import-title"), Ci.nsIFilePicker.modeOpen);
+    fp.appendFilter("ZIP (*.zip)", "*.zip");
+    let rv = await new Promise(resolve => fp.open(resolve));
+    if (rv !== Ci.nsIFilePicker.returnOK) return;
+
+    let zipFile = fp.file;
+    let zipReader = Cc["@mozilla.org/libjar/zip-reader;1"].createInstance(Ci.nsIZipReader);
+    try {
+      zipReader.open(zipFile);
+    } catch (e) {
+      Services.prompt.alert(win, await this._l10n("vantage-backup-import-title"), await this._l10n("vantage-backup-import-invalid"));
+      return;
+    }
+
+    // Validate backup structure (must contain prefs.js or places.sqlite)
+    if (!zipReader.hasEntry("prefs.js") && !zipReader.hasEntry("places.sqlite")) {
+      zipReader.close();
+      Services.prompt.alert(win, await this._l10n("vantage-backup-import-title"), await this._l10n("vantage-backup-import-invalid"));
+      return;
+    }
+
+    // Reject path traversal entries
+    let entries = zipReader.findEntries("*");
+    while (entries.hasMore()) {
+      let entryName = entries.getNext();
+      if (entryName.includes("..")) {
+        zipReader.close();
+        Services.prompt.alert(win, await this._l10n("vantage-backup-import-title"), await this._l10n("vantage-backup-import-invalid-path"));
+        return;
+      }
+    }
+
+    let confirmed = Services.prompt.confirm(
+      win,
+      await this._l10n("vantage-backup-import-confirm-title"),
+      await this._l10n("vantage-backup-import-confirm")
+    );
+    if (!confirmed) {
+      zipReader.close();
+      return;
+    }
+
+    // Auto-backup current profile before restoring (timestamped, never overwritten)
+    let backupFile = profDir.parent.clone();
+    let ts = new Date().toISOString().replace(/[T:.]/g, "-").replace("Z", "");
+    backupFile.append("vantage-backup-" + ts + ".zip");
+    try {
+      backupFile.create(Ci.nsIFile.NORMAL_FILE_TYPE, 0o600);
+      let backupZip = Cc["@mozilla.org/zipwriter;1"].createInstance(Ci.nsIZipWriter);
+      backupZip.open(backupFile, 0x2A); // PR_CREATE_FILE | PR_TRUNCATE | PR_WRONLY
+      this._addDirToZip(backupZip, profDir, "");
+      backupZip.close();
+    } catch (e) {
+      zipReader.close();
+      Services.prompt.alert(
+        win,
+        await this._l10n("vantage-backup-import-title"),
+        await this._l10n("vantage-backup-import-backup-fail", { error: String(e) })
+      );
+      return;
+    }
+
+    // Flush current prefs to disk BEFORE overwriting files. This clears the
+    // dirty flag so Firefox won't write in-memory prefs back over the
+    // restored prefs.js when it exits.
+    try {
+      Services.prefs.savePrefFile(null);
+    } catch (e) {
+      dump("Vantage restore: savePrefFile failed: " + e + "\n");
+    }
+
+    // Extract over current profile, collect locked files
+    let locked = [];
+    entries = zipReader.findEntries("*");
+    while (entries.hasMore()) {
+      let entryName = entries.getNext();
+      let entry = zipReader.getEntry(entryName);
+      if (entry.isDirectory) {
+        continue;
+      }
+      try {
+        let target = profDir.clone();
+        target.appendRelativePath(entryName);
+        this._ensureDir(target.parent);
+        zipReader.extract(entryName, target);
+      } catch (e) {
+        locked.push(entryName);
+      }
+    }
+    zipReader.close();
+
+    if (locked.length) {
+      Services.prompt.alert(
+        win,
+        await this._l10n("vantage-backup-import-title"),
+        await this._l10n("vantage-backup-import-locked", { files: locked.slice(0, 5).join(", ") })
+      );
+      return;
+    }
+
+    // Apply the restored prefs.js into memory: Firefox writes in-memory prefs
+    // back to disk on exit, so we must load the backup values into memory now,
+    // otherwise the restored prefs.js would be overwritten during shutdown.
+    let applied = 0;
+    try {
+      let prefsFile = profDir.clone();
+      prefsFile.append("prefs.js");
+      let text = await IOUtils.readUTF8(prefsFile.path);
+      let re = /user_pref\("([^"]+)",\s*("(?:[^"\\]|\\.)*"|true|false|-?\d+)\);/g;
+      let m;
+      while ((m = re.exec(text))) {
+        try {
+          let name = m[1];
+          let raw = m[2].trim();
+          if (raw === "true") {
+            Services.prefs.setBoolPref(name, true);
+          } else if (raw === "false") {
+            Services.prefs.setBoolPref(name, false);
+          } else if (/^-?\d+$/.test(raw)) {
+            Services.prefs.setIntPref(name, parseInt(raw, 10));
+          } else {
+            let s = raw.slice(1, -1);
+            s = s.replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)));
+            s = s.replace(/\\n/g, "\n").replace(/\\t/g, "\t").replace(/\\"/g, '"').replace(/\\\\/g, "\\");
+            Services.prefs.setStringPref(name, s);
+          }
+          applied++;
+        } catch (e) {
+          // locked pref or type mismatch: skip
+        }
+      }
+      dump("Vantage restore: applied " + applied + " prefs into memory\n");
+      Services.prefs.savePrefFile(null);
+    } catch (e) {
+      dump("Vantage restore: apply prefs failed: " + e + "\n");
+    }
+
+    let uiState = "";
+    let prefsSize = -1;
+    try {
+      uiState = Services.prefs.getStringPref("browser.uiCustomization.state", "").slice(0, 80);
+      let prefsFile = profDir.clone();
+      prefsFile.append("prefs.js");
+      prefsSize = prefsFile.fileSize;
+    } catch (e) {}
+    Services.prompt.alert(
+      win,
+      await this._l10n("vantage-backup-import-title"),
+      await this._l10n("vantage-backup-import-done") +
+        "\n\n[verify] prefs applied: " + applied +
+        " | prefs.js size: " + prefsSize +
+        "\nuiCustomization: " + uiState
+    );
+    Services.startup.quit(Services.startup.eForceQuit | Services.startup.eRestart);
+    } catch (e) {
+      this._showError("importProfile: " + e + "\n" + (e && e.stack ? e.stack : ""));
+    }
+  },
+
+  _ensureDir(dir) {
+    if (!dir || dir.exists()) {
+      return;
+    }
+    this._ensureDir(dir.parent);
+    try {
+      dir.create(Ci.nsIFile.DIRECTORY_TYPE, 0o700);
+    } catch (e) {}
   },
 };
 

@@ -118,3 +118,23 @@ librewolf-debug = 打開調試頁面
 vantage-nova-checkbox =
     .label = 啟用 Nova 新介面
 vantage-nova-description = Nova 是 Firefox 153 引入的新外觀（圓潤分頁、浮動工具列）。開啟後 Vantage 主題會自動切換為 Nova 適配配色（藍綠漸變標題欄）。切換即時生效。
+
+# 設定備份與還原
+vantage-backup-heading = 設定備份與還原
+vantage-backup-description = 將瀏覽器設定（書籤、歷史紀錄、擴充元件、設定）匯出為壓縮檔，或從備份還原。還原會覆蓋目前設定並重新啟動瀏覽器。
+vantage-backup-export-button = 匯出備份…
+vantage-backup-export-title = 匯出設定備份
+vantage-backup-export-success = 設定已成功匯出。
+vantage-backup-export-fail = 匯出失敗：{ $error }
+vantage-backup-import-button = 從備份還原…
+vantage-backup-import-title = 從備份還原設定
+vantage-backup-import-invalid = 所選檔案不是有效的 Vantage 設定備份。
+vantage-backup-import-invalid-path = 備份包含非法路徑，已拒絕還原。
+vantage-backup-import-confirm-title = 還原設定
+vantage-backup-import-confirm = 這將覆蓋目前所有設定（書籤、歷史紀錄、設定、擴充元件）並重新啟動瀏覽器。還原前會自動備份目前設定。確定繼續嗎？
+vantage-backup-import-backup-fail = 自動備份目前設定失敗：{ $error }
+vantage-backup-import-locked = 部分檔案被占用，無法替換（{ $files }…）。請關閉瀏覽器後重新還原。您原有的設定備份是安全的。
+vantage-backup-import-done = 設定已還原，瀏覽器即將重新啟動。
+
+vantage-backup-export-confirm-title = 匯出設定備份
+vantage-backup-export-confirm = 備份將包含敏感資料：Cookie（網站登入狀態）、瀏覽紀錄、表單紀錄和網站資料。登入密碼已排除，以保障安全。請妥善保管備份檔案，切勿分享給他人。繼續嗎？

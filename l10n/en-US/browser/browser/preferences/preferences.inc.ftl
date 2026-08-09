@@ -140,3 +140,23 @@ content-blocking-section-top-level-description = Vantage supports and enables En
 vantage-nova-checkbox =
     .label = Enable Nova interface
 vantage-nova-description = Nova is the new Firefox 153 appearance (rounded tabs, floating toolbar). When enabled, the Vantage theme switches to its Nova-adapted colors (blue-green gradient title bar). Takes effect immediately.
+
+# Profile backup & restore
+vantage-backup-heading = Profile Backup & Restore
+vantage-backup-description = Export your profile (bookmarks, history, extensions, settings) as a ZIP archive, or restore from a backup. Restoring overwrites the current configuration and restarts the browser.
+vantage-backup-export-button = Export Backup…
+vantage-backup-export-title = Export Profile Backup
+vantage-backup-export-success = Profile exported successfully.
+vantage-backup-export-fail = Export failed: { $error }
+vantage-backup-import-button = Restore from Backup…
+vantage-backup-import-title = Restore Profile from Backup
+vantage-backup-import-invalid = The selected file is not a valid Vantage profile backup.
+vantage-backup-import-invalid-path = The backup contains illegal paths and was rejected.
+vantage-backup-import-confirm-title = Restore Profile
+vantage-backup-import-confirm = This will overwrite your current configuration (bookmarks, history, settings, extensions) and restart the browser. A backup of your current profile is created automatically. Continue?
+vantage-backup-import-backup-fail = Failed to automatically back up the current profile: { $error }
+vantage-backup-import-locked = Some files are locked and could not be replaced ({ $files }...). Please close the browser and restore again. Your previous profile backup is safe.
+vantage-backup-import-done = Profile restored. The browser will restart now.
+
+vantage-backup-export-confirm-title = Export Profile Backup
+vantage-backup-export-confirm = The backup will contain sensitive data: cookies (website login sessions), browsing history, saved form data and website data. Login passwords are excluded for your safety. Please store the backup file securely and never share it. Continue?

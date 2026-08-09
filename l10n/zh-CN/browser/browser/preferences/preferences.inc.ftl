@@ -116,3 +116,23 @@ content-blocking-section-top-level-description = Vantage 默认支持并启用�
 vantage-nova-checkbox =
     .label = 启用 Nova 新界面
 vantage-nova-description = Nova 是 Firefox 153 引入的新外观（圆润标签、浮动工具栏）。开启后 Vantage 主题会自动切换为 Nova 适配配色（蓝绿渐变标题栏）。切换即时生效。
+
+# 配置备份与恢复
+vantage-backup-heading = 配置备份与恢复
+vantage-backup-description = 将浏览器配置（书签、历史、扩展、设置）导出为压缩包，或从备份恢复。恢复会覆盖当前配置并重启浏览器。
+vantage-backup-export-button = 导出备份…
+vantage-backup-export-title = 导出配置备份
+vantage-backup-export-success = 配置已成功导出。
+vantage-backup-export-fail = 导出失败：{ $error }
+vantage-backup-import-button = 从备份恢复…
+vantage-backup-import-title = 从备份恢复配置
+vantage-backup-import-invalid = 所选文件不是有效的 Vantage 配置备份。
+vantage-backup-import-invalid-path = 备份包含非法路径，已拒绝恢复。
+vantage-backup-import-confirm-title = 恢复配置
+vantage-backup-import-confirm = 这将覆盖当前所有配置（书签、历史、设置、扩展）并重启浏览器。恢复前会自动备份当前配置。确定继续吗？
+vantage-backup-import-backup-fail = 自动备份当前配置失败：{ $error }
+vantage-backup-import-locked = 部分文件被占用，无法替换（{ $files }…）。请关闭浏览器后重新恢复。您原有的配置备份是安全的。
+vantage-backup-import-done = 配置已恢复，浏览器即将重启。
+
+vantage-backup-export-confirm-title = 导出配置备份
+vantage-backup-export-confirm = 备份将包含敏感数据：Cookie（网站登录状态）、浏览历史、表单记录和网站数据。登录密码已排除，以保障安全。请妥善保管备份文件，切勿分享给他人。继续吗？
