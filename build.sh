@@ -63,6 +63,25 @@ die() {
   exit 1
 }
 
+# ---------- 编译监控自动挂载 ----------
+# 编译开始时自动把 build-monitor.sh 挂到 crontab（幂等，每 2 分钟轮询），
+# 编译结束时通过 QQ + 邮件双通道通知。
+# 监控脚本位于 workspace（本机维护），不在仓库内；CI runner 上不存在则跳过。
+ensure_build_monitor() {
+  local monitor="$HOME/.openclaw/workspace/scripts/build-monitor.sh"
+  [[ -f "$monitor" ]] || { yellow "⚠️ 未找到编译监控脚本 ($monitor)，跳过自动挂载"; return 0; }
+
+  # 清理旧状态，避免误发上一次未完成的通知
+  rm -f "$HOME/.openclaw/workspace/.build-state"
+
+  if crontab -l 2>/dev/null | grep -Fq "$monitor"; then
+    green "✅ 编译监控已挂载 (crontab 每 2 分钟)"
+  else
+    ( crontab -l 2>/dev/null | grep -vF "$monitor"; echo "*/2 * * * * $monitor" ) | crontab -
+    green "✅ 已自动挂载编译监控 (crontab 每 2 分钟)"
+  fi
+}
+
 # ---------- 显示菜单（交互模式） ----------
 show_menu() {
   echo ""
@@ -571,6 +590,7 @@ main() {
   fi
 
   green "✅ 开始编译..."
+  ensure_build_monitor
   total=${#selected[@]}
 
   for key in "${selected[@]}"; do
