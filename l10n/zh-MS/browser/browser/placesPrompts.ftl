@@ -1,0 +1,23 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+places-error-title = { -brand-short-name }
+places-no-title = （无标题）
+
+# Do not translate `javascript:` and `data:`, they refer to the scheme used in URLs
+places-load-js-data-url-error = 出于安全原因，无法从历史记录窗口或侧边栏中加载“javascript:”或“data:”网址。
+
+places-bookmarks-backup-title = 书签备份文件名
+places-bookmarks-restore-alert-title = 还原书签
+places-bookmarks-restore-alert = 此操作将使用备份替换您当前的所有书签。您确定要继续吗？
+places-bookmarks-restore-title = 选择一个书签备份
+places-bookmarks-restore-filter-name = JSON
+places-bookmarks-restore-format-error = 不支持的文件类型。
+places-bookmarks-restore-parse-error = 无法处理备份文件。
+
+places-bookmarks-import = 导入书签文件
+places-bookmarks-export = 导出书签文件
+
+places-bookmarks-paste-error-title = 发现无效网址
+places-bookmarks-paste-error-message-header = 以下网址无法添加到您的书签中。请检查格式后重试。

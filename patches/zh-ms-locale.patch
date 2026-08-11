@@ -1,0 +1,32 @@
+diff --git a/browser/locales/all-locales b/browser/locales/all-locales
+index 57eff3d..937939a 100644
+--- a/browser/locales/all-locales
++++ b/browser/locales/all-locales
+@@ -111,4 +111,5 @@ vi
+ wo
+ xh
+ zh-CN
++zh-MS
+ zh-TW
+diff --git a/browser/locales/l10n.toml b/browser/locales/l10n.toml
+index 7290692..fc21670 100644
+--- a/browser/locales/l10n.toml
++++ b/browser/locales/l10n.toml
+@@ -118,6 +118,7 @@ locales = [
+     "wo",
+     "xh",
+     "zh-CN",
++"zh-MS",
+     "zh-TW",
+     ]
+ 
+diff --git a/browser/locales/shipped-locales b/browser/locales/shipped-locales
+index 7f501f4..d5f10bd 100644
+--- a/browser/locales/shipped-locales
++++ b/browser/locales/shipped-locales
+@@ -102,4 +102,5 @@ uz
+ vi
+ xh
+ zh-CN
++zh-MS
+ zh-TW
