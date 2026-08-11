@@ -105,16 +105,6 @@
  :any-link:read-write {
 --- a/browser/themes/shared/tabbrowser/content-area.css	2026-07-17 00:59:07.000000000 +0800
 +++ b/browser/themes/shared/tabbrowser/content-area.css	2026-08-07 16:44:38.169509034 +0800
-@@ -12,7 +12,8 @@
-     --tabpanel-background-color: #2b2a33;
-   }
-   &[privatebrowsingmode="temporary"] {
--    --tabpanel-background-color: linear-gradient(45deg, #722291 0%, #45278d 50%, #393473 100%) !important;
-+    /* Vantage: 隐私窗口紫色渐变 → 深蓝绿（与 about:privatebrowsing 一致） */
-+    --tabpanel-background-color: linear-gradient(45deg, #172A45 0%, #1E293B 50%, #153D3A 100%) !important;
-   }
- }
- 
 @@ -61,7 +62,7 @@
      overflow: clip;
      outline: none;
@@ -232,18 +222,6 @@
    }
  }
  
-@@ -291,6 +291,11 @@
-   background-size: var(--toolbox-background-size);
- }
- 
-+/* Vantage: 隐私窗口窗口底色（gap 区域）→ 蓝系，避免 Firefox 默认紫色调 */
-+:root[privatebrowsingmode="temporary"] body {
-+  background-color: light-dark(#eef2f8, #1e293b);
-+}
-+
- @media -moz-pref("browser.nova.enabled") {
-   :root[lwtheme]:not([theme-image-in-toolbox]) #navigator-toolbox {
-     color: inherit;
 @@ -304,7 +309,7 @@
      /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
      border-radius: var(--chrome-block-radius);

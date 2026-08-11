@@ -40,6 +40,7 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "browser.search.openintab", type: "bool" },
   { id: "browser.ctrlTab.sortByRecentlyUsed", type: "bool" },
   { id: "vantage.theme.enabled", type: "bool" },
+  { id: "vantage.theme.autoDisabled", type: "bool" },
   { id: "browser.nova.enabled", type: "bool" },
   { id: "xpinstall.signatures.required", type: "bool" },
   { id: "browser.download.start_downloads_in_tmp_dir", type: "bool" },
@@ -159,6 +160,39 @@ var gLibrewolfPane = {
       ["vantage.theme.enabled"],
       [true],
     );
+
+    // Vantage 主题被动禁用（检测到第三方主题）时显示警告，并禁止调节开关
+    // 条件：Nova 启用 + Vantage 主题启用 + 正在使用系统主题之外的第三方主题
+    function updateThemeAutoDisabledWarning() {
+      let warn = document.getElementById("vantage-theme-autodisabled-warning");
+      let checkbox = document.getElementById("vantage-theme-checkbox");
+      let nova = Services.prefs.getBoolPref("browser.nova.enabled", true);
+      let enabled = Services.prefs.getBoolPref("vantage.theme.enabled", true);
+      let autoDisabled = Services.prefs.getBoolPref(
+        "vantage.theme.autoDisabled",
+        false
+      );
+      let show = nova && enabled && autoDisabled;
+      if (warn) {
+        warn.hidden = !show;
+      }
+      if (checkbox) {
+        checkbox.disabled = show;
+      }
+    }
+    Preferences.get("vantage.theme.autoDisabled").on(
+      "change",
+      updateThemeAutoDisabledWarning
+    );
+    Preferences.get("vantage.theme.enabled").on(
+      "change",
+      updateThemeAutoDisabledWarning
+    );
+    Preferences.get("browser.nova.enabled").on(
+      "change",
+      updateThemeAutoDisabledWarning
+    );
+    updateThemeAutoDisabledWarning();
 
     setBoolSyncListeners(
       "librewolf-download-tmp-checkbox",

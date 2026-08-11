@@ -59,4 +59,3 @@ patches/vantage-infobar-accent.patch
 patches/dmg-fix-permissions.patch
 patches/ui-patches/screenshot-button-toolbar.patch
 patches/installer-winupdater.patch
-patches/vantage-nova-colors.patch

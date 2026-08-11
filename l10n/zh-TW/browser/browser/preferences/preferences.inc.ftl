@@ -8,6 +8,7 @@ vantage-update-checkbox =
 vantage-theme-checkbox =
     .label = 啟用 Vantage 主題
 vantage-theme-description = 自動將 Vantage 主題寫入設定檔目錄，為瀏覽器加入圓角工具列、圓角分頁等現代化樣式。開啟或關閉後需重新啟動瀏覽器才能生效。注意：部分第三方主題可能會覆蓋這些效果，僅影響外觀樣式，不影響瀏覽器正常功能。
+vantage-theme-autodisabled-warning = 正在使用第三方主題，Vantage 主題已自動停用以避免相容性問題。切換回系統主題後自動恢復。
 
 vantage-update-description = 啟動時自動檢查 Vantage 是否有新版本。發現新版本時會在視窗頂部顯示通知，但不會自動安裝更新。
 
