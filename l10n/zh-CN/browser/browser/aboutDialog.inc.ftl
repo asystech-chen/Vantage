@@ -1,4 +1,4 @@
-about-librewolf = Vantage 浏览器诞生于 ASYS 科技，基于 Mozilla Firefox 源代码构建，其主要目标是隐私、快速和易用。本构建的代码参考了 LibreWolf 项目的代码实现。
+about-librewolf = Vantage 浏览器由 ASYS 科技开发，基于 Mozilla Firefox 和 LibreWolf 开源项目构建。在完整保留 Firefox 功能的同时，强化隐私防护（禁用数据上报与遥测），追求隐私、速度与易用的平衡。
 official-site1 = 官方网站
 changelog-link = 新版变化
 github-link = GitHub
