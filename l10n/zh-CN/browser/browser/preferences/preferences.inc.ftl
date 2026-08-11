@@ -9,12 +9,18 @@ librewolf-warning-title = 注意！
 librewolf-warning-description = 我们仔细选择默认设置，专注于隐私和安全。更改这些设置时，请阅读描述以了解这些更改的影响。
 
 vantage-update-heading = 更新
+# 关于 Vantage
+vantage-about-heading = 关于 Vantage
+vantage-about-version = 版本 { $version }
+vantage-about-update-checking = 正在检查更新…
+vantage-about-update-available = 发现新版本，前往官网下载
+vantage-about-up-to-date = 已是最新版本
+
 vantage-update-checkbox =
     .label = 自动检查更新
 vantage-theme-checkbox =
-    .label = 启用 Vantage 主题
+    .label = 启用 Vantage 主题（需要重启浏览器生效）
 vantage-theme-description = 自动将 Vantage 主题写入配置目录，为浏览器添加圆角工具栏、圆角标签页等现代化样式。开启或关闭后需重启浏览器生效。注意：部分第三方主题可能会覆盖这些效果，仅影响外观样式，不影响浏览器正常功能。
-vantage-theme-autodisabled-warning = 正在使用第三方主题，Vantage 主题已自动禁用以避免兼容性问题。切换回系统主题后自动恢复。
 
 vantage-update-description = 在启动时检查 Vantage 新版本。发现新版本时会通知您，但不会自动安装更新。
 

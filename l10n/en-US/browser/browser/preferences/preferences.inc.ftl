@@ -8,13 +8,19 @@ category-librewolf =
     .tooltiptext = about:config changes, logically grouped and easily accessible
 
 # Main content
+# About Vantage
+vantage-about-heading = About Vantage
+vantage-about-version = Version { $version }
+vantage-about-update-checking = Checking for updates…
+vantage-about-update-available = A new version is available — visit the official site to download
+vantage-about-up-to-date = You are up to date
+
 vantage-update-heading = Update
 vantage-update-checkbox =
     .label = Automatically check for updates
 vantage-theme-checkbox =
-    .label = Enable Vantage Theme
+    .label = Enable Vantage Theme (requires browser restart)
 vantage-theme-description = Writes the Vantage theme to your profile, adding rounded toolbars and tabs for a modern look. Requires a browser restart to take effect. Note: some third-party themes may override these visual styles — this only affects appearance, not browser functionality.
-vantage-theme-autodisabled-warning = You are using a third-party theme. The Vantage theme has been automatically disabled to avoid compatibility issues. It will be restored automatically when you switch back to a system theme.
 
 vantage-update-description = Check for new versions of Vantage on startup. You will be notified when a new version is available, but updates will not be installed automatically.
 

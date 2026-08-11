@@ -40,7 +40,6 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "browser.search.openintab", type: "bool" },
   { id: "browser.ctrlTab.sortByRecentlyUsed", type: "bool" },
   { id: "vantage.theme.enabled", type: "bool" },
-  { id: "vantage.theme.autoDisabled", type: "bool" },
   { id: "browser.nova.enabled", type: "bool" },
   { id: "xpinstall.signatures.required", type: "bool" },
   { id: "browser.download.start_downloads_in_tmp_dir", type: "bool" },
@@ -58,6 +57,9 @@ var gLibrewolfPane = {
   // called when the document is first parsed
   init() {
     this._pane = document.getElementById("paneVantage");
+
+    // ---- About Vantage：版本号 + 更新检查 + 链接按钮 ----
+    this.initAboutVantage();
 
     // Set all event listeners on checkboxes
     // AI Sidebar: sync browser.ml.chat.enabled + browser.ai.control.sidebarChatbot
@@ -161,38 +163,7 @@ var gLibrewolfPane = {
       [true],
     );
 
-    // Vantage 主题被动禁用（检测到第三方主题）时显示警告，并禁止调节开关
-    // 条件：Nova 启用 + Vantage 主题启用 + 正在使用系统主题之外的第三方主题
-    function updateThemeAutoDisabledWarning() {
-      let warn = document.getElementById("vantage-theme-autodisabled-warning");
-      let checkbox = document.getElementById("vantage-theme-checkbox");
-      let nova = Services.prefs.getBoolPref("browser.nova.enabled", true);
-      let enabled = Services.prefs.getBoolPref("vantage.theme.enabled", true);
-      let autoDisabled = Services.prefs.getBoolPref(
-        "vantage.theme.autoDisabled",
-        false
-      );
-      let show = nova && enabled && autoDisabled;
-      if (warn) {
-        warn.hidden = !show;
-      }
-      if (checkbox) {
-        checkbox.disabled = show;
-      }
-    }
-    Preferences.get("vantage.theme.autoDisabled").on(
-      "change",
-      updateThemeAutoDisabledWarning
-    );
-    Preferences.get("vantage.theme.enabled").on(
-      "change",
-      updateThemeAutoDisabledWarning
-    );
-    Preferences.get("browser.nova.enabled").on(
-      "change",
-      updateThemeAutoDisabledWarning
-    );
-    updateThemeAutoDisabledWarning();
+    // Vantage 主题让位由 CSS 的 lwtheme 条件实时处理（第三方主题激活 → 规则自动失效）
 
     setBoolSyncListeners(
       "librewolf-download-tmp-checkbox",
@@ -283,6 +254,116 @@ var gLibrewolfPane = {
 
     // Notify observers that the UI is now ready
     Services.obs.notifyObservers(window, "librewolf-pane-loaded");
+  },
+
+  // ---- About Vantage ----
+
+  initAboutVantage() {
+    // 版本号
+    let versionEl = document.getElementById("vantage-about-version");
+    if (versionEl) {
+      document.l10n.setAttributes(versionEl, "vantage-about-version", {
+        version: AppConstants.MOZ_APP_VERSION_DISPLAY,
+      });
+    }
+
+    // 链接按钮 → 新标签页打开
+    let openTab = url => {
+      try {
+        window.openWebLinkIn(url, "tab");
+      } catch (e) {
+        window.open(url, "_blank");
+      }
+    };
+    let siteBtn = document.getElementById("vantage-about-site-button");
+    if (siteBtn) {
+      siteBtn.addEventListener("command", () =>
+        openTab("https://asystech.cn/vantage/")
+      );
+    }
+    let changelogBtn = document.getElementById("vantage-about-changelog-button");
+    if (changelogBtn) {
+      changelogBtn.addEventListener("command", () =>
+        openTab("https://asystech.cn/vantage/docs.html#changelog")
+      );
+    }
+    let githubBtn = document.getElementById("vantage-about-github-button");
+    if (githubBtn) {
+      githubBtn.addEventListener("command", () =>
+        openTab("https://github.com/asystech-chen/Vantage")
+      );
+    }
+
+    // 检查更新（与 aboutDialog 一致：拉 releases.json 对比版本）
+    let statusEl = document.getElementById("vantage-about-update-status");
+    if (!statusEl) {
+      return;
+    }
+    let checkVersion = true;
+    try {
+      checkVersion = Services.prefs.getBoolPref("vantage.aboutMenu.checkVersion", true);
+    } catch (e) {}
+    if (!checkVersion) {
+      return;
+    }
+    document.l10n.setAttributes(statusEl, "vantage-about-update-checking");
+    let apiUrl = Services.prefs.getStringPref(
+      "vantage.aboutMenu.versionCheckUrl",
+      "https://asystech.cn/vantage/releases.json"
+    );
+    let downloadPage = Services.prefs.getStringPref(
+      "vantage.aboutMenu.downloadPageUrl",
+      "https://asystech.cn/vantage/vdownload.html"
+    );
+    // 10s 超时：避免网络慢时“正在检查更新”一直转
+    let controller = new AbortController();
+    let timer = setTimeout(() => controller.abort(), 10000);
+    fetch(apiUrl, { signal: controller.signal })
+      .then(r => {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then(data => {
+        if (!data || !data.length) {
+          return;
+        }
+        let latest = data[0].tag_name;
+        let current = AppConstants.MOZ_APP_VERSION_DISPLAY;
+        if (this.isNewerVersion(latest, current)) {
+          let link = document.createElement("a");
+          link.classList.add("text-link");
+          link.href = downloadPage;
+          link.addEventListener("click", e => {
+            e.preventDefault();
+            openTab(downloadPage);
+          });
+          document.l10n.setAttributes(link, "vantage-about-update-available");
+          statusEl.textContent = "";
+          statusEl.appendChild(link);
+        } else {
+          document.l10n.setAttributes(statusEl, "vantage-about-up-to-date");
+        }
+      })
+      .catch(() => {
+        statusEl.textContent = "";
+      })
+      .finally(() => clearTimeout(timer));
+  },
+
+  isNewerVersion(newVer, oldVer) {
+    let [oldV, oldR] = String(oldVer).replace(/^v/, "").split("-");
+    let [newV, newR] = String(newVer).replace(/^v/, "").split("-");
+    if (!oldR) oldR = "0";
+    if (!newR) newR = "0";
+    let oP = oldV.split(".");
+    let nP = newV.split(".");
+    for (let i = 0; i < nP.length; i++) {
+      let o = Number(oP[i] || "0");
+      let n = Number(nP[i]);
+      if (n > o) return true;
+      if (n < o) return false;
+    }
+    return Number(newR) > Number(oldR);
   },
 
   // ---- Profile backup & restore ----

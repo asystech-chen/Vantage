@@ -21,3 +21,37 @@
 	-moz-context-properties: fill, fill-opacity;
 	fill: currentColor;
 }
+
+/* About Vantage */
+.vantage-about-box {
+	border: 1px solid var(--in-content-border-color, rgba(0, 0, 0, 0.15)) !important;
+	border-radius: 8px !important;
+	padding: 12px 16px !important;
+	margin-bottom: 12px !important;
+	background-color: var(--in-content-box-background, transparent) !important;
+}
+
+.vantage-about-heading {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 1.3em !important;
+	font-weight: bold !important;
+}
+
+.vantage-about-logo {
+	width: 32px;
+	height: 32px;
+	flex-shrink: 0;
+}
+
+.vantage-about-buttons {
+	margin-top: 8px;
+	gap: 8px;
+}
+
+#vantage-about-update-status {
+	margin-top: 4px;
+	font-size: 0.9em;
+	opacity: 0.8;
+}
