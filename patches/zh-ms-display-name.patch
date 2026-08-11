@@ -1,0 +1,21 @@
+diff --git a/browser/components/preferences/main.js b/browser/components/preferences/main.js
+index 56e6c34..150e09a 100644
+--- a/browser/components/preferences/main.js
++++ b/browser/components/preferences/main.js
+@@ -1459,7 +1459,15 @@ var gMainPane = {
+       available,
+       { preferNative: true }
+     );
+-    let locales = available.map((code, i) => ({ code, name: localeNames[i] }));
++    // Vantage: override display name for zh-MS (中文（巨硬）).
++    // CLDR would render it as 中文（蒙特塞拉特） since MS is Montserrat's region code.
++    const VANTAGE_LOCALE_DISPLAY_NAMES = {
++      "zh-MS": "中文（巨硬）",
++    };
++    let locales = available.map((code, i) => ({
++      code,
++      name: VANTAGE_LOCALE_DISPLAY_NAMES[code] ?? localeNames[i],
++    }));
+     locales.sort((a, b) => a.name > b.name);
+ 
+     let fragment = document.createDocumentFragment();

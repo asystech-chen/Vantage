@@ -13,6 +13,7 @@ patches/fix-canvas-extraction-permission.patch
 patches/webgl-permission-helper.patch
 patches/languages.patch
 patches/zh-ms-locale.patch
+patches/zh-ms-display-name.patch
 patches/lw-permissions.patch
 patches/profile-directory.patch
 patches/fullpage-translations-customization.patch
