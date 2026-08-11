@@ -36,3 +36,4 @@ settings/distribution/optional-extensions/*.xpi
 # Generated detached signatures (don't commit)
 /*.asc
 scripts/check-firefox-version.sh
+scripts/ms-zh/__pycache__/
