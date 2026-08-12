@@ -71,14 +71,24 @@ ensure_build_monitor() {
   local monitor="$HOME/.openclaw/workspace/scripts/build-monitor.sh"
   [[ -f "$monitor" ]] || { yellow "⚠️ 未找到编译监控脚本 ($monitor)，跳过自动挂载"; return 0; }
 
+  # crontab 命令不可用（无 cron 环境）时直接放弃，不影响编译
+  if ! command -v crontab &>/dev/null; then
+    yellow "⚠️ crontab 不可用，跳过编译监控挂载（不影响编译）"
+    return 0
+  fi
+
   # 清理旧状态，避免误发上一次未完成的通知
   rm -f "$HOME/.openclaw/workspace/.build-state"
 
   if crontab -l 2>/dev/null | grep -Fq "$monitor"; then
     green "✅ 编译监控已挂载 (crontab 每 2 分钟)"
   else
-    ( crontab -l 2>/dev/null | grep -vF "$monitor"; echo "*/2 * * * * $monitor" ) | crontab -
-    green "✅ 已自动挂载编译监控 (crontab 每 2 分钟)"
+    # 挂载失败仅警告，绝不阻断编译（crontab 为空/损坏均走这里）
+    if ( crontab -l 2>/dev/null | grep -vF "$monitor" || true; echo "*/2 * * * * $monitor" ) | crontab - 2>/dev/null; then
+      green "✅ 已自动挂载编译监控 (crontab 每 2 分钟)"
+    else
+      yellow "⚠️ crontab 挂载失败，跳过编译监控（不影响编译）"
+    fi
   fi
 }
 
