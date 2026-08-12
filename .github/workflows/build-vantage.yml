@@ -64,9 +64,25 @@ jobs:
       - name: 加固 git 网络（HTTP/1.1，规避 HTTP2 framing 错误）
         run: git config --global http.version HTTP/1.1
 
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.tag || github.ref }}
+      - name: 同步本地 mirror（增量拉取 GitHub，加速构建）
+        run: |
+          git -C /home/chen/git/vantage.git fetch origin \
+            "+refs/heads/*:refs/heads/*" "+refs/tags/*:refs/tags/*" \
+            || echo "⚠️ mirror 同步失败，将回退直连 GitHub"
+
+      - name: Checkout（本地 mirror 优先，失败回退 GitHub）
+        run: |
+          REF="${{ github.event.inputs.tag || github.ref }}"
+          # 清空 workspace 内容（保留目录本身，后续步骤依赖 $GITHUB_WORKSPACE）
+          rm -rf "$GITHUB_WORKSPACE"/* "$GITHUB_WORKSPACE"/.[!.]* 2>/dev/null || true
+          if git clone --no-checkout /home/chen/git/vantage.git "$GITHUB_WORKSPACE" 2>/dev/null; then
+            git -C "$GITHUB_WORKSPACE" checkout "$REF"
+            echo "✅ Checkout 完成（本地 mirror）"
+          else
+            echo "⚠️ 本地 mirror 不可用，回退直连 GitHub"
+            git clone --no-checkout https://github.com/asystech-chen/Vantage.git "$GITHUB_WORKSPACE"
+            git -C "$GITHUB_WORKSPACE" checkout "$REF"
+          fi
 
       - name: Build
         timeout-minutes: 1440
