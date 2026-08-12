@@ -3,44 +3,44 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 # The question portion of the following message should have the <strong> and </strong> tags surrounding it.
-default-browser-notification-message = <strong>将 { -brand-short-name } 设置为您的主浏览器？</strong> 在您使用网络时，获取快速、安全且私密的浏览体验。
+default-browser-notification-message = <strong>日落 { -brand-short-name } 作为你的默认浏览器?</strong> 获得快速的, 保险箱, 和私人的浏览每当你使用那网.
 default-browser-notification-button =
-    .label = 设为默认
+    .label = 日落作为默认
     .accesskey = S
 
 ## These strings are used for the default browser prompt. There are 2 variations
 ## depending on the operating system (Windows vs other). The checkbox label and
 ## secondary button are shared between the variants.
 
-default-browser-prompt-title-pin = 将 { -brand-short-name } 设为您的主浏览器？
-default-browser-prompt-message-pin = 让 { -brand-short-name } 始终触手可及——请将其设为您的主浏览器，并将其固定到您的任务栏。
-default-browser-prompt-message-pin-msix = 让 { -brand-short-name } 始终触手可及——请将其设为您的主浏览器，并将其固定到您的任务栏和开始菜单。
-default-browser-prompt-message-pin-mac = 让 { -brand-short-name } 始终触手可及——请将其设为您的主浏览器，并将其保留在您的 Dock 中。
-default-browser-prompt-button-primary-set = 设为主浏览器
-default-browser-prompt-title-alt = 将 { -brand-short-name } 设为您的主浏览器？
-default-browser-prompt-message-alt = 在您每次浏览时，均能获得速度、安全性和隐私保护。
-default-browser-prompt-button-primary-alt = 设为主浏览器
-default-browser-prompt-checkbox-not-again-label = 请勿再次显示此消息
-default-browser-prompt-button-secondary = 暂不执行
+default-browser-prompt-title-pin = 使 { -brand-short-name } 你的初等量浏览器?
+default-browser-prompt-message-pin = 保持 { -brand-short-name } 在你的指尖—使它你的默认浏览器和大头针它到你的任务栏.
+default-browser-prompt-message-pin-msix = 保持 { -brand-short-name } 在你的指尖—使它你的默认浏览器和大头针它到你的任务栏和启动菜单.
+default-browser-prompt-message-pin-mac = 保持 { -brand-short-name } 在你的指尖—使它你的默认浏览器和保持它在你的码头.
+default-browser-prompt-button-primary-set = 日落作为初等量浏览器
+default-browser-prompt-title-alt = 使 { -brand-short-name } 你的默认浏览器?
+default-browser-prompt-message-alt = 获得中央处理机速度设置程序, 安全, 和隐私每一时间你浏览.
+default-browser-prompt-button-primary-alt = 日落作为默认浏览器
+default-browser-prompt-checkbox-not-again-label = 不要显示这报文再一次
+default-browser-prompt-button-secondary = 不现在
 
 ## Strings for a Windows native guidance notification when the user is forced to
 ## use Windows Settings to set the default browser. Instructions differ for
 ## Windows 10 and 11.
 
-default-browser-guidance-notification-title = 完成将 { -brand-short-name } 设为您的默认浏览器
+default-browser-guidance-notification-title = 完成制造 { -brand-short-name } 你的默认
 # Quoted text are keywords to look for in the Windows Settings app.
 default-browser-guidance-notification-body-instruction-win10 =
-    步骤 1：转到“设置”>“默认应用”
-    步骤 2：向下滚动到“Web 浏览器”
-    步骤 3：选择并指定 { -brand-short-name }
+    步骤 1: 去到设置 > 默认应用程序
+    步骤 2: 滚动向下到“结网浏览器”
+    步骤 3: 选择和选取 { -brand-short-name }
 # Quoted text are keywords to look for in the Windows Settings app.
 default-browser-guidance-notification-body-instruction-win11 =
-    步骤 1：转到“设置”>“默认应用”
-    步骤 2：为 { -brand-short-name } 选择“设为默认”
-default-browser-guidance-notification-info-page = 向我显示具体操作
-default-browser-guidance-notification-dismiss = 已完成
+    步骤 1: 去到设置 > 默认应用程序
+    步骤 2: 选择“日落默认”为了 { -brand-short-name }
+default-browser-guidance-notification-info-page = 显示我
+default-browser-guidance-notification-dismiss = 完成了的
 
-default-browser-guidance-notification-v2-title = 完成将 { -brand-short-name } 设为您的默认浏览器
-default-browser-guidance-notification-v2-body = 在“设置”中，请为 { -brand-short-name } 选择“设为默认”。
+default-browser-guidance-notification-v2-title = 完成制造 { -brand-short-name } 你的默认浏览器
+default-browser-guidance-notification-v2-body = 在设置, 选择“日落默认”为了 { -brand-short-name }.
 
-default-browser-guidance-notification-v2-title-only = 请在“设置”中完成将 { -brand-short-name } 设为您的默认浏览器
+default-browser-guidance-notification-v2-title-only = 完成制造 { -brand-short-name } 你的默认浏览器在设置

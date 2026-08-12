@@ -6,34 +6,34 @@
 #   $addonName (String): localized named of the extension that is asking to change the default search engine.
 #   $currentEngine (String): name of the current search engine.
 #   $newEngine (String): name of the new search engine.
-webext-default-search-description = 扩展 { $addonName } 请求将您的默认搜索引擎从 { $currentEngine } 更改为 { $newEngine }。您是否同意此操作？
+webext-default-search-description = { $addonName } 会喜欢到更改你的默认搜索引擎从 { $currentEngine } 到 { $newEngine }. 是那 OK?
 webext-default-search-yes =
     .label = 是
     .accesskey = Y
 webext-default-search-no =
-    .label = 否
+    .label = 无
     .accesskey = N
 
 # Variables:
 #   $addonName (String): localized named of the extension that was just installed.
-addon-post-install-message = 扩展 { $addonName } 已成功添加。
+addon-post-install-message = { $addonName } 曾是额外的.
 
 ## A modal confirmation dialog to allow an extension on quarantined domains.
 
 # Variables:
 #   $addonName (String): localized name of the extension.
 webext-quarantine-confirmation-title =
-    是否在受限站点上运行 { $addonName }？
+    运行 { $addonName } 在受限制的坐?
 
 webext-quarantine-confirmation-line-1 =
-    为保护您的数据，此扩展不允许在此站点上运行。
+    到防卫你的资料, 这扩展名是不允许在此站点.
 webext-quarantine-confirmation-line-2 =
-    如果您信任此扩展能够读取和更改您在由 { -vendor-short-name } 限制的站点上的数据，请允许此扩展。
+    允许这扩展名如果你信任它到读取和更改你的资料在坐受限制的由 { -vendor-short-name }.
 
 webext-quarantine-confirmation-allow =
     .label = 允许
     .accesskey = A
 
 webext-quarantine-confirmation-deny =
-    .label = 不允许
+    .label = 不要允许
     .accesskey = D

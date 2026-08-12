@@ -1,0 +1,54 @@
+
+url-classifier-title = URL 分类符信息
+url-classifier-search-title = 搜索
+url-classifier-search-result-title = 结果
+url-classifier-search-result-uri = URI: { $uri }
+url-classifier-search-result-list = 列表的桌子: { $list }
+url-classifier-search-input = URL
+url-classifier-search-error-invalid-url = 病人 URL
+url-classifier-search-error-no-features = 无特性被选的
+url-classifier-search-error-no-results = 无登录项发现为了 URL
+url-classifier-search-btn = 启动搜索的
+url-classifier-search-features = 特性
+url-classifier-search-listType = 列表类型
+url-classifier-provider-title = 提供器
+url-classifier-provider = 提供器
+url-classifier-provider-last-update-time = 最后的更新时间
+url-classifier-provider-next-update-time = 近邻干扰更新时间
+url-classifier-provider-back-off-time = 后面的-off 时间
+url-classifier-provider-last-update-status = 最后的更新状态
+url-classifier-provider-update-btn = 更新
+url-classifier-cache-title = 高速缓冲存储器
+url-classifier-cache-refresh-btn = 刷新
+url-classifier-cache-clear-btn = 清除
+url-classifier-cache-table-name = 表格名称
+url-classifier-cache-ncache-entries = 数字的负数高速缓冲存储器登录项
+url-classifier-cache-pcache-entries = 数字的肯定的高速缓冲存储器登录项
+url-classifier-cache-show-entries = 显示登录项
+url-classifier-cache-entries = 高速缓冲存储器登录项
+url-classifier-cache-prefix = 地区号码
+url-classifier-cache-ncache-expiry = 负数高速缓冲存储器终结
+url-classifier-cache-fullhash = 完整剁碎的食物
+url-classifier-cache-pcache-expiry = 肯定的高速缓冲存储器终结
+url-classifier-debug-title = 除错
+url-classifier-debug-module-btn = 日落日志模的
+url-classifier-debug-file-btn = 日落日志文件
+url-classifier-debug-js-log-chk = 日落 JS 日志
+url-classifier-debug-sb-modules = 保险箱浏览日志模的
+url-classifier-debug-modules = 当前的日志模的
+url-classifier-debug-sbjs-modules = 保险箱浏览 JS 日志
+url-classifier-debug-file = 当前的日志文件
+
+url-classifier-trigger-update = 切换开关更新
+url-classifier-not-available = 负的/一个
+url-classifier-disable-sbjs-log = 禁用保险箱浏览 JS 日志
+url-classifier-enable-sbjs-log = 启用保险箱浏览 JS 日志
+url-classifier-enabled = 启用
+url-classifier-disabled = 禁用
+url-classifier-updating = 校正
+url-classifier-cannot-update = 无法更新
+url-classifier-success = 成功
+
+
+url-classifier-update-error = 更新错误 ({ $error })
+url-classifier-download-error = 下载错误 ({ $error })

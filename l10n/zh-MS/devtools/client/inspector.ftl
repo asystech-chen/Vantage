@@ -6,21 +6,21 @@
 ### which is available from the Browser Tools sub-menu -> 'Inspect'.
 
 # A title text for the spectrum dragger panel in the color picker tooltip.
-colorpicker-tooltip-spectrum-dragger-title = 频谱
+colorpicker-tooltip-spectrum-dragger-title = 光谱
 
 # A title text for the eyedropper in the color picker tooltip.
-colorpicker-tooltip-eyedropper-title = 在页面上选取颜色
+colorpicker-tooltip-eyedropper-title = 拾取颜色在页
 
 # A title text for the closest color name shown in the color picker tooltip, used together with the actual color.
 # Variables:
 #   $colorName (String): the color name the current color is closest to.
-colorpicker-tooltip-color-name-title = 最接近的：{ $colorName }
+colorpicker-tooltip-color-name-title = 最靠近的（close的最高级）到: { $colorName }
 
 # A title text for the hue slider in the color picker tooltip.
 colorpicker-tooltip-hue-slider-title = 色调
 
 # A title text for the alpha slider in the color picker tooltip.
-colorpicker-tooltip-alpha-slider-title = 不透明度
+colorpicker-tooltip-alpha-slider-title = 不透明
 
 # A text for the toggle for the element-specific pseudo-classes panel.
-inspector-element-specific-pseudo-classes-heading = 元素特定的伪类
+inspector-element-specific-pseudo-classes-heading = 部分-specific 假的-类别

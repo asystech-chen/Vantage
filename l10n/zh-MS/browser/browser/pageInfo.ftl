@@ -3,7 +3,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/. --
 
 page-info-window =
-    .style = width: 600px; min-height: 550px;
+    .style = 宽度: 600专用小交换机（Private Exchange）; 部长（Minister）-高度: 550专用小交换机（Private Exchange）;
 
 copy =
     .key = C
@@ -14,7 +14,7 @@ menu-copy =
 select-all =
     .key = A
 menu-select-all =
-    .label = 全选
+    .label = 选择所有的
     .accesskey = A
 
 close-dialog =
@@ -24,35 +24,35 @@ general-tab =
     .label = 常规
     .accesskey = G
 general-title =
-    .value = 标题：
+    .value = 标题:
 general-url =
-    .value = 地址：
+    .value = 地址:
 general-type =
-    .value = 类型：
+    .value = 类型:
 general-mode =
-    .value = 渲染模式：
+    .value = 回报模式:
 general-size =
-    .value = 大小：
+    .value = 大小:
 general-referrer =
-    .value = 引用来源 URL：
+    .value = 谈及 URL:
 general-modified =
-    .value = 修改日期：
+    .value = 改良的:
 general-encoding =
-    .value = 文本编码：
+    .value = 电文编码:
 general-meta-name =
     .label = 名称
 general-meta-content =
     .label = 内容
 
 media-tab =
-    .label = 媒体
+    .label = 媒质
     .accesskey = M
 media-location =
-    .value = 位置：
+    .value = 位置:
 media-text =
-    .value = 关联文本：
+    .value = 关联的电文:
 media-alt-header =
-    .label = 替代文本
+    .label = 交替的电文
 media-address =
     .label = 地址
 media-type =
@@ -62,24 +62,24 @@ media-size =
 media-count =
     .label = 计数
 media-dimension =
-    .value = 尺寸：
+    .value = 尺寸:
 media-long-desc =
-    .value = 长描述：
+    .value = 长描述:
 media-select-all =
-    .label = 全选
+    .label = 选择所有的
     .accesskey = e
 media-save-as =
-    .label = 另存为…
+    .label = 保存作为…
     .accesskey = A
 media-save-image-as =
-    .label = 另存为…
+    .label = 保存作为…
     .accesskey = v
 
 perm-tab =
-    .label = 权限
+    .label = 许可
     .accesskey = P
 permissions-for =
-    .value = 权限授予对象：
+    .value = 许可为了:
 
 security-tab =
     .label = 安全
@@ -87,41 +87,41 @@ security-tab =
 security-view =
     .label = 查看证书
     .accesskey = V
-security-view-unknown = 未知
-    .value = 未知
+security-view-unknown = 不知道的
+    .value = 不知道的
 security-view-identity =
-    .value = 网站身份
+    .value = 网站（全球资讯网的主机站） (打)标记
 security-view-identity-owner =
-    .value = 所有者：
+    .value = 拥有者:
 security-view-identity-domain =
-    .value = 网站：
+    .value = 网站（全球资讯网的主机站）:
 security-view-identity-verifier =
-    .value = 验证方：
+    .value = 已查清的由:
 security-view-identity-validity =
-    .value = 有效期至：
+    .value = 期满( expire的第三人称单数 ) 在:
 security-view-privacy =
-    .value = 隐私与历史记录
+    .value = 隐私 & 历史记录
 security-view-qwac =
-    .label = 查看合格证书
+    .label = 查看有资格的证书
     .accesskey = Q
 
-security-view-privacy-history-value = 在今天之前，我是否访问过此网站？
-security-view-privacy-sitedata-value = 此网站是否正在我的计算机上存储信息？
+security-view-privacy-history-value = 有电流拜访这网站（全球资讯网的主机站）更重要的到今天?
+security-view-privacy-sitedata-value = 是这网站（全球资讯网的主机站）储存信息在我的计算机?
 
 security-view-privacy-clearsitedata =
-    .label = 清除 Cookie 和网站数据
+    .label = 清除 Cookie 和站点数据
     .accesskey = C
 
-security-view-privacy-passwords-value = 我是否为此网站保存过任何密码？
+security-view-privacy-passwords-value = 有电流保存任何的密码为了这网站（全球资讯网的主机站）?
 
 security-view-privacy-viewpasswords =
-    .label = 查看已保存的密码
+    .label = 查看保存密码
     .accesskey = w
 security-view-technical =
-.value = 技术详细信息
+    .value = 技术上的详细数据
 
 help-button =
-    .label = 帮助
+    .label = 帮忙
 
 ## These strings are used to tell the user if the website is storing cookies
 ## and data on the users computer in the security tab of pageInfo
@@ -129,46 +129,46 @@ help-button =
 ##   $value (number) - Amount of data being stored
 ##   $unit (string) - The unit of data being stored (Usually KB)
 
-security-site-data-cookies = 是，包含 Cookie 及 { $value } { $unit } 的网站数据
-security-site-data-only = 是，包含 { $value } { $unit } 的网站数据
+security-site-data-cookies = 是, 饼干和 { $value } { $unit } 的站点数据
+security-site-data-only = 是, { $value } { $unit } 的站点数据
 
-security-site-data-cookies-only = 是，包含 Cookie
-security-site-data-no = 否
+security-site-data-cookies-only = 是, 饼干
+security-site-data-no = 无
 
 ##
 
-image-size-unknown = 未知
+image-size-unknown = 不知道的
 page-info-not-specified =
-    .value = 未指定
-not-set-alternative-text = 未指定
-not-set-date = 未指定
-media-img = 图像
+    .value = 不规定的
+not-set-alternative-text = 不规定的
+not-set-date = 不规定的
+media-img = 图象
 media-bg-img = 背景
 media-border-img = 边框
-media-list-img = 项目符号
+media-list-img = 子弹
 media-cursor = 光标
 media-object = 对象
 media-embed = 嵌入
-media-link = 图标
+media-link = 像标
 media-input = 输入
-media-video = 视频
-media-audio = 音频
+media-video = 影像
+media-audio = 音频的
 saved-passwords-yes = 是
-saved-passwords-no = 否
+saved-passwords-no = 无
 
 no-page-title =
-    .value = 未命名页面：
+    .value = 无称号的页:
 general-quirks-mode =
-    .value = 怪异模式
+    .value = 古怪举动模式
 general-strict-mode =
-    .value = 标准兼容模式
+    .value = 标准遵从模式
 page-info-security-no-owner =
-    .value = 此网站不提供所有权信息。
-media-select-folder = 请选择一个文件夹以保存图像
+    .value = 这网站（全球资讯网的主机站）做不补给所有权信息.
+media-select-folder = 选择一个文件夹到保存那复数虚部
 media-unknown-not-cached =
-    .value = 未知（未缓存）
+    .value = 不知道的 (不贮藏起来)
 permissions-use-default =
-    .label = 使用默认值
+    .label = 使用默认
 
 # This string is used to display the number of meta tags
 # in the General Tab
@@ -177,8 +177,8 @@ permissions-use-default =
 general-meta-tags =
     .value =
         { $tags ->
-             [one] Meta（1 个标签）
-            *[other] Meta（{ $tags } 个标签）
+             [one] Meta (1 标记)
+            *[other] Meta ({ $tags } 标签)
         }
 
 # This string is used to display the number of times
@@ -187,9 +187,9 @@ general-meta-tags =
 #   $visits (number) - The number of previous visits
 security-visits-number =
     { $visits ->
-         [0] 否
-         [one] 是，一次
-        *[other] 是，{ $visits } 次
+         [0] 无
+         [one] 是, 一次
+        *[other] 是, { $visits } 蒂姆（男子名）
     }
 
 # This string is used to display the size of a media file
@@ -198,8 +198,8 @@ security-visits-number =
 #   $bytes (number) - The size of an image in Bytes
 properties-general-size =
     .value = { $bytes ->
-         [one] { $kb } KB（{ $bytes } 字节）
-        *[other] { $kb } KB（{ $bytes } 字节）
+         [one] { $kb } KB ({ $bytes } 字节)
+        *[other] { $kb } KB ({ $bytes } bright young things 年轻人用品（英国较年轻者的用品）)
     }
 
 # This string is used to display the type and number
@@ -209,8 +209,8 @@ properties-general-size =
 #   $frames (number) - The number of frames in an animated image
 media-animated-image-type =
     .value = { $frames ->
-         [one] { $type } 图像（动画，{ $frames } 帧）
-        *[other] { $type } 图像（动画，{ $frames } 帧）
+         [one] { $type } 图象 (活生生的, { $frames } 框架)
+        *[other] { $type } 图象 (活生生的, { $frames } 故障估计机（Failure Rate Assessment Machine）)
     }
 
 # This string is used to display the type of
@@ -218,7 +218,7 @@ media-animated-image-type =
 # Variables:
 #   $type (string) - The type of an image
 media-image-type =
-    .value = { $type } 图像
+    .value = { $type } 图象
 
 # This string is used to display the size of a scaled image
 # in both scaled and unscaled pixels
@@ -228,14 +228,14 @@ media-image-type =
 #   $scaledx (number) - The scaled horizontal size of an image
 #   $scaledy (number) - The scaled vertical size of an image
 media-dimensions-scaled =
-    .value = { $dimx }px × { $dimy }px（缩放至 { $scaledx }px × { $scaledy }px）
+    .value = { $dimx }专用小交换机（Private Exchange）× { $dimy }专用小交换机（Private Exchange） (有鳞(斑)的到 { $scaledx }专用小交换机（Private Exchange）× { $scaledy }专用小交换机（Private Exchange）)
 
 # This string is used to display the size of an image in pixels
 # Variables:
 #   $dimx (number) - The horizontal size of an image
 #   $dimy (number) - The vertical size of an image
 media-dimensions =
-    .value = { $dimx }px × { $dimy }px
+    .value = { $dimx }专用小交换机（Private Exchange）× { $dimy }专用小交换机（Private Exchange）
 
 # This string is used to display the size of a media
 # file in kilobytes
@@ -249,6 +249,6 @@ media-file-size = { $size } KB
 # This string is used to display the URL of the website on top of the
 # pageInfo dialog box
 page-info-page =
-    .title = 页面信息 — { $website }
+    .title = 页信息— { $website }
 page-info-frame =
-    .title = 帧信息 — { $website }
+    .title = 框架信息— { $website }

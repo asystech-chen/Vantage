@@ -5,195 +5,195 @@
 ## Chrome
 
 main-context-menu-open-link-new-smart-window =
-    .label = 在新智能窗口中启动链接
+    .label = 打开连接在新的聪明的窗口
     .accesskey = S
 
 appmenuitem-new-ai-window =
-    .label = 新智能窗口
-    .value = 新智能窗口
+    .label = 新的聪明的窗口
+    .value = 新的聪明的窗口
 
 appmenuitem-new-classic-window =
-    .label = 新经典窗口
+    .label = 新的古典作品窗口
 
 menu-file-new-ai-window =
-    .label = 新智能窗口
+    .label = 新的聪明的窗口
 
 menu-file-new-classic-window =
-    .label = 新经典窗口
+    .label = 新的古典作品窗口
 
 menu-history-chats =
-    .label = 对话
+    .label = 闲谈
 
 menu-history-chats-recent =
-    .label = 最近对话
+    .label = 最近的闲谈
 
-smartwindow-fullpage-heading = 智能窗口
+smartwindow-fullpage-heading = 聪明的窗口
 
-smartwindow-document-title = 新选项卡
+smartwindow-document-title = 新的 Tab
 
 ## Smart Window Toggle Button
 
 toolbar-button-ai-window-toggle =
     .label = 窗口类型
-    .tooltiptext = 在智能窗口与经典窗口之间进行切换。
+    .tooltiptext = 开关在...之间刺痛和古典作品窗口.
 
 ai-window-toggleview-switch-classic =
-    .label = 经典窗口
-    .value = 经典窗口
+    .label = 古典作品窗口
+    .value = 古典作品窗口
 
 ai-window-toggleview-switch-classic-description =
     .label = 标准浏览
     .value = 标准浏览
 
 ai-window-toggleview-switch-ai =
-    .label = 智能窗口
-    .value = 智能窗口
+    .label = 聪明的窗口
+    .value = 聪明的窗口
 
 ai-window-toggleview-switch-ai-description =
-    .label = 浏览时进行提问
-    .value = 浏览时进行提问
+    .label = 询问作为你浏览
+    .value = 询问作为你浏览
 
 ai-window-toggleview-switch-private =
-    .label = 隐私窗口
+    .label = 私人的窗口
 
 ai-window-toggleview-open-private =
-    .label = 打开新的隐私窗口
+    .label = 打开新的私人的窗口
 
-ai-window-toggleview-status-label-active = 智能窗口
+ai-window-toggleview-status-label-active = 聪明的窗口
 
-ai-window-toggleview-status-label-inactive = 经典窗口
+ai-window-toggleview-status-label-inactive = 古典作品窗口
 
 ## Input CTA
 
-aiwindow-input-cta-submit-label-chat = 提问
-aiwindow-input-cta-submit-label-navigate = 前往
+aiwindow-input-cta-submit-label-chat = 询问
+aiwindow-input-cta-submit-label-navigate = 去
 aiwindow-input-cta-submit-label-search = 搜索
 aiwindow-input-cta-submit-label-stop = 停止
 
 # Text announced to screen readers when response generation starts.
-aiwindow-generation-started-announcement = 响应生成已开始
+aiwindow-generation-started-announcement = 应答一代启动
 
-aiwindow-input-cta-menu-label-chat = 提问
-aiwindow-input-cta-menu-label-navigate = 前往网站
+aiwindow-input-cta-menu-label-chat = 询问
+aiwindow-input-cta-menu-label-navigate = 去到给...择址
 # $searchEngineName (string) - The name of the default search engine
-aiwindow-input-cta-menu-label-search = 使用{ $searchEngineName }进行搜索
-aiwindow-input-cta-menu-label-search-with = 使用…进行搜索
+aiwindow-input-cta-menu-label-search = 搜索与 { $searchEngineName }
+aiwindow-input-cta-menu-label-search-with = 搜索与…
 
 aiwindow-input-cta-search-submenu-header = 搜索
 
 aiwindow-input-cta-stop-button =
-    .aria-label = 停止响应生成
-    .title = 停止响应
+    .aria-label = 停止应答一代
+    .title = 停止应答
 
 ## Smartbar
 
 smartbar-placeholder =
-    .placeholder = 提问、搜索或输入URL
-smartbar-placeholder-hint-1 = 使用@提及最近的选项卡…
-smartbar-placeholder-hint-2 = 提问任何内容…
-smartbar-placeholder-hint-3 = 输入网址…
-smartbar-placeholder-hint-4 = 搜索网页…
+    .placeholder = 询问, 搜索, 或类型一个 URL
+smartbar-placeholder-hint-1 = 使用 @ 到提到最近的标签页…
+smartbar-placeholder-hint-2 = 询问任何事…
+smartbar-placeholder-hint-3 = Enter 一个网地址…
+smartbar-placeholder-hint-4 = 搜索那网…
 
 ## Mentions
 
-smartbar-mention-typing-placeholder = 标记选项卡或网站
-smartbar-mentions-list-no-results-label = 未找到任何结果
-smartbar-mentions-list-recent-tabs-label = 最近的选项卡
+smartbar-mention-typing-placeholder = 标记一个标签页或位置
+smartbar-mentions-list-no-results-label = 无结果发现
+smartbar-mentions-list-recent-tabs-label = 最近的标签页
 
 ## Context mentions menu toggle button
 
 smartbar-context-menu-button =
-    .aria-label = 添加选项卡或网站
-    .tooltiptext = 添加选项卡或网站
+    .aria-label = 添加一个标签页或位置
+    .tooltiptext = 添加一个标签页或位置
 
 ## Website Chip
 
-aiwindow-website-chip-placeholder = 标记选项卡或网站
-aiwindow-website-chip-history-deleted = 历史记录已删除
+aiwindow-website-chip-placeholder = 标记一个标签页或位置
+aiwindow-website-chip-history-deleted = 历史记录删除
 aiwindow-website-chip-remove-button =
     .aria-label = 移除
 
 ## Firstrun onboarding
 
-aiwindow-firstrun-title = 欢迎使用智能窗口
-aiwindow-firstrun-model-title = 您认为哪些内容对您最为重要？
-aiwindow-firstrun-model-subtitle = 请选择用于驱动智能窗口的模型。您可以随时进行切换。
-aiwindow-firstrun-model-fast-label = 快速
-aiwindow-firstrun-model-fast-body = 回答迅速
+aiwindow-firstrun-title = 欢迎到刺痛窗口
+aiwindow-firstrun-model-title = （尤当 has 为助动词时要点到你?
+aiwindow-firstrun-model-subtitle = 拾取一个模型到使...有力量聪明的窗口. 开关任何时候.
+aiwindow-firstrun-model-fast-label = 快速的
+aiwindow-firstrun-model-fast-body = 用户问题及答案新闻组很快地
 # $model (string) - The name of the AI model
 # $ownerName (string) - The name of the model owner/provider
-aiwindow-firstrun-model-chip-subtitle = 模型 { $model }，由 { $ownerName } 提供
-aiwindow-firstrun-model-allpurpose-label = 灵活
-aiwindow-firstrun-model-allpurpose-body = 适合大多数需求的稳固选择
-aiwindow-firstrun-model-personal-label = 个性化
-aiwindow-firstrun-model-personal-body = 最具定制性的回答
-aiwindow-firstrun-button = 让我们开始吧！
-aiwindow-firstrun-back-button = 返回
-aiwindow-firstrun-next-button = 下一步
+aiwindow-firstrun-model-chip-subtitle = 模型 { $model } 由 { $ownerName }
+aiwindow-firstrun-model-allpurpose-label = 易曲的
+aiwindow-firstrun-model-allpurpose-body = 原色非特为了最多需要
+aiwindow-firstrun-model-personal-label = 私人的
+aiwindow-firstrun-model-personal-body = 最多裁缝做的用户问题及答案新闻组
+aiwindow-firstrun-button = let us 让我们去!
+aiwindow-firstrun-back-button = 后面的
+aiwindow-firstrun-next-button = 近邻干扰
 
 ## These are labels describing model types in the smartbar model select.
 
-aiwindow-input-model-select-button-label-fast = 快速
-aiwindow-input-model-select-button-label-allpurpose = 灵活
-aiwindow-input-model-select-button-label-personal = 个性化
-aiwindow-input-model-select-button-label-custom = 自定义
+aiwindow-input-model-select-button-label-fast = 快速的
+aiwindow-input-model-select-button-label-allpurpose = 易曲的
+aiwindow-input-model-select-button-label-personal = 私人的
+aiwindow-input-model-select-button-label-custom = 定制
 
 # Variables:
 # $ownerName (string) - The name of the model owner/provider
 # $model (string) - The model name
 aiwindow-input-model-select-menu-item-description = { $ownerName } { $model }
-aiwindow-input-model-select-menu-item-description-custom = 使用您自己的LLM
+aiwindow-input-model-select-menu-item-description-custom = 使用你的自己的 LLM
 aiwindow-input-model-select-default-badge =
     .label = 默认
-    .title = 所选的默认模型
+    .title = 那被选的默认模型
 aiwindow-input-model-select-settings-link = 模型设置
 
 ## Firstrun memories onboarding
 
-aiwindow-firstrun-memories-title = 更多有益的回答，按您的条款
-aiwindow-firstrun-memories-subtitle = 智能窗口可以从您的聊天、浏览或两者中学习，以创建记忆。它们使回答随着时间的推移更加有益。
+aiwindow-firstrun-memories-title = 更多有帮助的用户问题及答案新闻组, 在你的检索词
+aiwindow-firstrun-memories-subtitle = 聪明的窗口能学习从你的闲谈, 浏览, 或两者的到创建存储器. 他们使用户问题及答案新闻组更多有帮助的结束时间.
 
-aiwindow-firstrun-memories-conversation-title = 保持对话的继续进行
-aiwindow-firstrun-memories-conversation-body = 从聊天中学习意味着您将不得不减少重复您自己的内容。
+aiwindow-firstrun-memories-conversation-title = 保持那会话去
+aiwindow-firstrun-memories-conversation-body = 学习从闲谈低劣的 (=you will 有到重复你自己最低成本估算与调度法.
 
-aiwindow-firstrun-memories-relevance-title = 更相关的回答
-aiwindow-firstrun-memories-relevance-body = 从浏览中学习给予智能窗口更大的全局视野。
+aiwindow-firstrun-memories-relevance-title = 更多有关联的用户问题及答案新闻组
+aiwindow-firstrun-memories-relevance-body = 学习从浏览千兆(电子)伏特(giga(electron)volts) 聪明的窗口那更大的（big的比较级）图象.
 
-aiwindow-firstrun-memories-privacy-title = 设计上即为私密
-aiwindow-firstrun-memories-privacy-body = 记忆存储在此设备上。随时删除或关闭。
+aiwindow-firstrun-memories-privacy-title = 私人的由设计
+aiwindow-firstrun-memories-privacy-body = 存储器是储存的在这装置. Delete 或转弯关闭任何时候.
 
-aiwindow-firstrun-memories-choose-label = 选择智能窗口学习的内容
-aiwindow-firstrun-memories-checkbox-chats = 智能窗口中的聊天
-aiwindow-firstrun-memories-checkbox-browsing = 跨 { -brand-product-name } 的浏览活动
-aiwindow-firstrun-memories-update-settings = 随时在设置中更新。
-aiwindow-firstrun-memories-no-create = 已了解。智能窗口将不会创建记忆。随时在设置中更新。
+aiwindow-firstrun-memories-choose-label = 选取什么聪明的窗口学习从
+aiwindow-firstrun-memories-checkbox-chats = 闲谈在刺痛窗口
+aiwindow-firstrun-memories-checkbox-browsing = 浏览越过 { -brand-product-name }
+aiwindow-firstrun-memories-update-settings = 更新在设置任何时候.
+aiwindow-firstrun-memories-no-create = 获得它. 刺痛窗口将不创建存储器. 更新在设置任何时候.
 
 ## Firstrun set as default onboarding
 
-aiwindow-firstrun-default-title = 使智能窗口成为您的首选
-aiwindow-firstrun-default-subtitle = 在单一位置进行浏览、搜索和提问。当您需要时，仍可打开私密窗口和经典窗口。
-aiwindow-firstrun-default-checkbox-label = 始终在智能窗口中打开 { -brand-product-name }
-aiwindow-firstrun-default-checkbox-description = 随时在设置中切换
+aiwindow-firstrun-default-title = 使聪明的窗口你的去-到
+aiwindow-firstrun-default-subtitle = 浏览, 搜索, 和询问在一(个) 地方. 你能仍然打开私人的和古典作品窗口何时你想要.
+aiwindow-firstrun-default-checkbox-label = 总是打开 { -brand-product-name } 在刺痛窗口
+aiwindow-firstrun-default-checkbox-description = 开关在设置任何时候
 
 ## Ask Toolbar Button
 
 smartwindow-ask-button =
-    .label = 提问
+    .label = 询问
 
 ## Memories toggle button
 
 aiwindow-memories-on =
-    .tooltiptext = 在回答中有用时使用记忆
-    .aria-label = 记忆开启
+    .tooltiptext = 使用存储器在响应回应何时有帮助的
+    .aria-label = 存储器在
 aiwindow-memories-off =
-    .tooltiptext = 不在回答中使用记忆
-    .aria-label = 记忆关闭
+    .tooltiptext = 不要使用存储器在响应回应
+    .aria-label = 存储器关闭
 
 ## New Chat Button
 
 aiwindow-new-chat =
-    .tooltiptext = 新聊天
-    .aria-label = 新聊天
+    .tooltiptext = 新的闲谈
+    .aria-label = 新的闲谈
 
 ## Close Sidebar Button
 
@@ -203,18 +203,18 @@ aiwindow-close-sidebar =
 
 ## Sign out dialog
 
-fxa-signout-dialog-body-aiwindow = 同步的数据将保留在您的账户中。打开的智能窗口将切换为经典窗口。
+fxa-signout-dialog-body-aiwindow = synchronization 的缩略词资料将保持在你的帐户. 打开聪明的窗口将开关到古典作品窗口.
 
 ## Smart Window Toggle Button (in-page)
 
-smartwindow-switch-to-smart-window = 切换到智能窗口
+smartwindow-switch-to-smart-window = 开关到刺痛窗口
 
 ## Fullpage Footer Actions
 
 smartwindow-footer-chats =
-    .tooltiptext = 聊天
-    .aria-label = 聊天
-    .label = 聊天
+    .tooltiptext = 闲谈
+    .aria-label = 闲谈
+    .label = 闲谈
 
 smartwindow-footer-history =
     .tooltiptext = 历史记录
@@ -224,34 +224,34 @@ smartwindow-footer-history =
 ## Disclaimer
 ## Text displayed to user to warn user about potential mistakes.
 
-smartwindow-disclaimer = 人工智能可能犯错。
+smartwindow-disclaimer = AI 能使错误( mistake的名词复数 ).
 
 ## FirefoxView Chats
 ## Chats in this context refers to chats saved from the Smart Window Assistant
 
-firefoxview-chats-nav = 聊天
-  .title = 聊天
-firefoxview-chats-header = 聊天
+firefoxview-chats-nav = 闲谈
+  .title = 闲谈
+firefoxview-chats-header = 闲谈
 
-firefoxview-chat-context-delete = 从聊天中删除
+firefoxview-chat-context-delete = Delete 从闲谈
     .accesskey = D
 
 # Placeholder for the input field to search in open tabs ("search" is a verb).
 firefoxview-search-text-box-chats =
-.placeholder = 正在搜索聊天记录...
+  .placeholder = 搜索闲谈
 
 ## Variables:
 ##   $date (string) - Date to be formatted based on locale
 
-firefoxview-chat-date-today = 今日 - { DATETIME($date, dateStyle: "full") }
-firefoxview-chat-date-yesterday = 昨日 - { DATETIME($date, dateStyle: "full") }
+firefoxview-chat-date-today = 今天 - { DATETIME($date, dateStyle: "full") }
+firefoxview-chat-date-yesterday = 昨天 - { DATETIME($date, dateStyle: "full") }
 firefoxview-chat-date-this-month = { DATETIME($date, dateStyle: "full") }
 firefoxview-chat-date-prev-month = { DATETIME($date, month: "long", year: "numeric") }
 
 ## Message displayed in Firefox View when the user has no chat data
 
-firefoxview-chats-empty-header = 返回至您的聊天记录
-firefoxview-chats-empty-description = 当您使用智能窗口时，您的聊天记录将被保存于此。
+firefoxview-chats-empty-header = 获得后面的到你的闲谈
+firefoxview-chats-empty-description = 作为你使用聪明的窗口, 你的闲谈将是保存这里.
 
 ## Count displayed in fxview chat search results
 
@@ -259,27 +259,27 @@ firefoxview-chats-empty-description = 当您使用智能窗口时，您的聊天
 #   $count (Number) - The number of chats matching the search query.
 
 firefoxview-search-chat-results-count = { $count ->
-  [one] { $count } 条聊天记录
- *[other] { $count } 条聊天记录
+  [one] { $count } 闲谈
+ *[other] { $count } 闲谈
 }
 
 ## Clear browsing data dialog
 
 item-history-downloads-and-chat =
-    .label = 浏览、下载及聊天历史记录
+    .label = 浏览, 下载, & 闲谈历史记录
     .accesskey = B
 
-item-history-downloads-and-chat-description = 清除站点、下载及聊天历史记录
+item-history-downloads-and-chat-description = 清除位置, 下载, 和闲谈历史记录
 
 ## Natural Language Interactions
 
 smart-window-confirm-select-all =
-    .aria-label = 全选
-    .label = 全选
+    .aria-label = 选择所有的
+    .label = 选择所有的
 
 smart-window-confirm-deselect-all =
-    .aria-label = 取消全选
-    .label = 取消全选
+    .aria-label = 取消选定所有的
+    .label = 取消选定所有的
 
 smart-window-close-confirm =
     .tooltiptext = 关闭确认
@@ -291,50 +291,50 @@ smart-window-confirm-close-tab = 关闭
 #   $count (number) - Number of tabs to close
 smart-window-confirm-close-tabs =
     { $count ->
-        [one] 关闭 { $count } 个标签页
-       *[other] 关闭 { $count } 个标签页
+        [one] 关闭 { $count } 标签页
+       *[other] 关闭 { $count } 标签页
     }
 
 ## Natural Language action callouts
 
 # Shown after the Smart Window closes the user's current tab in response to a
 # natural language prompt action, anchored to the toolbar menu button.
-smartwindow-close-tab-callout-title = 标签页已关闭
-smartwindow-close-tab-callout-subtitle = 您可以随时从历史记录中重新开启已关闭的标签页。
+smartwindow-close-tab-callout-title = Tab 关闭
+smartwindow-close-tab-callout-subtitle = 重开标签页从历史记录任何时候.
 
 ## Smart Window new tab promo
 
-smart-window-default-promo-heading = 是否将智能窗口设置为您的默认窗口？
-smart-window-default-promo-message = { -brand-short-name } 将每次在智能窗口中启动。
-smart-window-default-promo-primary-button = 设置为默认
-smart-window-default-promo-additional-button = 暂不设置
+smart-window-default-promo-heading = 使聪明的窗口你的默认?
+smart-window-default-promo-message = { -brand-short-name } 将打开在刺痛窗口每一时间.
+smart-window-default-promo-primary-button = 日落作为默认
+smart-window-default-promo-additional-button = 不现在
 
 ## Feedback modal
 
-aiwindow-feedback-modal-title = 分享您的反馈意见
-aiwindow-feedback-what-worked-well = 哪些方面运行良好？请勿包含个人信息。
-aiwindow-feedback-choose-any = 请选择所有适用的选项
-aiwindow-feedback-add-details = 如果您愿意，请添加详细信息。请勿包含个人信息。
-aiwindow-feedback-disclaimer = 提交即表示您同意分享此反馈及本次聊天内容，以帮助 { -brand-shorter-name } 改进智能窗口。您的其他聊天记录将保持私密。<a data-l10n-name="learn-more">了解更多</a>
+aiwindow-feedback-modal-title = 部分反馈
+aiwindow-feedback-what-worked-well = 什么 work的过去式和过去分词井? 无私人的信息, 请.
+aiwindow-feedback-choose-any = 选取任何的那应用
+aiwindow-feedback-add-details = 添加详细数据如果 (=you had)(=you would) 相似的. 无私人的信息, 请.
+aiwindow-feedback-disclaimer = 顺从( submit的现在分词 ) 莎尔（女子名）你的反馈和这闲谈到帮助 { -brand-shorter-name } 改良聪明的窗口. 你的其他的闲谈停留私人的. <a data-l10n-name="learn-more">学习更多</a>
 aiwindow-feedback-submit = 提交
 aiwindow-feedback-cancel = 取消
-aiwindow-feedback-reason-incorrect-or-misleading = 不正确或具有误导性
-aiwindow-feedback-reason-doesnt-address-my-request = 未满足我的请求
-aiwindow-feedback-reason-lacks-personalization = 缺乏个性化或上下文信息
-aiwindow-feedback-reason-performance-or-usability = 性能或可用性问题
-aiwindow-feedback-reason-harmful-or-offensive = 有害或冒犯性内容
-aiwindow-feedback-reason-other = 其他
-aiwindow-feedback-preview-report = 查看聊天详情
-aiwindow-feedback-preview-report-with-page = 查看聊天及页面详情
-aiwindow-feedback-include-page-content = 共享此聊天中引用的页面
+aiwindow-feedback-reason-incorrect-or-misleading = 不正确的或引入歧途的
+aiwindow-feedback-reason-doesnt-address-my-request = 不地址我的请求
+aiwindow-feedback-reason-lacks-personalization = 缺乏人格化或上下文
+aiwindow-feedback-reason-performance-or-usability = 施行或可用性发行
+aiwindow-feedback-reason-harmful-or-offensive = 有害的或令人不快的
+aiwindow-feedback-reason-other = 其他的
+aiwindow-feedback-preview-report = 查看闲谈详细数据
+aiwindow-feedback-preview-report-with-page = 查看闲谈和页详细数据
+aiwindow-feedback-include-page-content = 部分那页引用的在这闲谈
 
 ## Smart Window ai-chat-grid
 
 aiwindow-ai-chat-grid-view-controls =
-    .aria-label = 切换视图布局
+    .aria-label = 开关查看页面布局
 aiwindow-ai-chat-grid-list-view =
-    .aria-label = 切换模式：列表视图
-    .tooltiptext = 列表视图
+    .aria-label = 开关模式: 列表查看
+    .tooltiptext = 列表查看
 aiwindow-ai-chat-grid-grid-view =
-    .aria-label = 切换模式：网格视图
-    .tooltiptext = 网格视图
+    .aria-label = 开关模式: 网格查看
+    .tooltiptext = 网格查看

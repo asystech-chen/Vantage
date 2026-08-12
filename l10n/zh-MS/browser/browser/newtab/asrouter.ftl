@@ -4,47 +4,47 @@
 
 ## These messages are used as headings in the recommendation doorhanger
 
-cfr-doorhanger-extension-heading = 推荐扩展
-cfr-doorhanger-feature-heading = 推荐功能
+cfr-doorhanger-extension-heading = 被推荐的扩展名
+cfr-doorhanger-feature-heading = 被推荐的特性
 
 ##
 
 cfr-doorhanger-extension-sumo-link =
-  .tooltiptext = 为何会显示此内容
+  .tooltiptext = 为什么存取管理程序电流视觉这
 
-cfr-doorhanger-extension-cancel-button = 暂不操作
+cfr-doorhanger-extension-cancel-button = 不现在
   .accesskey = N
 
-cfr-doorhanger-extension-ok-button = 立即添加
+cfr-doorhanger-extension-ok-button = 添加现在
   .accesskey = A
 
 cfr-doorhanger-extension-manage-settings-button = 管理推荐设置
   .accesskey = M
 
-cfr-doorhanger-extension-never-show-recommendation = 不再向您显示此推荐
+cfr-doorhanger-extension-never-show-recommendation = 不要显示我这推荐
   .accesskey = S
 
-cfr-doorhanger-extension-learn-more-link = 了解更多信息
+cfr-doorhanger-extension-learn-more-link = 学习更多
 
 # This string is used on a new line below the add-on name
 # Variables:
 #   $name (String) - Add-on author name
-cfr-doorhanger-extension-author = 作者：{ $name }
+cfr-doorhanger-extension-author = 由 { $name }
 
 # This is a notification displayed in the address bar.
 # When clicked it opens a panel with a message for the user.
 cfr-doorhanger-extension-notification = 推荐
 # .a11y-announcement is extracted in JS and announced via A11y.announce.
 cfr-doorhanger-extension-notification2 = 推荐
-  .tooltiptext = 扩展推荐
-  .a11y-announcement = 扩展推荐可用
+  .tooltiptext = 扩展名推荐
+  .a11y-announcement = 扩展名推荐可利用的
 
 # This is a notification displayed in the address bar.
 # When clicked it opens a panel with a message for the user.
 # .a11y-announcement is extracted in JS and announced via A11y.announce.
 cfr-doorhanger-feature-notification = 推荐
-  .tooltiptext = 功能推荐
-  .a11y-announcement = 功能推荐可用
+  .tooltiptext = 特性推荐
+  .a11y-announcement = 特性推荐可利用的
 
 ## Add-on statistics
 ## These strings are used to display the total number of
@@ -62,39 +62,39 @@ cfr-doorhanger-extension-rating =
 #   $total (Number) - The total number of users using the add-on
 cfr-doorhanger-extension-total-users =
   { $total ->
-      [one] { $total } 位用户
-     *[other] { $total } 位用户
+      [one] { $total } 用户
+     *[other] { $total } 用户
   }
 
 ## Mozilla Account messages
 
-cfr-doorhanger-bookmark-fxa-header = 在您的所有设备上同步您的书签。
-cfr-doorhanger-bookmark-fxa-body-2 = 操作已成功完成！请勿让您的移动设备上缺失此书签。请使用一个账户开始操作。
-cfr-doorhanger-bookmark-fxa-link-text = 正在同步书签...
+cfr-doorhanger-bookmark-fxa-header = 同步的你的书签各处.
+cfr-doorhanger-bookmark-fxa-body-2 = 大的发现! 现在不要是许可没有这书签在你的活动物体德维克（男子名、姓氏）. 获得启动与一个帐户.
+cfr-doorhanger-bookmark-fxa-link-text = 同步的书签现在…
 cfr-doorhanger-bookmark-fxa-close-btn-tooltip =
   .aria-label = 关闭按钮
   .title = 关闭
 
-fxa-adoption-addresses-backup-title = 让我们备份您已保存的地址
-fxa-adoption-addresses-backup-subtitle = 通过加密同步到您的设备，以保护您已保存的地址。
-fxa-adoption-credit-cards-backup-title = 让我们备份您的支付方式
-fxa-adoption-credit-cards-backup-subtitle = 通过加密同步到您的设备，以保护您的支付方式。
-fxa-adoption-bookmarks-treatment-backup-title = 让我们备份您的书签
-fxa-adoption-bookmarks-treatment-backup-subtitle = 通过加密同步到您的设备，以保护您的书签。
+fxa-adoption-addresses-backup-title = let us 让我们后面的向上的你的保存地址
+fxa-adoption-addresses-backup-subtitle = 防卫你的保存地址由 syncing 他们到你的德维克（男子名、姓氏）与加密.
+fxa-adoption-credit-cards-backup-title = let us 让我们后面的向上的你的付款方法
+fxa-adoption-credit-cards-backup-subtitle = 防卫你的付款方法由 syncing 他们到你的德维克（男子名、姓氏）与加密.
+fxa-adoption-bookmarks-treatment-backup-title = let us 让我们后面的向上的你的书签
+fxa-adoption-bookmarks-treatment-backup-subtitle = 防卫你的书签由 syncing 他们到你的德维克（男子名、姓氏）与加密.
 
-fxa-adoption-primary-button-label = 注册
+fxa-adoption-primary-button-label = 正负号向上的
 
 ## What's New toolbar button and panel
 
 # This string is used by screen readers to offer a text based alternative for
 # the notification icon
-cfr-badge-reader-label-newfeature = 新功能：
+cfr-badge-reader-label-newfeature = 新的特性:
 
 cfr-whatsnew-button =
-  .label = 新增内容
-  .tooltiptext = 新增内容
+  .label = （尤当 has 为助动词时新的
+  .tooltiptext = （尤当 has 为助动词时新的
 
-cfr-whatsnew-release-notes-link-text = 阅读发行说明
+cfr-whatsnew-release-notes-link-text = 读取那版本不
 
 ## Enhanced Tracking Protection Milestones
 
@@ -103,26 +103,27 @@ cfr-whatsnew-release-notes-link-text = 阅读发行说明
 #   $date (Datetime) - The date we began recording the count of blocked trackers
 cfr-doorhanger-milestone-heading2 =
   { $blockedCount ->
-    *[other] { -brand-short-name } 自 { DATETIME($date, month: "long", year: "numeric") } 起已阻止超过 <b>{ $blockedCount }</b> 个跟踪器！
+    *[other] { -brand-short-name } 阻止结束 <b>{ $blockedCount }</b> 追踪者自...以后 { DATETIME($date, month: "long", year: "numeric") }!
   }
-cfr-doorhanger-milestone-ok-button = 查看全部
+cfr-doorhanger-milestone-ok-button = 看见所有的
   .accesskey = S
 cfr-doorhanger-milestone-close-button = 关闭
   .accesskey = C
 
 ## DOH Message
 
-cfr-doorhanger-doh-body = 您的隐私至关重要。{ -brand-short-name } 现在会尽可能安全地将您的 DNS 请求路由到合作伙伴服务，以在您浏览时保护您的安全。
-cfr-doorhanger-doh-header = 更安全、加密的 DNS 查询
-cfr-doorhanger-doh-primary-button-2 = 确定
+cfr-doorhanger-doh-body = 你的隐私事件. { -brand-short-name } 现在安全地溃败你的 DNS 请求每当可能的到一个合伙人服务到防卫你消磨你浏览.
+cfr-doorhanger-doh-header = 更多无虑的, 加密 DNS 查找
+cfr-doorhanger-doh-primary-button-2 = 好
   .accesskey = O
 cfr-doorhanger-doh-secondary-button = 禁用
   .accesskey = D
+
 ## Full Video Support CFR message
 
-cfr-doorhanger-video-support-body = 此网站上的视频可能无法在此版本的{ -brand-short-name }上正常播放。为获得完整的视频支持，请立即更新{ -brand-short-name }。
-cfr-doorhanger-video-support-header = 更新{ -brand-short-name }以播放视频
-cfr-doorhanger-video-support-primary-button = 立即更新
+cfr-doorhanger-video-support-body = 视频文件在此站点可以不播放对在这版本的 { -brand-short-name }. 为了完整影像支持, 更新 { -brand-short-name } 现在.
+cfr-doorhanger-video-support-header = 更新 { -brand-short-name } 到播放影像
+cfr-doorhanger-video-support-primary-button = 更新现在
   .accesskey = U
 
 ## VPN promotion dialog for public Wi-Fi users
@@ -132,24 +133,24 @@ cfr-doorhanger-video-support-primary-button = 立即更新
 ## to the Mozilla VPN page and a link to dismiss the dialog.
 
 # This header text can be explicitly wrapped.
-spotlight-public-wifi-vpn-header = 您似乎正在使用公共 Wi-Fi
-spotlight-public-wifi-vpn-body = 为隐藏您的位置和浏览活动，建议您考虑使用虚拟专用网络。这将有助于您在机场和咖啡店等公共场所浏览时保持受保护的状态。
-spotlight-public-wifi-vpn-primary-button = 使用{ -mozilla-vpn-brand-name }保持私密
+spotlight-public-wifi-vpn-header = 一看相似的 you are 你（你们）是使用公众熟铁（Wrought Iron）-格式标识码
+spotlight-public-wifi-vpn-body = 到隐藏你的位置和浏览活动, 考虑一个虚拟私人的网络. 它将帮助保持你受保护的何时浏览在公众 placebo capsule 安慰剂胶囊相似的飞机场和咖啡商店.
+spotlight-public-wifi-vpn-primary-button = 停留私人的与 { -mozilla-vpn-brand-name }
   .accesskey = S
-spotlight-public-wifi-vpn-link = 暂不执行
+spotlight-public-wifi-vpn-link = 不现在
   .accesskey = N
 
 ## Emotive Continuous Onboarding
 
-spotlight-better-internet-header = 更美好的互联网始于您
-spotlight-better-internet-body = 当您使用{ -brand-short-name }时，您即为一个对每个人都更好的开放且可访问的互联网投票。
-spotlight-peace-mind-header = 我们已为您提供全面保护
-spotlight-peace-mind-body = 每个月，{ -brand-short-name }平均为每位用户阻止超过3,000个跟踪器。因为没有任何事物——尤其是像跟踪器这样的隐私干扰——应阻隔在您与良好互联网之间。
+spotlight-better-internet-header = 一个较好的因特网启动与你
+spotlight-better-internet-body = 何时你使用 { -brand-short-name}, you are 你（你们）是投票为了一个打开和易接近的因特网 (=that is)说得更精确些较好的为了系统中的一个组名.
+spotlight-peace-mind-header = （尤当 have 为助动词时获得你隐蔽着的
+spotlight-peace-mind-body = 每一月, { -brand-short-name } 阻止一个平均的结束 3,000 追踪者每一用户. 因为无, 尤其隐私讨厌的东西[人相似的追踪者, 应该站在...之间你和那善行因特网.
 spotlight-pin-primary-button = { PLATFORM() ->
-    [macos] 保留在程序坞中
-   *[other] 固定到任务栏
+    [macos] 保持在码头
+   *[other] 大头针到任务栏
 }
-spotlight-pin-secondary-button = 暂不执行
+spotlight-pin-secondary-button = 不现在
 
 ## MR2022 Background Update Windows native toast notification strings.
 ##
@@ -164,44 +165,44 @@ spotlight-pin-secondary-button = 暂不执行
 ## The button labels are fitted into narrow fixed-width buttons by
 ## Windows and therefore must be as narrow as possible.
 
-mr2022-background-update-toast-title = 全新的{ -brand-short-name }。更加私密。更少跟踪器。毫无妥协。
-mr2022-background-update-toast-text = 立即尝试最新的{ -brand-short-name }，其已升级至我们迄今最强的反跟踪保护。
+mr2022-background-update-toast-title = 新的 { -brand-short-name }. 更多私人的. 较少的追踪者. 无妥协( compromise的名词复数 ).
+mr2022-background-update-toast-text = 尝试那最新 { -brand-short-name } 现在, 更新的与我们的最强壮的（为strong的最高级）反对者-跟踪保护还.
 
 # This button label will be fitted into a narrow fixed-width button by
 # Windows. Try to not exceed the width of the English text (compare it
 # using a variable font like Arial): the button can only fit 1-2
 # additional characters, exceeding characters will be truncated.
-mr2022-background-update-toast-primary-button-label = 立即启动{ -brand-shorter-name }
+mr2022-background-update-toast-primary-button-label = 打开 { -brand-shorter-name } 现在
 
 # This button label will be fitted into a narrow fixed-width button by
 # Windows. Try to not exceed the width of the English text (compare it using a
 # variable font like Arial): the button can only fit 1-2 additional characters,
 # exceeding characters will be truncated.
-mr2022-background-update-toast-secondary-button-label = 稍后提醒
+mr2022-background-update-toast-secondary-button-label = 提醒我以后
 
 ## Cookie Banner Handling CFR
 
-cookie-banner-blocker-onboarding-header = { -brand-short-name }刚刚为您拒绝了一个 Cookie 横幅
-cookie-banner-blocker-onboarding-body = 更少的干扰，更少的 Cookie 在此网站上跟踪您。
-cookie-banner-blocker-onboarding-learn-more = 了解更多
+cookie-banner-blocker-onboarding-header = { -brand-short-name } 只是遭拒绝的一个饼干旗帜为了你
+cookie-banner-blocker-onboarding-body = 最低成本估算与调度法娱乐, 最低成本估算与调度法饼干跟踪你在此站点.
+cookie-banner-blocker-onboarding-learn-more = 学习更多
 
 ## These strings are used in the Fox doodle Pin/set default spotlights
 
-july-jam-headline = 我们已为您提供全面保护
-july-jam-body = 每个月，{ -brand-short-name }平均为每位用户阻止超过3,000个跟踪器，为您提供安全、快速的途径访问良好互联网。
-july-jam-set-default-primary = 使用{ -brand-short-name }打开我的链接
-fox-doodle-pin-headline = 欢迎您回来
+july-jam-headline = （尤当 have 为助动词时获得你隐蔽着的
+july-jam-body = 每一月, { -brand-short-name } 阻止一个平均的 3,000+ 追踪者每一用户, 礼物你保险箱, 快的访问到那善行因特网.
+july-jam-set-default-primary = 打开我的连接与 { -brand-short-name }
+fox-doodle-pin-headline = 欢迎后面的
 
 # “indie” is short for the term “independent”.
 # In this instance, free from outside influence or control.
-fox-doodle-pin-body = 这里是一个快速提醒，您可以将您喜爱的独立浏览器始终保持在一键访问的距离内。
-fox-doodle-pin-primary = 使用{ -brand-short-name }打开我的链接
-fox-doodle-pin-secondary = 暂不执行
+fox-doodle-pin-body = (=here is. Here's to you)! 干杯一个新长出的肉提醒的人那你能保持你的喜欢的事物独立制片人浏览器只是一(个) 单击离去.
+fox-doodle-pin-primary = 打开我的连接与 { -brand-short-name }
+fox-doodle-pin-secondary = 不现在
 
 ## These strings are used in the Set Firefox as Default PDF Handler for Existing Users experiment
 
-set-default-pdf-handler-headline = <strong>您的 PDF 现已在{ -brand-short-name }中打开。</strong>您可以直接在浏览器中编辑或签署表单。如需更改，请在设置中搜索“PDF”。
-set-default-pdf-handler-primary = 已获悉
+set-default-pdf-handler-headline = <strong>你的 PDFs 现在打开在 { -brand-short-name }.</strong> 编辑或正负号表单直接的在你的浏览器中. 到更改, 搜索“PDF”在设置.
+set-default-pdf-handler-primary = 获得它
 
 ## PDF Annotations strings
 
@@ -209,64 +210,65 @@ set-default-pdf-handler-primary = 已获悉
 # where to place your signature.
 # If this expression doesn’t have a direct translation, please
 # translate this alternative string: "Add your signature anywhere!"
-annotations-default-pdf-handler-headline = 在虚线上签名——或任意位置！
+annotations-default-pdf-handler-headline = 正负号在那有点的线路—或无论何处!
 
 # “Go-to” is an idiomatic English expression referring to something that is used often.
-annotations-default-pdf-handler-body = 绘制、键入或上传您的签名，然后将其精确放置在您希望的位置。保存您常用的签名以备下次使用。
-annotations-make-default-pdf-handler-title = 将{ -brand-short-name }设置为您的默认 PDF 编辑器？
-annotations-make-default-pdf-handler-subtitle = 您每次打开 PDF 时都可以使用我们的工具。
-annotations-make-default-pdf-primary-cta-label = 设为默认
-annotations-make-default-pdf-next-label = 下一步
+annotations-default-pdf-handler-body = 翻牌, 类型, 或上装你的签名附件, 然后地方它确切地哪里你想要. 保存你的去-to 签名为了近邻干扰时间.
+annotations-make-default-pdf-handler-title = 使 { -brand-short-name } 你的默认 PDF 编辑器?
+annotations-make-default-pdf-handler-subtitle = (=you will 有访问到我们的工具每一时间你打开一个 PDF.
+annotations-make-default-pdf-primary-cta-label = 日落作为默认
+annotations-make-default-pdf-next-label = 近邻干扰
 
 ## FxA sync CFR
 
-fxa-sync-cfr-header = 您未来是否会有新设备？
-fxa-sync-cfr-body = 请确保您最新的书签、密码和标签页在您每次打开新的{ -brand-product-name }浏览器时都能随您同行。
-fxa-sync-cfr-primary = 了解更多
+fxa-sync-cfr-header = 新的装置在你的未来?
+fxa-sync-cfr-body = 确保你的最近的书签, 密码, 和标签页过来与你任何的时间你打开一个新的 { -brand-product-name } 浏览器.
+fxa-sync-cfr-primary = 学习更多
   .accesskey = L
-fxa-sync-cfr-secondary = 稍后提醒
+fxa-sync-cfr-secondary = 提醒我以后
   .accesskey = R
 
 ## Device Migration FxA Spotlight
 
-device-migration-fxa-spotlight-heavy-user-header = 请勿忘记备份您的数据
-device-migration-fxa-spotlight-heavy-user-body = 请确保重要信息——如书签和密码——在您的所有设备上均已更新并保持受保护状态。
-device-migration-fxa-spotlight-heavy-user-primary-button = 开始执行
+device-migration-fxa-spotlight-heavy-user-header = 不要忘记到使后退向上的你的资料
+device-migration-fxa-spotlight-heavy-user-body = 确保要点信息—相似的书签和密码—是更新的和受保护的越过所有的你的德维克（男子名、姓氏）.
+device-migration-fxa-spotlight-heavy-user-primary-button = 获得启动
 
-device-migration-fxa-spotlight-older-device-header = 来自{ -brand-product-name }的安心保障
-device-migration-fxa-spotlight-older-device-body = 一个账户可确保您的重要信息在您连接的任何设备上保持更新并受到保护。
-device-migration-fxa-spotlight-older-device-primary-button = 创建账户
-device-migration-fxa-spotlight-getting-new-device-header-2 = 您是否计划在不久的将来获取新设备？
-device-migration-fxa-spotlight-getting-new-device-body-2 = 请遵循几个简单的步骤，以便在您开始使用新设备时，将您的书签、历史记录和密码一并携带。
-device-migration-fxa-spotlight-getting-new-device-primary-button = 如何备份我的数据
+device-migration-fxa-spotlight-older-device-header = 和平的思想, 从 { -brand-product-name }
+device-migration-fxa-spotlight-older-device-body = 一个帐户保持你的要点信息更新的和受保护的在任何的装置你连接.
+device-migration-fxa-spotlight-older-device-primary-button = 创建一个帐户
 
-device-migration-fxa-spotlight-sync-header = 浏览时不留一丝停顿
-device-migration-fxa-spotlight-sync-body = 以加密方式同步您的所有重要信息（例如书签和密码）。您可以在任何使用 { -brand-product-name } 的位置调取全部内容。
-device-migration-fxa-spotlight-sync-primary-button = 立即开始
+device-migration-fxa-spotlight-getting-new-device-header-2 = 新的装置在你的未来?
+device-migration-fxa-spotlight-getting-new-device-body-2 = 跟随一个少数简单的步骤到带来你的书签, 历史记录, 和密码与你何时你获得启动在一个新的装置.
+device-migration-fxa-spotlight-getting-new-device-primary-button = 如何到使后退向上的我的资料
+
+device-migration-fxa-spotlight-sync-header = 浏览没有不见的一个拍
+device-migration-fxa-spotlight-sync-body = 同步的所有的你的要点信息与加密—相似的书签和密码. 你能拉每件事物向上的无论何处你使用 { -brand-product-name }.
+device-migration-fxa-spotlight-sync-primary-button = 获得启动
 
 ## Set as Default PDF Reader Infobar
 
 # The question portion of the following message should have the <strong> and </strong> tags surrounding it.
-pdf-default-notification-message = <strong>是否将 { -brand-short-name } 设置为您的默认 PDF 阅读器？</strong>使用 { -brand-short-name } 阅读和编辑存储在您计算机上的 PDF 文件。
+pdf-default-notification-message = <strong>使 { -brand-short-name } 你的默认 PDF 阅读程序?</strong> 使用 { -brand-short-name } 到读取和编辑 PDFs 保存到你的计算机.
 pdf-default-notification-set-default-button =
-    .label = 设置为默认
+    .label = 日落作为默认
 pdf-default-notification-decline-button =
-    .label = 暂不设置
+    .label = 不现在
 
 ## Launch on login infobar notification
 
-launch-on-login-infobar-message = <strong>是否在您每次重新启动计算机时打开 { -brand-short-name }？</strong>现在您可以设置 { -brand-short-name }，使其在您重启设备时自动打开。
-launch-on-login-learnmore = 了解更多
-launch-on-login-infobar-confirm-button = 是的，打开 { -brand-short-name }
+launch-on-login-infobar-message = <strong>打开 { -brand-short-name } 每一时间你重新启动你的计算机?</strong> 现在你能放 { -brand-short-name } 到打开自动地何时你重新启动你的装置.
+launch-on-login-learnmore = 学习更多
+launch-on-login-infobar-confirm-button = 是, 打开 { -brand-short-name }
   .accesskey = Y
-launch-on-login-infobar-reject-button = 暂不打开
+launch-on-login-infobar-reject-button = 不现在
   .accesskey = N
 
 ## These string variants are used when the “launch on login” infobar
 ## notification is displayed for a second time.
 
-launch-on-login-infobar-final-message = <strong>是否在您每次重新启动计算机时打开 { -brand-short-name }？</strong>若要管理您的启动首选项，请在设置中搜索“启动”。
-launch-on-login-infobar-final-reject-button = 无需操作，谢谢
+launch-on-login-infobar-final-message = <strong>打开 { -brand-short-name } 每一时间你重新启动你的计算机?</strong> 到管理你的启动参数选择, 搜索“启动”在设置.
+launch-on-login-infobar-final-reject-button = 无谢意
   .accesskey = N
 
 ## Launch on login spotlight
@@ -274,14 +276,14 @@ launch-on-login-infobar-final-reject-button = 无需操作，谢谢
 ## Shown as a spotlight message when the user closes the browser, offering to set
 ## { -brand-short-name } to launch when the computer starts up.
 
-launch-on-login-spotlight-title = 是否在您的计算机下次启动时打开 { -brand-short-name }？
-launch-on-login-spotlight-startup-checkbox = 在启动时启动 { -brand-short-name }
-launch-on-login-spotlight-pin-taskbar-checkbox = 固定到任务栏
+launch-on-login-spotlight-title = 打开 { -brand-short-name } 近邻干扰时间你的计算机启动向上的?
+launch-on-login-spotlight-startup-checkbox = 下水 { -brand-short-name } 在启动
+launch-on-login-spotlight-pin-taskbar-checkbox = 大头针到任务栏
 # This checkbox label intentionally matches “startup-restore-windows-and-tabs”
 # in the Settings (preferences.ftl). Localizers can reuse the existing
 # translation suggested by translation memory.
-launch-on-login-spotlight-restore-checkbox = 打开之前的窗口和选项卡
-launch-on-login-spotlight-primary-button = 保存并关闭 { -brand-short-name }
+launch-on-login-spotlight-restore-checkbox = 打开早先的窗口和标签页
+launch-on-login-spotlight-primary-button = 保存和关闭 { -brand-short-name }
 
 ## Tail Fox Set Default Spotlight
 
@@ -289,34 +291,34 @@ launch-on-login-spotlight-primary-button = 保存并关闭 { -brand-short-name }
 # In English, this is a figure of speech meaning 'stop something from following you'.
 # If the localization of this message is challenging, consider using a simplified
 # alternative as a reference for translation: 'Keep unwanted trackers away'.
-tail-fox-spotlight-title = 让烦人的跟踪器远离您的尾巴
-tail-fox-spotlight-subtitle = 与恼人的广告跟踪器告别，并安居于更安全、更迅捷的互联网体验之中。
-tail-fox-spotlight-primary-button = 使用 { -brand-short-name } 打开我的链接
-tail-fox-spotlight-secondary-button = 暂不执行
+tail-fox-spotlight-title = 保持麻烦的追踪者关闭你的尾部
+tail-fox-spotlight-subtitle = 说再见到恼人的地址追踪者和有背长椅进入...之内一个更安全（safe的比较级）, 快的因特网经历.
+tail-fox-spotlight-primary-button = 打开我的连接与 { -brand-short-name }
+tail-fox-spotlight-secondary-button = 不现在
 
 ## Welcome Back Spotlight and Import
 
-welcome-back-spotlight-title = 跃回内置隐私保护之中
-welcome-back-spotlight-subtitle = 欢迎您回到由非营利组织支持的唯一主要浏览器。我们会采取额外措施，以在您漫游于各处时保护您的数据。
-welcome-back-embedded-import-title = 导入您的数据，并让 { -brand-short-name } 带给您宾至如归的感觉
+welcome-back-spotlight-title = 跳跃后面的进入...之内构造-in 隐私
+welcome-back-spotlight-subtitle = 欢迎后面的到那仅主要浏览器有背的由一个非-profit. 我们采取额外的事物步骤到防卫你的资料无论哪里你漫游.
+welcome-back-embedded-import-title = 引入你的资料和使 { -brand-short-name } 感觉相似的主页
 
 ## Root Certificate Succession Infobar
 
-root-certificate-succession-infobar-january-message = <strong>旧版本的 { -brand-short-name } 可能会在 2025 年 1 月 14 日开始出现问题。</strong>
-root-certificate-succession-infobar-march-message = <strong>请更新，以便在 2025 年 3 月 14 日之后继续使用 { -brand-short-name }。</strong>
-root-certificate-succession-infobar-link = 为何我需要更新？
+root-certificate-succession-infobar-january-message = <strong>年长的版本的 { -brand-short-name } 可以启动到有问题在一月 14, 2025.</strong>
+root-certificate-succession-infobar-march-message = <strong>更新到保持使用 { -brand-short-name } 在...之后三月 14, 2025.</strong>
+root-certificate-succession-infobar-link = 为什么做电流需要到更新?
 root-certificate-succession-infobar-primary-button =
-  .label = 立即更新
+  .label = 更新现在
   .accesskey = U
 root-certificate-succession-infobar-secondary-button =
-  .label = 稍后更新
+  .label = 以后
   .accesskey = L
 
 ## Root Certificate Succession Windows Background Notification
 
-root-certificate-windows-background-notification-title = 您错过了一次重要的 { -brand-short-name } 更新
-root-certificate-windows-background-notification-subtitle = 如果您不更新，浏览器的部分功能将很快停止工作。现在是获取我们最新保护和功能的最佳时机。
-root-certificate-windows-background-notification-learn-more-button = 了解更多
+root-certificate-windows-background-notification-title = 你投偏一个要点 { -brand-short-name } 更新
+root-certificate-windows-background-notification-subtitle = 部分的那浏览器将停止工作不久如果你不要更新. 现在是一个全部时间到获得我们的最近的保护和特性.
+root-certificate-windows-background-notification-learn-more-button = 学习更多
 root-certificate-windows-background-notification-update-button = 更新 { -brand-short-name }
 
 ## FxA Menu Message variants
@@ -325,99 +327,99 @@ fxa-menu-message-close-button =
     .title = 关闭
     .aria-label = 关闭
 
-fxa-menu-message-sign-up-button = 注册
-fxa-menu-message-sign-in-button = 登录
-fxa-menu-message-sync-button = 开始同步
+fxa-menu-message-sign-up-button = 正负号向上的
+fxa-menu-message-sign-in-button = 正负号在
+fxa-menu-message-sync-button = 启动【电影、电视】
 
-fxa-menu-message-sync-devices-primary-text = 同步您的所有设备
-fxa-menu-message-sync-devices-secondary-text = 在您使用 { -brand-short-name } 的任何位置，即时获取您的信息（例如书签和密码）。
-fxa-menu-message-sync-devices-secondary-text2 = 在您登录 { -brand-short-name } 的任何位置，即时获取您的书签、密码及更多内容。
-fxa-menu-message-sync-devices-collapsed-text = 同步您的所有设备
+fxa-menu-message-sync-devices-primary-text = 同步的所有的你的德维克（男子名、姓氏）
+fxa-menu-message-sync-devices-secondary-text = 立即地获得你的信息—相似的书签和密码—各处你使用 { -brand-short-name }.
+fxa-menu-message-sync-devices-secondary-text2 = 立即地获得你的书签, 密码, 和更多—各处 you are 你（你们）是有符号的在到 { -brand-short-name }.
+fxa-menu-message-sync-devices-collapsed-text = 同步的所有的你的德维克（男子名、姓氏）
 
-fxa-menu-message-backup-data-primary-text = 备份您的浏览器数据
-fxa-menu-message-backup-data-secondary-text = 自动保护您所有设备上的书签、密码及其他信息。
-fxa-menu-message-backup-data-collapsed-text = 备份浏览器数据
+fxa-menu-message-backup-data-primary-text = 后面的向上的你的浏览器资料
+fxa-menu-message-backup-data-secondary-text = 自动地防卫书签, 密码, 和其他的信息在全部你的德维克（男子名、姓氏）.
+fxa-menu-message-backup-data-collapsed-text = 后面的向上的浏览器资料
 
-fxa-menu-message-backup-sync-primary-text = 确保您的数据安全且同步
-fxa-menu-message-backup-sync-secondary-text = 同步会备份您的大部分数据，以便您在每次使用 { -brand-short-name } 时均可访问这些数据。
-fxa-menu-message-backup-sync-collapsed-text = 同步并备份数据
+fxa-menu-message-backup-sync-primary-text = 保持你的资料保险箱和 synchronization 的缩略词
+fxa-menu-message-backup-sync-secondary-text = 同步的后面的向上的最多的你的资料如此你能访问它各处你使用 { -brand-short-name }.
+fxa-menu-message-backup-sync-collapsed-text = 同步的和后面的向上的资料
 
-fxa-menu-message-mobile-primary-text = 将选项卡发送至您的手机
-fxa-menu-message-mobile-secondary-text = 当您将选项卡与移动设备同步时，可即时从上次中断的位置继续操作。
-fxa-menu-message-mobile-collapsed-text = 与您的手机同步
+fxa-menu-message-mobile-primary-text = 发送标签页到你的电话
+fxa-menu-message-mobile-secondary-text = 拾取向上的哪里你离开关闭立即地何时你同步的你的标签页与一个活动物体装置.
+fxa-menu-message-mobile-collapsed-text = 同步的与你的电话
 
 ## Multi-CTA Fox Doodle Spotlight
 
-multi-cta-fox-doodle-title = 欢迎您回来
+multi-cta-fox-doodle-title = 欢迎后面的
 
-multi-cta-fox-doodle-set-default-checkbox = 将 { -brand-short-name } 设置为默认
-multi-cta-fox-doodle-pin-startmenu-checkbox = 将 { -brand-short-name } 固定到“开始”菜单
+multi-cta-fox-doodle-set-default-checkbox = 日落 { -brand-short-name } 到默认
+multi-cta-fox-doodle-pin-startmenu-checkbox = 大头针 { -brand-short-name } 到启动菜单
 multi-cta-fox-doodle-pin-checkbox  = { PLATFORM() ->
-    [macos] 将 { -brand-short-name } 保留在程序坞中
-   *[other] 将 { -brand-short-name } 固定到任务栏
+    [macos] 保持 { -brand-short-name } 在码头
+   *[other] 大头针 { -brand-short-name } 到任务栏
 }
 multi-cta-fox-doodle-start-browsing-primary-button-label = 启动浏览
-multi-cta-fox-doodle-main-browser-primary-button-label = 将 { -brand-short-name } 设置为主浏览器
+multi-cta-fox-doodle-main-browser-primary-button-label = 使 { -brand-short-name } 我的主群组浏览器
 
-multi-cta-fox-doodle-quick-reminder-subtitle = 此为您提供一项快速提醒：您可保持您所钟爱的、注重隐私的浏览器仅一步之遥。
+multi-cta-fox-doodle-quick-reminder-subtitle = (=here is. Here's to you)! 干杯一个新长出的肉提醒的人那你能保持你的喜欢的事物隐私-focused 浏览器只是一(个) 单击离去.
 multi-cta-fox-doodle-privacy-focused-subtitle  = { PLATFORM() ->
-    [macos] 请您保持您所钟爱的、注重隐私的浏览器仅一步之遥。请将 { -brand-short-name } 设置为用于打开链接的默认浏览器，并将其保留在您的 Dock 中。
-   *[other] 请您保持您所钟爱的、注重隐私的浏览器仅一步之遥。请将 { -brand-short-name } 设置为用于打开链接的默认浏览器，并将其固定到您的任务栏。
+    [macos] 保持你的喜欢的事物隐私-focused 浏览器只是一(个) 单击离去. 日落 { -brand-short-name } 作为你的默认浏览器为了打开连接和保持它在你的码头.
+   *[other] 保持你的喜欢的事物隐私-focused 浏览器只是一(个) 单击离去. 日落 { -brand-short-name } 作为你的默认浏览器为了打开连接和大头针它到你的任务栏.
 }
-multi-cta-fox-doodle-msix-privacy-focused-subtitle = 请您保持您所钟爱的、注重隐私的浏览器仅一步之遥。请将 { -brand-short-name } 设置为用于打开链接的默认浏览器，并将其固定到您的任务栏和“开始”菜单。
+multi-cta-fox-doodle-msix-privacy-focused-subtitle = 保持你的喜欢的事物隐私-focused 浏览器只是一(个) 单击离去. 日落 { -brand-short-name } 作为你的默认浏览器为了打开连接和大头针它到你的任务栏和启动菜单.
 
 ## Windows 10 EoS Sync messages group 1 spotlight
 
-windows-10-eos-sync-spotlight-title = 您是否即将从 10 Windows 进行升级？
-windows-10-eos-sync-spotlight-subtitle = 请您备份您的密码和书签，以便您准备好跃迁至任何设备。
-windows-10-eos-sync-spotlight-primary-label = 备份您的 { -brand-short-name }
+windows-10-eos-sync-spotlight-title = 升级从窗口 10 不久?
+windows-10-eos-sync-spotlight-subtitle = 后面的向上的你的密码和书签如此 you are 你（你们）是预备好的状态到使那跳跃到任何的装置.
+windows-10-eos-sync-spotlight-primary-label = 后面的向上的你的 { -brand-short-name }
 
 ## Windows 10 EoS Sync messages group 1 toast notification
 
-windows-10-eos-sync-toast-title = 您是否正在升级至 11 Windows？请勿丢失书签和密码。
-windows-10-eos-sync-toast-subtitle = 请您备份您的数据，以便 { -brand-short-name } 随时准备就绪，无论是在此 PC 上还是下一台 PC 上。
-windows-10-eos-sync-toast-primary-label = 开始
-windows-10-eos-sync-toast-secondary-label = 稍后提醒我
+windows-10-eos-sync-toast-title = 升级到窗口 11? 不要遗失书签和密码.
+windows-10-eos-sync-toast-subtitle = 后面的向上的你的资料如此 { -brand-short-name } 是预备好的状态到去任何的时间, 在这 PC 或那近邻干扰一(个).
+windows-10-eos-sync-toast-primary-label = 获得启动
+windows-10-eos-sync-toast-secondary-label = 提醒我以后
 
 ## Windows 10 EoS sync messages group 2 feature callouts
 
-windows-10-eos-challenger-callout-title = { -brand-product-name } 并未像其他大型科技公司的浏览器那样被预装。这正是其意义所在。
-windows-10-eos-challenger-sync-callout-subtitle = 当您备份您的 { -brand-product-name } 书签和密码时，将您所选择的浏览器带到您的下一台设备将变得更加容易。
-windows-10-eos-challenger-pin-callout-subtitle = 请将 { -brand-shorter-name } 固定到您的任务栏，以便您所选择的浏览器在您需要时始终可用。
-windows-10-eos-challenger-sync-primary-button = 备份 { -brand-shorter-name }
-windows-10-eos-challenger-pin-primary-button = 固定 { -brand-shorter-name }
+windows-10-eos-challenger-callout-title = { -brand-product-name } (=is not)不是预装入的相似的其他的大的技术学院或学校浏览器. (=that is)说得更精确些那点.
+windows-10-eos-challenger-sync-callout-subtitle = 何时你使后退向上的你的 { -brand-product-name } 书签和密码, 它是更简单到带来那浏览器你动产到你的近邻干扰装置.
+windows-10-eos-challenger-pin-callout-subtitle = 大头针 { -brand-shorter-name } 到你的任务栏如此那浏览器你动产是总是那里何时你需要它.
+windows-10-eos-challenger-sync-primary-button = 后面的向上的 { -brand-shorter-name }
+windows-10-eos-challenger-pin-primary-button = 大头针 { -brand-shorter-name }
 
-windows-10-eos-sync-callout-privacy-screen-1-title = { -brand-product-name } 可阻止加密货币挖矿程序、社交媒体跟踪器以及指纹识别器。
-windows-10-eos-sync-callout-privacy-screen-1-subtitle = 跟踪器无法识别您的设备，也无法在网络上跟踪您——因为我们不允许它们这样做。
-windows-10-eos-sync-callout-privacy-screen-2-title = 请为您的下一台设备保护您的密码和书签。
-windows-10-eos-sync-callout-privacy-screen-2-subtitle = 备份 { -brand-shorter-name } 可让您轻松地将您的数据和隐私设置一并携带。
-windows-10-eos-sync-callout-privacy-info-button = 查看已被阻止的内容
+windows-10-eos-sync-callout-privacy-screen-1-title = { -brand-product-name } 阻止 cryptominers, 社会的媒质追踪者, 和 fingerprinters.
+windows-10-eos-sync-callout-privacy-screen-1-subtitle = 追踪者不能 ID 你的装置或跟随你越过那网—因为我们不要让他们.
+windows-10-eos-sync-callout-privacy-screen-2-title = 无虑的你的密码和书签为了你的近邻干扰装置.
+windows-10-eos-sync-callout-privacy-screen-2-subtitle = 后退向上的 { -brand-shorter-name } 使它容易的到带来你的资料和隐私设置与你.
+windows-10-eos-sync-callout-privacy-info-button = 看见（尤当 has 为助动词时阻止
 
-windows-10-eos-callout-addons-title = 请尝试附加组件：简单的升级，巨大的影响
-windows-10-eos-callout-addons-subtitle = 这些扩展程序是经过挑选的，旨在帮助您保持高效、受到保护且不受干扰。
-windows-10-eos-callout-addons-primary-button = 查看我们的精选
+windows-10-eos-callout-addons-title = 尝试添加-奥运信息服务（Olympic News Service）: 简单的提升( upgrade的第三人称单数 ), 大的冲击
+windows-10-eos-callout-addons-subtitle = 这些扩展名曾是 choose的过去分词到帮助你制止能生产的, 受保护的, 和娱乐-free.
+windows-10-eos-callout-addons-primary-button = 看见我们的拾取
 
-windows-10-eos-sync-callout-addons-title = 当您从 10 Windows 升级时，请勿丢失您的附加组件。
-windows-10-eos-sync-callout-addons-subtitle = 请立即同步，以便您的 { -brand-product-name } 附加组件始终可用，即使在设备更换之后也是如此。
+windows-10-eos-sync-callout-addons-title = 不要遗失你的添加-ons 何时你升级从窗口 10.
+windows-10-eos-sync-callout-addons-subtitle = 同步的现在如此你的 { -brand-product-name } 添加-ons 是总是可利用的, 偶数在...之后一个装置更改.
 
-windows-10-eos-sync-callout-next-button = 下一步
-windows-10-eos-sync-callout-get-started-button = 开始
+windows-10-eos-sync-callout-next-button = 近邻干扰
+windows-10-eos-sync-callout-get-started-button = 获得启动
 
 ## Windows 10 EoS Sync messages group 2 toast notification
 
-windows-10-eos-feature-toast-title = 垂直标签页和标签页分组现已推出！
+windows-10-eos-feature-toast-title = 垂直的标签页和标签页创建组是这里!
 
 # In English, "dropped" is a colloquial form for released.
-windows-10-eos-feature-toast-subtitle = 应广大用户的请求，{ -brand-product-name } 刚刚推出了新功能，以保持您的浏览体验精简而专注。
-windows-10-eos-feature-toast-whats-new-button = 查看新增内容
-windows-10-eos-feature-toast-dismiss-button = 关闭
+windows-10-eos-feature-toast-subtitle = 由通俗的请求, { -brand-product-name } 只是抛踢球得分的新的特性到保持你的浏览流线的和聚焦的.
+windows-10-eos-feature-toast-whats-new-button = 看见（尤当 has 为助动词时新的
+windows-10-eos-feature-toast-dismiss-button = 解散
 
 ## Windows 10 EoS Global Infobar
 
-windows-10-eos-global-infobar-title = <strong>巨硬已不再支持 10 Windows。</strong> 请您备份您的信息，以便 { -brand-product-name } 为 11 Windows 做好准备。
-windows-10-eos-global-infobar-primary-button = 启用备份
+windows-10-eos-global-infobar-title = <strong>巨硬是无比较久次要的窗口 10.</strong> 后面的向上的你的信息到获得 { -brand-product-name } 预备好的状态为了窗口 11.
+windows-10-eos-global-infobar-primary-button = 转弯在倒车
   .accesskey = T
-windows-10-eos-global-infobar-learn-more-link = 了解更多
+windows-10-eos-global-infobar-learn-more-link = 学习更多
   .accessKey = L
 
 ## ETP (Enhanced Tracking Protection) Strict exceptions infobar
@@ -427,46 +429,46 @@ windows-10-eos-global-infobar-learn-more-link = 了解更多
 ## issues. The infobar offers users the option to apply automatic exceptions
 ## to fix common site breakage by unblocking essential elements.
 
-etp-strict-exceptions-infobar-message = <strong>严格跟踪保护可能导致网站无法正常运作。</strong> 请您通过解除对可能包含跟踪器的关键元素的阻止，来修复常见问题。
-etp-strict-exceptions-infobar-learn-more = 了解更多
+etp-strict-exceptions-infobar-message = <strong>严厉的跟踪保护能引起坐到中断.</strong> 修复公用块议题由块分解本质冒险部分那能够包含追踪者.
+etp-strict-exceptions-infobar-learn-more = 学习更多
 etp-strict-exceptions-infobar-button = 应用修复
   .accesskey = A
-etp-strict-exceptions-infobar-not-now = 暂不
+etp-strict-exceptions-infobar-not-now = 不现在
   .accesskey = N
 
 ## 'Set to default' messaging displayed within the App menu
 
-set-default-menu-message-simple-layout-title = { -brand-short-name } 不是您的默认浏览器
-set-default-menu-message-simple-layout-title-variant = { -brand-short-name } 不是您的主浏览器
+set-default-menu-message-simple-layout-title = { -brand-short-name } 是不你的默认浏览器
+set-default-menu-message-simple-layout-title-variant = { -brand-short-name } 是不你的初等量浏览器
 
-set-default-menu-message-row-layout-title = 将 { -brand-short-name } 设置为您的主浏览器
-set-default-menu-message-row-layout-title-variant = 将 { -brand-short-name } 设置为您的默认浏览器
+set-default-menu-message-row-layout-title = 使 { -brand-short-name } 你的初等量浏览器
+set-default-menu-message-row-layout-title-variant = 使 { -brand-short-name } 你的默认浏览器
 
-set-default-menu-message-row-layout-subtitle = 在您每次浏览时，均可获得速度、安全和隐私。
+set-default-menu-message-row-layout-subtitle = 获得中央处理机速度设置程序, 安全和隐私每一时间你浏览.
 set-default-menu-message-row-layout-subtitle-variant = { PLATFORM() ->
-    [macos] 请您将 { -brand-short-name } 置于您的指尖——将其设置为默认浏览器，并将其保留在您的 Dock 中。
-   *[other] 请您将 { -brand-short-name } 置于您的指尖——将其设置为默认浏览器，并将其保留在您的任务栏中。
+    [macos] 保持 { -brand-short-name } 在你的指尖—使它你的默认和保持它在你的码头.
+   *[other] 保持 { -brand-short-name } 在你的指尖—使它你的默认和保持它在你的任务栏.
 }
 
-set-default-menu-message-primary-button = 设置为默认
-set-default-menu-message-primary-button-variant = 设置为主浏览器
+set-default-menu-message-primary-button = 日落作为默认
+set-default-menu-message-primary-button-variant = 日落作为初等量浏览器
 
 ## Firefox Relay 50 Masks Announcement
 
 # "on us" in this context means "for free" or "at no cost"
-relay-50-masks-announcement-title = 50 个电子邮件掩码，由我们承担
-relay-50-masks-announcement-subtitle = 现在您可获得 50 个免费掩码（原为 5 个）。请为每个账户使用一个掩码，以保持您的真实电子邮件地址的私密性。
-relay-50-masks-announcement-primary-button = 前往 { -relay-brand-name }
+relay-50-masks-announcement-title = 50 电子信函屏蔽, 在我们
+relay-50-masks-announcement-subtitle = 现在你获得 50 自由的屏蔽 (向上的从 5). 使用一(个) 为了每一帐户到保持你的实数电子信函私人的.
+relay-50-masks-announcement-primary-button = 去到 { -relay-brand-name }
   .accesskey = G
-relay-50-masks-announcement-secondary-button = 关闭
+relay-50-masks-announcement-secondary-button = 解散
   .accesskey = D
 
 ## Nova Early Access Infobar
 
-nova-early-access-infobar-title = <strong>{ -brand-product-name } 正在获得全新的外观。</strong> 您正在预览一个早期、未完善的版本，该版本将在今年晚些时候正式发布之前提供。
+nova-early-access-infobar-title = <strong>{ -brand-product-name } 是采煤一个新的一看.</strong> you are 你（你们）是预视一个早的, 未磨光的版本在...之前那下水以后这年.
 
-nova-early-access-share-feedback-link = 分享反馈
+nova-early-access-share-feedback-link = 部分反馈
   .accesskey = S
 
-nova-early-access-infobar-primary-button = 已了解
+nova-early-access-infobar-primary-button = 获得它
   .accesskey = G

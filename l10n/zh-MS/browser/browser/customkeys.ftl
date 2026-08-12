@@ -2,67 +2,67 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-customkeys-title = 键盘快捷键
-customkeys-search = 搜索：
+customkeys-title = 键盘快捷方式
+customkeys-search = 搜索:
 customkeys-change = 更改
 customkeys-reset = 重置
 customkeys-clear = 清除
-customkeys-new-key = 请按下新键：
-customkeys-reset-all = 将全部快捷键重置为默认值
+customkeys-new-key = 压新的键:
+customkeys-reset-all = 重置所有的快捷方式到默认
 
 # Variables
 # $conflict (string) - The title of the conflicting shortcut.
-customkeys-conflict-confirm = 此键已被分配给 { $conflict }。您是否希望将其替换？
+customkeys-conflict-confirm = 这键是已经已分配的到 { $conflict }. 你是否想要到代替它?
 
-customkeys-reset-all-confirm = 您是否确认要将所有键盘快捷键重置为其默认值？
+customkeys-reset-all-confirm = 你确定你愿到重置所有的键盘快捷方式到他们的默认?
 
-customkeys-file-duplicate-tab = 复制标签页
-customkeys-file-focus-search = 聚焦搜索栏
-customkeys-history-reopen-tab = 重新打开最后关闭的标签页
-customkeys-history-reopen-window = 重新打开最后关闭的窗口
-customkeys-sidebar-toggle = 切换侧边栏
+customkeys-file-duplicate-tab = 复制 Tab
+customkeys-file-focus-search = 焦点那搜索棒形图
+customkeys-history-reopen-tab = 重开最后的关闭 Tab
+customkeys-history-reopen-window = 重开最后的关闭窗口
+customkeys-sidebar-toggle = 切换其他选项
 customkeys-view-bookmarks-toolbar = 切换书签工具栏
-customkeys-view-picture-in-picture = 画中画
-customkeys-view-add-split-view = 添加分屏视图
+customkeys-view-picture-in-picture = 图象-在-图象
+customkeys-view-add-split-view = 添加拆分查看
 # Separate is a verb
-customkeys-view-separate-split-view = 分离分屏视图
-customkeys-dev-tools = Web 开发者工具
-customkeys-dev-inspector = DOM 和样式检查器
-customkeys-dev-webconsole = Web 控制台
-customkeys-dev-debugger = JavaScript 调试器
+customkeys-view-separate-split-view = 独立件拆分查看
+customkeys-dev-tools = 网显影器工具
+customkeys-dev-inspector = DOM 和风格检查员
+customkeys-dev-webconsole = 网控制台
+customkeys-dev-debugger = Java描述语言（一种程序语言）调试程序
 customkeys-dev-network = 网络监视器
-customkeys-dev-style = 样式编辑器
-customkeys-dev-performance = 性能
-customkeys-dev-storage = 存储检查器
+customkeys-dev-style = 风格编辑器
+customkeys-dev-performance = 施行
+customkeys-dev-storage = 存放处检查员
 customkeys-dev-dom = DOM
-customkeys-dev-accessibility = 无障碍
-customkeys-dev-profiler-toggle = 启动/停止性能分析器
-customkeys-dev-profiler-capture = 捕获性能分析
+customkeys-dev-accessibility = 易接近
+customkeys-dev-profiler-toggle = 启动/停止那施行靠模工具机
+customkeys-dev-profiler-capture = 截获命令一个施行提问档
 
-customkeys-category-navigation = 导航
-customkeys-nav-back = 后退
-customkeys-nav-forward = 前进
+customkeys-category-navigation = 航行
+customkeys-nav-back = 后面的
+customkeys-nav-forward = 前推
 customkeys-nav-home = 主页
-customkeys-nav-reload = 重新加载
-customkeys-nav-reload-skip-cache = 重新加载（绕过缓存）
+customkeys-nav-reload = 再装
+customkeys-nav-reload-skip-cache = 再装 (推翻高速缓冲存储器)
 customkeys-nav-stop = 停止
 
-customkeys-nav-select-tab-1 = 转到标签页 1
-customkeys-nav-select-tab-2 = 转到标签页 2
-customkeys-nav-select-tab-3 = 转到标签页 3
-customkeys-nav-select-tab-4 = 转到标签页 4
-customkeys-nav-select-tab-5 = 转到标签页 5
-customkeys-nav-select-tab-6 = 转到标签页 6
-customkeys-nav-select-tab-7 = 转到标签页 7
-customkeys-nav-select-tab-8 = 转到标签页 8
-customkeys-nav-select-last-tab = 转到最后一个标签页
-customkeys-nav-toggle-mute = 静音/取消静音音频
+customkeys-nav-select-tab-1 = 去到 Tab 1
+customkeys-nav-select-tab-2 = 去到 Tab 2
+customkeys-nav-select-tab-3 = 去到 Tab 3
+customkeys-nav-select-tab-4 = 去到 Tab 4
+customkeys-nav-select-tab-5 = 去到 Tab 5
+customkeys-nav-select-tab-6 = 去到 Tab 6
+customkeys-nav-select-tab-7 = 去到 Tab 7
+customkeys-nav-select-tab-8 = 去到 Tab 8
+customkeys-nav-select-last-tab = 去到持续 Tab
+customkeys-nav-toggle-mute = 哑子/Unmute 音频的
 
-customkeys-edit-find-previous = 查找上一个
+customkeys-edit-find-previous = 发现早先的
 
-customkeys-tools-screenshot = 截取屏幕截图
+customkeys-tools-screenshot = 采取一个屏幕截图
 
-customkeys-caution-message = 此功能处于实验阶段，可能无法按预期工作。
+customkeys-caution-message = 这特性是实验的和可以不工作作为预期的.
 
 # Displayed in the new key field when the key that was pressed isn't valid.
-customkeys-key-invalid = 无效
+customkeys-key-invalid = 病人

@@ -3,67 +3,68 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 appmenu-update-available2 =
-    .label = 更新可用
+    .label = 更新可利用的
     .buttonlabel = 下载
     .buttonaccesskey = D
-    .secondarybuttonlabel = 忽略
+    .secondarybuttonlabel = 解散
     .secondarybuttonaccesskey = m
-appmenu-update-available-message2 = 请下载 { -brand-shorter-name } 的最新版本。
+appmenu-update-available-message2 = 下载最新版本的 { -brand-shorter-name }.
 appmenu-update-manual2 =
-    .label = 更新可用
+    .label = 更新可利用的
     .buttonlabel = 下载
     .buttonaccesskey = D
-    .secondarybuttonlabel = 忽略
+    .secondarybuttonlabel = 解散
     .secondarybuttonaccesskey = m
-appmenu-update-manual-message2 = { -brand-shorter-name } 无法自动更新。请下载新版本——您保存的信息和自定义设置不会丢失。
+appmenu-update-manual-message2 = { -brand-shorter-name } (=could not)不能更新自动地. 下载那新版本—你将不遗失保存信息或定制.
 appmenu-update-unsupported2 =
-    .label = 无法更新
-    .buttonlabel = 了解更多
+    .label = 不能的到更新
+    .buttonlabel = 学习更多
     .buttonaccesskey = L
-    .secondarybuttonlabel = 忽略
+    .secondarybuttonlabel = 解散
     .secondarybuttonaccesskey = m
-appmenu-update-unsupported-message2 = 您的操作系统与 { -brand-shorter-name } 的最新版本不兼容。
+appmenu-update-unsupported-message2 = 你的操作的系统 (=is not)不是相容的与最新版本的 { -brand-shorter-name }.
 appmenu-update-restart2 =
-    .label = 更新可用
-    .buttonlabel = 更新并重新启动
+    .label = 更新可利用的
+    .buttonlabel = 更新和重新启动
     .buttonaccesskey = U
-    .secondarybuttonlabel = 忽略
+    .secondarybuttonlabel = 解散
     .secondarybuttonaccesskey = m
-appmenu-update-restart-message2 = 请获取 { -brand-shorter-name } 的最新版本。打开的标签页和窗口将被恢复。
+appmenu-update-restart-message2 = 获得最新版本的 { -brand-shorter-name }. 打开标签页和窗口将是精力充沛的.
 appmenu-update-other-instance =
-    .label = { -brand-shorter-name } 无法自动更新至最新版本。
-    .buttonlabel = 仍然更新 { -brand-shorter-name }
+    .label = { -brand-shorter-name } 是不能的到自动地更新到最新版本.
+    .buttonlabel = 更新 { -brand-shorter-name } 无论如何
     .buttonaccesskey = U
-    .secondarybuttonlabel = 暂不
+    .secondarybuttonlabel = 不现在
     .secondarybuttonaccesskey = N
-appmenu-update-other-instance-message = 新的 { -brand-shorter-name } 更新可用，但由于另一个 { -brand-shorter-name } 实例正在运行，无法安装。请关闭该实例以继续更新，或选择仍然更新（另一个实例在您重新启动之前可能无法正常工作）。
+appmenu-update-other-instance-message = 一个新的 { -brand-shorter-name } 更新是可利用的, 除了它不能是安装因为另外的复制的 { -brand-shorter-name } 是运行. 关闭它到继续那更新, 或选取到更新无论如何 (那其他的复制可以不工作对直到你重新启动它).
 
 appmenu-theme-installed =
-    .secondarybuttonlabel = 撤销
+    .secondarybuttonlabel = 撤消
     .secondarybuttonaccesskey = U
-appmenu-addon-post-install-message3 = 请通过应用程序菜单管理您的附加组件和主题。
+appmenu-addon-post-install-message3 = 管理你的添加-ons 和他们穿越那应用菜单.
 
 # This string is used in the confirmation popup displayed after an extension
-appmenu-addon-post-install-message-with-data-collection = 您可以随时在<a data-l10n-name="settings-link">扩展设置</a>中更新权限和数据偏好。
+# has been installed, when the data collection feature is enabled.
+appmenu-addon-post-install-message-with-data-collection = 更新许可和资料参数选择任何的时间在那 <a data-l10n-name="settings-link">扩展名设置</a>.
 appmenu-addon-post-install-pin-toolbarbutton-checkbox =
-    .label = 将扩展固定到工具栏
+    .label = 大头针扩展名到工具栏
     .accesskey = P
 
 appmenu-new-tab-controlled-changes =
-    .label = 您的新标签页已发生变化。
-    .buttonlabel = 保留更改
+    .label = 你的新的标签页有更改.
+    .buttonlabel = 保持更改
     .buttonaccesskey = K
-    .secondarybuttonlabel = 管理新标签页
+    .secondarybuttonlabel = 管理新的标签页
     .secondarybuttonaccesskey = M
 appmenu-homepage-controlled-changes =
-    .label = 您的主页已发生变化。
-    .buttonlabel = 保留更改
+    .label = 你的主页有更改.
+    .buttonlabel = 保持更改
     .buttonaccesskey = K
     .secondarybuttonlabel = 管理主页
     .secondarybuttonaccesskey = M
 appmenu-tab-hide-controlled =
-    .label = 访问您的隐藏标签页
-    .buttonlabel = 保持标签页隐藏
+    .label = 访问你的隐藏的标签页
+    .buttonlabel = 保持标签页隐藏的
     .buttonaccesskey = K
-    .secondarybuttonlabel = 禁用扩展
+    .secondarybuttonlabel = 禁用扩展名
     .secondarybuttonaccesskey = D

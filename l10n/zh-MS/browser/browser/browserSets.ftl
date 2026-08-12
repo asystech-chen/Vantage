@@ -39,7 +39,7 @@ search-find-again-shortcut =
     .key = G
 
 search-find-again-shortcut-alt =
-    .keycode = VK_F3
+    .keycode = 维生素k（vitamin k）_故障3
 
 search-find-selection-shortcut =
     .key = E
@@ -118,6 +118,7 @@ history-show-all-shortcut =
 
 history-show-all-shortcut-mac =
     .key = Y
+
 history-sidebar-shortcut =
     .key = H
 
@@ -125,7 +126,7 @@ full-screen-shortcut =
     .key = F
 
 reader-mode-toggle-shortcut-windows =
-    .keycode = VK_F9
+    .keycode = 维生素k（vitamin k）_故障9
 
 reader-mode-toggle-shortcut-other =
     .key = R

@@ -3,5 +3,5 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 security-privacy-issue-warning-test =
-  .label = 已启用一项测试设置
-  .description = 此设置导致 { -brand-short-name } 显示此虚假警告，除此之外没有其他作用。
+  .label = 一个测试设置是启用
+  .description = 这 (CAU 的复数)  命令/运算部件 { -brand-short-name } 到显示这假造的警告, 和无别的

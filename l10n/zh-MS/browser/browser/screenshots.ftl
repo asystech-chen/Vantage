@@ -5,39 +5,39 @@
 # Variables
 #   $shortcut (String) - A keyboard shortcut for the screenshot command.
 screenshot-toolbar-button =
-  .label = 屏幕捕获
-  .tooltiptext = 执行屏幕捕获操作 ({ $shortcut })
+  .label = 屏幕截图
+  .tooltiptext = 采取一个屏幕截图 ({ $shortcut })
 
 screenshot-shortcut =
   .key = S
 
-screenshots-instructions = 请您在页面上拖拽或单击以选择区域。按ESC键以取消操作。
+screenshots-instructions = 拖动或单击在那页到选择一个区. 压 ESC 到取消.
 screenshots-cancel-button = 取消
-screenshots-save-visible-button = 保存可见区域
-screenshots-save-page-button = 保存完整页面
+screenshots-save-visible-button = 保存看得见的
+screenshots-save-page-button = 保存完整页
 
 screenshots-meta-key = {
   PLATFORM() ->
     [macos] ⌘
    *[other] Ctrl
 }
-screenshots-notification-link-copied-title = 链接已复制
-screenshots-notification-link-copied-details = 您的捕获链接已复制到剪贴板。请按{screenshots-meta-key}-V以执行粘贴操作。
+screenshots-notification-link-copied-title = 连接已复制的
+screenshots-notification-link-copied-details = 那连接到你的发射有是已复制的到那剪贴板. 压 {screenshots-meta-key}-溢出到粘贴.
 
-screenshots-notification-image-copied-title = 捕获已复制
-screenshots-notification-image-copied-details = 您的捕获内容已复制到剪贴板。请按{screenshots-meta-key}-V以执行粘贴操作。
+screenshots-notification-image-copied-title = 发射已复制的
+screenshots-notification-image-copied-details = 你的发射有是已复制的到那剪贴板. 压 {screenshots-meta-key}-溢出到粘贴.
 
-screenshots-too-large-error-title = 由于尺寸过大，您的屏幕捕获已被裁剪
-screenshots-too-large-error-details = 请您选择最长边小于32,700像素或总面积小于124,900,000像素的区域。
+screenshots-too-large-error-title = 你的屏幕截图曾是裁切不正的因为它曾是也大的
+screenshots-too-large-error-details = 尝试选择一个区 (=that is)说得更精确些较小比 32,700 象素在它的最长的旁边或 124,900,000 象素全体的区域.
 
 screenshots-component-retry-button =
-  .title = 重试屏幕捕获
-  .aria-label = 重试屏幕捕获
+  .title = 重发屏幕截图
+  .aria-label = 重发屏幕截图
 
 screenshots-component-cancel-button =
   .title =
     { PLATFORM() ->
-      [macos] 取消 (esc)
+      [macos] 取消 (转义字符)
      *[other] 取消 (Esc)
     }
   .aria-label = 取消
@@ -70,4 +70,4 @@ screenshots-component-copy-key = C
 screenshots-overlay-selection-region-size-3 = { $width } × { $height }
 
 screenshots-overlay-preview-face-label =
-  .aria-label = 选择此区域
+  .aria-label = 选择这区

@@ -3,10 +3,10 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 clear-site-data-window2 =
-    .title = 清除数据
-    .style = min-width: 35em
+    .title = 清除资料
+    .style = min-width: 35媒体用毕符
 
-clear-site-data-description = 清除由 { -brand-short-name } 存储的所有 Cookies 和站点数据可能会导致您退出网站并移除离线网页内容。清除缓存数据不会影响您的登录状态。
+clear-site-data-description = 清扫所有的 Cookie 和站点数据储存的由 { -brand-short-name } 可以正负号你外面的的网站（全球资讯网的主机站）和移除挂线网内容. 清扫高速缓冲存储器资料将不影响你的注册(程序).
 
 clear-site-data-close-key =
     .key = w
@@ -17,8 +17,8 @@ clear-site-data-close-key =
 #   $amount (Number) - Amount of site data currently stored on disk
 #   $unit (String) - Abbreviation of the unit that $amount is in, e.g. "MB"
 clear-site-data-cookies-with-data =
-    .label = Cookies 和站点数据（{ $amount } { $unit }）
-    .accesskey = C
+    .label = Cookie 和站点数据 ({ $amount } { $unit })
+    .accesskey = S
 
 # This string is a placeholder for while the data used to fill
 # clear-site-data-cookies-with-data is loading. This placeholder is usually
@@ -26,10 +26,10 @@ clear-site-data-cookies-with-data =
 # or the same as clear-site-data-cookies-with-data (except the amount and unit),
 # to avoid flickering.
 clear-site-data-cookies-empty =
-    .label = Cookies 和站点数据
-    .accesskey = C
+    .label = 饼干和位置资料
+    .accesskey = S
 
-clear-site-data-cookies-info = 若清除，您可能会从网站中退出登录
+clear-site-data-cookies-info = 你可以获得有符号的外面的的网站（全球资讯网的主机站）如果使干净
 
 # The parameters in parentheses in this string describe disk usage
 # in the format ($amount $unit), e.g. "Cached Web Content (24 KB)"
@@ -37,7 +37,7 @@ clear-site-data-cookies-info = 若清除，您可能会从网站中退出登录
 #   $amount (Number) - Amount of cache currently stored on disk
 #   $unit (String) - Abbreviation of the unit that $amount is in, e.g. "MB"
 clear-site-data-cache-with-data =
-    .label = 缓存网页内容（{ $amount } { $unit }）
+    .label = 贮藏起来网内容 ({ $amount } { $unit })
     .accesskey = W
 
 # This string is a placeholder for while the data used to fill
@@ -46,10 +46,10 @@ clear-site-data-cache-with-data =
 # or the same as clear-site-data-cache-with-data (except the amount and unit),
 # to avoid flickering.
 clear-site-data-cache-empty =
-    .label = 缓存网页内容
+    .label = 贮藏起来网内容
     .accesskey = W
 
-clear-site-data-cache-info = 将要求网站重新加载图片和数据
+clear-site-data-cache-info = 将需要网站（全球资讯网的主机站）到再装复数虚部和资料
 
 clear-site-data-dialog =
     .buttonlabelaccept = 清除

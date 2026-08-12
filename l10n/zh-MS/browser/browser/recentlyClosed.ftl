@@ -6,15 +6,15 @@
 ## and should follow the same capitalization (title case for English).
 ## Check menubar.ftl for reference.
 
-recently-closed-menu-reopen-all-tabs = 重新启动全部标签页
-recently-closed-menu-reopen-all-windows = 重新启动全部窗口
+recently-closed-menu-reopen-all-tabs = 重开所有的标签页
+recently-closed-menu-reopen-all-windows = 重开所有的窗口
 
 ## These strings are used in the app menu,
 ## and should follow the same capitalization (sentence case for English).
 ## Check appmenu.ftl for reference.
 
-recently-closed-panel-reopen-all-tabs = 重新启动全部标签页
-recently-closed-panel-reopen-all-windows = 重新启动全部窗口
+recently-closed-panel-reopen-all-tabs = 重开所有的标签页
+recently-closed-panel-reopen-all-windows = 重开所有的窗口
 
 ##
 
@@ -25,6 +25,6 @@ recently-closed-panel-reopen-all-windows = 重新启动全部窗口
 recently-closed-window-panel-tooltip =
     { $tabCount ->
         [0] { $winTitle }
-        [one] { $winTitle }（{ $tabCount } 个标签页，关闭于 { DATETIME($closedAt, dateStyle: "short", timeStyle: "short") }）
-       *[other] { $winTitle }（{ $tabCount } 个标签页，关闭于 { DATETIME($closedAt, dateStyle: "short", timeStyle: "short") }）
+        [one] { $winTitle } ({ $tabCount } 标签页, 关闭在 { DATETIME($closedAt, dateStyle: "short", timeStyle: "short") })
+       *[other] { $winTitle } ({ $tabCount } 标签页, 关闭在 { DATETIME($closedAt, dateStyle: "short", timeStyle: "short") })
     }

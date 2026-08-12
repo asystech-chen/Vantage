@@ -4,14 +4,14 @@
 
 ## Subframe crash notification
 
-crashed-subframe-message = <strong>此页面的部分内容已崩溃。</strong>为使 { -brand-product-name } 获知此问题并加快修复速度，请您提交一份报告。
+crashed-subframe-message = <strong>部分的这页失事的.</strong> 到让 { -brand-product-name } 知道关于这发行和获得它修复加快, 请提交一个报告.
 
 # The string for crashed-subframe-title.title should match crashed-subframe-message,
 # but without any markup.
 crashed-subframe-title =
-  .title = 此页面的部分内容已崩溃。为使 { -brand-product-name } 获知此问题并加快修复速度，请您提交一份报告。
+  .title = 部分的这页失事的. 到让 { -brand-product-name } 知道关于这发行和获得它修复加快, 请提交一个报告.
 crashed-subframe-learnmore-link =
-  .value = 了解详情
+  .value = 学习更多
 crashed-subframe-submit =
   .label = 提交报告
   .accesskey = S
@@ -22,8 +22,8 @@ crashed-subframe-submit =
 #   $reportCount (Number): the number of pending crash reports
 pending-crash-reports-message-new =
     { $reportCount ->
-        [one] 您有一份最近未发送的崩溃报告
-       *[other] 您有 { $reportCount } 份最近未发送的崩溃报告
+        [one] 你有一个最近的未送出(或寄发)的崩溃报告
+       *[other] 你有 { $reportCount } 最近的未送出(或寄发)的崩溃报告
     }
 
 pending-crash-reports-view-all =
@@ -31,16 +31,16 @@ pending-crash-reports-view-all =
 pending-crash-reports-send =
     .label = 发送
 pending-crash-reports-always-send =
-    .label = 始终发送
+    .label = 总是发送
 
 # Variables:
 #   $reportCount (Number): the number of pending crash reports
 requested-crash-reports-message-new =
     { $reportCount ->
-        [one] 您有一份与被调查崩溃相关的未发送崩溃报告，发送该报告将有助于我们改进 { -brand-product-name }。关闭此通知将忽略此报告。
-       *[other] 您有 { $reportCount } 份与被调查崩溃相关的未发送崩溃报告，发送这些报告将有助于我们改进 { -brand-product-name }。关闭此通知将忽略这些报告。
+        [one] 你有一个未送出(或寄发)的崩溃报告讲述的到崩溃存在调查( investigate的过去式和过去分词 ), 发送它将帮助我们改良 { -brand-product-name }. 关闭这通知将忽略这报告.
+       *[other] 你有 { $reportCount } 未送出(或寄发)的崩溃报告讲述的到崩溃存在调查( investigate的过去式和过去分词 ), 发送他们将帮助我们改良 { -brand-product-name }. 关闭这通知将忽略这些报告.
     }
 
 requested-crash-reports-dont-show-again =
-    .label = 不再显示
+    .label = 不要显示再一次
     .accesskey = D

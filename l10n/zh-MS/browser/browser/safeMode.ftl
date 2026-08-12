@@ -3,13 +3,13 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 troubleshoot-mode-window =
-    .title = 是否在疑难解答模式下启动 { -brand-short-name }？
-    .style = 最大宽度：400 像素
+    .title = 打开 { -brand-short-name } 在障碍修理模式?
+    .style = max-width: 400专用小交换机（Private Exchange）
 start-troubleshoot-mode =
-    .label = 启动
+    .label = 打开
 refresh-profile =
     .label = 刷新 { -brand-short-name }
-troubleshoot-mode-description = 请使用 { -brand-short-name } 的此特殊模式来诊断问题。您的扩展和自定义项将被暂时禁用。
-skip-troubleshoot-refresh-profile = 您也可以跳过疑难解答，直接刷新 { -brand-short-name }。
+troubleshoot-mode-description = 使用这专辑模式的 { -brand-short-name } 到诊断议题. 你的扩展名和定制将是暂时禁用.
+skip-troubleshoot-refresh-profile = 你能也跳过发现并修理故障和刷新 { -brand-short-name }, 作为替代.
 # Shown on the safe mode dialog after multiple startup crashes.
-auto-safe-mode-description = { -brand-short-name } 在启动时意外关闭。这可能是由附加组件或其他问题引起的。您可以在安全模式下进行疑难解答以尝试解决此问题。
+auto-safe-mode-description = { -brand-short-name } 关闭想不到的一会儿开端. 这可能是引起由添加-ons 或其他的问题. 你能试到决定那问题由发现并修理故障在保险箱模式.

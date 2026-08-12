@@ -9,12 +9,12 @@
 ## GenAI - Page Assist Strings
 
 genai-page-assist-sidebar-title =
-  .heading = 页面伙伴
+  .heading = 页好朋友
 
 menu-view-genai-page-assist =
-  .label = 页面伙伴
+  .label = 页好朋友
 
 sidebar-menu-genai-page-assist-label =
-  .label = 页面伙伴
+  .label = 页好朋友
 
-genai-page-assist-title = 页面伙伴
+genai-page-assist-title = 页好朋友

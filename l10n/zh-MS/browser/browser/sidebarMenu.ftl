@@ -11,10 +11,10 @@ sidebar-menu-history =
   .label = 历史记录
 
 sidebar-menu-synced-tabs =
-  .label = 同步的选项卡
+  .label = synchronization 的缩略词标签页
 
 sidebar-menu-close =
-  .label = 关闭侧边栏
+  .label = 关闭其他选项
 
 sidebar-close-button =
-  .tooltiptext = 关闭侧边栏
+  .tooltiptext = 关闭其他选项

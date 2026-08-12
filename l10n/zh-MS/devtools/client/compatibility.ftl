@@ -4,18 +4,18 @@
 
 ## Messages used as headers in the main pane
 
-compatibility-selected-element-header = 已选定的元素
-compatibility-all-elements-header = 所有问题
+compatibility-selected-element-header = 被选的部分
+compatibility-all-elements-header = 所有的议题
 
 ## Message used as labels for the type of issue
 
-compatibility-issue-deprecated = （已弃用）
-compatibility-issue-experimental = （实验性）
-compatibility-issue-prefixneeded = （需要前缀）
-compatibility-issue-deprecated-experimental = （已弃用，实验性）
-compatibility-issue-deprecated-prefixneeded = （已弃用，需要前缀）
-compatibility-issue-experimental-prefixneeded = （实验性，需要前缀）
-compatibility-issue-deprecated-experimental-prefixneeded = （已弃用，实验性，需要前缀）
+compatibility-issue-deprecated = (不赞成)
+compatibility-issue-experimental = (实验的)
+compatibility-issue-prefixneeded = (地区号码需要的)
+compatibility-issue-deprecated-experimental = (不赞成, 实验的)
+compatibility-issue-deprecated-prefixneeded = (不赞成, 地区号码需要的)
+compatibility-issue-experimental-prefixneeded = (实验的, 地区号码需要的)
+compatibility-issue-deprecated-experimental-prefixneeded = (不赞成, 实验的, 地区号码需要的)
 
 ## Messages used as labels and titles for buttons in the footer
 
@@ -35,11 +35,11 @@ compatibility-target-browsers-header = 目标浏览器
 #   $number (Number) - The number of nodes where the issue occurred
 compatibility-issue-occurrences =
     { $number ->
-        [one] { $number } 次出现
-       *[other] { $number } 次出现
+        [one] { $number } 发生
+       *[other] { $number } 发生( occurrence的复数形式 )
     }
 
-compatibility-no-issues-found = 未发现任何兼容性问题。
+compatibility-no-issues-found = 无兼容性议题发现.
 compatibility-close-settings-button =
     .title = 关闭设置
 
@@ -48,5 +48,5 @@ compatibility-close-settings-button =
 # Variables:
 #   $browsers (String) - A line-separated list of browser information (e.g. Firefox 98\nChrome 99).
 compatibility-issue-browsers-list =
-    .title = 以下浏览器中存在兼容性问题：
+    .title = 兼容性议题在:
     { $browsers }

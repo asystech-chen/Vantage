@@ -4,19 +4,19 @@
 
 # Dialog close button
 spotlight-dialog-close-button =
-    .title = 单击以关闭对话框
-    .aria-label = 单击以关闭对话框
+    .title = 关闭
+    .aria-label = 关闭
 
 ## Mobile download button strings
 
 spotlight-android-marketplace-button =
-    .title = 请在Google Play上获取该应用程序
+    .title = 获得它在谷歌播放
 spotlight-ios-marketplace-button =
-    .title = 请在App Store上下载该应用程序
+    .title = 下载在那应用存储器操作
 
 ## Firefox Focus promo message strings
 
-spotlight-focus-promo-title = 获取{ -focus-brand-name }
-spotlight-focus-promo-subtitle = 请您扫描QR码以进行下载操作。
+spotlight-focus-promo-title = 获得 { -focus-brand-name }
+spotlight-focus-promo-subtitle = 网络软件目录那 QR 代码到下载.
 spotlight-focus-promo-qr-code =
-    .alt = 请您扫描QR码以获取{ -focus-brand-name }
+    .alt = 网络软件目录那 QR 代码到获得 { -focus-brand-name }

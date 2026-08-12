@@ -3,15 +3,15 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 fxa-pair-device-dialog-sync2 =
-    .style = min-width: 32em;
+    .style = min-width: 32媒体用毕符;
 
-fxa-qrcode-pair-title = 同步您的 { -brand-product-name } 至您的手机或平板设备
-fxa-qrcode-pair-step1 = 1. 在您的移动设备上启动 { -brand-product-name }。
+fxa-qrcode-pair-title = 同步的 { -brand-product-name } 在你的电话或平板
+fxa-qrcode-pair-step1 = 1. 打开 { -brand-product-name } 在你的活动物体装置.
 
-fxa-qrcode-pair-step2-device-steps = 2. 转到菜单并单击<strong>登录</strong>
+fxa-qrcode-pair-step2-device-steps = 2. 去到那菜单和接头 <strong>正负号在</strong>
 
-fxa-qrcode-pair-step3 = 3. 单击<strong>准备扫描</strong>并将您的手机保持在该代码上方
+fxa-qrcode-pair-step3 = 3. 接头 <strong>预备好的状态到网络软件目录</strong> 和保留你的电话结束这代码
 
-fxa-qrcode-error-title = 配对操作未成功完成。
+fxa-qrcode-error-title = 配对不成功的.
 
-fxa-qrcode-error-body = 请尝试重新执行此操作。
+fxa-qrcode-error-body = 尝试再一次.

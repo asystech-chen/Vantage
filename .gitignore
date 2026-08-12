@@ -37,3 +37,5 @@ settings/distribution/optional-extensions/*.xpi
 /*.asc
 scripts/check-firefox-version.sh
 scripts/ms-zh/__pycache__/
+scripts/ms-zh/dict/
+scripts/ms-zh/en-toolkit/

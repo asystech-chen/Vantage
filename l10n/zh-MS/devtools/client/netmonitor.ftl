@@ -6,11 +6,11 @@
 
 # Tooltip for the performance button in the status bar
 network-menu-summary-tooltip-perf =
-    .title = 启动性能分析
+    .title = 启动施行分析机
 network-menu-summary-tooltip-domcontentloaded =
-    .title = “DOMContentLoaded”事件发生的时间
+    .title = 时间何时“DOMContentLoaded”事件发生（occur的过去分词）
 network-menu-summary-tooltip-load =
-    .title = “load”事件发生的时间
+    .title = 时间何时“加载”事件发生（occur的过去分词）
 # This label is displayed in the network table footer providing the
 # number of requests
 # Variables:
@@ -18,24 +18,24 @@ network-menu-summary-tooltip-load =
 network-menu-summary-requests-count =
     { $requestCount ->
         [0] 无请求
-        [one] { $requestCount }个请求
-        *[other] { $requestCount }个请求
+        [one] { $requestCount } 请求
+        *[other] { $requestCount } 请求
     }
 network-menu-summary-tooltip-requests-count =
-    .title = 请求的数量
+    .title = 数字的请求
 # This label is displayed in the network table footer providing the
 # transferred size.
 # Variables:
 #   $formattedContentSize (String): The formatted content size.
 #   $formattedTransferredSize (String): The formatted transferred size.
 network-menu-summary-transferred =
-    { $formattedContentSize } / { $formattedTransferredSize } 已传输
+    { $formattedContentSize } / { $formattedTransferredSize } transferred
 network-menu-summary-tooltip-transferred =
-    .title = 所有请求的大小/传输大小
+    .title = 大小/呼叫转移大小的全部请求
 # This label is displayed in the network table footer providing the
 # transfer time.
 # Variables:
 #   $formattedTime (String): The formatted transfer time.
 network-menu-summary-finish = 完成: { $formattedTime }
 network-menu-summary-tooltip-finish =
-    .title = 加载所有请求所需的总时间
+    .title = 全体的时间需要的到加载所有的请求

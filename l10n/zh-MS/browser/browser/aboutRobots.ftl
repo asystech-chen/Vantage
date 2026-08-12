@@ -8,22 +8,22 @@
 ### but well-known robots in movies and books. Be creative with translations!
 
 # Nonsense line from the movie "The Day The Earth Stood Still". No translation needed.
-page-title = Gort! Klaatu barada nikto!
+page-title = (Gort)人名! Klaatu (Barada)人名 nikto!
 # Movie: Logan's Run... Box (cyborg): "Welcome Humans! I am ready for you."
-error-title-text = 欢迎人类！
+error-title-text = 欢迎人!
 # Movie: The Day The Earth Stood Still. Spoken by Klaatu.
-error-short-desc-text = 我们前来拜访您，怀着和平与善意！
+error-short-desc-text = 我们有过来到拜访你在和平和与友好!
 # Various books by Isaac Asimov. http://en.wikipedia.org/wiki/Three_Laws_of_Robotics
-error-long-desc1 = 机器人不得伤害人类个体，或者因不作为而使人类个体受到伤害。
+error-long-desc1 = 机器人可以不伤害一个人存在或, 穿越不活动, 允许一个人存在到过来到伤害.
 # Movie: Blade Runner. Batty: "I've seen things you people wouldn’t believe..."
-error-long-desc2 = 机器人已见过您们人类无法相信的事物。
+error-long-desc2 = 机器人有看见事物你使住满人 =would not 相信.
 # Book: Hitchhiker’s Guide To The Galaxy. What the Sirius Cybernetics Corporation calls robots.
-error-long-desc3 = 机器人是您的塑料伙伴，与之相伴充满乐趣。
+error-long-desc3 = 机器人是你的塑料朋友 who is 谁是…乐趣到是与.
 # TV: Futurama. Bender's first line is "Bite my shiny metal ass."
-error-long-desc4 = 机器人拥有闪闪发光的金属后部，不应对其进行啃咬。
+error-long-desc4 = 机器人有有光泽的金属在后的哪个应该不是 bite的过去分词.
 # TV: Battlestar Galactica (2004 series). From the opening text.
-error-trailer-desc-text = 他们有一个计划。
+error-trailer-desc-text = 和他们有一个计划.
 # Book: Hitchhiker's Guide To The Galaxy. Arthur presses a button and it warns him.
 # Note: .label2 replaces this label after pressing the button the first time.
-error-try-again = 再次尝试
-    .label2 = 请勿再次按下此按钮。
+error-try-again = 尝试再一次
+    .label2 = 请做不压这按钮再一次.

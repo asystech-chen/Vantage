@@ -12,12 +12,12 @@
 ##
 ## Reference: https://www.mozilla.org/styleguide/communications/translation/
 
--brand-shorter-name = Vantage
--brand-short-name = Vantage
--brand-full-name = Vantage Browser
--brand-shortcut-name = Vantage
+-brand-shorter-name = 优势
+-brand-short-name = 优势
+-brand-full-name = 优势浏览器
+-brand-shortcut-name = 优势
 # This brand name can be used in messages where the product name needs to
 # remain unchanged across different versions (Nightly, Beta, etc.).
--brand-product-name = Vantage
--vendor-short-name = ASYS Technology
+-brand-product-name = 优势
+-vendor-short-name = ASYS 技术
 trademarkInfo = { " " }

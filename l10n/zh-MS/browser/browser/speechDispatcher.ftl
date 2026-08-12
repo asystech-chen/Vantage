@@ -5,11 +5,11 @@
 ### Speech Dispatches is the name of a speech synthesis tool and shouldn’t be
 ### localized (https://freebsoft.org/speechd).
 
-speech-dispatcher-lib-missing = 由于 Speech Dispatcher 库缺失，您无法使用语音合成功能。
-speech-dispatcher-lib-too-old = 由于 Speech Dispatcher 需要更新，您无法使用语音合成功能。
-speech-dispatcher-missing-symbol = 由于 Speech Dispatcher 库已损坏，您无法使用语音合成功能。
-speech-dispatcher-open-fail = 由于 Speech Dispatcher 无法启动，您无法使用语音合成功能。
-speech-dispatcher-no-voices = 由于 Speech Dispatcher 中无可用语音，您无法使用语音合成功能。
+speech-dispatcher-lib-missing = 你不能使用演讲综合因为那演讲调度程序库是不见的.
+speech-dispatcher-lib-too-old = 你不能使用演讲综合因为演讲调度程序需要到是更新的.
+speech-dispatcher-missing-symbol = 你不能使用演讲综合因为那演讲调度程序库是坏掉的.
+speech-dispatcher-open-fail = 你不能使用演讲综合因为演讲调度程序将不打开.
+speech-dispatcher-no-voices = 你不能使用演讲综合因为声音不是（are not）可利用的在演讲调度程序.
 speech-dispatcher-dismiss-button =
-  .label = 不再显示
+  .label = 不要显示再一次
   .accesskey = D

@@ -4,62 +4,62 @@
 
 # Used as the FxA toolbar menu item value when user has not
 # finished setting up an account.
-account-finish-account-setup = 完成账户设置
+account-finish-account-setup = 完成帐户设置
 
 # Used as the FxA toolbar menu item title when the user
 # needs to reconnect their account.
-account-disconnected2 = 账户已断开连接
+account-disconnected2 = 帐户分离的
 
 # Menu item that sends a tab to all synced devices.
-account-send-to-all-devices = 发送到所有设备
+account-send-to-all-devices = 发送到所有的德维克（男子名、姓氏）
 
 # Menu item that links to the Firefox Accounts settings for connected devices.
-account-manage-devices = 管理设备…
+account-manage-devices = 管理德维克（男子名、姓氏）…
 
 ## Variables:
 ##   $email (String): = Email address of user's Firefox Account.
 
-account-reconnect = 重新连接 { $email }
-account-verify = 验证 { $email }
+account-reconnect = 使再接合 { $email }
+account-verify = 证明 { $email }
 
 ## Displayed in the Send Tab/Page/Link to Device context menu when right clicking a tab, a page or a link.
 
-account-send-to-all-devices-titlecase = 发送到所有设备
-account-manage-devices-titlecase = 管理设备…
+account-send-to-all-devices-titlecase = 发送到所有的德维克（男子名、姓氏）
+account-manage-devices-titlecase = 管理德维克（男子名、姓氏）…
 
 ## Displayed in the Send Tabs context menu when right clicking a tab, a page or a link
 ## and the Sync account is unverified. Redirects to the Sync preferences page.
 
-account-send-tab-to-device-verify-status = 账户未经验证
-account-send-tab-to-device-verify2 = 验证您的账户
+account-send-tab-to-device-verify-status = 帐户不已查清的
+account-send-tab-to-device-verify2 = 证明你的帐户
 
 ## These strings are used in a notification shown when a new device joins the Firefox account.
 
 # The title shown in a notification when either this device or another device
 # has connected to, or disconnected from, a Firefox account.
-account-connection-title-2 = 账户
+account-connection-title-2 = 帐户
 
 # Variables:
 #   $deviceName (String): the name of the new device
-account-connection-connected-with = 此计算机现已与 { $deviceName } 建立连接。
+account-connection-connected-with = 这计算机是现在连接的与 { $deviceName }.
 
 # Used when the name of the new device is not known.
-account-connection-connected-with-noname = 此计算机现已与一个新设备建立连接。
+account-connection-connected-with-noname = 这计算机是现在连接的与一个新的装置.
 
 # Used in a notification shown after a Firefox account is connected to the current device.
-account-connection-connected = 您已成功完成登录
+account-connection-connected = 你有有符号的在成功
 
 # Used in a notification shown after the Firefox account was disconnected remotely.
-account-connection-disconnected = 此计算机已被断开连接。
+account-connection-disconnected = 这计算机有是分离的.
 
 ## These strings are used in a notification shown when we're opening
 ## a single tab another device sent us to display.
 ## The body for this notification is the URL of the received tab.
 
-account-single-tab-arriving-title = 已收到标签页
+account-single-tab-arriving-title = Tab 被一般承认的
 # Variables:
 #   $deviceName (String): the device name.
-account-single-tab-arriving-from-device-title = 来自 { $deviceName } 的标签页
+account-single-tab-arriving-from-device-title = Tab 从 { $deviceName }
 
 # Used when a tab from a remote device arrives but the URL must be truncated.
 # Should display the URL with an indication that it's been truncated.
@@ -72,25 +72,25 @@ account-single-tab-arriving-truncated-url = { $url }…
 ## Variables:
 ##   $tabCount (Number): the number of tabs received
 
-account-multiple-tabs-arriving-title = 已收到多个标签页
+account-multiple-tabs-arriving-title = 标签页被一般承认的
 
 # Variables:
 #   $deviceName (String): the device name.
 account-multiple-tabs-arriving-from-single-device =
     { $tabCount ->
-        [one] 已有 { $tabCount } 个标签页从 { $deviceName } 到达
-       *[other] 已有 { $tabCount } 个标签页从 { $deviceName } 到达
+        [one] { $tabCount } 标签页有抵达从 { $deviceName }
+       *[other] { $tabCount } 标签页有抵达从 { $deviceName }
     }
 account-multiple-tabs-arriving-from-multiple-devices =
     { $tabCount ->
-        [one] 已有 { $tabCount } 个标签页从您的已连接设备到达
-       *[other] 已有 { $tabCount } 个标签页从您的已连接设备到达
+        [one] { $tabCount } 标签页有抵达从你的连接的德维克（男子名、姓氏）
+       *[other] { $tabCount } 标签页有抵达从你的连接的德维克（男子名、姓氏）
     }
 # This version is used when we don't know any device names.
 account-multiple-tabs-arriving-from-unknown-device =
     { $tabCount ->
-        [one] 已有 { $tabCount } 个标签页到达
-       *[other] 已有 { $tabCount } 个标签页到达
+        [one] { $tabCount } 标签页有抵达
+       *[other] { $tabCount } 标签页有抵达
     }
 
 ## These strings are used in notifications in which the user remotely closed
@@ -98,10 +98,10 @@ account-multiple-tabs-arriving-from-unknown-device =
 ## Variables:
 ##   $closedCount (Number): the number of tabs closed
 
-account-view-recently-closed-tabs = 查看最近关闭的标签页
+account-view-recently-closed-tabs = 查看最近关闭标签页
 account-tabs-closed-remotely =
     {
         $closedCount ->
-            [one] { $closedCount } 个 { -brand-short-name } 标签页已被关闭
-           *[other] { $closedCount } 个 { -brand-short-name } 标签页已被关闭
+            [one] { $closedCount } { -brand-short-name } 标签页关闭
+           *[other] { $closedCount } { -brand-short-name } 标签页关闭
     }

@@ -1,0 +1,35 @@
+diff --git a/gfx/thebes/gfxPlatformFontList.cpp b/gfx/thebes/gfxPlatformFontList.cpp
+index 3cc19fd..b1e5000 100644
+--- a/gfx/thebes/gfxPlatformFontList.cpp
++++ b/gfx/thebes/gfxPlatformFontList.cpp
+@@ -2445,6 +2445,10 @@ eFontPrefLang gfxPlatformFontList::GetFontPrefLangFor(const char* aLang) {
+   if (!aLang || !aLang[0]) {
+     return eFontPrefLang_Others;
+   }
++  // Vantage: zh-MS（巨硬中文）故意用繁体字体组，制造字形诡异感
++  if (!nsCRT::strcasecmp(aLang, "zh-MS")) {
++    return eFontPrefLang_ChineseTW;
++  }
+   for (uint32_t i = 0; i < std::size(gPrefLangNames); ++i) {
+     if (!nsCRT::strcasecmp(gPrefLangNames[i], aLang)) {
+       return eFontPrefLang(i);
+@@ -3435,6 +3439,9 @@ void gfxPlatformFontList::FontPrefs::Init() {
+           AppendPrefLang(tempPrefLangs, tempLen, eFontPrefLang_ChineseTW);
+         } else if (locale.Region().EqualTo("HK")) {
+           AppendPrefLang(tempPrefLangs, tempLen, eFontPrefLang_ChineseHK);
++        } else {
++          // Vantage: zh-MS（巨硬中文）故意用繁体字体组，制造字形诡异感
++          AppendPrefLang(tempPrefLangs, tempLen, eFontPrefLang_ChineseTW);
+         }
+       } else if (locale.Language().EqualTo("ko")) {
+         AppendPrefLang(tempPrefLangs, tempLen, eFontPrefLang_Korean);
+@@ -3470,6 +3477,9 @@ void gfxPlatformFontList::FontPrefs::Init() {
+             AppendPrefLang(tempPrefLangs, tempLen, eFontPrefLang_ChineseTW);
+           } else if (locale.Region().EqualTo("HK")) {
+             AppendPrefLang(tempPrefLangs, tempLen, eFontPrefLang_ChineseHK);
++          } else {
++            // Vantage: zh-MS（巨硬中文）故意用繁体字体组，制造字形诡异感
++            AppendPrefLang(tempPrefLangs, tempLen, eFontPrefLang_ChineseTW);
+           }
+         } else if (locale.Language().EqualTo("ko")) {
+           AppendPrefLang(tempPrefLangs, tempLen, eFontPrefLang_Korean);

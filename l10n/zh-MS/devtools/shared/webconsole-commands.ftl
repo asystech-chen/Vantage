@@ -8,17 +8,17 @@
 
 # Usage string for :block command
 webconsole-commands-usage-block =
-  :block URL_STRING
+  :阻止统一资源定位器_字符串
 
-  开始阻止网络请求
+  启动组成块网络请求
 
-    该命令仅接受一个URL_STRING参数，一个未加引号的字符串，用于阻止所有URL包含此字符串的请求。
-    若要撤销此操作，请使用 :unblock 命令或网络监视器请求阻止侧边栏。
+    它接受仅一(个) 统一资源定位器_字符串参数, 一个（电报。听写等中用语）结束引语( unquote的过去式和过去分词 ) 字符串哪个将是使用到阻止所有的请求谁的 URL 包含这字符串.
+    使用 :解锁或那网络监视器请求组成块其他选项到撤消这.
 
 # Usage string for :unblock command
 webconsole-commands-usage-unblock =
-  :unblock URL_STRING
+  :解锁统一资源定位器_字符串
 
-  停止阻止网络请求
+  停止组成块网络请求
 
-    该命令仅接受一个参数，即之前传递给 :block 的完全相同字符串。
+    它接受仅一(个) 参数, 那精确的相同的字符串先前地已被传递的到 :阻止.

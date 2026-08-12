@@ -10,107 +10,107 @@ fonts-window-close =
 
 ## Font groups by language
 
-fonts-langgroup-header = 适用于以下语言的字体
+fonts-langgroup-header = 字体为了
     .accesskey = F
 
 fonts-langgroup-arabic =
     .label = 阿拉伯语
 fonts-langgroup-armenian =
-    .label = 亚美尼亚语
+    .label = 亚美尼亚的
 fonts-langgroup-bengali =
-    .label = 孟加拉语
+    .label = 孟加拉人
 fonts-langgroup-simpl-chinese =
-    .label = 简体中文
+    .label = 简化了的中文
 fonts-langgroup-trad-chinese-hk =
-    .label = 繁体中文（中国香港特别行政区）
+    .label = 传统的中文 (（中国、日本的）行含锡砾石下的无矿基岩)
 fonts-langgroup-trad-chinese =
-    .label = 繁体中文（中国台湾地区）
+    .label = 传统的中文 (台湾)
 fonts-langgroup-cyrillic =
-    .label = 西里尔字母
+    .label = 古代斯拉夫语的字母
 fonts-langgroup-devanagari =
-    .label = 天城文
+    .label = 梵文字母
 fonts-langgroup-ethiopic =
-    .label = 埃塞俄比亚文
+    .label = 埃塞俄比亚的
 fonts-langgroup-georgian =
-    .label = 格鲁吉亚语
+    .label = 乔治亚州人
 fonts-langgroup-el =
-    .label = 希腊语
+    .label = 希腊
 fonts-langgroup-gujarati =
-    .label = 古吉拉特语
+    .label = 古吉拉特人
 fonts-langgroup-gurmukhi =
-    .label = 古木基文
+    .label = 果鲁穆奇字母(用于写旁遮普语的字母)
 fonts-langgroup-japanese =
-    .label = 日语
+    .label = 日本人
 fonts-langgroup-hebrew =
-    .label = 希伯来语
+    .label = 希伯来人
 fonts-langgroup-kannada =
-    .label = 卡纳达语
+    .label = （印）坎那达语
 fonts-langgroup-khmer =
-    .label = 高棉语
+    .label = 高棉人
 fonts-langgroup-korean =
-    .label = 韩语
+    .label = 朝鲜人
 # Translate "Latin" as the name of Latin (Roman) script, not as the name of the Latin language.
 fonts-langgroup-latin =
-    .label = 拉丁字母
+    .label = 拉丁人
 fonts-langgroup-malayalam =
     .label = 马拉雅拉姆语
 fonts-langgroup-math =
-    .label = 数学符号
+    .label = 数学的
 fonts-langgroup-odia =
-    .label = 奥里亚语
+    .label = 奥迪亚
 fonts-langgroup-sinhala =
     .label = 僧伽罗语
 fonts-langgroup-tamil =
-    .label = 泰米尔语
+    .label = 泰米尔人
 fonts-langgroup-telugu =
-    .label = 泰卢固语
+    .label = 泰卢固语（印度东部德拉维拉语言）
 fonts-langgroup-thai =
-    .label = 泰语
+    .label = 泰国人
 fonts-langgroup-tibetan =
-    .label = 藏语
+    .label = 西藏的
 fonts-langgroup-canadian =
-    .label = 统一加拿大音节文字
+    .label = 统一的加拿大的音节表
 fonts-langgroup-other =
-    .label = 其他书写系统
+    .label = 其他的书写系统
 
 ## Default fonts and their sizes
 
-fonts-proportional-header = 比例字体
+fonts-proportional-header = 比例的
     .accesskey = P
 
 fonts-default-serif =
-    .label = 衬线字体
+    .label = 衬线
 fonts-default-sans-serif =
-    .label = 无衬线字体
+    .label = 没有衬线
 
-fonts-proportional-size = 字号
+fonts-proportional-size = 大小
     .accesskey = z
 
-fonts-serif = 衬线字体
+fonts-serif = 衬线
     .accesskey = S
 
-fonts-sans-serif = 无衬线字体
+fonts-sans-serif = 没有-衬线
     .accesskey = n
 
-fonts-monospace = 等宽字体
+fonts-monospace = 单间隔
     .accesskey = M
 
-fonts-monospace-size = 字号
+fonts-monospace-size = 大小
     .accesskey = e
 
-fonts-minsize = 最小字号
+fonts-minsize = 最小值字体大小
     .accesskey = o
 
 fonts-minsize-none =
-    .label = 无
+    .label = 一点也不
 
 fonts-allow-own =
-    .label = 允许页面选择其自身的字体，而不采用您在上述设置中所进行的指定选择
+    .label = 允许页到选取他们的自己的字体, 作为替代的你的选择在上方
     .accesskey = A
 
 # Variables:
 #   $name {string, "Arial"} - Name of the default font
 fonts-label-default =
-    .label = 默认（{ $name }）
+    .label = 默认 ({ $name })
 fonts-label-default-unnamed =
     .label = 默认

@@ -10,37 +10,37 @@ default-bookmarks-title = 书签
 default-bookmarks-heading = 书签
 
 # Firefox links folder name
-default-bookmarks-firefox-heading = Mozilla Firefox
+default-bookmarks-firefox-heading = 摩斯拉火狐
 
 # link title for https://www.mozilla.org/firefox/help/
-default-bookmarks-firefox-get-help = 获取帮助
+default-bookmarks-firefox-get-help = 获得帮忙
 
 # link title for https://www.mozilla.org/firefox/customize/
-default-bookmarks-firefox-customize = 自定义 Firefox
+default-bookmarks-firefox-customize = 定制火狐
 
 # link title for https://www.mozilla.org/contribute/
-default-bookmarks-firefox-community = 参与其中
+default-bookmarks-firefox-community = 获得包含
 
 # link title for https://www.mozilla.org/about/
 default-bookmarks-firefox-about = 关于我们
 
 # Firefox Nightly links folder name
-default-bookmarks-nightly-heading = Firefox Nightly 资源
+default-bookmarks-nightly-heading = 火狐每夜的资源
 
 # Nightly builds only, link title for https://blog.nightly.mozilla.org/
-default-bookmarks-nightly-blog = Firefox Nightly 博客
+default-bookmarks-nightly-blog = 火狐每夜的博客
 
 # Nightly builds only, link title for https://bugzilla.mozilla.org/
-default-bookmarks-bugzilla = Mozilla Bug 追踪器
+default-bookmarks-bugzilla = 摩斯拉缺点追踪者
 
 # Nightly builds only, link title for https://developer.mozilla.org/
-default-bookmarks-mdn = Mozilla 开发者网络
+default-bookmarks-mdn = 摩斯拉显影器网络
 
 # Nightly builds only, link title for https://addons.mozilla.org/firefox/addon/nightly-tester-tools/
-default-bookmarks-nightly-tester-tools = Nightly 测试工具
+default-bookmarks-nightly-tester-tools = 每夜的考试人工具
 
 # Nightly builds only, link title for about:crashes
-default-bookmarks-crashes = 您的所有崩溃记录
+default-bookmarks-crashes = 所有的你的崩溃
 
 # Nightly builds only, link title for https://planet.mozilla.org/
-default-bookmarks-planet = Planet Mozilla
+default-bookmarks-planet = 行星摩斯拉

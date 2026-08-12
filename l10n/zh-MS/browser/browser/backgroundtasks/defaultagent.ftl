@@ -2,9 +2,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-default-browser-agent-task-description = 默认浏览器代理任务负责检查默认浏览器何时从 { -brand-short-name } 更改为其他浏览器。若更改发生在可疑情况下，系统将提示用户改回 { -brand-short-name }，且最多不超过两次。此任务由 { -brand-short-name } 自动安装，并在 { -brand-short-name } 更新时重新安装。若要禁用此任务，请在 about:config 页面更新“default-browser-agent.enabled”首选项，或通过 { -brand-short-name } 企业策略设置“DisableDefaultBrowserAgent”。
+default-browser-agent-task-description = 那默认浏览器代理程序任务复选何时那默认更改从 { -brand-short-name } 到另外的浏览器. 如果那更改发生在...之下可疑的事件, 它将激励用户到更改后面的到 { -brand-short-name } 无更多比二蒂姆（男子名）. 这任务是安装自动地由 { -brand-short-name }, 和是使重新正式就职何时 { -brand-short-name } 更新. 到禁用这任务, 更新那“默认-browser-agent.启用”首选项在那关于:显示配置信息命令页或那 { -brand-short-name } 企业政策设置“DisableDefaultBrowserAgent”.
 
-default-browser-notification-privacy-header-text = 是否保持使用 { -brand-short-name }？
-default-browser-notification-privacy-body-text = 您的默认浏览器已更改。建议您返回 { -brand-short-name }，以获得内置的隐私和保护功能。
+default-browser-notification-privacy-header-text = 停留与 { -brand-short-name }?
+default-browser-notification-privacy-body-text = 你的默认更改. 过来后面的到 { -brand-short-name } 为了构造-in 隐私和保护.
 default-browser-notification-yes-button-text = 是
-default-browser-notification-privacy-no-button-text = 不，谢谢
+default-browser-notification-privacy-no-button-text = 无谢意

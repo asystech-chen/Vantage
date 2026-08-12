@@ -7,10 +7,10 @@ index 56e6c34..150e09a 100644
        { preferNative: true }
      );
 -    let locales = available.map((code, i) => ({ code, name: localeNames[i] }));
-+    // Vantage: override display name for zh-MS (中文（巨硬）).
++    // Vantage: override display name for zh-MS (巨硬中文).
 +    // CLDR would render it as 中文（蒙特塞拉特） since MS is Montserrat's region code.
 +    const VANTAGE_LOCALE_DISPLAY_NAMES = {
-+      "zh-MS": "中文（巨硬）",
++      "zh-MS": "巨硬中文",
 +    };
 +    let locales = available.map((code, i) => ({
 +      code,

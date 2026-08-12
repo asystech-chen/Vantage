@@ -3,7 +3,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 select-bookmark-window2 =
-    .title = 设置主页
-    .style = min-width: 32em;
+    .title = 日落主页页
+    .style = min-width: 32媒体用毕符;
 
-select-bookmark-desc = 请选择一个书签以将其设置为您的主页。如果您选择的是一个文件夹，则该文件夹中的书签将在选项卡中打开。
+select-bookmark-desc = 选取一个书签到是你的主页页. 如果你选取一个文件夹, 那书签在那文件夹将是打开在标签页.

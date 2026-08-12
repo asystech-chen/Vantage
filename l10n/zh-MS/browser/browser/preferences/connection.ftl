@@ -6,17 +6,17 @@ connection-window2 =
     .title = 连接设置
     .style =
         { PLATFORM() ->
-            [macos] 最小宽度：44em
-           *[other] 最小宽度：49em
+            [macos] min-width: 44媒体用毕符
+           *[other] min-width: 49媒体用毕符
         }
 
 connection-close-key =
     .key = w
 
 connection-disable-extension =
-    .label = 禁用扩展
+    .label = 禁用扩展名
 
-connection-proxy-configure = 配置代理以访问互联网
+connection-proxy-configure = 装配代理访问到那因特网
 
 connection-proxy-option-no =
     .label = 无代理
@@ -25,75 +25,75 @@ connection-proxy-option-system =
     .label = 使用系统代理设置
     .accesskey = U
 connection-proxy-option-wpad =
-    .label = 使用系统Web代理自动发现设置
+    .label = 使用系统网代理汽车-发现设置
     .accesskey = g
 connection-proxy-option-auto =
-    .label = 自动检测此网络的代理设置
+    .label = 汽车-detect 代理设置为了这网络
     .accesskey = w
 connection-proxy-option-manual =
-    .label = 手动代理配置
+    .label = 人工的代理配置
     .accesskey = M
 
-connection-proxy-http = HTTP代理
+connection-proxy-http = HTTP 代理
     .accesskey = x
 connection-proxy-http-port = 端口
     .accesskey = P
 connection-proxy-https-sharing =
-    .label = 同时将此代理用于HTTPS
+    .label = 也使用这代理为了 HTTPS
     .accesskey = s
 
-connection-proxy-https = HTTPS代理
+connection-proxy-https = HTTPS 代理
     .accesskey = H
 connection-proxy-ssl-port = 端口
     .accesskey = o
 
-connection-proxy-socks = SOCKS主机
+connection-proxy-socks = SOCKS 主机
     .accesskey = C
 connection-proxy-socks-port = 端口
     .accesskey = t
 
 connection-proxy-socks4 =
-    .label = SOCKS v4
+    .label = SOCKS 溢出4
     .accesskey = K
 connection-proxy-socks5 =
-    .label = SOCKS v5
+    .label = SOCKS 溢出5
     .accesskey = v
-connection-proxy-noproxy = 不代理以下地址
+connection-proxy-noproxy = 无代理为了
     .accesskey = N
 
-connection-proxy-noproxy-desc = 示例：.mozilla.org、.net.nz、192.168.1.0/24
+connection-proxy-noproxy-desc = 例子: .摩斯拉.org, .net.nz, 192.168.1.0/24
 
 # Do not translate "localhost", "127.0.0.1/8" and "::1". (You can translate "and".)
-connection-proxy-noproxy-localhost-desc-2 = 对localhost、127.0.0.1/8和::1的连接从不被代理。
+connection-proxy-noproxy-localhost-desc-2 = 连接到本地主机, 127.0.0.1/8, 和 ::1 是从不 (proxy 的过去分词) n. 代理.
 
 connection-proxy-autotype =
-    .label = 自动代理配置URL
+    .label = 自动手枪代理配置 URL
     .accesskey = A
 
 connection-proxy-reload =
-    .label = 重新加载
+    .label = 再装
     .accesskey = e
 
 connection-proxy-autologin-checkbox =
-    .label = 若已保存密码，则不提示身份验证
+    .label = 做不激励为了验证如果密码是保存
     .accesskey = i
-    .tooltiptext = 当您已为代理保存凭据时，此选项将静默地验证您的身份。若验证失败，将提示您进行认证。
+    .tooltiptext = 这选项默默地证明是真实的、可靠的或有效的( authenticate的名词复数 ) 你到代理何时你有保存国书为了他们. 你将是引起如果验证失败.
 
 connection-proxy-socks4-remote-dns =
-    .label = 使用SOCKS v4时代理DNS
+    .label = 代理 DNS 何时使用 SOCKS 溢出4
     .accesskey = 4
 
 connection-proxy-socks-remote-dns =
-    .label = 使用SOCKS v5时代理DNS
+    .label = 代理 DNS 何时使用 SOCKS 溢出5
     .accesskey = D
 
 # Variables:
 #   $name (String) - Display name or URL for the DNS over HTTPS provider
 connection-dns-over-https-url-item-default =
-    .label = { $name }（默认）
-    .tooltiptext = 使用默认URL进行DNS over HTTPS解析
+    .label = { $name } (默认)
+    .tooltiptext = 使用那默认 URL 为了解析 DNS 结束 HTTPS
 
 connection-dns-over-https-url-custom =
-    .label = 自定义
+    .label = 定制
     .accesskey = C
-    .tooltiptext = 输入您首选的URL以进行DNS over HTTPS解析
+    .tooltiptext = Enter 你的首选的 URL 为了解析 DNS 结束 HTTPS

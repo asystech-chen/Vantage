@@ -2,16 +2,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-restore-page-tab-title = 恢复会话
+restore-page-tab-title = 回复会话
 
 # The title is intended to be apologetic and disarming, expressing dismay
 # and regret that we are unable to restore the session for the user
-restore-page-error-title = 很抱歉。我们正在遇到无法恢复您的页面的问题。
-restore-page-problem-desc = 我们正在遇到无法恢复您上次浏览会话的问题。请选择“恢复会话”以再次尝试。
-restore-page-try-this = 仍然无法恢复您的会话？有时某个标签页正在导致此问题。请查看以前的标签页，移除您不需要恢复的标签页的勾选标记，然后进行恢复。
+restore-page-error-title = 难过的. (we are 的常用口语形式) 财产烦恼采煤你的页后面的.
+restore-page-problem-desc = 我们是财产烦恼恢复的你的最后浏览会话. 选择回复会话到试再一次.
+restore-page-try-this = 仍然不能干的到回复你的会话? 有时一个标签页是成为…的原因（cause的现在分词形式）那发行. 查看早先的标签页, 移除那选择目录从那标签页你不要需要到恢复, 和然后回复.
 
-restore-page-hide-tabs = 隐藏以前的标签页
-restore-page-show-tabs = 查看以前的标签页
+restore-page-hide-tabs = 隐藏早先的标签页
+restore-page-show-tabs = 查看早先的标签页
 
 # When tabs are distributed across multiple windows, this message is used as a
 # header above the group of tabs for each window.
@@ -21,30 +21,30 @@ restore-page-show-tabs = 查看以前的标签页
 restore-page-window-label = 窗口 { $windowNumber }
 
 restore-page-restore-header =
-    .label = 恢复
+    .label = 回复
 
 restore-page-list-header =
     .label = 窗口和标签页
 
 restore-page-try-again-button =
-    .label = 恢复会话
+    .label = 回复会话
     .accesskey = R
 
 restore-page-close-button =
-    .label = 启动新会话
+    .label = 启动新的会话
     .accesskey = N
 
 ## The following strings are used in about:welcomeback
 
-welcome-back-tab-title = 操作已成功完成！
-welcome-back-page-title = 操作已成功完成！
-welcome-back-page-info = { -brand-short-name } 已准备就绪，可以开始运行。
+welcome-back-tab-title = 成功!
+welcome-back-page-title = 成功!
+welcome-back-page-info = { -brand-short-name } 是预备好的状态到去.
 
 welcome-back-restore-button =
-    .label = 让我们开始吧！
+    .label = let us 让我们去!
     .accesskey = L
 
-welcome-back-restore-all-label = 恢复全部窗口和标签页
-welcome-back-restore-some-label = 仅恢复您所需的那些
+welcome-back-restore-all-label = 回复所有的窗口 & 标签页
+welcome-back-restore-some-label = 回复仅那刻录软件你想要
 
-welcome-back-page-info-link = 您的附加组件和自定义设置已被移除，您的浏览器设置已恢复为其默认值。如果这未能解决您的问题，<a data-l10n-name="link-more">请了解有关您可以执行的进一步操作的更多信息。</a>
+welcome-back-page-info-link = 你的添加-ons 和定制有是离开的和你的浏览器设置有是精力充沛的到他们的默认. 如果这 did not 没有修复你的发行, <a data-l10n-name="link-more">学习更多关于什么你能做.</a>

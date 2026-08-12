@@ -4,27 +4,27 @@
 
 colors-dialog2 =
     .title = 颜色
-    .style = min-width: 41em;
+    .style = min-width: 41媒体用毕符;
 
 colors-close-key =
     .key = w
 
-colors-text-and-background = 文本与背景
+colors-text-and-background = 电文和背景
 
 colors-text =
-    .label = 文本
+    .label = 电文
     .accesskey = T
 
 colors-text-background =
     .label = 背景
     .accesskey = B
 
-colors-links-header = 链接颜色
+colors-links-header = 连接颜色
 
 colors-links-unvisited =
-    .label = 未访问的链接
+    .label = Unvisited 连接
     .accesskey = L
 
 colors-links-visited =
-    .label = 已访问的链接
+    .label = 拜访连接
     .accesskey = V

@@ -1,0 +1,8 @@
+-screenshots-brand-name = 屏幕截图
+-profiler-brand-name = 靠模工具机
+-translations-brand-name = 转换
+-firefox-suggest-brand-name = 提议
+-firefox-home-brand-name = 主页
+-firefoxview-brand-name = Tab 查看
+-firefoxlabs-brand-name = 火狐实验室由摩斯拉
+-relay-brand-name = 驿马由摩斯拉

@@ -3,40 +3,44 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 ### Strings used in about:unloads, allowing users to manage the "tab unloading"
-
-about-unloads-page-title = 标签页卸载
-about-unloads-intro =
-    { -brand-short-name } 具备自动卸载标签页的功能，以防止当系统可用内存不足时，
-    应用程序因内存不足而崩溃。下一个将被卸载的标签页是根据多种属性选择的。
-    本页面显示 { -brand-short-name } 如何对标签页进行优先级排序，
-    以及当触发标签页卸载时将卸载哪一个标签页。您可以手动触发标签页卸载，
-    通过单击下方的<em>卸载</em>按钮。
-
 ### feature.
+
+about-unloads-page-title = Tab 转储
+about-unloads-intro =
+    { -brand-short-name } has a feature that automatically unloads tabs
+    到预防那应用从猛撞的由于不够的存储器
+    何时那 system's 可利用的存储器是低点. 那近邻干扰标签页到是空载的是
+    choose的过去分词立基于在倍数属性（attribute的复数）. 这页显示如何
+    { -brand-short-name } prioritizes tabs and which tab will be unloaded
+    何时标签页转储是触发的. 你能切换开关标签页转储用手
+    由微小静电干扰声那 <em>卸载</em> 按钮在下面.
+
+# The link points to a Firefox documentation page, only available in English,
+# with title "Tab Unloading"
 about-unloads-learn-more =
-    请参阅<a data-l10n-name="doc-link">标签页卸载</a>，以了解有关该功能
-    及本页面的详细信息。
+    看见 <a data-l10n-name="doc-link">Tab 转储</a> 到学习更多关于
+    那特性和这页.
 
 about-unloads-last-updated =
-    最后更新：{ DATETIME($date,
+    Last updated: { DATETIME($date,
         year: "numeric", month: "numeric", day: "numeric",
         hour: "numeric", minute: "numeric", second: "numeric",
         hour12: "false") }
 about-unloads-button-unload = 卸载
-  .title = 卸载优先级最高的标签页
-about-unloads-no-unloadable-tab = 不存在可卸载的标签页。
+  .title = 卸载标签页与那最高优先级
+about-unloads-no-unloadable-tab = 那里是无 unloadable 标签页.
 
 about-unloads-column-priority = 优先级
 about-unloads-column-host = 主机
-about-unloads-column-last-accessed = 最后访问时间
-about-unloads-column-weight = 基本权重
-  .title = 标签页首先根据此值进行排序，该值源于某些特殊属性，如播放声音、WebRTC 等。
-about-unloads-column-sortweight = 次要权重
-  .title = 如果可用，标签页在根据基本权重排序后，将根据此值进行排序。该值源于标签页的内存使用情况以及进程数量。
-about-unloads-column-memory = 内存
-  .title = 标签页的估计内存使用量
-about-unloads-column-processes = 进程标识符
-  .title = 承载标签页内容的进程标识符
+about-unloads-column-last-accessed = 最后的接近
+about-unloads-column-weight = 基准粗细
+  .title = 标签页是首先分选的由这计算结果, 哪个 derivation 引出从一些专辑属性（attribute的复数）如此的作为游戏一个声音, WebRTC, 及其他.
+about-unloads-column-sortweight = 中级的粗细
+  .title = 如果可利用的, 标签页是分选的由这计算结果在...之后存在分选的由那基准粗细. 那计算结果 derivation 引出从 tab's 存储器用法和那计数的进程.
+about-unloads-column-memory = 存储器
+  .title = Tab's 估算的存储器用法
+about-unloads-column-processes = 进程标识部分（Identification Section）
+  .title = 标识部分（Identification Section）的那进程作战 tab's 内容
 
 about-unloads-last-accessed = { DATETIME($date,
         year: "numeric", month: "numeric", day: "numeric",

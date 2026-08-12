@@ -13,7 +13,7 @@ fxviewtabrow-time = { DATETIME($time, timeStyle: "short") }
 # Variables:
 #   $targetURI (string) - URL of tab that will be opened in the new tab
 fxviewtabrow-tabs-list-tab =
-  .title = 在新选项卡中启动 { $targetURI }
+  .title = 打开 { $targetURI } 在一个新的标签页
 
 # Variables:
 #   $tabTitle (string) - Title of tab being closed
@@ -23,69 +23,69 @@ fxviewtabrow-close-tab-button =
 # Variables:
 #   $tabTitle (string) - Title of tab being dismissed
 fxviewtabrow-dismiss-tab-button =
-  .title = 解除 { $tabTitle }
+  .title = 解散 { $tabTitle }
 
 # Used instead of the localized relative time when a timestamp is within a minute or so of now
-fxviewtabrow-just-now-timestamp = 刚刚
+fxviewtabrow-just-now-timestamp = 只是现在
 
 # Strings below are used for context menu options within panel-list.
 # For developers, this duplicates command because the label attribute is required.
 
-fxviewtabrow-delete = 删除
+fxviewtabrow-delete = Delete
     .accesskey = D
-fxviewtabrow-forget-about-this-site = 忘记此站点…
+fxviewtabrow-forget-about-this-site = 忘记关于这位置…
     .accesskey = F
-fxviewtabrow-open-in-window = 在新窗口中启动
+fxviewtabrow-open-in-window = 打开在新的窗口
     .accesskey = N
-fxviewtabrow-open-in-private-window = 在新的隐私窗口中启动
+fxviewtabrow-open-in-private-window = 打开在新的私人的窗口
     .accesskey = P
 # “Bookmark” is a verb, as in "Bookmark this page" (add to bookmarks).
-fxviewtabrow-add-bookmark = 添加书签…
+fxviewtabrow-add-bookmark = 书签…
     .accesskey = B
-fxviewtabrow-save-to-pocket = 保存至 { -pocket-brand-name }
+fxviewtabrow-save-to-pocket = 保存到 { -pocket-brand-name }
     .accesskey = o
-fxviewtabrow-copy-link = 复制链接
+fxviewtabrow-copy-link = 复制连接
     .accesskey = L
-fxviewtabrow-close-tab = 关闭选项卡
+fxviewtabrow-close-tab = 关闭 Tab
     .accesskey = C
-fxviewtabrow-move-tab = 移动选项卡
+fxviewtabrow-move-tab = 移动 Tab
     .accesskey = v
-fxviewtabrow-move-tab-start = 移动到起始位置
+fxviewtabrow-move-tab-start = 移动到启动
     .accesskey = S
-fxviewtabrow-move-tab-end = 移动到末尾位置
+fxviewtabrow-move-tab-end = 移动到端
     .accesskey = E
-fxviewtabrow-move-tab-window = 移动到新窗口
+fxviewtabrow-move-tab-window = 移动到新的窗口
     .accesskey = W
-fxviewtabrow-send-to-device = 发送至设备
+fxviewtabrow-send-to-device = 发送到装置
     .accesskey = n
-fxviewtabrow-send-to-mobile = 发送至移动设备
+fxviewtabrow-send-to-mobile = 发送到移动的
     .accesskey = n
-fxviewtabrow-pin-tab = 固定选项卡
+fxviewtabrow-pin-tab = 大头针 Tab
     .accesskey = P
-fxviewtabrow-unpin-tab = 取消固定选项卡
+fxviewtabrow-unpin-tab = 取下...上的别针 Tab
     .accesskey = p
-fxviewtabrow-mute-tab = 静音选项卡
+fxviewtabrow-mute-tab = 哑子 Tab
     .accesskey = M
-fxviewtabrow-unmute-tab = 取消静音选项卡
+fxviewtabrow-unmute-tab = Unmute Tab
     .accesskey = m
 
 # Variables:
 #   $tabTitle (string) - Title of the tab to which the context menu is associated
 fxviewtabrow-options-menu-button =
-  .title = { $tabTitle } 的选项
+  .title = 选项为了 { $tabTitle }
 
 ## Strings below are to be used without context (tab title/URL) on mute/unmute buttons
 
 fxviewtabrow-mute-tab-button-no-context =
-  .title = 静音选项卡
+  .title = 哑子标签页
 fxviewtabrow-unmute-tab-button-no-context =
-  .title = 取消静音选项卡
+  .title = Unmute 标签页
 
 ## The following strings are for displaying elements in Firefox View to prompt users to sign in, enable sync, pair a device, or troubleshoot device issues.
 
-fxviewtabrow-send-to-mobile-sign-in = 登录以发送选项卡
-fxviewtabrow-send-to-mobile-turn-on-sync = 启动同步以发送选项卡
-fxviewtabrow-send-to-mobile-connect-device = 连接设备以发送选项卡
-fxviewtabrow-send-to-mobile-device-missing2 = 未检测到您的设备？
-fxviewtabrow-send-to-mobile-not-verified = 账户未验证
-fxviewtabrow-send-to-mobile-verify-account = 验证您的账户
+fxviewtabrow-send-to-mobile-sign-in = 正负号在到发送标签页
+fxviewtabrow-send-to-mobile-turn-on-sync = 转弯在同步的到发送标签页
+fxviewtabrow-send-to-mobile-connect-device = 连接一个装置到发送标签页
+fxviewtabrow-send-to-mobile-device-missing2 = 不要看见你的装置?
+fxviewtabrow-send-to-mobile-not-verified = 帐户不已查清的
+fxviewtabrow-send-to-mobile-verify-account = 证明你的帐户

@@ -2,11 +2,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-tabbrowser-empty-tab-title = 新选项卡
-tabbrowser-empty-private-tab-title = 新建隐私选项卡
+tabbrowser-empty-tab-title = 新的 Tab
+tabbrowser-empty-private-tab-title = 新的私人的 Tab
 
 tabbrowser-menuitem-close-tab =
-    .label = 关闭选项卡
+    .label = 关闭 Tab
 tabbrowser-menuitem-close =
     .label = 关闭
 
@@ -34,8 +34,8 @@ tabbrowser-tab-tooltip-tab-group-container = { $tabGroupName } — { $containerN
 tabbrowser-close-tabs-button =
     .tooltiptext =
         { $tabCount ->
-            [one] 关闭选项卡
-           *[other] 关闭 { $tabCount } 个选项卡
+            [one] 关闭标签页
+           *[other] 关闭 { $tabCount } 标签页
         }
 
 ## Tooltips for tab audio control
@@ -47,45 +47,45 @@ tabbrowser-close-tabs-button =
 tabbrowser-mute-tab-audio-tooltip =
     .label =
         { $tabCount ->
-            [one] 静音选项卡（{ $shortcut }）
-           *[other] 静音 { $tabCount } 个选项卡（{ $shortcut }）
+            [one] 哑子标签页 ({ $shortcut })
+           *[other] 哑子 { $tabCount } 标签页 ({ $shortcut })
         }
 # Variables:
 #   $shortcut (String): The keyboard shortcut for "Unmute tab".
 tabbrowser-unmute-tab-audio-tooltip =
     .label =
         { $tabCount ->
-            [one] 取消静音选项卡（{ $shortcut }）
-           *[other] 取消静音 { $tabCount } 个选项卡（{ $shortcut }）
+            [one] Unmute 标签页 ({ $shortcut })
+           *[other] Unmute { $tabCount } 标签页 ({ $shortcut })
         }
 tabbrowser-mute-tab-audio-background-tooltip =
     .label =
         { $tabCount ->
-            [one] 静音选项卡
-           *[other] 静音 { $tabCount } 个选项卡
+            [one] 哑子标签页
+           *[other] 哑子 { $tabCount } 标签页
         }
 tabbrowser-unmute-tab-audio-background-tooltip =
     .label =
         { $tabCount ->
-            [one] 取消静音选项卡
-           *[other] 取消静音 { $tabCount } 个选项卡
+            [one] Unmute 标签页
+           *[other] Unmute { $tabCount } 标签页
         }
 tabbrowser-unblock-tab-audio-tooltip =
     .label =
         { $tabCount ->
-            [one] 播放选项卡
-           *[other] 播放 { $tabCount } 个选项卡
+            [one] 播放标签页
+           *[other] 播放 { $tabCount } 标签页
         }
 
 ## Tooltips for tab audio control
 
 tabbrowser-unmute-tab-audio-aria-label =
-    .aria-label = 取消静音选项卡
+    .aria-label = Unmute 标签页
 tabbrowser-mute-tab-audio-aria-label =
-    .aria-label = 静音选项卡
+    .aria-label = 哑子标签页
 # Used to unblock a tab with audio from autoplaying
 tabbrowser-unblock-tab-audio-aria-label =
-    .aria-label = 播放选项卡
+    .aria-label = 播放标签页
 
 ## Confirmation dialog when closing a window with more than one tab open,
 ## or when quitting when only one window is open.
@@ -95,10 +95,10 @@ tabbrowser-unblock-tab-audio-aria-label =
 #   $tabCount (Number): The number of tabs that will be closed.
 tabbrowser-confirm-close-tabs-title =
     { $tabCount ->
-       *[other] 关闭 { $tabCount } 个选项卡？
+       *[other] 关闭 { $tabCount } 标签页?
     }
-tabbrowser-confirm-close-tabs-button = 关闭选项卡
-tabbrowser-ask-close-tabs-checkbox = 在关闭多个选项卡之前询问
+tabbrowser-confirm-close-tabs-button = 关闭标签页
+tabbrowser-ask-close-tabs-checkbox = 询问在...之前关闭倍数标签页
 
 ## Confirmation dialog when quitting using the menu and multiple windows are open.
 
@@ -108,32 +108,33 @@ tabbrowser-ask-close-tabs-checkbox = 在关闭多个选项卡之前询问
 #   $windowCount (Number): The number of windows that will be closed.
 tabbrowser-confirm-close-windows-title =
     { $windowCount ->
-       *[other] 关闭 { $windowCount } 个窗口？
+       *[other] 关闭 { $windowCount } 窗口?
     }
 tabbrowser-confirm-close-windows-button =
     { PLATFORM() ->
-        [windows] 关闭并退出
-       *[other] 关闭并退出
+        [windows] 关闭和出口
+       *[other] 关闭和结束
     }
 
 ## Confirmation dialog when quitting using the keyboard shortcut (Ctrl/Cmd+Q)
 ## Windows does not show a prompt on quit when using the keyboard shortcut by default.
-tabbrowser-confirm-close-tabs-with-key-title = 是否关闭窗口并退出 { -brand-short-name }？
-tabbrowser-confirm-close-tabs-with-key-button = 退出 { -brand-short-name }
+
+tabbrowser-confirm-close-tabs-with-key-title = 关闭窗口和结束 { -brand-short-name }?
+tabbrowser-confirm-close-tabs-with-key-button = 结束 { -brand-short-name }
 # Variables:
 #   $quitKey (String): the text of the keyboard shortcut for quitting.
-tabbrowser-ask-close-tabs-with-key-checkbox = 使用 { $quitKey } 退出之前询问您
+tabbrowser-ask-close-tabs-with-key-checkbox = 询问在...之前书面收据与 { $quitKey }
 
 ## Confirmation dialog when quitting using the keyboard shortcut (Ctrl/Cmd+Q)
 ## and browser.warnOnQuitShortcut is true.
 
-tabbrowser-confirm-close-warn-shortcut-title = 退出 { -brand-short-name } 还是关闭当前标签页？
+tabbrowser-confirm-close-warn-shortcut-title = 结束 { -brand-short-name } 或关闭当前的标签页?
 tabbrowser-confirm-close-windows-warn-shortcut-button =
     { PLATFORM() ->
-        [windows] 退出 { -brand-short-name }
-       *[other] 退出 { -brand-short-name }
+        [windows] 出口 { -brand-short-name }
+       *[other] 结束 { -brand-short-name }
     }
-tabbrowser-confirm-close-tab-only-button = 关闭当前标签页
+tabbrowser-confirm-close-tab-only-button = 关闭当前的标签页
 
 ## Confirmation dialog when opening multiple tabs simultaneously
 
@@ -142,22 +143,22 @@ tabbrowser-confirm-open-multiple-tabs-title = 确认打开
 #   $tabCount (Number): The number of tabs that will be opened.
 tabbrowser-confirm-open-multiple-tabs-message =
     { $tabCount ->
-       *[other] 您即将打开 { $tabCount } 个标签页。此操作可能在页面加载期间降低 { -brand-short-name } 的性能。您是否确定要继续执行此操作？
+       *[other] 你是关于到打开 { $tabCount } 标签页. 这可能 (使)慢下来向下 { -brand-short-name } 一会儿那页是装载. 你确定你想要到继续?
     }
 tabbrowser-confirm-open-multiple-tabs-button = 打开标签页
-tabbrowser-confirm-open-multiple-tabs-checkbox = 当打开多个标签页可能降低 { -brand-short-name } 性能时向您发出警告
+tabbrowser-confirm-open-multiple-tabs-checkbox = 警告我何时打开倍数标签页可能 (使)慢下来向下 { -brand-short-name }
 
 ## Confirmation dialog for enabling caret browsing
 
-tabbrowser-confirm-caretbrowsing-title = 插入符号浏览
-tabbrowser-confirm-caretbrowsing-message = 按下 F7 键将启用或停用插入符号浏览。此功能会在网页中放置一个可移动的插入符号，使您能够使用键盘选择文本。您是否希望启用插入符号浏览？
-tabbrowser-confirm-caretbrowsing-checkbox = 不再向您显示此对话框。
+tabbrowser-confirm-caretbrowsing-title = ^符号浏览
+tabbrowser-confirm-caretbrowsing-message = 紧迫的故障7 转弯 ^符号浏览在或关闭. 这特性 placebo capsule 安慰剂胶囊一个活动的东西光标在网页, 允许（allow的现在分词）你到选择电文与那键盘. 你是否想要到使旋转 ^符号浏览在?
+tabbrowser-confirm-caretbrowsing-checkbox = 做不显示我这对话方框再一次.
 
 ## Confirmation dialog for closing all duplicate tabs
 
-tabbrowser-confirm-close-all-duplicate-tabs-title = 是否关闭重复标签页？
-tabbrowser-confirm-close-all-duplicate-tabs-text = 我们将关闭此窗口中的重复标签页。最后活动的
- 标签页将保持打开状态。
+tabbrowser-confirm-close-all-duplicate-tabs-title = 关闭复制标签页?
+tabbrowser-confirm-close-all-duplicate-tabs-text = (we shall或 we will 的常用口语形式) 关闭复制标签页在这窗口. 那最后活跃的
+ 标签页将制止打开.
 tabbrowser-confirm-close-all-duplicate-tabs-button-closetabs = 关闭标签页
 
 ##
@@ -165,35 +166,35 @@ tabbrowser-confirm-close-all-duplicate-tabs-button-closetabs = 关闭标签页
 # Variables:
 #   $domain (String): URL of the page that is trying to steal focus.
 tabbrowser-allow-dialogs-to-get-focus =
-    .label = 允许来自 { $domain } 的此类通知将您带到其标签页
+    .label = 允许通知相似的这从 { $domain } 到采取你到他们的标签页
 
-tabbrowser-customizemode-tab-title = 自定义 { -brand-short-name }
+tabbrowser-customizemode-tab-title = 定制 { -brand-short-name }
 
 ## Context menu buttons, of which only one will be visible at a time
 
 tabbrowser-context-mute-tab =
-    .label = 标签页静音
+    .label = 哑子 Tab
     .accesskey = M
 tabbrowser-context-mute-tab2 =
-    .label = 静音
+    .label = 哑子
     .accesskey = M
 tabbrowser-context-unmute-tab =
-    .label = 取消标签页静音
+    .label = Unmute Tab
     .accesskey = m
 tabbrowser-context-unmute-tab2 =
-    .label = 取消静音
+    .label = Unmute
     .accesskey = m
 # The accesskey should match the accesskey for tabbrowser-context-mute-tab
 tabbrowser-context-mute-selected-tabs =
-    .label = 标签页静音
+    .label = 哑子标签页
     .accesskey = M
 # The accesskey should match the accesskey for tabbrowser-context-unmute-tab
 tabbrowser-context-unmute-selected-tabs =
-    .label = 取消标签页静音
+    .label = Unmute 标签页
     .accesskey = m
 
 # This string is used as an additional tooltip and accessibility description for tabs playing audio
-tabbrowser-tab-audio-playing-description = 正在播放音频
+tabbrowser-tab-audio-playing-description = 游戏音频的
 
 ## Ctrl-Tab dialog
 
@@ -202,7 +203,7 @@ tabbrowser-tab-audio-playing-description = 正在播放音频
 tabbrowser-ctrl-tab-list-all-tabs =
     .label =
         { $tabCount ->
-           *[other] 列出全部 { $tabCount } 个标签页
+           *[other] 列表所有的 { $tabCount } 标签页
         }
 
 ## Tab manager menu buttons
@@ -211,19 +212,19 @@ tabbrowser-ctrl-tab-list-all-tabs =
 ##                          used when the group's name is empty.
 
 tabbrowser-manager-mute-tab =
-  .tooltiptext = 标签页静音
+  .tooltiptext = 哑子标签页
 tabbrowser-manager-unmute-tab =
-  .tooltiptext = 取消标签页静音
+  .tooltiptext = Unmute 标签页
 tabbrowser-manager-close-tab =
   .tooltiptext = 关闭标签页
 # This is for tab groups that have been "saved and closed" (see tab-group-editor-action-save). It does
 # not include "deleted" tab groups (see tab-group-editor-action-delete).
 tabbrowser-manager-closed-tab-group =
   .label = { $tabGroupName }
-  .tooltiptext = { $tabGroupName } — 已关闭
+  .tooltiptext = { $tabGroupName } —关闭
 tabbrowser-manager-current-window-tab-group =
   .label = { $tabGroupName }
-  .tooltiptext = { $tabGroupName } — 当前窗口
+  .tooltiptext = { $tabGroupName } —当前的窗口
 
 ## Tab Groups
 ## Variables:
@@ -231,64 +232,63 @@ tabbrowser-manager-current-window-tab-group =
 ##                          used when the group's name is empty.
 
 # Title placed over a list of all of the user's tab groups
-tab-groups-list-title = 标签页组
+tab-groups-list-title = Tab 创建组
 
-tab-group-name-default = 未命名组
-
-tab-group-editor-title-create = 创建标签页组
-tab-group-editor-title-edit = 管理标签页组
+tab-group-name-default = 无名的创建组
+tab-group-editor-title-create = 创建标签页创建组
+tab-group-editor-title-edit = 管理标签页创建组
 tab-group-editor-name-label = 名称
 tab-group-editor-name-field =
-  .placeholder = 示例：购物
+  .placeholder = 例子: 买东西
 tab-group-editor-cancel =
   .label = 取消
   .accesskey = C
 
 tab-group-editor-color-selector =
-  .aria-label = 标签页组颜色
+  .aria-label = Tab 创建组颜色
 tab-group-editor-color-selector2-blue = 蓝色
   .title = 蓝色
 tab-group-editor-color-selector2-purple = 紫色
   .title = 紫色
-tab-group-editor-color-selector2-cyan = 青色
-  .title = 青色
-tab-group-editor-color-selector2-orange = 橙色
-  .title = 橙色
+tab-group-editor-color-selector2-cyan = 蓝绿色
+  .title = 蓝绿色
+tab-group-editor-color-selector2-orange = 柑橘
+  .title = 柑橘
 tab-group-editor-color-selector2-yellow = 黄色
   .title = 黄色
-tab-group-editor-color-selector2-pink = 粉色
-  .title = 粉色
+tab-group-editor-color-selector2-pink = 粉红色
+  .title = 粉红色
 tab-group-editor-color-selector2-green = 绿色
   .title = 绿色
 tab-group-editor-color-selector2-gray = 灰色
   .title = 灰色
-tab-group-editor-color-selector2-red = 红色
-  .title = 红色
+tab-group-editor-color-selector2-red = 简化
+  .title = 简化
 
 tab-group-menu-closed-tab-group =
   .label = { $tabGroupName }
-  .title = { $tabGroupName } — 已关闭
+  .title = { $tabGroupName } —关闭
 
 ## Variables:
 ##  $tabGroupName (String): The name of the tab group. Defaults to the value
 ##                          of tab-group-name-default.
 
-tab-group-description = { $tabGroupName } — 标签页组
-tab-group-label-tooltip-collapsed = { $tabGroupName } — 已折叠
-tab-group-label-tooltip-expanded = { $tabGroupName } — 已展开
+tab-group-description = { $tabGroupName } — Tab 创建组
+tab-group-label-tooltip-collapsed = { $tabGroupName } —倒塌的
+tab-group-label-tooltip-expanded = { $tabGroupName } —扩充的
 tab-group-preview-name =
-  .aria-label = 折叠组中的标签页
+  .aria-label = 标签页在一个倒塌的创建组
 
 ## When collapsed, the tab group label's aria-description will indicate
 ## whether the hover menu is open or closed.
 
-tab-group-preview-open-description = 标签页列表已打开
-tab-group-preview-closed-description = 标签页列表已关闭
+tab-group-preview-open-description = 标签页列表打开
+tab-group-preview-closed-description = 标签页列表关闭
 
 ##
 
 tab-context-unnamed-group =
-    .label = 未命名组
+    .label = 无名的创建组
 
 ## Variables:
 ##  $tabCount (Number): the number of tabs that are affected by the action.
@@ -301,93 +301,93 @@ tab-context-unnamed-group =
 tab-group-overflow-count = +{ $tabCount }
 tab-group-overflow-count-tooltip =
     { $tabCount ->
-        [one] 还有 { $tabCount } 个标签页
-        *[other] 还有 { $tabCount } 个标签页
+        [one] { $tabCount } 更多标签页
+        *[other] { $tabCount } 更多标签页
     }
 tab-context-move-tab-to-new-group =
     .label =
         { $tabCount ->
-            [1] 添加标签页到新组
-           *[other] 添加标签页到新组
+            [1] 添加 Tab 到新的创建组
+           *[other] 添加标签页到新的创建组
         }
     .accesskey = G
 tab-context-move-tab-to-group =
     .label =
         { $tabCount ->
-            [1] 添加标签页到组
-           *[other] 添加标签页到组
+            [1] 添加 Tab 到创建组
+           *[other] 添加标签页到创建组
         }
     .accesskey = G
 tab-context-move-split-view-to-new-group =
     .label =
         { $splitViewCount ->
-            [1] 添加拆分视图到新组
-           *[other] 添加拆分视图到新组
+            [1] 添加拆分查看到新的创建组
+           *[other] 添加拆分查看到新的创建组
         }
     .accesskey = G
 tab-context-move-split-view-to-group =
     .label =
         { $splitViewCount ->
-            [1] 添加拆分视图到组
-           *[other] 添加拆分视图到组
+            [1] 添加拆分查看到创建组
+           *[other] 添加拆分查看到创建组
         }
     .accesskey = G
 
 ##
 
 tab-splitview-splitter =
-    .aria-label = 调整拆分视图标签页的大小
+    .aria-label = 调整大小拆分查看标签页
 
 tab-context-move-tab-to-group-saved-groups =
-    .label = 已关闭的组
+    .label = 关闭创建组
 tab-group-editor-action-new-tab =
-    .label = 在组中新建标签页
+    .label = 新的标签页在创建组
 tab-group-editor-action-new-window =
-    .label = 将组移动到新窗口
+    .label = 移动创建组到新的窗口
 # Variables:
 #  $linkCount (Number): the number of shareable links in the group.
 tab-group-editor-action-copy-links =
     .label =
         { $linkCount ->
-            [1] 复制组中的链接
-           *[other] 复制组中的 { $linkCount } 个链接
+            [1] 复制连接在创建组
+           *[other] 复制 { $linkCount } 连接在创建组
         }
 tab-group-editor-action-save =
-    .label = 保存并关闭组
+    .label = 保存和关闭创建组
 tab-group-editor-action-ungroup =
-    .label = 取消分组标签页
+    .label = 取消组标签页
 tab-group-editor-action-delete =
-    .label = 删除组
+    .label = Delete 创建组
 tab-group-editor-done =
-    .label = 完成
-    .accessKey = 完
+    .label = 完成了的
+    .accessKey = D
 # Share is a verb here. Meaning to "Share" the "tab group"
 tab-group-editor-action-share-tab-group =
-    .label = 共享标签页组
+    .label = 部分标签页创建组
 
 tab-context-reopen-tab-group =
-    .label = 重新打开标签页组
+    .label = 重开标签页创建组
 
 # Variables:
 #  $groupCount (Number): the number of tab groups that are affected by the action.
 tab-context-ungroup-tab =
     .label =
         { $groupCount ->
-            [1] 从组中移除
-           *[other] 从各组中移除
+            [1] 移除从创建组
+           *[other] 移除从创建组
         }
-    .accesskey = 移
+    .accesskey = R
 
 ## The tab groups list provides a list of all open tab groups and saved tab
 ## groups in one place. When the user has no tab groups, the list instead
 ## recommends that the user create a tab group.
 
 # Text for a button that, when clicked, creates a new tab group
-tab-groups-list-create-group-button = 新建组
+tab-groups-list-create-group-button = 新的创建组
 
-tab-groups-list-empty-header = 整理您的标签页
-tab-groups-list-empty-description = 将一个标签页拖到另一个标签页上，或右键单击某个标签页以开始整理。我们将在此处保存您的组，以便您日后轻松找到它们。
-tab-groups-list-empty-button = 创建标签页组
+tab-groups-list-empty-header = 椅子的背罩向上的你的标签页
+tab-groups-list-empty-description = 拖动一(个) 标签页在...之上另外的或右-click 一个标签页到启动组织. (we shall或 we will 的常用口语形式) 保存你的创建组这里如此 they are 他们是容易的到发现以后.
+tab-groups-list-empty-button = 创建一个标签页创建组
 
 ## Open/saved tab group context menu
 
@@ -398,65 +398,65 @@ tab-groups-list-empty-button = 创建标签页组
 # For a tab group open in any window, clicking this will create a new
 # window and move this tab group to that new window.
 tab-group-context-move-to-new-window =
-    .label = 将组移至新窗口
+    .label = 移动创建组到新的窗口
 
 # For a tab group open in a different window from the one that the
 # user is using to access the tab group menu, move that tab group into the
 # user's current window.
 tab-group-context-move-to-this-window =
-    .label = 将组移至此窗口
+    .label = 移动创建组到这窗口
 
 # For a tab group that is open in any window, close the tab group and
 # do not save it. For a tab group that is closed but saved by the user, clicking
 # this will forget the saved tab group.
 tab-group-context-delete =
-    .label = 删除组
+    .label = Delete 创建组
 
 # For a saved tab group that is not open in any window, open the tab group
 # in the user's current window.
 tab-group-context-open-saved-group-in-this-window =
-    .label = 在此窗口打开组
+    .label = 打开创建组在这窗口
 
 # For a saved tab group that is not open in any window, create a new window and
 # open the tab group in that window.
 tab-group-context-open-saved-group-in-new-window =
-    .label = 在新窗口打开组
+    .label = 打开创建组在新的窗口
 
 ## Tab Notes
 
 tab-context-add-note =
     .label = 添加笔记
-    .accesskey = 添
+    .accesskey = A
 tab-context-edit-note =
     .label = 编辑笔记
-    .accesskey = 编
+    .accesskey = E
 
 # TODO Bug 2023230: `tab-context-delete-note` is no longer used as of bug 2023200,
 # but it seems likely to return, so this string is being left in place for now.
 
 tab-context-delete-note =
-    .label = 删除笔记
-    .accesskey = 删
+    .label = Delete 笔记
+    .accesskey = D
 tab-note-editor-title-create = 添加笔记
 tab-note-editor-title-edit = 编辑笔记
 tab-note-editor-text-field =
-    .placeholder = 您想记住关于此标签页的哪些内容？
+    .placeholder = 什么你是否想要到记住关于这标签页?
 tab-note-editor-button-cancel =
     .label = 取消
-    .accesskey = 取
+    .accesskey = C
 tab-note-editor-button-save =
     .label = 保存
-    .accesskey = 存
+    .accesskey = S
 tab-note-editor-button-delete =
-    .title = 删除笔记
-    .aria-label = 删除笔记
-    .accesskey = 删
+    .title = Delete 笔记
+    .aria-label = Delete 笔记
+    .accesskey = D
 tab-note-preview-edit-icon =
     .alt = 编辑笔记
 # Link to show the full tab note in case it was truncated.
-tab-note-preview-expand = 阅读更多
+tab-note-preview-expand = 读取更多
 tab-note-panel-add-note-new-badge =
-    .label = 新建
+    .label = 新的
 
 # Displayed within the tab note edit dialog box when the user has entered more
 # characters than are allowed.
@@ -465,7 +465,7 @@ tab-note-panel-add-note-new-badge =
 #   $maxAllowedCharacters (Number): the maximum number of characters allowed for a tab note.
 tab-note-editor-character-limit =
     { $maxAllowedCharacters ->
-         *[other] { NUMBER($totalCharacters, useGrouping: "false") }/{ NUMBER($maxAllowedCharacters, useGrouping: "false") } 个字符
+         *[other] { NUMBER($totalCharacters, useGrouping: "false") }/{ NUMBER($maxAllowedCharacters, useGrouping: "false") } 字符
     }
 
 ## Split View
@@ -475,40 +475,42 @@ tab-note-editor-character-limit =
 # "left" corresponds to the visual position. Translate literally; do not swap for RTL languages.
 # Variables:
 #   $label (String): the text label of the tab visible in the tab strip
-tabbrowser-tab-label-tab-split-view-left = { $label }，左侧拆分视图
+tabbrowser-tab-label-tab-split-view-left = { $label }, 拆分查看许可
+
+# Split view tabs display their respective contents side by side
 # Displayed within the tooltip on the right tab inside of a tab split view
 # "right" corresponds to the visual position. Translate literally; do not swap for RTL languages.
 # Variables:
 #   $label (String): the text label of the tab visible in the tab strip
-tabbrowser-tab-label-tab-split-view-right = { $label }，右侧拆分视图
+tabbrowser-tab-label-tab-split-view-right = { $label }, 拆分查看右
 
 # Open a new tab next to the current tab and display their contents side by side
 tab-context-add-split-view =
-    .label = 添加拆分视图
+    .label = 添加拆分查看
     .accesskey = t
 # Display the two selected tabs' contents side by side
 tab-context-open-in-split-view =
-    .label = 在拆分视图中打开
+    .label = 打开在拆分查看
     .accesskey = t
 # Separate the two split view tabs and display the tabs and their contents as normal
 tab-context-separate-split-view =
-    .label = 分离拆分视图
+    .label = 独立件拆分查看
     .accesskey = t
 # Reverse the order of the two tabs in the split view
 tab-context-reverse-split-view =
-    .label = 反转标签
+    .label = 反转标签页
     .accesskey = r
-tab-context-badge-new = 新
+tab-context-badge-new = 新的
 
 ## Manage Split View (icon in the address bar & three-dot menu in the footer)
 
 # "Separate" is a verb, as in "separate the split view tabs and display them normally".
 split-view-menuitem-separate-tabs =
-    .label = 分离标签
+    .label = 独立件标签页
 # "Reverse" is a verb, as in "reverse the order of split view tabs".
 split-view-menuitem-reverse-tabs =
-    .label = 反转标签
+    .label = 反转标签页
 split-view-menuitem-close-both-tabs =
-    .label = 关闭这两个标签
+    .label = 关闭两者的标签页
 
 ##

@@ -7,9 +7,9 @@
 ### user is searching how to clear their history, we show the Intervention
 ### described by clear-data.
 
-intervention-clear-data = 清除您的缓存、Cookie、历史记录及其他数据。
-intervention-clear-data-confirm = 选择要清除的内容…
-intervention-refresh-profile = 为达到最佳性能，建议您恢复默认设置并移除旧附加组件。
+intervention-clear-data = 清除你的高速缓冲存储器, 饼干, 历史记录和更多.
+intervention-clear-data-confirm = 选取什么到清除…
+intervention-refresh-profile = 回复默认设置和移除以前添加-ons 为了最佳的施行.
 intervention-refresh-profile-confirm = 刷新 { -brand-short-name }…
 
 ## These strings describe Interventions helping the user with the Firefox update
@@ -17,22 +17,24 @@ intervention-refresh-profile-confirm = 刷新 { -brand-short-name }…
 ##
 ## Shown when an update is available to download.
 
-intervention-update-ask = 新版本的 { -brand-short-name } 已可供您下载。
-intervention-update-ask-confirm = 安装并重新启动以完成更新
+intervention-update-ask = 一个新版本的 { -brand-short-name } 是可利用的.
+intervention-update-ask-confirm = 安装和重启以更新
 
 ## Shown when Firefox does not need to update so instead we offer to refresh
 ## the user's profile.
 
-intervention-update-refresh = { -brand-short-name } 已是最新版本。您是否遇到问题？建议您恢复默认设置并移除旧附加组件，以获得最佳性能。
+intervention-update-refresh = { -brand-short-name } 是已是最新. 尝试到修复一个问题? 回复默认设置和移除以前添加-ons 为了最佳的施行.
 intervention-update-refresh-confirm = 刷新 { -brand-short-name }…
 
 ## Shown when an update is downloaded and Firefox is ready to install it.
 
-intervention-update-restart = 最新版本的 { -brand-short-name } 已下载完毕，并已准备好进行安装。
-intervention-update-restart-confirm = 重新启动以完成更新
+intervention-update-restart = 那最近的 { -brand-short-name } 是将（程序和预备好的状态到安装.
+intervention-update-restart-confirm = 重新启动到更新
 
 ## Shown when Firefox cannot update itself. The button will open the download
 ## page on the Firefox website.
 
-intervention-update-web = 获取最新版本的 { -brand-short-name } 浏览器。
-intervention-update-web-confirm = 立即下载
+intervention-update-web = 获得那最近的 { -brand-short-name } 浏览器.
+intervention-update-web-confirm = 下载现在
+
+##

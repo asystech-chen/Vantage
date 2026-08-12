@@ -2,49 +2,49 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-xpinstall-prompt = { -brand-short-name } 已阻止此站点向您请求在您的计算机上安装软件的操作。
+xpinstall-prompt = { -brand-short-name } 预防( prevent的过去式和过去分词 ) 此站点从请求你到安装软设备在你的计算机.
 
 ## Variables:
 ##   $host (String): The hostname of the site the add-on is being installed from.
 
-xpinstall-prompt-header = 是否允许 { $host } 安装附加组件？
-xpinstall-prompt-message = 您正在尝试从 { $host } 安装附加组件。在继续之前，请确保您信任此站点。
+xpinstall-prompt-header = 允许 { $host } 到安装附加组件?
+xpinstall-prompt-message = 你是试图( attempt的现在分词 ) 到安装附加组件从 { $host }. 确保你信任此站点继续之前.
 
 ##
 
-xpinstall-prompt-header-unknown = 是否允许未知站点安装附加组件？
-xpinstall-prompt-message-unknown = 您正在尝试从未知站点安装附加组件。在继续之前，请确保您信任此站点。
+xpinstall-prompt-header-unknown = 允许一个未知物位置到安装附加组件?
+xpinstall-prompt-message-unknown = 你是试图( attempt的现在分词 ) 到安装附加组件从一个未知物位置. 确保你信任此站点继续之前.
 
 xpinstall-prompt-dont-allow =
-    .label = 不允许
+    .label = 不要允许
     .accesskey = D
 xpinstall-prompt-never-allow =
-    .label = 永不允许
+    .label = 从不允许
     .accesskey = N
 # Long text in this context make the dropdown menu extend awkwardly to the left,
 # avoid a localization that's significantly longer than the English version.
 xpinstall-prompt-never-allow-and-report =
-    .label = 报告可疑站点
+    .label = 报告可疑的位置
     .accesskey = R
 # Accessibility Note:
 # Be sure you do not choose an accesskey that is used elsewhere in the active context (e.g. main menu bar, submenu of the warning popup button)
 # See https://website-archive.mozilla.org/www.mozilla.org/access/access/keyboard/ for details
 xpinstall-prompt-install =
-    .label = 继续安装
+    .label = 继续到安装
     .accesskey = C
 
 # These messages are shown when a website invokes navigator.requestMIDIAccess.
 
-site-permission-install-first-prompt-midi-header = 此站点正在请求访问您的 MIDI（乐器数字接口）设备。可通过安装附加组件来启用设备访问。
-site-permission-install-first-prompt-midi-message = 此访问不能保证安全。仅当您信任此站点时才继续。
+site-permission-install-first-prompt-midi-header = 此站点是要求访问到你的 MIDI (音乐片工具数字接口) 德维克（男子名、姓氏）. 装置访问能是启用由安装一个 add-on.
+site-permission-install-first-prompt-midi-message = 这访问是不有保证的到是保险箱. 仅继续如果你信任此站点.
 
-site-permission-install-first-prompt-serial-header = 此站点正在请求访问您的串行设备。可通过安装附加组件来启用设备访问。
-site-permission-install-first-prompt-serial-message = 此访问不能保证安全。仅当您信任此站点时才继续。
+site-permission-install-first-prompt-serial-header = 此站点是要求访问到你的连续的德维克（男子名、姓氏）. 装置访问能是启用由安装一个 add-on.
+site-permission-install-first-prompt-serial-message = 这访问是不有保证的到是保险箱. 仅继续如果你信任此站点.
 
 ##
 
-xpinstall-disabled-by-policy = 软件安装已由您的组织禁用。
-xpinstall-disabled = 软件安装当前已被禁用。请单击“启用”并重试。
+xpinstall-disabled-by-policy = 软设备安装有是禁用由你的组织.
+xpinstall-disabled = 软设备安装是当前禁用. 单击启用和尝试再一次.
 xpinstall-disabled-button =
     .label = 启用
     .accesskey = n
@@ -53,41 +53,41 @@ xpinstall-disabled-button =
 # Variables:
 #   $addonName (String): the name of the add-on.
 #   $addonId (String): the ID of add-on.
-addon-installation-blocked-by-policy = { $addonName } ({ $addonId }) 已被您的组织阻止。
+addon-installation-blocked-by-policy = { $addonName } ({ $addonId }) 是阻止由你的组织.
 # This message is shown when the installation of add-ons from a domain is blocked by enterprise policy.
-addon-install-domain-blocked-by-policy = 您的组织已阻止此站点向您请求在您的计算机上安装软件的操作。
-addon-install-full-screen-blocked = 在进入全屏模式期间或之前，不允许进行附加组件安装。
+addon-install-domain-blocked-by-policy = 你的组织预防( prevent的过去式和过去分词 ) 此站点从请求你到安装软设备在你的计算机.
+addon-install-full-screen-blocked = 添加-on 安装是不允许一会儿在或在...之前进入 fullscreen 模式.
 
 # Variables:
 #   $addonName (String): the localized name of the sideloaded add-on.
-webext-perms-sideload-menu-item = { $addonName } 已添加到 { -brand-short-name }
+webext-perms-sideload-menu-item = { $addonName } 额外的到 { -brand-short-name }
 # Variables:
 #   $addonName (String): the localized name of the extension which has been updated.
-webext-perms-update-menu-item = { $addonName } 需要新权限
+webext-perms-update-menu-item = { $addonName } 需要新的许可
 
 # This message is shown when one or more extensions have been imported from a
 # different browser into Firefox, and the user needs to complete the import to
 # start these extensions. This message is shown in the appmenu.
-webext-imported-addons = 完成从其他浏览器导入到 { -brand-short-name } 的扩展安装
+webext-imported-addons = 使结束安装扩展名输入到 { -brand-short-name }
 
 ## Add-on removal warning
 
 # Variables:
 #  $name (String): The name of the add-on that will be removed.
-addon-removal-title = 是否移除 { $name }？
+addon-removal-title = 移除 { $name }?
 addon-removal-button = 移除
-addon-removal-abuse-report-checkbox = 向 { -vendor-short-name } 报告此扩展
+addon-removal-abuse-report-checkbox = 报告这扩展名到 { -vendor-short-name }
 # "it" refers to the local AI model that is paired to the AI feature
-addon-mlmodel-removal-body = 如果您使用使用此模型的功能或扩展，它将被重新添加。
+addon-mlmodel-removal-body = 如果你使用那特性或扩展名那使用这模型, 它将是赖斯编码-added.
 
 # Variables:
 #   $addonCount (Number): the number of add-ons being downloaded
 addon-downloading-and-verifying =
     { $addonCount ->
-        [1] 正在下载并验证附加组件…
-       *[other] 正在下载并验证 { $addonCount } 个附加组件…
+        [1] 下装和检验 add-on…
+       *[other] 下装和检验 { $addonCount } 添加-奥运信息服务（Olympic News Service）…
     }
-addon-download-verifying = 正在验证
+addon-download-verifying = 检验
 
 addon-install-cancel-button =
     .label = 取消
@@ -101,42 +101,42 @@ addon-install-accept-button =
 
 addon-confirm-install-message =
     { $addonCount ->
-        [1] 此站点希望在 { -brand-short-name } 中安装附加组件：
-       *[other] 此站点希望在 { -brand-short-name } 中安装 { $addonCount } 个附加组件：
+        [1] 此站点会喜欢到安装附加组件在 { -brand-short-name }:
+       *[other] 此站点会喜欢到安装 { $addonCount } 添加-ons 在 { -brand-short-name }:
     }
 addon-confirm-install-unsigned-message =
     { $addonCount ->
-        [1] 警告：此站点希望在 { -brand-short-name } 中安装未经验证的附加组件。请自行承担风险继续。
-       *[other] 警告：此站点希望在 { -brand-short-name } 中安装 { $addonCount } 个未经验证的附加组件。请自行承担风险继续。
+        [1] 警告: 此站点会喜欢到安装一个未经核对的 add-on 在 { -brand-short-name }. 继续进行在你的自己的冒险.
+       *[other] 警告: 此站点会喜欢到安装 { $addonCount } 未经核对的添加-ons 在 { -brand-short-name }. 继续进行在你的自己的冒险.
     }
 # Variables:
 #   $addonCount (Number): the number of add-ons being installed (at least 2)
 addon-confirm-install-some-unsigned-message =
     { $addonCount ->
-       *[other] 警告：此站点希望在 { -brand-short-name } 中安装 { $addonCount } 个附加组件，其中部分未经验证。请自行承担风险继续。
+       *[other] 警告: 此站点会喜欢到安装 { $addonCount } 添加-ons 在 { -brand-short-name }, 一些的哪个是未经核对的. 继续进行在你的自己的冒险.
     }
 
 ## Add-on install errors
 ## Variables:
 ##   $addonName (String): the add-on name.
 
-addon-install-error-network-failure = 由于连接故障，无法下载该附加组件。
-addon-install-error-incorrect-hash = 无法安装该附加组件，因为它与{ -brand-short-name }所预期的附加组件不匹配。
-addon-install-error-corrupt-file = 无法安装从此站点下载的附加组件，因为它似乎已损坏。
-addon-install-error-file-access = 无法安装{ $addonName }，因为{ -brand-short-name }无法修改所需的文件。
-addon-install-error-not-signed = { -brand-short-name }已阻止此站点安装未经验证的附加组件。
-addon-install-error-invalid-domain = 无法从此位置安装附加组件{ $addonName }。
-addon-install-error-no-addon-name-file-access = 无法安装该附加组件，因为{ -brand-short-name }无法修改所需的文件。
-addon-local-install-error-network-failure = 由于文件系统错误，无法安装此附加组件。
-addon-local-install-error-incorrect-hash = 无法安装此附加组件，因为它与{ -brand-short-name }所预期的附加组件不匹配。
-addon-local-install-error-corrupt-file = 无法安装此附加组件，因为它似乎已损坏。
-addon-local-install-error-file-access = 无法安装{ $addonName }，因为{ -brand-short-name }无法修改所需的文件。
-addon-local-install-error-not-signed = 无法安装此附加组件，因为它尚未经过验证。
-addon-local-install-no-addon-name-error-file-access = 无法安装该附加组件，因为{ -brand-short-name }无法修改所需的文件。
+addon-install-error-network-failure = 那 add-on 能够不是将（程序因为的一个连接故障.
+addon-install-error-incorrect-hash = 那 add-on 能够不是安装因为它做不比较那 add-on { -brand-short-name } 预期的.
+addon-install-error-corrupt-file = 那 add-on 将（程序从此站点能够不是安装因为它出现到是腐败的.
+addon-install-error-file-access = { $addonName } 能够不是安装因为 { -brand-short-name } 无法修改那需要的文件.
+addon-install-error-not-signed = { -brand-short-name } 有预防( prevent的过去式和过去分词 ) 此站点从安装一个未经核对的 add-on.
+addon-install-error-invalid-domain = 那 add-on { $addonName } 能不是安装从这位置.
+addon-install-error-no-addon-name-file-access = 那 add-on 能够不是安装因为 { -brand-short-name } 无法修改那需要的文件.
+addon-local-install-error-network-failure = 这 add-on 能够不是安装因为的一个文件系统错误.
+addon-local-install-error-incorrect-hash = 这 add-on 能够不是安装因为它做不比较那 add-on { -brand-short-name } 预期的.
+addon-local-install-error-corrupt-file = 这 add-on 能够不是安装因为它出现到是腐败的.
+addon-local-install-error-file-access = { $addonName } 能够不是安装因为 { -brand-short-name } 无法修改那需要的文件.
+addon-local-install-error-not-signed = 这 add-on 能够不是安装因为它有不是已查清的.
+addon-local-install-no-addon-name-error-file-access = 那 add-on 能够不是安装因为 { -brand-short-name } 无法修改那需要的文件.
 # Variables:
 #   $appVersion (String): the application version.
-addon-install-error-incompatible = 无法安装{ $addonName }，因为它与{ -brand-short-name } { $appVersion }不兼容。
-addon-install-error-hard-blocked = { $addonName }违反了Mozilla的政策，无法安装在{ -brand-short-name }上。
-addon-install-error-soft-blocked2 = { $addonName }受到限制，无法安装在{ -brand-short-name }上。
+addon-install-error-incompatible = { $addonName } 能够不是安装因为它是不相容的与 { -brand-short-name } { $appVersion }.
+addon-install-error-hard-blocked = { $addonName } 亵渎( violate的第三人称单数 ) Mozilla's 政策和不能是安装在 { -brand-short-name }.
+addon-install-error-soft-blocked2 = { $addonName } 是受限制的和不能是安装在 { -brand-short-name }.
 # Enterprise policies is a feature aimed at system administrators who want to deploy custom settings for Firefox.
-addon-install-error-admin-install-only = 您不能作为最终用户安装{ $addonName }，它只能由使用企业策略的组织安装。
+addon-install-error-admin-install-only = 你无法安装 { $addonName } 作为一个端用户, 它能仅是安装由一个组织使用企业政策.

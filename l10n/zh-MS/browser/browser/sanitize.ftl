@@ -3,29 +3,29 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 sanitize-prefs2 =
-    .title = 清除历史记录的设置
-    .style = min-width: 34em
+    .title = 设置为了清扫历史记录
+    .style = min-width: 34媒体用毕符
 
 sanitize-prefs-style =
-    .style = width: 17em
+    .style = 宽度: 17媒体用毕符
 
 sanitize-dialog-title2 =
-    .title = 清除浏览数据和Cookie
-    .style = min-width: 34em
+    .title = 清除浏览资料和饼干
+    .style = min-width: 34媒体用毕符
 
 sanitize-dialog-title =
     .title = 清除最近的历史记录
-    .style = min-width: 34em
+    .style = min-width: 34媒体用毕符
 
 # When "Time range to clear" is set to "Everything", this message is used for the
 # title instead of dialog-title.
 sanitize-dialog-title-everything =
-    .title = 清除全部历史记录
-    .style = min-width: 34em
+    .title = 清除所有的历史记录
+    .style = min-width: 34媒体用毕符
 
-clear-data-settings-label = 当关闭时，{ -brand-short-name } 应自动清除所有
+clear-data-settings-label = 何时关闭, { -brand-short-name } 应该自动地清除所有的
 
-sanitize-on-shutdown-description = 当 { -brand-short-name } 关闭时，自动清除所有已选中的项目。
+sanitize-on-shutdown-description = 自动地清除所有的选中的项何时 { -brand-short-name } 关闭.
 
 ## clear-time-duration-prefix is followed by a dropdown list, with
 ## values localized using clear-time-duration-value-* messages.
@@ -36,32 +36,32 @@ sanitize-on-shutdown-description = 当 { -brand-short-name } 关闭时，自动�
 ## Time range to clear: (Last Hour, Today, etc.)
 
 clear-time-duration-prefix =
-    .value = 清除时间范围：{ " " }
+    .value = 时间量程到清除:{ " " }
     .accesskey = T
 
 clear-time-duration-prefix2 =
-    .value = 时间点：
+    .value = 何时:
     .accesskey = W
 
 clear-time-duration-value-last-hour =
-    .label = 最近一小时
+    .label = 最后的小时
 
 clear-time-duration-value-last-2-hours =
-    .label = 最近两小时
+    .label = 最后的二小时
 
 clear-time-duration-value-last-4-hours =
-    .label = 最近四小时
+    .label = 最后的四小时
 
 # Variables:
 #   $midnightTime (String) - Time of midnight (00:00 hours) - to inform the user that history will be cleared after midnight
 clear-time-duration-value-since-midnight =
-    .label = 自 { $midnightTime } 起
+    .label = 自...以后 { $midnightTime }
 
 clear-time-duration-value-today =
-    .label = 今日
+    .label = 今天
 
 clear-time-duration-value-everything =
-    .label = 全部
+    .label = 每件事物
 
 clear-time-duration-suffix =
     .value = { "" }
@@ -72,13 +72,13 @@ clear-time-duration-suffix =
 history-section-label = 历史记录
 
 item-history-and-downloads =
-    .label = 浏览和下载历史记录
+    .label = 浏览 & 下载历史记录
     .accesskey = B
 
-item-history-and-downloads-description2 = 清除站点和下载历史记录
+item-history-and-downloads-description2 = 清除位置和下载历史记录
 
 item-cookies =
-    .label = Cookie
+    .label = 饼干
     .accesskey = C
 
 # Variables:
@@ -89,64 +89,65 @@ item-cookies-site-data-with-size =
     .accesskey = e
 
 item-cookies-site-data =
-    .label = Cookie 和站点数据
+    .label = 饼干和位置资料
     .accesskey = e
 
-item-cookies-site-data-description = 可能导致您从站点注销或清空购物车
+item-cookies-site-data-description = 可以正负号你外面的的坐或空买东西二轮运货马车
 
 item-active-logins =
-    .label = 活动登录
+    .label = 活跃的注册(程序)
     .accesskey = l
 
 item-cache =
-    .label = 缓存
+    .label = 高速缓冲存储器
     .accesskey = a
 
 # Variables:
 #   $amount (Number) - Amount of cached data
 #   $unit (String) - Abbreviation of the unit that $amount is in, e.g. "MB"
 item-cached-content-with-size =
-    .label = 临时缓存文件和页面 ({ $amount } { $unit })
+    .label = 临时贮藏起来文件和页 ({ $amount } { $unit })
     .accesskey = f
 
 item-cached-content =
-    .label = 临时缓存文件和页面
+    .label = 临时贮藏起来文件和页
     .accesskey = f
 
-item-cached-content-description = 清除有助于站点加载速度更快的项目
+item-cached-content-description = 清除项那帮忙坐加载加快
 
 item-form-search-history =
-    .label = 表单和搜索历史记录
+    .label = 表单 & 搜索历史记录
     .accesskey = F
+
 item-site-prefs =
-    .label = 站点设置
+    .label = 位置设置
     .accesskey = i
 
 item-formdata-prefs =
-    .label = 已保存的表单信息
+    .label = 保存表单信息
     .accesskey = o
 
-item-formdata-description = 清除诸如您输入的表单中的姓名、电子邮件及其他项目
+item-formdata-description = 清除事物相似的全国制造商协会(美国), 电子信函, 和其他的项你输入在表单
 
-item-site-prefs-description = 将您的权限和站点偏好重置为原始设置
+item-site-prefs-description = 重置你的许可和位置参数选择到最初的设置
 
-data-section-label = 数据
+data-section-label = 资料
 
 item-site-settings =
-    .label = 站点设置
+    .label = 位置设置
     .accesskey = S
 
 item-offline-apps =
-    .label = 离线网站数据
+    .label = 挂线网站（全球资讯网的主机站）资料
     .accesskey = O
 
-sanitize-everything-undo-warning = 此操作无法被撤销。
+sanitize-everything-undo-warning = 此操作无法撤销.
 
 window-close =
     .key = w
 
 sanitize-button-ok =
-    .label = 立即清除
+    .label = 清除现在
 
 sanitize-button-ok2 =
     .label = 清除
@@ -157,18 +158,18 @@ sanitize-button-ok-on-shutdown =
 # The label for the default button between the user clicking it and the window
 # closing.  Indicates the items are being cleared.
 sanitize-button-clearing =
-    .label = 正在清除
+    .label = 清扫
 
 # Warning that appears when "Time range to clear" is set to "Everything" in Clear
 # Recent History dialog, provided that the user has not modified the default set
 # of history items to clear.
-sanitize-everything-warning = 所有历史记录将被清除。
+sanitize-everything-warning = 所有的历史记录将是使干净.
 
 # Warning that appears when "Time range to clear" is set to "Everything" in Clear
 # Recent History dialog, provided that the user has modified the default set of
 # history items to clear.
-sanitize-selected-warning = 所有选定的项目将被清除。
+sanitize-selected-warning = 所有的被选的项将是使干净.
 
 # Label shown next to the loading spinner while calculating the size of cached data
 # and cookies in the clear data dialog.
-sanitize-calculating-size = 正在计算…
+sanitize-calculating-size = 计算…

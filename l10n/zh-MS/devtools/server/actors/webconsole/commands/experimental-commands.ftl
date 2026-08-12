@@ -7,31 +7,31 @@
 
 # Usage string for :trace command
 webconsole-commands-usage-trace3 =
-  :trace
+  :痕迹
 
-  切换 JavaScript 跟踪器。
+  棒形纽扣( toggle的名词复数 ) 那 Java描述语言（一种程序语言）跟踪程序.
 
-  跟踪器将显示您页面所调用的所有函数。
+  那跟踪程序将显示器所有的功能存在被呼叫的由你的页.
 
-    它支持以下参数：
-      --logMethod 可设置为 ‘console’ 以记录到网页控制台（默认设置），或 ‘stdout’ 以记录到标准输出。
+    它支持那下列各项参数:
+      --logMethod 到是日落到 'console' 为了 (木材)采运作业到那网控制台 (那默认), 或 'stdout' 为了 (木材)采运作业到那标准输出.
 
-      --return 可选标志，传递后还会在函数返回时进行记录。
+      --return 可选择的标志到是已被传递的到也日志何时功能返回.
 
-      --values 可选标志，传递后可记录函数调用的参数以及返回值（当启用返回帧时）。
+      --values 可选择的标志到是已被传递的到日志功能呼叫参数作为井作为被送回的对价值的看法 (何时被送回的故障估计机（Failure Rate Assessment Machine）是启用).
 
-      --on-next-interaction 可选标志，设置后，跟踪器将仅在下一个 mousedown 或 keydown 事件时启动。
+      --on-next-interaction 可选择的标志, 何时日落, 那跟踪程序将仅启动在近邻干扰 mousedown 或 keydown 事件.
 
-      --dom-mutations 可选标志，设置后，跟踪器将记录所有 DOM 突变。
-                      传递值时，您可以通过逗号分隔的列表来限制为特定的突变类型：
-                       - ‘add’ 将仅跟踪被添加的 DOM 节点，
-                       - ‘attributes’ 将仅跟踪属性发生变更的 DOM 节点，
-                       - ‘remove’ 将仅跟踪被移除的 DOM 节点。
+      --dom-mutations 可选择的标志, 何时日落, 那跟踪程序将日志所有的 DOM 变化.
+                      何时通过一个计算结果, 你能限制到一个一项(或条、点) 变化类型经由一个昏迷-separated 列表:
+                       - 'add' 将仅跟踪 DOM 节点存在额外的,
+                       - 'attributes' 将仅跟踪 DOM 节点谁的属性（attribute的复数）更改,
+                       - 'remove' 将仅跟踪 DOM 节点存在离开的.
 
-      --max-depth 可选标志，将把跟踪日志限制为传入参数的指定深度。
+      --max-depth 可选择的标志, 将限制 (木材)采运作业痕迹到一个赠予的深度已被传递的作为参数.
 
-      --max-records 可选标志，将在记录了传入数量的顶层帧后自动停止跟踪器。
+      --max-records 可选择的标志, 将自动地停止那跟踪程序在...之后财产笨重的那已被传递的总数的 TOP协议级别故障估计机（Failure Rate Assessment Machine）.
 
-      --prefix 可选字符串，将记录在所有跟踪日志的前面。
+      --prefix 可选择的字符串哪个将是笨重的在前面的全部那痕迹日志.
 
-      --help 或 --usage 以显示此消息。
+      --help 或 --usage 到显示这报文.
