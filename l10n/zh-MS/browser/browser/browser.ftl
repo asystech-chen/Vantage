@@ -1425,7 +1425,7 @@ popup-notification-addon-technical-and-interaction-checkbox =
 #   $popupCount (Number): the number of pop-ups blocked.
 popup-warning-message =
     { $popupCount ->
-{ -brand-short-name } 已阻止此站点打开弹出窗口。
+        [1] { -brand-short-name } 已阻止此站点打开弹出窗口。
        *[other] { -brand-short-name } 已阻止此站点打开 { $popupCount } 个弹出窗口。
     }
 

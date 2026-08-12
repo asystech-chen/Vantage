@@ -32,6 +32,24 @@ sys.path.insert(0, str(HERE))
 
 from ms_prompt import SYSTEM_PROMPT_EN2ZH
 
+# Fluent 语法校验（可选依赖：产物树自带 fluent.syntax，避免 pip 安装）
+try:
+    _candidates = sorted(
+        (HERE.parent.parent).glob("librewolf-*/third_party/python/fluent.syntax")
+    )
+    if _candidates:
+        sys.path.insert(0, str(_candidates[-1]))
+        from fluent.syntax import parse as _fluent_parse
+        from fluent.syntax.ast import Junk as _FluentJunk
+
+        FLUENT_OK = True
+    else:
+        FLUENT_OK = False
+        print("⚠️  未找到 fluent.syntax（产物树），跳过 Fluent 语法校验")
+except Exception as _e:
+    FLUENT_OK = False
+    print(f"⚠️  fluent.syntax 导入失败，跳过语法校验: {_e}")
+
 # 输入：编译产物的 en-US 语言树
 EN_DIR = Path(
     os.environ.get(
@@ -205,6 +223,25 @@ def validate_chunk(original: str, translated: str) -> bool:
     return True
 
 
+def fluent_ok(text: str) -> bool:
+    """整体 Fluent 语法校验：宽容模式扫 Junk（选择器损坏/孤立##等）"""
+    if not FLUENT_OK:
+        return True  # 无 parser 时跳过（末尾换行仍会保证）
+    try:
+        res = _fluent_parse(text)
+        junk = [e for e in res.body if isinstance(e, _FluentJunk)]
+        if junk:
+            a = junk[0].annotations[0] if junk[0].annotations else None
+            print(
+                f"    ⚠️ Fluent Junk: {junk[0].content[:60]!r} "
+                f"{a.code if a else '?'} {a.message if a else ''}"
+            )
+            return False
+    except Exception as e:
+        print(f"    ⚠️ Fluent 校验异常: {e}")
+    return True
+
+
 def translate_file(src_path: Path, dst_path: Path, model: str, api_key: str) -> bool:
     """翻译单个文件，返回是否成功"""
     if dst_path.exists():
@@ -239,8 +276,14 @@ def translate_file(src_path: Path, dst_path: Path, model: str, api_key: str) -> 
         time.sleep(RATE_LIMIT_DELAY)
 
     # 写入输出（每个 chunk 已做过注释还原）
+    # 末尾必须补换行：POSIX 规范 + 桶哥铁习惯；缺了会导致 Fluent 解析器对
+    # 末尾孤立 ## 等行报错（2026-08-12 编译失败根因）
     dst_path.parent.mkdir(parents=True, exist_ok=True)
-    dst_path.write_text("\n".join(out_parts), encoding="utf-8")
+    full_text = "\n".join(out_parts) + "\n"
+    if not fluent_ok(full_text):
+        print(f"    💥 Fluent 语法校验失败，未写入: {dst_path.relative_to(OUT_DIR)}")
+        return False
+    dst_path.write_text(full_text, encoding="utf-8")
     print(f"  ✅ 完成: {dst_path.relative_to(OUT_DIR)}")
     return True
 
