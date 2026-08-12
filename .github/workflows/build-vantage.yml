@@ -73,15 +73,17 @@ jobs:
       - name: Checkout（本地 mirror 优先，失败回退 GitHub）
         run: |
           REF="${{ github.event.inputs.tag || github.ref }}"
+          # 规范化：refs/heads/X → X（--no-checkout 克隆后本地无 refs/heads/*，用短名自动跟踪）
+          CHECKOUT="${REF#refs/heads/}"
           # 清空 workspace 内容（保留目录本身，后续步骤依赖 $GITHUB_WORKSPACE）
           rm -rf "$GITHUB_WORKSPACE"/* "$GITHUB_WORKSPACE"/.[!.]* 2>/dev/null || true
           if git clone --no-checkout /home/chen/git/vantage.git "$GITHUB_WORKSPACE" 2>/dev/null; then
-            git -C "$GITHUB_WORKSPACE" checkout "$REF"
+            git -C "$GITHUB_WORKSPACE" checkout "$CHECKOUT"
             echo "✅ Checkout 完成（本地 mirror）"
           else
             echo "⚠️ 本地 mirror 不可用，回退直连 GitHub"
             git clone --no-checkout https://github.com/asystech-chen/Vantage.git "$GITHUB_WORKSPACE"
-            git -C "$GITHUB_WORKSPACE" checkout "$REF"
+            git -C "$GITHUB_WORKSPACE" checkout "$CHECKOUT"
           fi
 
       - name: Build
