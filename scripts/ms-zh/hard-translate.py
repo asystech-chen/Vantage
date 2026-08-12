@@ -135,6 +135,15 @@ OVERRIDES = {
     "computer": "计算机",
     "firefox": "火狐",
     "mozilla": "摩斯拉",
+    # 经典烂梗（桶哥钦定：直接用梗，不走词典）
+    "power": "功率",
+    "edge": "边缘",
+    "windows": "窗",
+    "roll": "滚",
+    "head": "头",
+    "sit": "坐",
+    "relax": "放宽",
+    "heads": "头", "ups": "抬起", "back": "回", "rolls": "滚",
     # 高频虚词（词典释义太抽象，固定成硬翻常用义）
     "a": "一个", "an": "一个",
     "is": "是", "are": "是", "was": "曾是", "were": "曾是", "be": "是",
@@ -178,6 +187,20 @@ OVERRIDES = {
     "country": "国家", "date": "日期", "load": "加载", "break": "中断",
     "fix": "修复", "fixes": "修复", "fixed": "修复",
 }
+
+# ---------- 经典烂梗固定词组（优先于一切，整词匹配）----------
+MEME_PHRASES = [
+    ("heads up", "头抬起"),
+    ("head up", "头抬起"),
+    ("sit and relax", "坐和放宽"),
+    ("sit back and relax", "坐和放宽"),
+    ("roll back", "滚回"),
+    ("rolls back", "滚回"),
+    ("rolled back", "滚回"),
+    ("microsoft edge", "巨硬边缘"),
+    ("windows 11", "窗11"),
+    ("windows 10", "窗10"),
+]
 
 # ---------- 词形还原（变形词 → 原形，保证词性/词义正确）----------
 IRREGULAR = {
@@ -314,6 +337,12 @@ PROTECT_RE = re.compile(
 def hard_translate(text: str, phrase_mode: bool = False) -> str:
     text = text.replace("\u2019", "'").replace("\u2018", "'")  # 弯引号归一化（Don\u2019t → Don't）
     parts = []
+
+    # 经典烂梗整串替换（优先，任意长度文本都生效）
+    for ph, cn in MEME_PHRASES:
+        text = re.sub(
+            rf"(?<!\w){re.escape(ph)}(?!\w)", f"\x02{cn}\x02", text, flags=re.I
+        )
 
     # 词组替换（仅长文本模式）：\x02中文\x02 哨兵保护
     if phrase_mode:
