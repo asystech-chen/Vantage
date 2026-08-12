@@ -80,6 +80,12 @@ ensure_build_monitor() {
   # 清理旧状态，避免误发上一次未完成的通知
   rm -f "$HOME/.openclaw/workspace/.build-state"
 
+  # 记录 build.sh 自身 PID：监控脚本以此判断整个流程（编译+打包+签名+校验）是否结束。
+  # ⚠️ 不能只盯 mach build —— 多目标编译时第一个 make build 结束 ≠ build.sh 结束。
+  echo "$$" > "$HOME/.openclaw/workspace/.build-pid"
+  # build.sh 无论成功/失败/中断退出都清理 PID 文件（kill -9 除外，监控有兜底）
+  trap 'rm -f "$HOME/.openclaw/workspace/.build-pid"' EXIT
+
   if crontab -l 2>/dev/null | grep -Fq "$monitor"; then
     green "✅ 编译监控已挂载 (crontab 每 2 分钟)"
   else
