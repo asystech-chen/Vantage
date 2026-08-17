@@ -1,0 +1,22 @@
+name: 自动发布 Winget
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '请输入新版本号 (例如: 153.0.2)'
+        required: true
+      url:
+        description: '请输入 R2 桶的完整下载直链'
+        required: true
+
+jobs:
+  publish-to-winget:
+    runs-on: self-hosted  
+    steps:
+      - name: 自动计算哈希并提交 PR
+        uses: vedantmgoyal2009/winget-releaser@v2
+        with:
+          identifier: 'ASYSTECH.Vantage' 
+          version: ${{ github.event.inputs.version }}
+          urls: ${{ github.event.inputs.url }}
+          token: ${{ secrets.WINGET_TOKEN }}
