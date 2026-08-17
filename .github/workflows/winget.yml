@@ -1,12 +1,15 @@
-name: 自动发布 Winget
+name: 半自动发布 Winget
 on:
   workflow_dispatch:
     inputs:
       version:
         description: '请输入新版本号 (例如: 153.0.2)'
         required: true
-      url:
-        description: '请输入 R2 桶的完整下载直链'
+      url_amd64:
+        description: '请输入 AMD64 (x64) 版本的 R2 下载直链'
+        required: true
+      url_arm:
+        description: '请输入 ARM 版本的 R2 下载直链'
         required: true
 
 jobs:
@@ -16,7 +19,8 @@ jobs:
       - name: 自动计算哈希并提交 PR
         uses: vedantmgoyal2009/winget-releaser@v2
         with:
-          identifier: 'ASYSTECH.Vantage' 
+          identifier: 'ASYS.Vantage' 
           version: ${{ github.event.inputs.version }}
-          urls: ${{ github.event.inputs.url }}
+          # 这里把两个链接用逗号拼起来一起发给机器人
+          urls: "${{ github.event.inputs.url_amd64 }},${{ github.event.inputs.url_arm }}"
           token: ${{ secrets.WINGET_TOKEN }}
