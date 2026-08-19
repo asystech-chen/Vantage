@@ -374,7 +374,7 @@ GetUpdate() {
 		; 改用系统自带 curl.exe（Win10 1803+ 自带，Vantage 最低要求已排除 Win7）
 		; -f：HTTP 4xx/5xx 直接失败退出，避免 404 页面被存成安装包
 		ErrFile := A_Temp "\vantage-curl-err-" A_TickCount ".txt"
-		RunWait, %ComSpec% /c curl.exe -L -sS -f --ssl-no-revoke --connect-timeout 30 --max-time 600 -o "%SetupFile%" "%DownloadUrl%" 2>"%ErrFile%", , Hide
+		RunWait, %ComSpec% /c curl.exe -L -sS -f --ssl-no-revoke --connect-timeout 30 --max-time 3600 -o "%SetupFile%" "%DownloadUrl%" 2>"%ErrFile%", , Hide
 		If (ErrorLevel Or !FileExist(SetupFile)) {
 			FileRead, ErrMsg, %ErrFile%
 			FileDelete, %ErrFile%
@@ -472,7 +472,7 @@ Download(URL) {
 	; --connect-timeout/--max-time 兜底，任何情况下都不会无限阻塞。
 	Random, Num, 1, 1024
 	JsonFile := A_Temp "\vantage-vd-" A_TickCount ".json"
-	RunWait, %ComSpec% /c curl.exe -sS -f --ssl-no-revoke --connect-timeout 30 --max-time 60 -o "%JsonFile%" "%URL%?i=%Num%", , Hide
+	RunWait, %ComSpec% /c curl.exe -sS -f --ssl-no-revoke --connect-timeout 30 --max-time 3600 -o "%JsonFile%" "%URL%?i=%Num%", , Hide
 	If (ErrorLevel) {
 		FileDelete, %JsonFile%
 		Return False
