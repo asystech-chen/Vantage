@@ -7,10 +7,10 @@ unknowncontenttype-settingschange =
     .value =
         { PLATFORM() ->
             [windows] 设置能是更改在 { -brand-short-name }'s 选项.
-           *[other] 设置能是更改在 { -brand-short-name }'s 参数选择.
+           *[other] 设置能是更改在 { -brand-short-name }'s 首选项.
         }
 
-unknowncontenttype-intro = 你有 choose的过去分词到打开:
+unknowncontenttype-intro = 你有 chosen 到打开:
 unknowncontenttype-which-is = 哪个是:
 unknowncontenttype-from = 从:
 unknowncontenttype-prompt = 会你喜欢到保存这文件?

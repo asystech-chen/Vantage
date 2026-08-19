@@ -1,5 +1,5 @@
 
-common-dialog-title-null = 这页说（第三人称单数）
+common-dialog-title-null = 这页说
 common-dialog-title-system = { -brand-short-name }
 common-dialog-title-unknown = 不知道的
 

@@ -6,22 +6,22 @@ report-broken-site-mainview-title = 报告坏掉的位置
 report-broken-site-panel-header =
   .label = 报告坏掉的位置
   .title = 报告坏掉的位置
-report-broken-site-panel-intro-text = 你的报告帮忙我们理解和修复议题在 { -brand-product-name } 到使它较好的为了系统中的一个组名.
+report-broken-site-panel-intro-text = 你的报告帮忙我们理解和修复发行在 { -brand-product-name } 到使它较好的为了系统中的一个组名.
 report-broken-site-panel-learn-more-link = 学习更多
 
 report-broken-site-panel-url-label = URL 的坏掉的位置
 
-report-broken-site-panel-reason-intro-text = （尤当 has 为助动词时不工作?
+report-broken-site-panel-reason-intro-text = 什么是不工作?
 
 report-broken-site-panel-reason-load-moz-box-button =
-  .label = 位置 did not 没有加载
+  .label = 位置没有加载
 # These terms are referring to ecommerce websites
 report-broken-site-panel-reason-checkout-moz-box-button =
   .label = 不能薪资, 复选外面的, 或商店
 report-broken-site-panel-reason-slow-moz-box-button =
   .label = 位置是慢的
 report-broken-site-panel-reason-media-moz-box-button =
-  .label = 影像 did not 没有播放或加载
+  .label = 影像没有播放或加载
 report-broken-site-panel-reason-content-moz-box-button =
   .label = 不见的内容
 report-broken-site-panel-reason-account-moz-box-button =
@@ -39,7 +39,7 @@ report-broken-site-panel-instructions-other = 描述那问题在详细数据到�
 report-broken-site-panel-instructions-other-optional = 描述那问题在详细数据到帮助我们调查那发行. (可选择的)
 
 report-broken-site-panel-description2 =
-  .placeholder = 什么发生（happen的过去式? 什么做你预期到发生? 请提供步骤到复制那发行.
+  .placeholder = 什么发生（? 什么做你预期到发生? 请提供步骤到复制那发行.
 
 report-broken-site-panel-send-more-info-button =
   .label = 发送更多信息

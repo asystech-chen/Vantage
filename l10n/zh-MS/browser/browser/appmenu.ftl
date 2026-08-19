@@ -34,7 +34,7 @@ appmenuitem-downloads =
 appmenuitem-passwords =
     .label = 密码
 appmenuitem-extensions-and-themes =
-    .label = 扩展名和他们
+    .label = 扩展名和主题
 appmenuitem-extensions =
     .label = 扩展名
 appmenuitem-print =
@@ -97,18 +97,18 @@ appmenu-remote-tabs-show-inactive-tabs =
 appmenu-remote-tabs-notabs = 无打开标签页
 
 # This is shown when Sync is configured but syncing tabs is disabled.
-appmenu-remote-tabs-tabsnotsyncing = 转弯在标签页【电影、电视】到查看一个列表的标签页从你的其他的德维克（男子名、姓氏）.
+appmenu-remote-tabs-tabsnotsyncing = 转弯在标签页【电影、电视】到查看一个列表的标签页从你的其他的装置.
 
 appmenu-remote-tabs-opensettings =
   .label = 设置
 
 # This is shown when Sync is configured but this appears to be the only device attached to
 # the account. We also show links to download Firefox for android/ios.
-appmenu-remote-tabs-noclients = 想要到看见你的标签页从其他的德维克（男子名、姓氏）这里?
+appmenu-remote-tabs-noclients = 想要到看见你的标签页从其他的装置这里?
 
 appmenu-remote-tabs-connectdevice =
   .label = 连接另外的装置
-appmenu-remote-tabs-welcome = 查看一个列表的标签页从你的其他的德维克（男子名、姓氏）.
+appmenu-remote-tabs-welcome = 查看一个列表的标签页从你的其他的装置.
 appmenu-remote-tabs-unverified = 你的帐户需要到是已查清的.
 
 appmenuitem-fxa-toolbar-sync-now2 = 同步的现在
@@ -120,10 +120,10 @@ appmenu-account-header = 帐户
 # 3 hours ago, etc.)
 appmenu-fxa-last-sync = 最后的 synchronization 的缩略词 { $time }
     .label = 最后的 synchronization 的缩略词 { $time }
-appmenu-fxa-sync-and-save-data2 = 同步的和保存资料
+appmenu-fxa-sync-and-save-data2 = 同步的和保存论据
 appmenu-fxa-signed-in-label = 正负号在
 appmenu-fxa-setup-sync =
-    .label = 转弯在 Syncing…
+    .label = 转弯在【电影、电视】…
 appmenu-fxa-setup-sync-new = 转弯在
 appmenuitem-save-page =
     .label = 保存页作为…
@@ -160,7 +160,7 @@ profiler-popup-description-title =
   .value = 录制, 分析, 部分
 
 profiler-popup-description =
-  合作在施行议题由出版提问档到均分与你的队.
+  合作在施行发行由出版提问档到均分与你的队.
 
 profiler-popup-learn-more-button =
   .label = 学习更多
@@ -210,32 +210,32 @@ profiler-popup-presets-firefox-description = 被推荐的边框形式为了靠�
 profiler-popup-presets-firefox-label =
   .label = { -brand-shorter-name }
 
-profiler-popup-presets-graphics-description = 边框形式为了调查图形的疯狂的在 { -brand-shorter-name }.
+profiler-popup-presets-graphics-description = 边框形式为了调查图形的缺点在 { -brand-shorter-name }.
 profiler-popup-presets-graphics-label =
   .label = 图形的
 
-profiler-popup-presets-media-description2 = 边框形式为了调查音频的和影像疯狂的在 { -brand-shorter-name }.
+profiler-popup-presets-media-description2 = 边框形式为了调查音频的和影像缺点在 { -brand-shorter-name }.
 profiler-popup-presets-media-label =
   .label = 媒质
 
-profiler-popup-presets-ml-description = 边框形式为了调查机器学习疯狂的在 { -brand-shorter-name }.
+profiler-popup-presets-ml-description = 边框形式为了调查机器学习缺点在 { -brand-shorter-name }.
 profiler-popup-presets-ml-label =
   .label = 机器学习
 
-profiler-popup-presets-networking-description = 边框形式为了调查连网疯狂的在 { -brand-shorter-name }.
+profiler-popup-presets-networking-description = 边框形式为了调查连网缺点在 { -brand-shorter-name }.
 profiler-popup-presets-networking-label =
   .label = 连网
 
-profiler-popup-presets-power-description = 边框形式为了调查力使用疯狂的在 { -brand-shorter-name }, 与低点总开销.
+profiler-popup-presets-power-description = 边框形式为了调查功率使用缺点在 { -brand-shorter-name }, 与低点总开销.
 # "Power" is used in the sense of energy (electricity used by the computer).
 profiler-popup-presets-power-label =
-  .label = 力
+  .label = 功率
 
 profiler-popup-presets-debug-description = 边框形式为了调试在 { -brand-shorter-name }. 高度总开销, 做不使用为了施行工作除了使用为了调焦在理解浏览器行为.
 profiler-popup-presets-debug-label =
   .label = 除错
 
-profiler-popup-presets-web-compat-description = 被推荐的边框形式为了调试网兼容性议题在网站（全球资讯网的主机站）, 宁可比跟踪施行.
+profiler-popup-presets-web-compat-description = 被推荐的边框形式为了调试网兼容性发行在网站（全球资讯网的主机站）, 宁可比跟踪施行.
 profiler-popup-presets-web-compat-label =
   .label = 网兼容
 
@@ -254,7 +254,7 @@ appmenu-recent-history-subheader = 最近的历史记录
 appmenu-recently-closed-tabs =
     .label = 最近关闭标签页
 appmenu-recently-closed-windows =
-    .label = 最近关闭窗口
+    .label = 最近关闭窗
 # This allows to search through the browser's history.
 appmenu-search-history =
     .label = 搜索历史记录
@@ -273,7 +273,7 @@ appmenu-help-more-troubleshooting-info =
     .label = 更多发现并修理故障信息
     .accesskey = t
 appmenu-help-share-ideas =
-    .label = 部分工业设计优秀奖和反馈…
+    .label = 部分主意和反馈…
     .accesskey = S
 appmenu-help-switch-device =
     .label = 交换到一个新的装置
@@ -295,7 +295,7 @@ appmenu-help-report-deceptive-site =
     .label = 报告迷惑的位置…
     .accesskey = d
 appmenu-help-not-deceptive =
-    .label = 这 (=is not)不是一个迷惑的位置…
+    .label = 这不是一个迷惑的位置…
     .accesskey = d
 
 ## More Tools
@@ -316,7 +316,7 @@ appmenuitem-report-broken-site =
 appmenuitem-sign-in-account = 正负号在到你的帐户
 
 appmenuitem-monitor-title = { -monitor-brand-short-name }
-appmenuitem-monitor-description = 获得资料裂口警觉的
+appmenuitem-monitor-description = 获得论据裂口警觉的
 appmenuitem-relay-title = { -relay-brand-short-name }
 appmenuitem-relay-description = 屏蔽你的实数电子信函和电话
 appmenuitem-services-relay-description = 下水电子信函屏蔽仪表板

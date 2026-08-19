@@ -34,14 +34,14 @@ bookmark-overlay-new-folder-button =
   .accesskey = o
 
 bookmark-overlay-tags-2 =
-  .value = 标签
+  .value = 标记
   .accesskey = T
 
 bookmark-overlay-tags-empty-description =
-  .placeholder = 独立件标签与逗号( comma的复数形式 )
+  .placeholder = 独立件标记与逗点
 
 bookmark-overlay-tags-expander2 =
-  .tooltiptext = 显示所有的标签
+  .tooltiptext = 显示所有的标记
 
 bookmark-overlay-tags-expander-hide =
   .tooltiptext = 隐藏
@@ -50,6 +50,6 @@ bookmark-overlay-keyword-2 =
   .value = 关键字
   .accesskey = K
 
-bookmark-overlay-tags-caption-label = 使用标签到组织和搜索为了书签从那地址棒形图
+bookmark-overlay-tags-caption-label = 使用标记到组织和搜索为了书签从那地址棒形图
 
 bookmark-overlay-keyword-caption-label-2 = 使用一个单精度型关键字到打开书签直接的从那地址棒形图

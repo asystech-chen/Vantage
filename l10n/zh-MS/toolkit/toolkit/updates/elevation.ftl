@@ -12,7 +12,7 @@ elevation-finished-background-page =
   将（程序和是预备好的状态到是安装.
 elevation-finished-background = 更新:
 elevation-more-elevated =
-  这更新需要管理人特权( privilege的名词复数 ). 那更新将是
+  这更新需要管理人特权. 那更新将是
   安装那近邻干扰时间 { -brand-short-name } 启动. 你能重新启动
   { -brand-short-name } now, continue working and restart later, or decline this
   更新.

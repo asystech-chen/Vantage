@@ -3,12 +3,12 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 synced-tabs-sidebar-title = synchronization 的缩略词标签页
-synced-tabs-sidebar-noclients-subtitle = 想要到看见你的标签页从其他的德维克（男子名、姓氏）这里?
-synced-tabs-sidebar-intro = 查看一个列表的标签页从你的其他的德维克（男子名、姓氏）.
+synced-tabs-sidebar-noclients-subtitle = 想要到看见你的标签页从其他的装置这里?
+synced-tabs-sidebar-intro = 查看一个列表的标签页从你的其他的装置.
 synced-tabs-sidebar-unverified = 你的帐户需要到是已查清的.
 synced-tabs-sidebar-notabs = 无打开标签页
 synced-tabs-sidebar-open-settings = 打开同步的设置
-synced-tabs-sidebar-tabsnotsyncing = 转弯在标签页【电影、电视】到查看一个列表的标签页从你的其他的德维克（男子名、姓氏）.
+synced-tabs-sidebar-tabsnotsyncing = 转弯在标签页【电影、电视】到查看一个列表的标签页从你的其他的装置.
 synced-tabs-sidebar-connect-another-device = 连接另外的装置
 synced-tabs-sidebar-search =
     .placeholder = 搜索 synchronization 的缩略词标签页
@@ -52,7 +52,7 @@ synced-tabs-context-open-all-in-tabs =
     .label = 打开所有的在标签页
     .accesskey = O
 synced-tabs-context-manage-devices =
-    .label = 管理德维克（男子名、姓氏）…
+    .label = 管理装置…
     .accesskey = D
 synced-tabs-context-manage-this-device =
     .label = 管理这装置

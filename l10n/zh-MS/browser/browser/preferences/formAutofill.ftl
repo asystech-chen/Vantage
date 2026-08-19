@@ -11,7 +11,7 @@ autofill-manage-payment-methods-title = 保存付款方法
 autofill-manage-cards-list-header = 卡片
 
 autofill-manage-dialog =
-    .style = min-width: 560专用小交换机（Private Exchange）
+    .style = min-width: 560专用小交换机
 autofill-manage-remove-button = 移除
 autofill-manage-add-button = 添加…
 autofill-manage-edit-button = 编辑…

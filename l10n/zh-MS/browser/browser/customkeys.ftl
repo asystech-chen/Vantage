@@ -40,7 +40,7 @@ customkeys-dev-profiler-toggle = 启动/停止那施行靠模工具机
 customkeys-dev-profiler-capture = 截获命令一个施行提问档
 
 customkeys-category-navigation = 航行
-customkeys-nav-back = 后面的
+customkeys-nav-back = 回
 customkeys-nav-forward = 前推
 customkeys-nav-home = 主页
 customkeys-nav-reload = 再装

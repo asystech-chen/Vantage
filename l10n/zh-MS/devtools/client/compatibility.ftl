@@ -5,7 +5,7 @@
 ## Messages used as headers in the main pane
 
 compatibility-selected-element-header = 被选的部分
-compatibility-all-elements-header = 所有的议题
+compatibility-all-elements-header = 所有的发行
 
 ## Message used as labels for the type of issue
 
@@ -36,10 +36,10 @@ compatibility-target-browsers-header = 目标浏览器
 compatibility-issue-occurrences =
     { $number ->
         [one] { $number } 发生
-       *[other] { $number } 发生( occurrence的复数形式 )
+       *[other] { $number } 发生
     }
 
-compatibility-no-issues-found = 无兼容性议题发现.
+compatibility-no-issues-found = 无兼容性发行发现.
 compatibility-close-settings-button =
     .title = 关闭设置
 
@@ -48,5 +48,5 @@ compatibility-close-settings-button =
 # Variables:
 #   $browsers (String) - A line-separated list of browser information (e.g. Firefox 98\nChrome 99).
 compatibility-issue-browsers-list =
-    .title = 兼容性议题在:
+    .title = 兼容性发行在:
     { $browsers }

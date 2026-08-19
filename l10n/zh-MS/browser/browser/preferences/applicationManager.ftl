@@ -4,7 +4,7 @@
 
 app-manager-window2 =
     .title = 应用详细数据
-    .style = min-width: 30媒体用毕符; 部长（Minister）-高度: 20媒体用毕符;
+    .style = min-width: 30媒体用毕符; 部长-高度: 20媒体用毕符;
 
 app-manager-remove =
     .label = 移除

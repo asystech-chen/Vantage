@@ -4,7 +4,7 @@
 
 restart-required-title = 重新启动必需的
 restart-required-heading = 重新启动到保持使用 { -brand-short-name }
-restart-required-intro = 一个更新到 { -brand-short-name } 启动在那背景. (=you will 需要到重新启动到完成那更新.
-window-restoration-info = 你的窗口和标签页将是很快地精力充沛的, 除了私人的刻录软件将不.
+restart-required-intro = 一个更新到 { -brand-short-name } 启动在那背景. 你将需要到重新启动到完成那更新.
+window-restoration-info = 你的窗和标签页将是很快地精力充沛的, 除了私人的一(个) 将不.
 
 restart-button-label = 重新启动 { -brand-short-name }

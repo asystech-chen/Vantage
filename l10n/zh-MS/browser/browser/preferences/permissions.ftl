@@ -113,21 +113,21 @@ permissions-exceptions-cookie-desc = 你能指定哪个网站（全球资讯网�
 permissions-exceptions-https-only-window2 =
     .title = 例外 - HTTPS-仅模式
     .style = { permissions-window2.style }
-permissions-exceptions-https-only-desc2 = 你能使旋转关闭 HTTPS-仅模式为了特效药网站（全球资讯网的主机站）. { -brand-short-name } 将不尝试到升级那连接到固定 HTTPS 为了那些坐.
+permissions-exceptions-https-only-desc2 = 你能使旋转关闭 HTTPS-仅模式为了特效药网站（全球资讯网的主机站）. { -brand-short-name } 将不尝试到升级那连接到固定 HTTPS 为了那些位置.
 
 ## Exceptions - Pop-ups And Third-Party Redirects
 
 permissions-exceptions-popup-window3 =
     .title = 允许网站（全球资讯网的主机站） - 出现点-ups 和第三-宴会重定向
     .style = { permissions-window2.style }
-permissions-exceptions-popup-desc2 = 你能指定哪个网站（全球资讯网的主机站）是允许到打开出现点-up 窗口和是（以新的方式或目的）重新使用( redirect的过去式和过去分词 ) 由第三-party 故障估计机（Failure Rate Assessment Machine）.
+permissions-exceptions-popup-desc2 = 你能指定哪个网站（全球资讯网的主机站）是允许到打开出现点-up 窗和是（以新的方式或目的）重新使用由第三-party 框架.
 
 ## Exceptions - Saved Passwords
 
 permissions-exceptions-saved-passwords-window =
     .title = 例外 - 保存密码
     .style = { permissions-window2.style }
-permissions-exceptions-saved-passwords-desc = { -brand-short-name } 将不保存密码为了坐列出的这里.
+permissions-exceptions-saved-passwords-desc = { -brand-short-name } 将不保存密码为了位置列出的这里.
 
 ## Exceptions - Add-ons
 
@@ -141,7 +141,7 @@ permissions-exceptions-addons-desc = 你能指定哪个网站（全球资讯网�
 permissions-site-autoplay-window2 =
     .title = 设置 - 自动播放
     .style = { permissions-window2.style }
-permissions-site-autoplay-desc = 你能管理那坐那做不跟随你的默认自动播放设置这里.
+permissions-site-autoplay-desc = 你能管理那位置那做不跟随你的默认自动播放设置这里.
 
 ## Site Permissions - Notifications
 
@@ -168,10 +168,10 @@ permissions-site-location-disable-desc = 这将预防任何的网站（全球资
 permissions-site-xr-window2 =
     .title = 设置 - 虚拟实在许可
     .style = { permissions-window2.style }
-permissions-site-xr-desc = 那下列各项网站（全球资讯网的主机站）有要求的到访问你的虚拟实在德维克（男子名、姓氏）. 你能指定哪个网站（全球资讯网的主机站）是允许到访问你的虚拟实在德维克（男子名、姓氏）. 你能也阻止新的请求请求到访问你的虚拟实在德维克（男子名、姓氏）.
+permissions-site-xr-desc = 那下列各项网站（全球资讯网的主机站）有要求的到访问你的虚拟实在装置. 你能指定哪个网站（全球资讯网的主机站）是允许到访问你的虚拟实在装置. 你能也阻止新的请求请求到访问你的虚拟实在装置.
 permissions-site-xr-disable-label =
-    .label = 阻止新的请求请求到访问你的虚拟实在德维克（男子名、姓氏）
-permissions-site-xr-disable-desc = 这将预防任何的网站（全球资讯网的主机站）不列出的在上方从要求许可到访问你的虚拟实在德维克（男子名、姓氏）. 组成块访问到你的虚拟实在德维克（男子名、姓氏）可以中断一些网站（全球资讯网的主机站）特性.
+    .label = 阻止新的请求请求到访问你的虚拟实在装置
+permissions-site-xr-disable-desc = 这将预防任何的网站（全球资讯网的主机站）不列出的在上方从要求许可到访问你的虚拟实在装置. 组成块访问到你的虚拟实在装置可以中断一些网站（全球资讯网的主机站）特性.
 
 ## Site Permissions - Camera
 
@@ -186,25 +186,25 @@ permissions-site-camera-disable-desc = 这将预防任何的网站（全球资�
 ## Site Permissions - Loopback network
 
 permissions-site-localhost-window =
-    .title = 设置 - 装置应用程序和服务
+    .title = 设置 - 装置应用和服务
     .style = { permissions-window2.style }
-permissions-site-localhost-desc = 这些网站（全球资讯网的主机站）有要求的访问到应用程序和服务在这装置. 你能选取到允许或阻止坐从行为这.
+permissions-site-localhost-desc = 这些网站（全球资讯网的主机站）有要求的访问到应用和服务在这装置. 你能选取到允许或阻止位置从行为这.
 
 permissions-site-localhost-disable-label =
-    .label = 阻止新的请求到访问到应用程序和服务在这装置
-permissions-site-localhost-disable-desc = 这将停止任何的网站（全球资讯网的主机站）不列出的在上方从要求访问到应用程序和服务在这装置. 行为这可以中断一些网站（全球资讯网的主机站）特性.
+    .label = 阻止新的请求到访问到应用和服务在这装置
+permissions-site-localhost-disable-desc = 这将停止任何的网站（全球资讯网的主机站）不列出的在上方从要求访问到应用和服务在这装置. 行为这可以中断一些网站（全球资讯网的主机站）特性.
 
 ## Site Permissions - Local network
 
 permissions-site-local-network-window =
-    .title = 设置 - 本地的网络德维克（男子名、姓氏）
+    .title = 设置 - 本地的网络装置
     .style = { permissions-window2.style }
-permissions-site-local-network-desc = 这些网站（全球资讯网的主机站）有要求的访问到应用程序和服务在德维克（男子名、姓氏）连接的到你的熟铁（Wrought Iron）-格式标识码或本地的网络. 你能选取到允许或阻止坐从行为这.
+permissions-site-local-network-desc = 这些网站（全球资讯网的主机站）有要求的访问到应用和服务在装置连接的到你的熟铁-格式标识码或本地的网络. 你能选取到允许或阻止位置从行为这.
 
 permissions-site-local-network-disable-label =
-    .label = 阻止新的请求到访问应用程序和服务在德维克（男子名、姓氏）连接的到你的熟铁（Wrought Iron）-格式标识码或本地的网络.
+    .label = 阻止新的请求到访问应用和服务在装置连接的到你的熟铁-格式标识码或本地的网络.
 
-permissions-site-local-network-disable-desc = 这将停止任何的网站（全球资讯网的主机站）不列出的在上方从要求访问到应用程序和服务在德维克（男子名、姓氏）连接的到你的熟铁（Wrought Iron）-格式标识码或本地的网络德维克（男子名、姓氏）. 行为这可以中断一些网站（全球资讯网的主机站）特性.
+permissions-site-local-network-disable-desc = 这将停止任何的网站（全球资讯网的主机站）不列出的在上方从要求访问到应用和服务在装置连接的到你的熟铁-格式标识码或本地的网络装置. 行为这可以中断一些网站（全球资讯网的主机站）特性.
 
 ## Site Permissions - Microphone
 
@@ -228,7 +228,7 @@ permissions-site-speaker-desc = 那下列各项网站（全球资讯网的主机
 permissions-exceptions-doh-window =
     .title = 网站（全球资讯网的主机站）例外为了 DNS 结束 HTTPS
     .style = { permissions-window2.style }
-permissions-exceptions-manage-doh-desc = { -brand-short-name } 将不使用无虑的 DNS 在这些坐和他们的子区域.
+permissions-exceptions-manage-doh-desc = { -brand-short-name } 将不使用无虑的 DNS 在这些位置和他们的子区域.
 
 permissions-doh-entry-field = Enter 网站（全球资讯网的主机站）域名称
     .accesskey = d

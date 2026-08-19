@@ -41,7 +41,7 @@ remove-search-engine-button = OK
 ## Variables
 ## $newEngine (String) - the name of the new default search engine.
 
-reset-search-settings-message = 由于一个技术上的发行, 你的默认搜索引擎有是更改后面的到 { $newEngine }. 到更改那默认搜索引擎, 去到设置.
+reset-search-settings-message = 由于一个技术上的发行, 你的默认搜索引擎有是更改回到 { $newEngine }. 到更改那默认搜索引擎, 去到设置.
 reset-search-settings-button = OK
 
 ## Infobar shown when user is prompted to install search engine.
@@ -71,7 +71,7 @@ add-engine-name = 搜索引擎名称
 add-engine-url2 = URL 与 %标量在地方的搜索检索词
 add-engine-keyword2 = 关键字 (可选择的)
 # POST and GET refer to the HTTP methods.
-add-engine-post-data = POST 资料与 %标量在地方的搜索检索词 (许可空为了 GET)
+add-engine-post-data = POST 论据与 %标量在地方的搜索检索词 (许可空为了 GET)
 add-engine-suggest-url = 提议 URL 与 %标量在地方的搜索检索词 (可选择的)
 
 ## The following placeholders are shown in the inputs when adding a new engine.

@@ -18,8 +18,8 @@ profile-card-edit-button =
     .title = 编辑提问档
     .aria-label = 编辑提问档
 profile-card-delete-button =
-    .title = Delete 提问档
-    .aria-label = Delete 提问档
+    .title = 删除提问档
+    .aria-label = 删除提问档
 
 # Variables
 #   $profileName (string) - The name of the profile
@@ -41,14 +41,14 @@ edit-profile-page-header = 编辑你的提问档
 edit-profile-page-profile-name-label = 提问档名称
 edit-profile-page-theme-header-2 =
     .label = 主题
-edit-profile-page-explore-themes = 探险更多他们
+edit-profile-page-explore-themes = 探险更多主题
 edit-profile-page-desktop-shortcut-header = 创建桌面快捷方式
 edit-profile-page-desktop-shortcut-toggle =
     .aria-label = 创建桌面快捷方式
 edit-profile-page-avatar-header-2 =
     .label = 天神下凡化作人形
 edit-profile-page-delete-button =
-    .label = Delete
+    .label = 删除
 
 edit-profile-page-avatar-selector-opener-link = 编辑
 avatar-selector-icon-tab = 像标
@@ -79,7 +79,7 @@ new-profile-page-done-button =
 # Variables
 #   $profilename (String) - The name of the copied profile.
 copied-profile-page-header-2 = 你的复制的“{ $profilename }”是预备好的状态到定制
-copied-profile-page-header-description = 我们已复制的你的资料和设置进入...之内一个新的提问档. 现在弹性它一个名称, 拾取一个一看, 和使它你的自己的.
+copied-profile-page-header-description = 我们已复制的你的论据和设置进入...之内一个新的提问档. 现在弹性它一个名称, 拾取一个一看, 和使它你的自己的.
 
 restored-profile-page-header = 定制你的精力充沛的提问档
 restored-profile-page-header-description = 每个提问档保持它的独一无二的浏览历史和设置独立件从你的其他的提问档. 正差, { -brand-short-name }'s 强壮的隐私保护是在默认情况下.
@@ -89,19 +89,19 @@ restored-profile-page-learn-more = 学习更多
 
 # Variables
 #   $profilename (String) - The name of the profile.
-delete-profile-page-title-2 = Delete “{ $profilename }”提问档
+delete-profile-page-title-2 = 删除“{ $profilename }”提问档
 
 # Variables
 #   $profilename (String) - The name of the profile.
-delete-profile-header = Delete { $profilename } 提问档?
-delete-profile-description = { -brand-short-name } 将永久性的删除那下列各项资料从这装置:
+delete-profile-header = 删除 { $profilename } 提问档?
+delete-profile-description = { -brand-short-name } 将永久性的删除那下列各项论据从这装置:
 # Open is an adjective, as in "browser windows currently open".
-delete-profile-windows = 打开窗口
+delete-profile-windows = 打开窗
 # Open is an adjective, as in "browser tabs currently open".
 delete-profile-tabs = 打开标签页
 delete-profile-bookmarks = 书签
 delete-profile-history = 历史记录 (拜访页, 饼干, 站点数据)
-delete-profile-autofill = 自动填充资料 (地址, 付款方法)
+delete-profile-autofill = 自动填充论据 (地址, 付款方法)
 delete-profile-logins = 密码
 
 ##
@@ -109,7 +109,7 @@ delete-profile-logins = 密码
 # Button label
 delete-profile-cancel = 取消
 # Button label
-delete-profile-confirm = Delete
+delete-profile-confirm = 删除
 
 ## These strings are color themes available to select from the profile selection screen. Theme names should be localized.
 
@@ -154,7 +154,7 @@ profiles-system-theme-title =
 ## Data collection settings changed (multi-profile)
 
 # Full infobar message with inline bold title followed by body text
-multiprofile-data-collection-message = <strong>资料收集设置更改.</strong> 那更改使在另外的提问档应用对所有人提问档在这装置.
+multiprofile-data-collection-message = <strong>论据收集设置更改.</strong> 那更改使在另外的提问档应用对所有人提问档在这装置.
 
 # Primary button label to open the Data collection section in Settings
 multiprofile-data-collection-view-settings = 查看设置
@@ -330,7 +330,7 @@ video-game-controller-avatar-tooltip =
 
 
 custom-avatar-crop-back-button =
-  .aria-label = 后面的
+  .aria-label = 回
 custom-avatar-crop-view =
   .aria-label = 裁剪图象查看
 custom-avatar-crop-area =
@@ -340,5 +340,5 @@ custom-avatar-drag-handle =
 
 profiles-appmenu-callout-tour-title = 你的新的提问档是善行到去
 # "Spin up another" means creating another profile, “Hop between your digital lives" is referring to switching between different profiles such as work, personal, etc.
-profiles-appmenu-callout-tour-subtitle = 在那☰菜单, 接头你的提问档名称到纺织向上的另外的, 编辑这一(个), 或跳跃式传输在...之间你的数字押尾学（乐队名）.
+profiles-appmenu-callout-tour-subtitle = 在那☰菜单, 接头你的提问档名称到纺织向上的另外的, 编辑这一(个), 或跳跃式传输在...之间你的数字活的.
 profiles-appmenu-callout-tour-primary-button = 显示我如何

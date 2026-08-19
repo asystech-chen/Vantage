@@ -6,8 +6,8 @@
 
 genai-settings-chat-chatgpt-links = 由选择 ChatGPT, 你同意到那 OpenAI <a data-l10n-name="link1">检索词的使用</a> 和 <a data-l10n-name="link2">隐私政策</a>.
 genai-settings-chat-claude-links = 由选择人类的克劳德（男子名）, 你同意到那人类的 <a data-l10n-name="link1">消费者检索词的服务</a>, <a data-l10n-name="link2">用法政策</a>, 和 <a data-l10n-name="link3">隐私政策</a>.
-genai-settings-chat-copilot-links = 由选择副驾驶员, 你同意到那 <a data-l10n-name="link1">副驾驶员 AI 经历( experience的名词复数 ) 检索词</a> 和 <a data-l10n-name="link2">巨硬隐私程序语句</a>.
-genai-settings-chat-gemini-links = 由选择谷歌双胎, 你同意到那 <a data-l10n-name="link1">谷歌检索词的服务</a>, <a data-l10n-name="link2">生殖的 AI 禁止使用政策</a>, 和 <a data-l10n-name="link3">双胎应用程序隐私注意</a>.
+genai-settings-chat-copilot-links = 由选择副驾驶员, 你同意到那 <a data-l10n-name="link1">副驾驶员 AI 经历检索词</a> 和 <a data-l10n-name="link2">巨硬隐私程序语句</a>.
+genai-settings-chat-gemini-links = 由选择谷歌双胎, 你同意到那 <a data-l10n-name="link1">谷歌检索词的服务</a>, <a data-l10n-name="link2">生殖的 AI 禁止使用政策</a>, 和 <a data-l10n-name="link3">双胎应用隐私注意</a>.
 genai-settings-chat-huggingchat-links = 由选择 HuggingChat, 你同意到那 <a data-l10n-name="link1">HuggingChat 隐私注意</a> 和 <a data-l10n-name="link2">热烈地拥抱现场可改变的控制元件隐私政策</a>.
 genai-settings-chat-lechat-links = 由选择小于或等于闲谈密史脱拉风, 你同意到那密史脱拉风 AI <a data-l10n-name="link1">检索词的服务</a> 和 <a data-l10n-name="link2">隐私政策</a>.
 genai-settings-chat-localhost-links = 带来你的自己的私人的本地的 chatbot 如此的作为 <a data-l10n-name="link1">llamafile</a> 从 { -vendor-short-name }'s 改革创建组.
@@ -21,7 +21,7 @@ genai-settings-chat-localhost-links = 带来你的自己的私人的本地的 ch
 # This prompt is added to the beginning of selection prompts sent to a chatbot.
 # $tabTitle (string) - title of the webpage
 # $selection (string) - selected text
-genai-prompt-prefix-selection = 我是（缩写）在页“{ $tabTitle }”与“{ $selection }”被选的.
+genai-prompt-prefix-selection = 我是在页“{ $tabTitle }”与“{ $selection }”被选的.
 
 # Prompt purpose: help users understand what a selection covers at a glance
 genai-prompts-summarize =
@@ -30,11 +30,11 @@ genai-prompts-summarize =
 # Prompt purpose: make a selection easier to read
 genai-prompts-simplify =
     .label = 单一化语言
-    .value = 请重写那选择使用短的判决和简单的字. 维持那意义和事实的准确度.
+    .value = 请重写那选择使用短的句子和简单的字. 维持那意义和事实的准确度.
 # Prompt purpose: test understanding of selection in an interactive way
 genai-prompts-quiz =
     .label = 考查我
-    .value = 请戏弄我在这选择. 询问我一个多样的类型（type）的询问, 为了例子倍数选择, 真实的或错误的, 和短的用户问题及答案新闻组. 等待为了我的应答在...之前动人的在到那近邻干扰询问.
+    .value = 请戏弄我在这选择. 询问我一个多样的类型的询问, 为了例子倍数选择, 真实的或错误的, 和短的用户问题及答案新闻组. 等待为了我的应答在...之前动人的在到那近邻干扰询问.
 # Prompt purpose: helps users understand words, phrases, concepts
 genai-prompts-explain =
     .label = 解释这
@@ -42,7 +42,7 @@ genai-prompts-explain =
 # Prompt purpose: writing tool that helps users with spelling and grammar mistakes and produce a response that identifies errors and rewrites the inputted text correctly
 genai-prompts-proofread =
     .label = 校正
-    .value = 请校正那选择为了拼写检查和语法检查错误. 识别任何的错误( mistake的名词复数 ) 和提供一个修正的版本的那电文. 维持那意义和事实的准确度和输出那列表的被提议的订正首先, 跟随的由那期末考试, 修正的版本的那电文.
+    .value = 请校正那选择为了拼写检查和语法检查错误. 识别任何的错误和提供一个修正的版本的那电文. 维持那意义和事实的准确度和输出那列表的被提议的订正首先, 跟随的由那期末考试, 修正的版本的那电文.
 
 ## Chatbot menu shortcuts
 
@@ -88,7 +88,7 @@ genai-input-ask-provider =
 genai-shortcuts-selected-warning-generic =
     .heading = AI chatbot 将不获得你的完整选择
     .message = { $selectionLength ->
-        *[other] you have 你（们）已经被选的关于 { $selectionLength } 字符. 那数字的字符我们能发送到那 AI chatbot 是关于 { $maxLength }.
+        *[other] 你有被选的关于 { $selectionLength } 字符. 那数字的字符我们能发送到那 AI chatbot 是关于 { $maxLength }.
     }
 # $provider (string) - name of the provider
 # $selectionLength (number) - selected text length
@@ -96,7 +96,7 @@ genai-shortcuts-selected-warning-generic =
 genai-shortcuts-selected-warning =
     .heading = { $provider } 将不获得你的完整选择
     .message = { $selectionLength ->
-        *[other] you have 你（们）已经被选的关于 { $selectionLength } 字符. 那数字的字符我们能发送到 { $provider } 是关于 { $maxLength }.
+        *[other] 你有被选的关于 { $selectionLength } 字符. 那数字的字符我们能发送到 { $provider } 是关于 { $maxLength }.
     }
 genai-shortcuts-hide =
     .label = 隐藏 chatbot 快捷方式
@@ -142,7 +142,7 @@ genai-chatbot-summarize-button = 概述页
 # “Summarize Page” should be consistent with the translation for the string genai-menu-summarize-page
 genai-chatbot-summarize-sidebar-provider-subtitle = 右-click 在你的 AI chatbot 在那其他选项和选取“概述页”.
 # “Summarize Page” should be consistent with the translation for the string genai-menu-summarize-page
-genai-chatbot-summarize-sidebar-generic-subtitle = 右-click 那发火花按钮在那其他选项和选取“概述页”. 那开始时间, (=you will 也选取一个 AI chatbot.
+genai-chatbot-summarize-sidebar-generic-subtitle = 右-click 那闪耀按钮在那其他选项和选取“概述页”. 那开始时间, 你将也选取一个 AI chatbot.
 
 # “Summarize page” should be consistent with the translation for the string genai-page-button-summarize
 genai-chatbot-summarize-footer-provider-subtitle = 打开你的 AI chatbot 在那其他选项和选取“概述页”在那底部.
@@ -198,8 +198,8 @@ genai-model-optin-cancel =
 #   $range (String): The range of minutes as a localised string. Examples: "3-7", "~1".
 link-preview-reading-time =
     { $rangePlural ->
-        [one] { $range } 部长（Minister）阅读时间
-       *[other] { $range } 需监护的未成年人（Minors In Need of Supervision）阅读时间
+        [one] { $range } 部长阅读时间
+       *[other] { $range } 部长阅读时间
     }
 
 # Error message displayed when a link preview cannot be generated
@@ -245,14 +245,14 @@ link-preview-onboarding-description-long-press = 看见一个扼要描述, 阅�
 link-preview-key-points-header = 键点
 
 # Disclaimer for AI-generated key points
-link-preview-key-points-disclaimer = 键点是 AI-generated 和可以有错误( mistake的名词复数 ).
+link-preview-key-points-disclaimer = 键点是 AI-generated 和可以有错误.
 
 # Progress message for the first-time setup
 # $progress (number) - The percentage value 1-100 indicating the progress of the setup.
 link-preview-setup = 首先-time 设置• <strong>{ $progress }%</strong>
 
 # Message indicating faster performance after initial setup
-link-preview-setup-faster-next-time = (=you will 看见键点更多很快地近邻干扰时间.
+link-preview-setup-faster-next-time = 你将看见键点更多很快地近邻干扰时间.
 
 # Onboarding card See a preview button
 link-preview-onboarding-button = 看见一个预览
@@ -264,4 +264,4 @@ link-preview-onboarding-close = 关闭
 link-preview-first-time-setup-title = 首先-time 设置
 
 # Message for the first-time setup modal
-link-preview-first-time-setup-message = 这可以采取一个片刻. (=you will 看见键点更多很快地近邻干扰时间.
+link-preview-first-time-setup-message = 这可以采取一个片刻. 你将看见键点更多很快地近邻干扰时间.

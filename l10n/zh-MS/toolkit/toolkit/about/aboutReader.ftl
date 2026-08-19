@@ -17,7 +17,7 @@ about-reader-color-contrast-theme = 反差
 
 
 about-reader-font-type-serif = 衬线
-about-reader-font-type-sans-serif = 没有-衬线
+about-reader-font-type-sans-serif = 存储区域网-衬线
 about-reader-font-type-monospace = 单间隔
 
 

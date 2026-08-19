@@ -8,19 +8,19 @@
 ## data for the current website, and allow them to control it.
 
 origin-controls-no-access =
-    .label = 扩展名不能读取和更改资料
+    .label = 扩展名不能读取和更改论据
 
 origin-controls-quarantined-status =
-    .label = 扩展名不允许在受限制的坐
+    .label = 扩展名不允许在受限制的位置
 
 origin-controls-quarantined-allow =
-    .label = 允许在受限制的坐
+    .label = 允许在受限制的位置
 
 origin-controls-options =
-    .label = 扩展名能读取和更改资料:
+    .label = 扩展名能读取和更改论据:
 
 origin-controls-option-all-domains =
-    .label = 在全部坐
+    .label = 在全部位置
 
 origin-controls-option-when-clicked =
     .label = 仅何时使发出咔哒声
@@ -35,13 +35,13 @@ origin-controls-option-always-on =
 ## These strings are used to map Origin Controls states to user-friendly
 ## messages. They currently appear in the unified extensions panel.
 
-origin-controls-state-no-access = 不能读取和更改资料在此站点
+origin-controls-state-no-access = 不能读取和更改论据在此站点
 
 origin-controls-state-quarantined = 不允许由 { -vendor-short-name } 在此站点
 
-origin-controls-state-always-on = 能总是读取和更改资料在此站点
+origin-controls-state-always-on = 能总是读取和更改论据在此站点
 
-origin-controls-state-when-clicked = 许可需要的到读取和更改资料
+origin-controls-state-when-clicked = 许可需要的到读取和更改论据
 
 origin-controls-state-hover-run-visit-only = 运行为了这拜访仅
 
@@ -49,7 +49,7 @@ origin-controls-state-runnable-hover-open = 打开扩展名
 
 origin-controls-state-runnable-hover-run = 运行扩展名
 
-origin-controls-state-temporary-access = 能读取和更改资料为了这拜访
+origin-controls-state-temporary-access = 能读取和更改论据为了这拜访
 
 ## Extension's toolbar button.
 ## Variables:

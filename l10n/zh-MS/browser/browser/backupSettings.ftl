@@ -23,7 +23,7 @@ backup-file-name = { -brand-product-name }倒车
 
 settings-data-backup-header2 =
     .label = 倒车
-    .description = 自动地防卫你的书签, 历史记录, 和其他的资料.
+    .description = 自动地防卫你的书签, 历史记录, 和其他的论据.
 settings-data-backup-toggle = 管理倒车
 settings-data-backup-toggle-on2 =
     .label = 转弯在倒车
@@ -50,19 +50,19 @@ settings-data-create-backup-error = 那里曾是一个错误创建你的倒车�
 settings-data-backup-last-backup-filename = 文件名: { $fileName }
 
 settings-data-backup-restore-scheduled-on =
-    .label = 回复你的资料
-    .description = 恢复你的 { -brand-product-name } 资料后面的从那最后时间它曾是有背的向上的.
+    .label = 回复你的论据
+    .description = 恢复你的 { -brand-product-name } 论据回从那最后时间它曾是有背的向上的.
 
 settings-data-backup-restore-scheduled-off =
-    .label = 回复你的资料
-    .description = 使用一个 { -brand-product-name } 倒车从另外的装置到回复你的资料.
+    .label = 回复你的论据
+    .description = 使用一个 { -brand-product-name } 倒车从另外的装置到回复你的论据.
 
 settings-sensitive-data =
-    .label = 敏感的资料
-settings-sensitive-data-encryption-description = 后面的向上的你的密码和付款方法, 正差保持所有的你的资料保险箱与加密.
+    .label = 敏感的论据
+settings-sensitive-data-encryption-description = 回向上的你的密码和付款方法, 正差保持所有的你的论据保险箱与加密.
 settings-data-toggle-encryption-label2 =
-    .label = 后面的向上的你的敏感的资料
-    .description = 后面的向上的你的密码和付款方法, 正差保持所有的你的资料保险箱与加密.
+    .label = 回向上的你的敏感的论据
+    .description = 回向上的你的密码和付款方法, 正差保持所有的你的论据保险箱与加密.
 settings-data-toggle-encryption-support-link = 学习更多
 
 settings-data-change-password2 =
@@ -71,7 +71,7 @@ settings-data-change-password2 =
 ## These strings are displayed in a modal when users want to turn on scheduled backups.
 
 turn-on-scheduled-backups-header = 转弯在倒车
-turn-on-scheduled-backups-description = { -brand-short-name } 将创建一个瞬象的你的资料每一 24 小时. 你能回复它如果 (=there is 一个问题或你获得一个新的装置.
+turn-on-scheduled-backups-description = { -brand-short-name } 将创建一个瞬象的你的论据每一 24 小时. 你能回复它如果那里是一个问题或你获得一个新的装置.
 turn-on-scheduled-backups-support-link = 什么将是有背的向上的?
 
 # "Location" refers to the save location or a folder where users want backups stored.
@@ -86,7 +86,7 @@ turn-on-scheduled-backups-location-choose-button =
         *[other] 浏览…
     }
 
-turn-on-scheduled-backups-encryption-label = 后面的向上的你的敏感的资料
+turn-on-scheduled-backups-encryption-label = 回向上的你的敏感的论据
 turn-on-scheduled-backups-encryption-create-password-label = 密码
 # Users will be prompted to re-type a password, to ensure that the password is entered correctly.
 turn-on-scheduled-backups-encryption-repeat-password-label = 重复密码
@@ -102,7 +102,7 @@ backup-error-file-system = 那里曾是一个问题与你的被选的倒车文�
 ## These strings are displayed in a modal when users want to turn off scheduled backups.
 
 turn-off-scheduled-backups-header = 转弯关闭倒车?
-turn-off-scheduled-backups-description = 这也删除所有的的你的倒车资料. 它不能是没有做好.
+turn-off-scheduled-backups-description = 这也删除所有的的你的倒车论据. 它不能是没有做好.
 turn-off-scheduled-backups-support-link = 学习更多
 
 turn-off-scheduled-backups-cancel-button = 取消
@@ -110,7 +110,7 @@ turn-off-scheduled-backups-confirm-button = 转弯关闭和删除倒车
 
 ## These strings are displayed in a modal when users want restore from a backup.
 
-restore-from-backup-header = 回复你的资料
+restore-from-backup-header = 回复你的论据
 # Variables:
 #   $date (string) - Date to be formatted based on locale
 restore-from-backup-support-link1 = 什么将是精力充沛的?
@@ -132,10 +132,10 @@ restore-from-backup-restoring-button = 恢复的…
 restore-from-backup-type-group-label =
     .label = 代替当前的提问档?
 restore-from-backup-type-replace =
-    .label = 代替所有的资料与这倒车
+    .label = 代替所有的论据与这倒车
 restore-from-backup-type-add =
-    .label = 保持资料和创建新的提问档
-restore-from-backup-profiles-disabled-message = 这将代替所有的你的当前的 { -brand-short-name } 资料与你的倒车.
+    .label = 保持论据和创建新的提问档
+restore-from-backup-profiles-disabled-message = 这将代替所有的你的当前的 { -brand-short-name } 论据与你的倒车.
 
 ## These strings are displayed in a small error message bar in the settings
 ## menu if there was an error when trying to restore a backed up profile
@@ -149,7 +149,7 @@ backup-service-error-incorrect-password = 不正确的密码. <a data-l10n-name=
 # loaded and parsed correctly, most likely due to data corruption of the
 # backup file itself
 backup-service-error-corrupt-file =
-    .heading = 这文件 (=is not)不是工作
+    .heading = 这文件不是工作
     .message = 那里曾是一个问题与你的倒车文件. 选取一个不同的文件和尝试再一次.
 
 # The backup file cannot be restored. The currently running application may
@@ -157,31 +157,31 @@ backup-service-error-corrupt-file =
 # Alternatively, the backup file may be too old and some of the feature in
 # the backed up profile may no longer be supported.
 backup-service-error-unsupported-version =
-    .heading = 这文件 (=is not)不是工作
-    .message = 那文件你动产 (=is not)不是相容的与这版本的 { -brand-short-name }. 选取一个不同的文件和尝试再一次.
+    .heading = 这文件不是工作
+    .message = 那文件你动产不是相容的与这版本的 { -brand-short-name }. 选取一个不同的文件和尝试再一次.
 
 # The backup file cannot be restored. The currently running application is not
 # the same application that created the backup file (e.g. Firefox cannot
 # restore a Thunderbird profile backup).
 backup-service-error-unsupported-application =
-    .heading = 这文件 (=is not)不是工作
+    .heading = 这文件不是工作
     .message = 那文件你动产曾是不创建由 { -brand-short-name }. 选取一个不同的文件和尝试再一次.
 
 # Recovery from backup did not succeed. Potential causes could be file system
 # errors, internal code errors, decryption errors, etc.
 backup-service-error-recovery-failed =
-    .heading = { -brand-short-name } (=could not)不能回复
+    .heading = { -brand-short-name } 不能回复
     .message = 重新启动 { -brand-short-name } 和尝试恢复的你的倒车再一次.
 
 # There was some error in the backup service but we don't have a more specific
 # idea of what went wrong
 backup-service-error-went-wrong2 =
-    .heading = 隐马尔可夫模型（Hidden Markov Model）, 那里曾是一个问题后退向上的.
-    .message = 尝试再一次在一个少数分钟.
+    .heading = 隐马尔可夫模型, 那里曾是一个问题后退向上的.
+    .message = 尝试再一次在一个少数分.
 
 ## These strings are displayed in a modal when users want to enable encryption or change the password for an existing backup.
 
-enable-backup-encryption-header = 后面的向上的你的敏感的资料
+enable-backup-encryption-header = 回向上的你的敏感的论据
 enable-backup-encryption-support-link = 学习更多
 
 enable-backup-encryption-create-password-label = 密码
@@ -198,7 +198,7 @@ change-backup-encryption-header = 更改倒车密码
 password-rules-header = 密码需求
 password-rules-length-description = 在最少 8 字符
 password-rules-email-description = 不你的电子信函地址
-password-rules-disclaimer = 停留保险箱—不要再使用密码. 看见更多秘诀到 <a data-l10n-name="password-support-link">创建强壮的密码</a>.
+password-rules-disclaimer = 停留保险箱—不要再使用密码. 看见更多终端接口处理器到 <a data-l10n-name="password-support-link">创建强壮的密码</a>.
 password-validity-has-email = 不能是一个电子信函地址
 password-validity-do-not-match = 密码不要比较
 
@@ -236,7 +236,7 @@ backup-error-retry = 某事去错误的. 请试再一次.
 
 backup-file-header = { -brand-short-name } 是预备好的状态到是精力充沛的
 backup-file-title = 回复 { -brand-short-name }
-backup-file-intro = 获得后面的到浏览和恢复所有的你的书签, 历史记录, 和其他的资料. <a data-l10n-name="backup-file-support-link">学习更多</a>
+backup-file-intro = 获得回到浏览和恢复所有的你的书签, 历史记录, 和其他的论据. <a data-l10n-name="backup-file-support-link">学习更多</a>
 
 backup-file-path-label = 倒车文件:
 
@@ -256,7 +256,7 @@ backup-file-how-to-restore-header = 如何到回复:
 # The ☰ character is intended as a visual icon representing the Firefox
 # application menu.
 backup-file-moz-browser-restore-step-1 = 打开那应用菜单☰和去到设置 > 同步的
-backup-file-moz-browser-restore-step-2-1 = 单击“回复你的资料”和选择这文件
+backup-file-moz-browser-restore-step-2-1 = 单击“回复你的论据”和选择这文件
 backup-file-moz-browser-restore-step-3 = 重新启动 { -brand-short-name } 何时卖方要价
 
 backup-file-other-browser-restore-step-1 = 下载和安装 { -brand-short-name }
@@ -264,7 +264,7 @@ backup-file-download-moz-browser-button = 下载
 # The ☰ character is intended as a visual icon representing the Firefox
 # application menu.
 backup-file-other-browser-restore-step-2 = 启动 { -brand-short-name }, 打开那应用菜单☰和去到设置 > 同步的
-backup-file-other-browser-restore-step-3-1 = 单击“回复你的资料”和选择这文件
+backup-file-other-browser-restore-step-3-1 = 单击“回复你的论据”和选择这文件
 backup-file-other-browser-restore-step-4 = 重新启动 { -brand-short-name } 何时卖方要价
 
 ## These strings are used in the about:restore and about:welcome pages
@@ -290,7 +290,7 @@ backup-file-creation-metadata2 = <b>{ $profileName }</b> 创建在 { DATETIME($d
 #   $date (Number) - The epoch timestamp of the restore.
 backup-restored-profile-name = 精力充沛的从 { $deviceName } 在 { DATETIME($date, year: "numeric", month: "numeric", day: "numeric") } 在 { DATETIME($date, hour: "2-digit", minute: "2-digit") }
 
-backup-file-restore-file-validation-error = 这文件 (=is not)不是工作. 尝试掘一个不同的文件. <a data-l10n-name="restore-problems">仍然财产问题?</a>
+backup-file-restore-file-validation-error = 这文件不是工作. 尝试掘一个不同的文件. <a data-l10n-name="restore-problems">仍然财产问题?</a>
 
 restore-from-backup-filepicker-input =
     .placeholder = 无文件被选的

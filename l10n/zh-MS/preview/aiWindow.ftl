@@ -35,7 +35,7 @@ smartwindow-document-title = 新的 Tab
 
 toolbar-button-ai-window-toggle =
     .label = 窗口类型
-    .tooltiptext = 开关在...之间刺痛和古典作品窗口.
+    .tooltiptext = 开关在...之间刺痛和古典作品窗.
 
 ai-window-toggleview-switch-classic =
     .label = 古典作品窗口
@@ -116,8 +116,8 @@ aiwindow-website-chip-remove-button =
 ## Firstrun onboarding
 
 aiwindow-firstrun-title = 欢迎到刺痛窗口
-aiwindow-firstrun-model-title = （尤当 has 为助动词时要点到你?
-aiwindow-firstrun-model-subtitle = 拾取一个模型到使...有力量聪明的窗口. 开关任何时候.
+aiwindow-firstrun-model-title = 什么是要点到你?
+aiwindow-firstrun-model-subtitle = 拾取一个模型到功率聪明的窗口. 开关任何时候.
 aiwindow-firstrun-model-fast-label = 快速的
 aiwindow-firstrun-model-fast-body = 用户问题及答案新闻组很快地
 # $model (string) - The name of the AI model
@@ -127,8 +127,8 @@ aiwindow-firstrun-model-allpurpose-label = 易曲的
 aiwindow-firstrun-model-allpurpose-body = 原色非特为了最多需要
 aiwindow-firstrun-model-personal-label = 私人的
 aiwindow-firstrun-model-personal-body = 最多裁缝做的用户问题及答案新闻组
-aiwindow-firstrun-button = let us 让我们去!
-aiwindow-firstrun-back-button = 后面的
+aiwindow-firstrun-button = 让我们去!
+aiwindow-firstrun-back-button = 回
 aiwindow-firstrun-next-button = 近邻干扰
 
 ## These are labels describing model types in the smartbar model select.
@@ -154,13 +154,13 @@ aiwindow-firstrun-memories-title = 更多有帮助的用户问题及答案新闻
 aiwindow-firstrun-memories-subtitle = 聪明的窗口能学习从你的闲谈, 浏览, 或两者的到创建存储器. 他们使用户问题及答案新闻组更多有帮助的结束时间.
 
 aiwindow-firstrun-memories-conversation-title = 保持那会话去
-aiwindow-firstrun-memories-conversation-body = 学习从闲谈低劣的 (=you will 有到重复你自己最低成本估算与调度法.
+aiwindow-firstrun-memories-conversation-body = 学习从闲谈低劣的你将有到重复你自己最低成本估算与调度法.
 
 aiwindow-firstrun-memories-relevance-title = 更多有关联的用户问题及答案新闻组
-aiwindow-firstrun-memories-relevance-body = 学习从浏览千兆(电子)伏特(giga(electron)volts) 聪明的窗口那更大的（big的比较级）图象.
+aiwindow-firstrun-memories-relevance-body = 学习从浏览弹性聪明的窗口那更大的图象.
 
 aiwindow-firstrun-memories-privacy-title = 私人的由设计
-aiwindow-firstrun-memories-privacy-body = 存储器是储存的在这装置. Delete 或转弯关闭任何时候.
+aiwindow-firstrun-memories-privacy-body = 存储器是储存的在这装置. 删除或转弯关闭任何时候.
 
 aiwindow-firstrun-memories-choose-label = 选取什么聪明的窗口学习从
 aiwindow-firstrun-memories-checkbox-chats = 闲谈在刺痛窗口
@@ -171,7 +171,7 @@ aiwindow-firstrun-memories-no-create = 获得它. 刺痛窗口将不创建存储
 ## Firstrun set as default onboarding
 
 aiwindow-firstrun-default-title = 使聪明的窗口你的去-到
-aiwindow-firstrun-default-subtitle = 浏览, 搜索, 和询问在一(个) 地方. 你能仍然打开私人的和古典作品窗口何时你想要.
+aiwindow-firstrun-default-subtitle = 浏览, 搜索, 和询问在一(个) 地方. 你能仍然打开私人的和古典作品窗何时你想要.
 aiwindow-firstrun-default-checkbox-label = 总是打开 { -brand-product-name } 在刺痛窗口
 aiwindow-firstrun-default-checkbox-description = 开关在设置任何时候
 
@@ -183,10 +183,10 @@ smartwindow-ask-button =
 ## Memories toggle button
 
 aiwindow-memories-on =
-    .tooltiptext = 使用存储器在响应回应何时有帮助的
+    .tooltiptext = 使用存储器在应答何时有帮助的
     .aria-label = 存储器在
 aiwindow-memories-off =
-    .tooltiptext = 不要使用存储器在响应回应
+    .tooltiptext = 不要使用存储器在应答
     .aria-label = 存储器关闭
 
 ## New Chat Button
@@ -203,7 +203,7 @@ aiwindow-close-sidebar =
 
 ## Sign out dialog
 
-fxa-signout-dialog-body-aiwindow = synchronization 的缩略词资料将保持在你的帐户. 打开聪明的窗口将开关到古典作品窗口.
+fxa-signout-dialog-body-aiwindow = synchronization 的缩略词论据将保持在你的帐户. 打开聪明的窗将开关到古典作品窗.
 
 ## Smart Window Toggle Button (in-page)
 
@@ -224,7 +224,7 @@ smartwindow-footer-history =
 ## Disclaimer
 ## Text displayed to user to warn user about potential mistakes.
 
-smartwindow-disclaimer = AI 能使错误( mistake的名词复数 ).
+smartwindow-disclaimer = AI 能使错误.
 
 ## FirefoxView Chats
 ## Chats in this context refers to chats saved from the Smart Window Assistant
@@ -233,7 +233,7 @@ firefoxview-chats-nav = 闲谈
   .title = 闲谈
 firefoxview-chats-header = 闲谈
 
-firefoxview-chat-context-delete = Delete 从闲谈
+firefoxview-chat-context-delete = 删除从闲谈
     .accesskey = D
 
 # Placeholder for the input field to search in open tabs ("search" is a verb).
@@ -250,7 +250,7 @@ firefoxview-chat-date-prev-month = { DATETIME($date, month: "long", year: "numer
 
 ## Message displayed in Firefox View when the user has no chat data
 
-firefoxview-chats-empty-header = 获得后面的到你的闲谈
+firefoxview-chats-empty-header = 获得回到你的闲谈
 firefoxview-chats-empty-description = 作为你使用聪明的窗口, 你的闲谈将是保存这里.
 
 ## Count displayed in fxview chat search results
@@ -312,10 +312,10 @@ smart-window-default-promo-additional-button = 不现在
 ## Feedback modal
 
 aiwindow-feedback-modal-title = 部分反馈
-aiwindow-feedback-what-worked-well = 什么 work的过去式和过去分词井? 无私人的信息, 请.
+aiwindow-feedback-what-worked-well = 什么和过去分词井? 无私人的信息, 请.
 aiwindow-feedback-choose-any = 选取任何的那应用
-aiwindow-feedback-add-details = 添加详细数据如果 (=you had)(=you would) 相似的. 无私人的信息, 请.
-aiwindow-feedback-disclaimer = 顺从( submit的现在分词 ) 莎尔（女子名）你的反馈和这闲谈到帮助 { -brand-shorter-name } 改良聪明的窗口. 你的其他的闲谈停留私人的. <a data-l10n-name="learn-more">学习更多</a>
+aiwindow-feedback-add-details = 添加详细数据如果你将相似的. 无私人的信息, 请.
+aiwindow-feedback-disclaimer = 顺从部分你的反馈和这闲谈到帮助 { -brand-shorter-name } 改良聪明的窗口. 你的其他的闲谈停留私人的. <a data-l10n-name="learn-more">学习更多</a>
 aiwindow-feedback-submit = 提交
 aiwindow-feedback-cancel = 取消
 aiwindow-feedback-reason-incorrect-or-misleading = 不正确的或引入歧途的

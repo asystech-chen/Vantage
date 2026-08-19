@@ -74,7 +74,7 @@ newtab-topsites-image-validation = 图象失败的到加载. 尝试一个不同�
 ## Top Sites - General form dialog buttons. These are verbs/actions.
 
 newtab-topsites-cancel-button = 取消
-newtab-topsites-delete-history-button = Delete 从历史记录
+newtab-topsites-delete-history-button = 删除从历史记录
 newtab-topsites-save-button = 保存
 newtab-topsites-preview-button = 预览
 newtab-topsites-add-button = 添加
@@ -87,14 +87,14 @@ newtab-confirm-delete-history-p2 = 此操作无法撤销.
 
 ## Top Sites - Sponsored label
 
-newtab-topsite-sponsored = 赞助( sponsor的过去式和过去分词)
+newtab-topsite-sponsored = 赞助
 
 ## Label used by screen readers for pinned top sites
 
 # Variables:
 #   $title (string) - The label or hostname of the site.
 topsite-label-pinned =
-    .aria-label = { $title } (用针别住(pin的过去分词))
+    .aria-label = { $title } (用针别住)
     .title = { $title }
 
 ## Context Menu - Action Tooltips.
@@ -119,7 +119,7 @@ newtab-menu-open-new-private-window = 打开在一个新的私人的窗口
 newtab-menu-dismiss = 解散
 newtab-menu-pin = 大头针
 newtab-menu-unpin = 取下...上的别针
-newtab-menu-delete-history = Delete 从历史记录
+newtab-menu-delete-history = 删除从历史记录
 newtab-menu-show-privacy-info = 我们的保证人 & 你的隐私
 # Report is a verb (i.e. report issue with the content).
 newtab-menu-report = 报告
@@ -134,7 +134,7 @@ newtab-menu-section-learn-more = 学习更多
 
 ## Context menu options for sponsored stories and new ad formats on New Tab.
 
-newtab-menu-manage-sponsored-content = 管理赞助( sponsor的过去式和过去分词) 内容
+newtab-menu-manage-sponsored-content = 管理赞助内容
 newtab-menu-our-sponsors-and-your-privacy = 我们的保证人和你的隐私
 newtab-menu-report-this-ad = 报告这地址
 
@@ -168,30 +168,30 @@ newtab-menu-open-file = 打开文件
 ## the page is bookmarked, or is currently open on another device.
 
 newtab-label-visited = 拜访
-newtab-label-bookmarked = 书签( bookmark的过去式和过去分词 )
+newtab-label-bookmarked = 书签
 newtab-label-removed-bookmark = 书签离开的
-newtab-label-recommended = 伸向( trend的现在分词 )
+newtab-label-recommended = 伸向
 newtab-label-saved = 保存到 { -pocket-brand-name }
 newtab-label-download = 将（程序
 
 # This string is used in the story cards to indicate sponsored content
 # Variables:
 #   $sponsorOrSource (string) - The name of a company or their domain
-newtab-label-sponsored = { $sponsorOrSource } ·赞助( sponsor的过去式和过去分词)
+newtab-label-sponsored = { $sponsorOrSource } ·赞助
 
 # This string is used at the bottom of story cards to indicate sponsored content
 # Variables:
 #   $sponsor (string) - The name of a sponsor
-newtab-label-sponsored-by = 赞助( sponsor的过去式和过去分词) 由 { $sponsor }
+newtab-label-sponsored-by = 赞助由 { $sponsor }
 
 # This string is used under the image of story cards to indicate source and time to read
 # Variables:
 #   $source (string) - The name of a company or their domain
 #   $timeToRead (number) - The estimated number of minutes to read this story
-newtab-label-source-read-time = { $source } · { $timeToRead } 部长（Minister）
+newtab-label-source-read-time = { $source } · { $timeToRead } 部长
 
 # This string is used under fixed size ads to indicate sponsored content
-newtab-label-sponsored-fixed = 赞助( sponsor的过去式和过去分词)
+newtab-label-sponsored-fixed = 赞助
 
 ## Section Menu: These strings are displayed in the section context menu and are
 ## meant as a call to action for the given section.
@@ -200,7 +200,7 @@ newtab-section-menu-privacy-notice = 隐私注意
 
 ## Section Headers.
 
-newtab-section-header-topsites = TOP协议坐
+newtab-section-header-topsites = TOP协议位置
 newtab-section-header-recent-activity = 最近的活动
 newtab-section-header-stories = 想-provoking 故事
 # "picks" refers to recommended articles
@@ -208,24 +208,24 @@ newtab-section-header-todays-picks = Today's 拾取为了你
 
 ## Empty Section States: These show when there are no more items in a section. Ex. When there are no more Pocket story recommendations, in the space where there would have been stories, this is shown instead.
 
-newtab-empty-section-highlights = 启动浏览, 和 (we shall或 we will 的常用口语形式) 显示一些的那全部文章, 视频文件, 和其他的页 you have 你（们）已经最近拜访或书签( bookmark的过去式和过去分词 ) 这里.
+newtab-empty-section-highlights = 启动浏览, 和我们将显示一些的那全部信件, 影像, 和其他的页你有最近拜访或书签这里.
 
 # Ex. When there are no more story recommendations, in the space where there would have been stories, this is shown instead.
-newtab-empty-section-topstories-generic = you have 你（们）已经 catch的过去式和过去分词向上的. 复选后面的以后为了更多故事. 不能等待? 选择一个通俗的主题到发现更多大的故事从包围那网.
+newtab-empty-section-topstories-generic = 你有和过去分词向上的. 复选回以后为了更多故事. 不能等待? 选择一个通俗的主题到发现更多大的故事从包围那网.
 
 ## Empty Section (Content Discovery Experience). These show when there are no more stories or when some stories fail to load.
 
-newtab-discovery-empty-section-topstories-header = 你是 catch的过去式和过去分词向上的!
-newtab-discovery-empty-section-topstories-content = 复选后面的以后为了更多故事.
+newtab-discovery-empty-section-topstories-header = 你是和过去分词向上的!
+newtab-discovery-empty-section-topstories-content = 复选回以后为了更多故事.
 newtab-discovery-empty-section-topstories-try-again-button = 尝试再一次
 newtab-discovery-empty-section-topstories-loading = 装载…
 # Displays when a layout in a section took too long to fetch articles.
-newtab-discovery-empty-section-topstories-timed-out = (表示惊讶、沮丧、谢罪等)哎哟! 我们几乎有负载的这扇区, 除了不相当.
+newtab-discovery-empty-section-topstories-timed-out = 面向对象的程序设计! 我们几乎有负载的这扇区, 除了不相当.
 
 ## Error Fallback Content.
 ## This message and suggested action link are shown in each section of UI that fails to render.
 
-newtab-error-fallback-info = (表示惊讶、沮丧、谢罪等)哎哟, 某事去错误的装载这内容.
+newtab-error-fallback-info = 面向对象的程序设计, 某事去错误的装载这内容.
 newtab-error-fallback-refresh-link = 刷新页到试再一次.
 
 ## Customization Menu
@@ -233,25 +233,25 @@ newtab-error-fallback-refresh-link = 刷新页到试再一次.
 #  (developer note): @nova-cleanup(remove-string): Remove old string once Nova lands. The newtab-custom-shortcuts-nova string will take over
 newtab-custom-shortcuts-toggle =
   .label = 快捷方式
-  .description = 坐你保存或拜访
+  .description = 位置你保存或拜访
 
 newtab-custom-shortcuts-nova =
   .label = 快捷方式
 
 newtab-custom-row-description =
-  .description = 数字的返回引用中的行数
+  .description = 数字的行
 # Variables
 #   $num (number) - Number of rows to display
 #  (developer note): @nova-cleanup(remove-string): Remove string once Nova lands. We won't be using "row"/"rows" anymore for the dropdown
 newtab-custom-row-selector2 =
         .label = { $num ->
             [one] { $num } 行
-           *[other] { $num } 返回引用中的行数
+           *[other] { $num } 行
         }
 #  (developer note): @nova-cleanup(remove-string): Remove string once Nova lands. We won't be having a description under "Recommended stories" anymore
 newtab-custom-stories-toggle =
   .label = 被推荐的故事
-  .description = 例外的内容 (curate 的过去分词) n. 助理牧师由那 { -brand-product-name } 家庭
+  .description = 例外的内容 n. 助理牧师由那 { -brand-product-name } 家庭
 newtab-recommended-stories-toggle =
   .label = 被推荐的故事
 newtab-custom-stories-personalized-toggle =
@@ -296,15 +296,15 @@ newtab-wallpaper-toggle-title =
 # Variables
 #   $file_size (number) - The number of the maximum image file size (in MB) that may be uploaded
 newtab-wallpaper-error-max-file-size = 那图象非常的那文件大小界限的 { $file_size }MB. 请试上传一个较小文件.
-newtab-wallpaper-error-upload-file-type = 我们 (=could not)不能上装你的文件. 请试再一次与一个图象文件.
+newtab-wallpaper-error-upload-file-type = 我们不能上装你的文件. 请试再一次与一个图象文件.
 newtab-wallpaper-light-red-panda = 简化大熊猫
 newtab-wallpaper-light-mountain = 白色山
 newtab-wallpaper-light-sky = 天空与紫色和粉红色云
-newtab-wallpaper-light-color = 蓝色, 粉红色和黄色世鹏科技电子
+newtab-wallpaper-light-color = 蓝色, 粉红色和黄色形状
 newtab-wallpaper-light-landscape = 蓝色雾山横向
 newtab-wallpaper-light-beach = 海滩与手掌树
 newtab-wallpaper-dark-aurora = 曙光北欧化工（公司）
-newtab-wallpaper-dark-color = 简化和蓝色世鹏科技电子
+newtab-wallpaper-dark-color = 简化和蓝色形状
 newtab-wallpaper-dark-panda = 简化大熊猫隐藏的在森林
 newtab-wallpaper-dark-sky = 城市横向与一个夜天空
 newtab-wallpaper-dark-mountain = 横向山
@@ -336,16 +336,16 @@ newtab-wallpaper-brown = 褐色
 ## Abstract
 
 newtab-wallpaper-category-title-abstract = 摘录
-newtab-wallpaper-abstract-green = 绿色世鹏科技电子
-newtab-wallpaper-abstract-blue = 蓝色世鹏科技电子
-newtab-wallpaper-abstract-purple = 紫色世鹏科技电子
-newtab-wallpaper-abstract-orange = 柑橘世鹏科技电子
+newtab-wallpaper-abstract-green = 绿色形状
+newtab-wallpaper-abstract-blue = 蓝色形状
+newtab-wallpaper-abstract-purple = 紫色形状
+newtab-wallpaper-abstract-orange = 柑橘形状
 newtab-wallpaper-gradient-orange = 倾斜度柑橘和粉红色
-newtab-wallpaper-abstract-blue-purple = 蓝色和紫色世鹏科技电子
+newtab-wallpaper-abstract-blue-purple = 蓝色和紫色形状
 newtab-wallpaper-abstract-white-curves = 白色与荫蔽的曲线
 newtab-wallpaper-abstract-purple-green = 紫色和绿色光倾斜度
-newtab-wallpaper-abstract-blue-purple-waves = 蓝色和紫色有波浪的世鹏科技电子
-newtab-wallpaper-abstract-black-waves = 黑色有波浪的世鹏科技电子
+newtab-wallpaper-abstract-blue-purple-waves = 蓝色和紫色有波浪的形状
+newtab-wallpaper-abstract-black-waves = 黑色有波浪的形状
 
 ## Photographs
 
@@ -359,8 +359,8 @@ newtab-wallpaper-white-mountains = 白色山
 newtab-wallpaper-hot-air-balloons = 各种各样的颜色的热的空气气球在...的时候白天
 newtab-wallpaper-starry-canyon = 蓝色星光照耀的夜
 newtab-wallpaper-suspension-bridge = 灰色完整-suspension 桥摄影在...的时候白天
-newtab-wallpaper-sand-dunes = 白色沙催促者
-newtab-wallpaper-palm-trees = 黑色半身侧面影的椰子手掌高音（等于treble）在...的时候金的小时
+newtab-wallpaper-sand-dunes = 白色沙沙丘
+newtab-wallpaper-palm-trees = 黑色半身侧面影的椰子手掌树在...的时候金的小时
 newtab-wallpaper-blue-flowers = (电影的)特写镜头摄影的蓝色-petaled 花在花
 
 ## Celestial
@@ -402,10 +402,10 @@ feature-highlight-wallpaper =
 #   $provider (string) - Service provider for weather data
 newtab-weather-see-forecast-description =
     .title = 看见趋势预测在 { $provider }
-    .aria-description = { $provider } ∙赞助( sponsor的过去式和过去分词)
+    .aria-description = { $provider } ∙赞助
 # Variables:
 #   $provider (string) - Service provider for weather data
-newtab-weather-sponsored = { $provider } ∙赞助( sponsor的过去式和过去分词)
+newtab-weather-sponsored = { $provider } ∙赞助
 newtab-weather-menu-change-location = 更改位置
 newtab-weather-change-location-search-input-placeholder =
     .placeholder = 搜索位置
@@ -431,7 +431,7 @@ newtab-weather-menu-change-temperature-units-celsius = 开关到摄氏的
 newtab-weather-menu-learn-more = 学习更多
 newtab-weather-menu-detect-my-location = 发现我的位置
 # This message is shown if user is working offline
-newtab-weather-error-not-available = 天气资料是不可利用的右现在.
+newtab-weather-error-not-available = 天气论据是不可利用的右现在.
 newtab-weather-opt-in-see-weather = 你是否想要到看见那天气为了你的位置?
 newtab-weather-opt-in-not-now =
     .label = 不现在
@@ -486,7 +486,7 @@ newtab-topic-selection-subtitle = 选取二或更多主题. 我们的高级管�
 newtab-topic-selection-save-button = 保存
 newtab-topic-selection-cancel-button = 取消
 newtab-topic-selection-button-maybe-later = 也许以后
-newtab-topic-selection-privacy-link = 学习如何我们防卫和管理资料
+newtab-topic-selection-privacy-link = 学习如何我们防卫和管理论据
 newtab-topic-selection-button-update-interests = 更新你的兴趣
 newtab-topic-selection-button-pick-interests = 拾取你的兴趣
 
@@ -585,19 +585,19 @@ newtab-download-mobile-highlight-image =
 
 ## Strings for shortcuts highlight
 
-newtab-shortcuts-highlight-title = 你的收藏夹在你的指尖
-newtab-shortcuts-highlight-subtitle = 添加一个快捷方式到保持你的喜欢的事物坐一(个) 单击离去.
+newtab-shortcuts-highlight-title = 你的喜欢的事物在你的指尖
+newtab-shortcuts-highlight-subtitle = 添加一个快捷方式到保持你的喜欢的事物位置一(个) 单击离去.
 
 ## Strings for reporting issues with ads and content
 
 newtab-report-content-why-reporting-this =
   .label = 为什么是你报道这?
 newtab-report-ads-reason-not-interested =
-  .label = 我是（缩写）不感兴趣的
+  .label = 我是不感兴趣的
 newtab-report-ads-reason-inappropriate =
   .label = 它是不适当的
 newtab-report-ads-reason-seen-it-too-many-times =
-  .label = （等于I have）看见它也多数蒂姆（男子名）
+  .label = 我有看见它也多数时间
 newtab-report-content-wrong-category =
   .label = 错误的分类
 newtab-report-content-outdated =
@@ -614,15 +614,15 @@ newtab-report-submit = 提交
 newtab-toast-thanks-for-reporting =
     .message = 谢意你为了报道这.
 newtab-toast-widgets-hidden =
-    .message = 选择那铅笔像标到添加装饰物后面的任何时候.
+    .message = 选择那铅笔像标到添加装饰物回任何时候.
 # Variables:
 #   $topic (string) - Topic that the user has followed
 newtab-section-toast-follow =
-    .message = you are 你（你们）是现在下列各项 { $topic }.
+    .message = 你是现在下列各项 { $topic }.
 # Variables:
 #   $topic (string) - Topic that the user has unfollowed
 newtab-section-toast-unfollow =
-    .message = you are 你（你们）是无比较久下列各项 { $topic }.
+    .message = 你是无比较久下列各项 { $topic }.
 # Variables:
 #   $topic (string) - Topic that the user has blocked
 newtab-section-toast-block =
@@ -706,7 +706,7 @@ newtab-widget-lists-menu-edit = 编辑列表名称
 newtab-widget-lists-menu-edit2 =
     .aria-label = 编辑列表名称
 newtab-widget-lists-menu-create = 创建一个新的列表
-newtab-widget-lists-menu-delete = Delete 这列表
+newtab-widget-lists-menu-delete = 删除这列表
 newtab-widget-lists-menu-copy = 复制列表到剪贴板
 newtab-widget-lists-menu-learn-more = 学习更多
 newtab-widget-lists-button-add-item = 添加一个项
@@ -717,7 +717,7 @@ newtab-widget-lists-input-error = 请包含电文到添加一个项.
 newtab-widget-lists-input-menu-open-link = 打开连接
 newtab-widget-lists-input-menu-move-up = 移动向上的
 newtab-widget-lists-input-menu-move-down = 移动向下
-newtab-widget-lists-input-menu-delete = Delete
+newtab-widget-lists-input-menu-delete = 删除
 newtab-widget-lists-input-menu-edit = 编辑
 newtab-widget-lists-input-menu-edit2 =
     .aria-label = 编辑项
@@ -757,7 +757,7 @@ newtab-sports-widget-menu-view-schedule = 查看时间表
 newtab-sports-widget-menu-view-upcoming = 查看即将来临的
 newtab-sports-widget-menu-view-results = 查看结果
 # Milestone dates (e.g. group stage, semifinals, etc.). Refers to calendar dates.
-newtab-sports-widget-menu-key-dates = 键磁盘分配表
+newtab-sports-widget-menu-key-dates = 键日期
 newtab-sports-widget-menu-learn-more = 学习更多
 
 # “Keep tabs on” is an informal expression meaning to stay updated on, stay informed on, or regularly follow something (in this case, World Cup matches and updates).
@@ -782,13 +782,13 @@ newtab-sports-widget-search-country =
     .aria-label = 搜索国家
 newtab-sports-widget-cancel = 取消
 newtab-sports-widget-back-button =
-    .aria-label = 后面的
+    .aria-label = 回
 newtab-sports-widget-done-button =
     .label = 完成了的
 # Shown in the follow-teams list for a team that has been knocked out of the tournament.
 # Variables:
 #   $teamName (string) - the localized team name (e.g. "Canada").
-newtab-sports-widget-team-name-eliminated = { $teamName } (排除( eliminate的过去式和过去分词 ))
+newtab-sports-widget-team-name-eliminated = { $teamName } (排除)
 newtab-sports-widget-view-all =
     .label = 查看所有的
 newtab-sports-widget-show-less =
@@ -845,7 +845,7 @@ newtab-sports-widget-watch-stream-free-paid = 自由的和薪资
 newtab-sports-widget-watch-stream-paid = 薪资
 
 # Note: provider only streams some matches, not the full tournament.
-newtab-sports-widget-watch-stream-select-games-only = 选择鲸鱼群仅
+newtab-sports-widget-watch-stream-select-games-only = 选择博弈仅
 
 # Heading for the list of streaming services available in the user’s country/region.
 newtab-sports-widget-watch-available-region = 可利用的在你的区
@@ -863,10 +863,10 @@ newtab-sports-widget-watch-play =
 # The "LIVE" string is meant to be uppercase in English, but other languages and locales may vary in how they handle this.
 newtab-sports-widget-live = LIVE
 newtab-custom-widget-live-refresh =
-    .title = 刷新 skin-conductance orienting response 皮肤传导性定向反应
-    .aria-label = 刷新 skin-conductance orienting response 皮肤传导性定向反应
+    .title = 刷新得分
+    .aria-label = 刷新得分
 # Milestone dates (e.g. group stage, semifinals, etc.). Refers to calendar dates.
-newtab-sports-widget-key-dates = 键磁盘分配表
+newtab-sports-widget-key-dates = 键日期
 newtab-sports-widget-upcoming = 即将来临的
 # Used for a match currently ongoing
 newtab-sports-widget-now = 现在
@@ -913,7 +913,7 @@ newtab-sports-widget-suspended = 悬浮的
 newtab-sports-widget-cancelled = 被取消的
 
 newtab-sports-widget-information = 信息关于那比较
-newtab-sports-widget-no-live-data = 活的比较资料 (=is not)不是校正右现在
+newtab-sports-widget-no-live-data = 活的比较论据不是校正右现在
 newtab-sports-widget-view-results-link = 查看结果
 
 newtab-sports-widget-third-place = 第三地方
@@ -1035,7 +1035,7 @@ newtab-widget-timer-spinbutton-name =
     .aria-label =
         { $minutes ->
             [one] { $minutes } 分
-            *[other] { $minutes } 分钟
+            *[other] { $minutes } 分
         }
 newtab-widget-timer-decrease-min =
     .title = 减少 1 分
@@ -1062,7 +1062,7 @@ newtab-widget-timer-celebration-message-break = 预备好的状态到焦点?
 # Strings for daily briefing card
 
 # The title displays above a set of top news headlines.
-newtab-daily-briefing-card-title = TOP协议大字标题( headline的名词复数 )
+newtab-daily-briefing-card-title = TOP协议大标题
 newtab-daily-briefing-card-menu-dismiss = 解散
 
 # Variables:
@@ -1105,7 +1105,7 @@ newtab-activation-window-message-dismiss-button =
 # is to customize newtab with a background image or colour, or by tweaking the
 # existing widgetry that appears on it.
 newtab-activation-window-message-customization-focus-header = 使这空白你的自己的
-newtab-activation-window-message-customization-focus-message = 选取一个开始壁纸, 添加快捷方式到你的喜欢的事物坐, 和停留向上的-to-date 在故事那兴趣你.
+newtab-activation-window-message-customization-focus-message = 选取一个开始壁纸, 添加快捷方式到你的喜欢的事物位置, 和停留向上的-to-date 在故事那兴趣你.
 newtab-activation-window-message-customization-focus-primary-button =
     .label = 启动定制
 
@@ -1113,8 +1113,8 @@ newtab-activation-window-message-customization-focus-primary-button =
 # meant to evoke the idea that newtab is malleable and customizable. The call to
 # action is to customize newtab with a background image or colour, or by tweaking
 # the existing widgetry that appears on it.
-newtab-activation-window-message-values-focus-header = 这空白播放由你的右上外侧
-newtab-activation-window-message-values-focus-message = { -brand-product-name } 地方交易系统（Local Exchange Trading System）你浏览那路你喜欢, 与一个更多私人的路到启动你的天联机. 使 { -brand-product-name } 你的自己的.
+newtab-activation-window-message-values-focus-header = 这空白播放由你的规则
+newtab-activation-window-message-values-focus-message = { -brand-product-name } 让你浏览那方式你喜欢, 与一个更多私人的方式到启动你的天联机. 使 { -brand-product-name } 你的自己的.
 
 ## Strings for the Clock widget
 
@@ -1145,8 +1145,8 @@ newtab-clock-widget-button-add =
 newtab-clock-widget-button-add-clock = 添加
 newtab-clock-widget-button-cancel = 取消
 newtab-clock-widget-button-back =
-    .title = 后面的
-    .aria-label = 后面的
+    .title = 回
+    .aria-label = 回
 newtab-clock-widget-button-edit-clock =
     .title = 编辑时钟
     .aria-label = 编辑时钟
@@ -1202,7 +1202,7 @@ home-homepage-title =
     .label = 主页
 
 home-homepage-new-windows =
-    .label = 新的窗口
+    .label = 新的窗
 
 home-homepage-new-tabs =
     .label = 新的标签页
@@ -1227,8 +1227,8 @@ home-custom-homepage-no-results =
     .label = 无网站（全球资讯网的主机站）额外的还.
 
 home-custom-homepage-delete-address-button =
-    .aria-label = Delete 地址
-    .title = Delete 地址
+    .aria-label = 删除地址
+    .title = 删除地址
 
 # Further options to use when setting the home page. Two action buttons are placed in line with this prompt
 # to replace the current home page with a currently open page or bookmark.
@@ -1253,7 +1253,7 @@ home-prefs-search-header2 =
 
 home-prefs-stories-header2 =
     .label = 故事
-    .description = 例外的内容 (curate 的过去分词) n. 助理牧师由那 { -brand-product-name } 家庭
+    .description = 例外的内容 n. 助理牧师由那 { -brand-product-name } 家庭
 
 home-prefs-widgets-header =
     .label = 装饰物
@@ -1290,7 +1290,7 @@ home-prefs-firefox-logo-header =
 # The user must select Firefox Home as their homepage for either new tabs or new windows to enable
 # the features in settings.
 home-prefs-firefox-home-disabled-notice =
-    .message = 到使用这些特性, 日落新的标签页或新的窗口到 { -firefox-home-brand-name }.
+    .message = 到使用这些特性, 日落新的标签页或新的窗到 { -firefox-home-brand-name }.
 
 # Variables:
 #   $num (number) - Number of rows displayed
@@ -1298,7 +1298,7 @@ home-prefs-sections-rows-option-srd =
     .label =
         { $num ->
             [one] { $num } 行
-           *[other] { $num } 返回引用中的行数
+           *[other] { $num } 行
         }
 
 # Dropdown option shown when an extension replaces the contents of new windows or tabs.
@@ -1315,7 +1315,7 @@ home-mode-choice-default-fx-srd =
     .label = { -firefox-home-brand-name } (默认)
 
 home-mode-choice-custom-srd =
-    .label = 定制资源定位符（Uniform Resource Locators）…
+    .label = 定制统一资源定位器…
 
 home-mode-choice-blank-srd =
     .label = 空白页
@@ -1327,10 +1327,10 @@ home-prefs-shortcuts-select =
     .aria-label = 快捷方式
 
 home-prefs-shortcuts-by-option-sponsored-srd =
-    .label = 赞助( sponsor的过去式和过去分词) 快捷方式
+    .label = 赞助快捷方式
 
 home-prefs-recommended-by-option-sponsored-stories-srd =
-    .label = 赞助( sponsor的过去式和过去分词) 故事
+    .label = 赞助故事
 
 home-prefs-highlights-option-visited-pages-srd =
     .label = 拜访页

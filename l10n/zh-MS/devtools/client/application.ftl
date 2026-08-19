@@ -99,7 +99,7 @@ manifest-non-existing = 无载货单发现到检查.
 
 # Text displayed when the page has a manifest embedded in a Data URL and
 # thus we cannot link to it.
-manifest-json-link-data-url = 那载货单是植入的在一个资料 URL.
+manifest-json-link-data-url = 那载货单是植入的在一个论据 URL.
 
 # Text displayed at manifest icons to label their purpose, as declared
 # in the manifest.
@@ -118,7 +118,7 @@ manifest-icon-img =
 #   $sizes (string) - User-dependent string that has been parsed as a
 #                     space-separated list of `<width>x<height>` sizes or
 #                     the keyword `any`.
-manifest-icon-img-title = 像标与磺胺异恶唑（sulfisoxazole）: { $sizes }
+manifest-icon-img-title = 像标与大小: { $sizes }
 
 # Text displayed as the title attribute for <img> tags showing the icons in the
 # manifest, in case there's no icon size specified by the user
@@ -141,7 +141,7 @@ sidebar-item-session-history = 会话历史记录
 
 # Entry in the Session History diagram
 session-history-entry-info-button-title =
-  .title = 显示会话历史记录资料
+  .title = 显示会话历史记录论据
 
 # Header for the Session History page when session history diagrams are unavailable
 session-history-unavailable = 会话历史记录图表得不到的

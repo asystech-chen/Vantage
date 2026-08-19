@@ -12,9 +12,9 @@ about-webrtc-closed-peerconnection-disclosure-hide-msg = 隐藏关闭 PeerConnec
 about-webrtc-aec-logging-msg-label = AEC (木材)采运作业
 about-webrtc-aec-logging-off-state-label = 启动 AEC (木材)采运作业
 about-webrtc-aec-logging-on-state-label = 停止 AEC (木材)采运作业
-about-webrtc-aec-logging-toggled-on-state-msg = AEC (木材)采运作业活跃的 (说与那呼叫方标识为了一个少数分钟和然后停止那截获命令)
+about-webrtc-aec-logging-toggled-on-state-msg = AEC (木材)采运作业活跃的 (说与那呼叫方标识为了一个少数分和然后停止那截获命令)
 about-webrtc-aec-logging-unavailable-sandbox = 那环境变量 Mezhdunarodnaya Organizacia Zhurnlistov (Russian=International Organization of Journalists) （俄语）国际记者组织_禁用_内容_沙箱=1 是必需的到导出 AEC 日志. 仅日落这变量如果你理解那可能性冒险.
-about-webrtc-aec-logging-toggled-off-state-msg = 俘获( capture的过去式和过去分词 ) 日志文件能是发现在: { $path }
+about-webrtc-aec-logging-toggled-off-state-msg = 俘获日志文件能是发现在: { $path }
 
 
 about-webrtc-auto-refresh-label = 汽车刷新
@@ -24,9 +24,9 @@ about-webrtc-force-refresh-button = 刷新
 
 about-webrtc-peerconnection-id-label = PeerConnection ID:
 
-about-webrtc-data-channels-opened-label = 资料信道打开:
+about-webrtc-data-channels-opened-label = 论据信道打开:
 
-about-webrtc-data-channels-closed-label = 资料信道关闭:
+about-webrtc-data-channels-closed-label = 论据信道关闭:
 
 
 about-webrtc-sdp-heading = SDP
@@ -47,8 +47,8 @@ about-webrtc-ice-state = ICE 状态
 about-webrtc-ice-stats-heading = ICE 静
 about-webrtc-ice-restart-count-label = ICE 重新启动:
 about-webrtc-ice-rollback-count-label = ICE 回降:
-about-webrtc-ice-pair-bytes-sent = bright young things 年轻人用品（英国较年轻者的用品）发送:
-about-webrtc-ice-pair-bytes-received = bright young things 年轻人用品（英国较年轻者的用品）被一般承认的:
+about-webrtc-ice-pair-bytes-sent = 字节发送:
+about-webrtc-ice-pair-bytes-received = 字节被一般承认的:
 about-webrtc-ice-component-id = 组件 ID
 
 
@@ -87,30 +87,30 @@ about-webrtc-short-receive-direction = 接收: { $codecs }
 
 about-webrtc-local-candidate = 本地的候选人
 about-webrtc-remote-candidate = 远程候选人
-about-webrtc-raw-candidates-heading = 所有的写后读报考者( candidate的复数形式 )
+about-webrtc-raw-candidates-heading = 所有的写后读候选人
 about-webrtc-raw-local-candidate = 写后读本地的候选人
 about-webrtc-raw-remote-candidate = 写后读远程候选人
-about-webrtc-raw-cand-section-show-msg = 显示写后读报考者( candidate的复数形式 )
+about-webrtc-raw-cand-section-show-msg = 显示写后读候选人
     .title = 单击到使膨胀这扇区
-about-webrtc-raw-cand-section-hide-msg = 隐藏写后读报考者( candidate的复数形式 )
+about-webrtc-raw-cand-section-hide-msg = 隐藏写后读候选人
     .title = 单击到折叠这扇区
 about-webrtc-priority = 优先级
 about-webrtc-fold-default-show-msg = 显示详细数据
     .title = 单击到使膨胀这扇区
 about-webrtc-fold-default-hide-msg = 隐藏详细数据
     .title = 单击到折叠这扇区
-about-webrtc-dropped-frames-label = 抛踢球得分的故障估计机（Failure Rate Assessment Machine）:
+about-webrtc-dropped-frames-label = 抛踢球得分的框架:
 about-webrtc-discarded-packets-label = 丢弃分组:
 about-webrtc-decoder-label = 译码器
 about-webrtc-encoder-label = 编码器
 about-webrtc-show-tab-label = 显示标签页
 about-webrtc-current-framerate-label = Framerate
-about-webrtc-width-px = 宽度 (专用小交换机（Private Exchange）)
-about-webrtc-height-px = 高度 (专用小交换机（Private Exchange）)
-about-webrtc-consecutive-frames = 连续的故障估计机（Failure Rate Assessment Machine）
+about-webrtc-width-px = 宽度 (专用小交换机)
+about-webrtc-height-px = 高度 (专用小交换机)
+about-webrtc-consecutive-frames = 连续的框架
 about-webrtc-time-elapsed = 时间时间过去 (标量)
 about-webrtc-estimated-framerate = 估算的 Framerate
-about-webrtc-rotation-degrees = 旋转 (角度)
+about-webrtc-rotation-degrees = 旋转 (程度)
 about-webrtc-first-frame-timestamp = 首先框架接待时间戳
 about-webrtc-last-frame-timestamp = 最后的框架接待时间戳
 
@@ -138,11 +138,11 @@ about-webrtc-bandwidth-stats-heading = 估算的带宽
 
 about-webrtc-track-identifier = 跟踪用户标识符
 
-about-webrtc-send-bandwidth-bytes-sec = 发送带宽 (bright young things 年轻人用品（英国较年轻者的用品）/秒)
+about-webrtc-send-bandwidth-bytes-sec = 发送带宽 (字节/秒)
 
-about-webrtc-receive-bandwidth-bytes-sec = 接收带宽 (bright young things 年轻人用品（英国较年轻者的用品）/秒)
+about-webrtc-receive-bandwidth-bytes-sec = 接收带宽 (字节/秒)
 
-about-webrtc-max-padding-bytes-sec = 最大值填充 (bright young things 年轻人用品（英国较年轻者的用品）/秒)
+about-webrtc-max-padding-bytes-sec = 最大值填充 (字节/秒)
 
 about-webrtc-pacer-delay-ms = 步测器延迟主存储器
 
@@ -155,7 +155,7 @@ about-webrtc-save-page-complete-msg = 页保存到: { $path }
 about-webrtc-frames =
   { $frames ->
       [one] { $frames } 框架
-     *[other] { $frames } 故障估计机（Failure Rate Assessment Machine）
+     *[other] { $frames } 框架
   }
 
 about-webrtc-channels =
@@ -184,7 +184,7 @@ about-webrtc-sent-label =
 
 about-webrtc-jitter-label = 跳动 { $jitter }
 
-about-webrtc-trickle-caption-msg = 滴( trickle的过去式和过去分词 ) 报考者( candidate的复数形式 ) (到达在...之后用户问题及答案新闻组) 是突出的在蓝色
+about-webrtc-trickle-caption-msg = 滴候选人 (到达在...之后用户问题及答案新闻组) 是突出的在蓝色
 
 
 about-webrtc-sdp-set-at-timestamp-local = 日落本地的 SDP 在时间戳 { NUMBER($timestamp, useGrouping: "false") }

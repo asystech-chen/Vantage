@@ -106,7 +106,7 @@ downloads-cmd-clear-downloads =
     .label = 清除下载
     .accesskey = C
 downloads-cmd-delete-file =
-    .label = Delete
+    .label = 删除
     .accesskey = D
 
 # This command is shown in the context menu when downloads are blocked.
@@ -198,9 +198,9 @@ downloads-details =
 
 downloads-private-browsing-details =
   .title = 文件停留在你的装置
-downloads-private-browsing-message = 任何人使用这装置能看见下载, 偶数何时你关闭所有的私人的窗口.
+downloads-private-browsing-message = 任何人使用这装置能看见下载, 偶数何时你关闭所有的私人的窗.
 downloads-private-browsing-delete-button =
-  .label = Delete 文件自动地
+  .label = 删除文件自动地
   .accesskey = D
 downloads-private-browsing-accept-button =
   .label = 获得它
@@ -222,7 +222,7 @@ downloads-blocked-download-detailed-info = { $url } 企图的到自动地下载�
 
 downloads-clear-downloads-button =
     .label = 清除下载
-    .tooltiptext = 清除完整的, 取消( cancel的过去式和过去分词 ) 和失败的下载
+    .tooltiptext = 清除完整的, 取消和失败的下载
 
 # This string is shown when there are no items in the Downloads view, when it
 # is displayed inside a browser tab.
@@ -253,6 +253,6 @@ downloads-error-blocked-by = 那下载无法是保存因为它是阻止由 { $ex
 downloads-error-extension = 那下载无法是保存因为它是阻止由一个扩展名.
 # Line breaks in this message are meaningful, and should be maintained.
 downloads-error-generic =
-    那下载无法是保存因为一个未知物错误发生（occur的过去分词）.
+    那下载无法是保存因为一个未知物错误发生.
 
     请试再一次.

@@ -9,8 +9,8 @@
 ## AMO (Introduce Add-ons) onboarding screen strings
 
 amo-screen-title = (贬)使个人化你的 { -brand-short-name }
-amo-screen-subtitle = 添加-ons 是很少的应用程序那运行在 { -brand-short-name } 和级别向上的那路你浏览—从终极隐私和安全到更改如何 { -brand-short-name } 一看和 behavior 行为.
-amo-screen-primary-cta = 探险全体人员-recommended 添加-奥运信息服务（Olympic News Service）
+amo-screen-subtitle = 添加-ons 是很少的应用那运行在 { -brand-short-name } 和级别向上的那方式你浏览—从终极隐私和安全到更改如何 { -brand-short-name } 一看和举止端正.
+amo-screen-primary-cta = 探险全体人员-recommended 添加-奥运信息服务
 
 # Button label for the experimental return to about:welcome toolbar button
 browser-aboutwelcome-button =
@@ -19,7 +19,7 @@ browser-aboutwelcome-button =
 
 ## Smart window switcher callout
 
-smartwindow-switcher-callout = 开关在...之间刺痛和古典作品窗口任何时候.
+smartwindow-switcher-callout = 开关在...之间刺痛和古典作品窗任何时候.
 
 ## Smart Window ToU modal
 
@@ -27,7 +27,7 @@ smartwindow-switcher-callout = 开关在...之间刺痛和古典作品窗口任�
 smartwindow-existing-user-fx-tou-title = { -brand-product-name } 检索词的使用
 smartwindow-existing-user-fx-tou-body = 到使用聪明的窗口, 请接受那 <a data-l10n-name="terms_of_use">检索词的使用</a> 和更新的 <a data-l10n-name="privacy_notice">隐私注意</a>.
 smartwindow-existing-user-fx-tou-accept = 接受
-smartwindow-existing-user-fx-tou-go-back = 去后面的
+smartwindow-existing-user-fx-tou-go-back = 去回
 
 ## Smart Window about:welcome screen
 

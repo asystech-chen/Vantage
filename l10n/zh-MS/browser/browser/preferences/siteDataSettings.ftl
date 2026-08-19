@@ -7,7 +7,7 @@
 site-data-settings-window =
     .title = 管理 Cookie 和站点数据
 
-site-data-settings-description = 那下列各项网站（全球资讯网的主机站）存储器操作 Cookie 和站点数据在你的计算机. { -brand-short-name } 保持资料从网站（全球资讯网的主机站）与固执的存放处直到你删除它, 和删除资料从网站（全球资讯网的主机站）与非-persistent 存放处作为空白是需要的.
+site-data-settings-description = 那下列各项网站（全球资讯网的主机站）存储器操作 Cookie 和站点数据在你的计算机. { -brand-short-name } 保持论据从网站（全球资讯网的主机站）与固执的存放处直到你删除它, 和删除论据从网站（全球资讯网的主机站）与非-persistent 存放处作为空白是需要的.
 
 site-data-search-textbox =
     .placeholder = 搜索网站（全球资讯网的主机站）

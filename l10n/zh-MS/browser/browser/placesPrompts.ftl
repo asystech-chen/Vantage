@@ -6,7 +6,7 @@ places-error-title = { -brand-short-name }
 places-no-title = (无标题)
 
 # Do not translate `javascript:` and `data:`, they refer to the scheme used in URLs
-places-load-js-data-url-error = 为了安全理由, “Java描述语言（一种程序语言）:”或“资料:”资源定位符（Uniform Resource Locators）无法是有负载的从那历史记录窗口或其他选项.
+places-load-js-data-url-error = 为了安全理由, “Java描述语言（一种程序语言）:”或“论据:”统一资源定位器无法是有负载的从那历史记录窗口或其他选项.
 
 places-bookmarks-backup-title = 书签倒车文件名
 places-bookmarks-restore-alert-title = 还原书签
@@ -20,4 +20,4 @@ places-bookmarks-import = 引入书签文件
 places-bookmarks-export = 导出书签文件
 
 places-bookmarks-paste-error-title = 病人 URL(标量) 发现
-places-bookmarks-paste-error-message-header = 那下列各项 URL(标量) (=could not)不能是额外的到你的书签. 尝试检查的那格式化和加法的他们再一次.
+places-bookmarks-paste-error-message-header = 那下列各项 URL(标量) 不能是额外的到你的书签. 尝试检查的那格式化和加法的他们再一次.

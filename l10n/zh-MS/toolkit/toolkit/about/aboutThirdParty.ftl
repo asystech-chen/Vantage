@@ -1,19 +1,19 @@
 
 third-party-page-title = 第三-party 模块信息
-third-party-section-title = 列表的第三-party 模的在 { -brand-short-name }
+third-party-section-title = 列表的第三-party 模块在 { -brand-short-name }
 
 third-party-intro =
-    这页显示那第三-party 模的哪个曾是注入的进入...之内你的
+    这页显示那第三-party 模块哪个曾是注入的进入...之内你的
     { -brand-short-name }. Any module that is not signed by Microsoft or
     { -vendor-short-name } is considered to be a third-party module.
 
-third-party-message-empty = 无第三-party 模的曾是检测到的.
+third-party-message-empty = 无第三-party 模块曾是检测到的.
 third-party-message-no-duration = 不记录的
 
 third-party-detail-version = 文件版本
 third-party-detail-vendor = 计算机销售商信息
-third-party-detail-occurrences = 发生( occurrence的复数形式 )
-    .title = 如何多数蒂姆（男子名）这模块曾是有负载的.
+third-party-detail-occurrences = 发生
+    .title = 如何多数时间这模块曾是有负载的.
 third-party-detail-duration = 平均值. 组成块时间 (主存储器)
     .title = 如何长这模块阻止那应用.
 third-party-detail-app = 应用
@@ -42,9 +42,9 @@ third-party-icon-warning =
 
 third-party-status-loaded = 有负载的
 third-party-status-blocked = 阻止
-third-party-status-redirected = （以新的方式或目的）重新使用( redirect的过去式和过去分词 )
+third-party-status-redirected = （以新的方式或目的）重新使用
 
-third-party-button-copy-to-clipboard = 复制写后读资料到剪贴板
+third-party-button-copy-to-clipboard = 复制写后读论据到剪贴板
 third-party-loading-data =
     .alt = 装载系统信息…
     .title = 装载系统信息…

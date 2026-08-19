@@ -57,7 +57,7 @@ urlbar-xr-notification-anchor =
 urlbar-storage-access-anchor =
     .tooltiptext = 打开浏览活动许可嵌板
 urlbar-web-rtc-share-screen-notification-anchor =
-    .tooltiptext = 管理共享你的窗口或筛选与那位置
+    .tooltiptext = 管理共享你的窗或筛选与那位置
 urlbar-indexed-db-notification-anchor =
     .tooltiptext = 打开挂线存放处报文嵌板
 urlbar-password-notification-anchor =
@@ -71,7 +71,7 @@ urlbar-web-rtc-share-speaker-notification-anchor =
 urlbar-autoplay-notification-anchor =
     .tooltiptext = 打开自动播放嵌板
 urlbar-persistent-storage-notification-anchor =
-    .tooltiptext = 存储器操作资料在固执的存放处
+    .tooltiptext = 存储器操作论据在固执的存放处
 urlbar-addons-notification-anchor =
     .tooltiptext = 打开 add-on 安装报文嵌板
 urlbar-search-tips-confirm = 好, 获得它
@@ -164,7 +164,7 @@ urlbar-popup-blocked2 =
 urlbar-autoplay-media-blocked =
     .tooltiptext = 你有阻止自动播放媒质与声音为了这网站（全球资讯网的主机站）.
 urlbar-canvas-blocked =
-    .tooltiptext = 你有阻止帆布资料抽出为了这网站（全球资讯网的主机站）.
+    .tooltiptext = 你有阻止帆布论据抽出为了这网站（全球资讯网的主机站）.
 urlbar-midi-blocked =
     .tooltiptext = 你有阻止 MIDI 访问为了这网站（全球资讯网的主机站）.
 urlbar-serial-blocked =
@@ -226,7 +226,7 @@ search-one-offs-context-set-as-default =
     .label = 日落作为默认搜索引擎
     .accesskey = D
 search-one-offs-context-set-as-default-private =
-    .label = 日落作为默认搜索引擎为了私人的窗口
+    .label = 日落作为默认搜索引擎为了私人的窗
     .accesskey = P
 
 # Search engine one-off buttons with an @alias shortcut/keyword.
@@ -270,11 +270,11 @@ search-one-offs-actions =
 ## the action. English commas should be used, i.e. ,
 
 # Opens the about:addons page in the home / recommendations section
-quickactions-addons = 查看添加-奥运信息服务（Olympic News Service）
+quickactions-addons = 查看添加-奥运信息服务
 # In English we provide multiple spellings for "add-ons". If that's not
 # applicable to your language, only use the correct spelling (don't repeat the
 # same word).
-quickactions-cmd-addons3 = 扩展名, 他们, 插件, 添加-奥运信息服务（Olympic News Service）
+quickactions-cmd-addons3 = 扩展名, 主题, 插件, 添加-奥运信息服务
 
 # Opens the bookmarks library window
 quickactions-bookmarks2 = 管理书签
@@ -282,7 +282,7 @@ quickactions-cmd-bookmarks = 书签
 
 # Opens a SUMO article explaining how to clear history
 quickactions-clearrecenthistory = 清除最近的历史记录
-quickactions-cmd-clearrecenthistory2 = 饼干, 清除饼干, 高速缓冲存储器, 清除高速缓冲存储器, 浏览资料, 清除浏览资料, 历史记录, 清除最近的历史记录
+quickactions-cmd-clearrecenthistory2 = 饼干, 清除饼干, 高速缓冲存储器, 清除高速缓冲存储器, 浏览论据, 清除浏览论据, 历史记录, 清除最近的历史记录
 
 # Opens about:downloads page
 quickactions-downloads2 = 查看下载
@@ -290,7 +290,7 @@ quickactions-cmd-downloads = 下载
 
 # Opens about:addons page in the extensions section
 quickactions-extensions = 管理扩展名
-quickactions-cmd-extensions2 = 扩展名, 插件, 添加-奥运信息服务（Olympic News Service）
+quickactions-cmd-extensions2 = 扩展名, 插件, 添加-奥运信息服务
 
 # Opens Firefox View
 quickactions-firefoxview = 打开 { -firefoxview-brand-name }
@@ -305,7 +305,7 @@ quickactions-cmd-help = 帮忙, 支持
 
 # Opens the devtools web inspector
 quickactions-inspector2 = 打开显影器工具
-quickactions-cmd-inspector2 = 检查员, devtools, 发展（develop）工具
+quickactions-cmd-inspector2 = 检查员, devtools, 发展工具
 
 # Opens the devtools eyedropper to pick a color from the page
 quickactions-colorpicker = 拾取一个颜色
@@ -332,7 +332,7 @@ quickactions-cmd-print = 打印
 
 # Opens the print dialog at the save to PDF option
 quickactions-savepdf = 保存页作为 PDF
-quickactions-cmd-savepdf2 = 概率分部函数（Probability Distribution Function）, 保存页
+quickactions-cmd-savepdf2 = 概率分部函数, 保存页
 
 # Opens a new private browsing window
 quickactions-private2 = 打开私人的窗口
@@ -357,14 +357,14 @@ quickactions-cmd-translate = 转换
 # Opens about:preferences
 quickactions-settings2 = 管理设置
 # "manage" should match the corresponding command, which is “Manage settings” in English.
-quickactions-cmd-settings2 = 设置, 参数选择, 选项, 管理
+quickactions-cmd-settings2 = 设置, 首选项, 选项, 管理
 
 # Opens about:addons page in the themes section
-quickactions-themes = 管理他们
+quickactions-themes = 管理主题
 # In English we provide multiple spellings for "add-ons". If that's not
 # applicable to your language, only use the correct spelling (don't repeat the
 # same word).
-quickactions-cmd-themes2 = 他们, 添加-奥运信息服务（Olympic News Service）, 插件
+quickactions-cmd-themes2 = 主题, 添加-奥运信息服务, 插件
 
 # Opens a SUMO article explaining how to update the browser
 quickactions-update = 更新 { -brand-short-name }
@@ -433,7 +433,7 @@ identity-connection-associated = 这页是有负载的从另外的页.
 identity-extension-page = 这页是有负载的从一个扩展名.
 identity-active-blocked = { -brand-short-name } 有阻止部分的这页那是不固定.
 identity-custom-root = 连接已查清的由一个证书发行者那是不经过验证的由摩斯拉.
-identity-passive-loaded = 部分的这页是不固定 (如此的作为复数虚部).
+identity-passive-loaded = 部分的这页是不固定 (如此的作为图象).
 identity-active-loaded = 你有禁用保护在这页.
 identity-weak-encryption = 这页使用不牢固的加密.
 
@@ -445,8 +445,8 @@ identity-https-only-dropdown-off =
     .label = 关闭
 identity-https-only-dropdown-off-temporarily =
     .label = 关闭暂时
-identity-https-only-info-turn-on3 = 转弯在 HTTPS 提升( upgrade的第三人称单数 ) 为了此站点如果你想要 { -brand-short-name } 到升级那连接何时可能的.
-identity-https-only-info-turn-off3 = 如果那页象是坏掉的, 你可以想要到使旋转关闭 HTTPS 提升( upgrade的第三人称单数 ) 为了此站点到再装使用不安全的 HTTP.
+identity-https-only-info-turn-on3 = 转弯在 HTTPS 升级为了此站点如果你想要 { -brand-short-name } 到升级那连接何时可能的.
+identity-https-only-info-turn-off3 = 如果那页象是坏掉的, 你可以想要到使旋转关闭 HTTPS 升级为了此站点到再装使用不安全的 HTTP.
 identity-https-only-info-no-upgrade = 不能的到升级连接从 HTTP.
 
 identity-permissions-storage-access-header = 交叉-site 饼干
@@ -467,15 +467,15 @@ identity-cert-exception-overridden = 你有额外的一个安全例外为了此�
 identity-remove-cert-exception =
     .label = 移除例外
     .accesskey = R
-identity-description-insecure = 你的连接到此站点是不私人的. 信息你提交能够是看（view的过去式与过去分词形式）由其他的 (相似的密码, 报文, 信用量卡片, 及其他.).
+identity-description-insecure = 你的连接到此站点是不私人的. 信息你提交能够是看由其他的 (相似的密码, 报文, 信用量卡片, 及其他.).
 identity-description-weak-cipher-intro = 你的连接到这网站（全球资讯网的主机站）使用不牢固的加密和是不私人的.
 identity-description-weak-cipher-risk = 其他的人能查看你的信息或修改那 website's 行为.
 identity-description-active-blocked2 = { -brand-short-name } 有阻止部分的这页那是不固定.
-identity-description-passive-loaded = 你的连接是不私人的和信息你均分与那位置能够是看（view的过去式与过去分词形式）由其他的.
-identity-description-passive-loaded-insecure2 = 这网站（全球资讯网的主机站）包含内容那是不固定 (如此的作为复数虚部).
-identity-description-passive-loaded-mixed2 = 虽然 { -brand-short-name } 有阻止一些内容, 那里是仍然内容在那页那是不固定 (如此的作为复数虚部).
+identity-description-passive-loaded = 你的连接是不私人的和信息你均分与那位置能够是看由其他的.
+identity-description-passive-loaded-insecure2 = 这网站（全球资讯网的主机站）包含内容那是不固定 (如此的作为图象).
+identity-description-passive-loaded-mixed2 = 虽然 { -brand-short-name } 有阻止一些内容, 那里是仍然内容在那页那是不固定 (如此的作为图象).
 identity-description-active-loaded = 这网站（全球资讯网的主机站）包含内容那是不固定 (如此的作为手写体) 和你的连接到它是不私人的.
-identity-description-active-loaded-insecure = 信息你均分与此站点能够是看（view的过去式与过去分词形式）由其他的 (相似的密码, 报文, 信用量卡片, 及其他.).
+identity-description-active-loaded-insecure = 信息你均分与此站点能够是看由其他的 (相似的密码, 报文, 信用量卡片, 及其他.).
 identity-more-info-link-text =
     .label = 更多信息
 
@@ -518,7 +518,7 @@ popup-select-speaker-icon =
 popup-select-window-or-screen =
     .label = 窗口或筛选:
     .accesskey = W
-popup-all-windows-shared = 所有的可见物窗口在你的筛选将是共享的.
+popup-all-windows-shared = 所有的可见物窗在你的筛选将是共享的.
 
 ## WebRTC window or screen share tab switch warning
 
@@ -632,7 +632,7 @@ urlbar-result-action-search-in-private = 搜索在一个私人的窗口
 # Variables
 #  $engine (String): the name of a search engine
 urlbar-result-action-search-w-engine = 搜索与 { $engine }
-urlbar-result-action-sponsored = 赞助( sponsor的过去式和过去分词)
+urlbar-result-action-sponsored = 赞助
 urlbar-result-action-switch-tab = 开关到 Tab
 urlbar-result-action-move-tab-to-split-view = 移动 Tab 到拆分查看
 urlbar-result-action-visit = 拜访
@@ -687,7 +687,7 @@ urlbar-result-explanation-last-visited-relative = 你持续拜访 { $date }
 urlbar-result-explanation-last-visited-days =
     { $daysAgo ->
         [one] 你持续拜访 { $daysAgo } 天以前
-        *[other] 你持续拜访 { $daysAgo } 一生以前
+        *[other] 你持续拜访 { $daysAgo } 天以前
     }
 
 # This explanation is used when the last-visited date is a small number of weeks
@@ -720,7 +720,7 @@ urlbar-result-explanation-last-visited-absolute = 你持续拜访在 { $date }
 # formatted as an absolute date like: "11 May", "11 May 2026"
 # Variables:
 #   $date (string) - A localized absolute date string
-urlbar-result-explanation-bookmarked = 书签( bookmark的过去式和过去分词 ) { $date }
+urlbar-result-explanation-bookmarked = 书签 { $date }
 
 # The sub title of an add-on suggestion in the urlbar.
 urlbar-result-addons-subtitle = { -brand-product-name } 扩展名
@@ -776,16 +776,16 @@ urlbar-result-weather-title-city-only = <strong>{ $temperature }°{ $unit }</str
 # Variables:
 #   $provider (String) - The name of the weather-data provider. It will be the
 #       name of a company, organization, or service.
-urlbar-result-weather-provider-sponsored = { $provider } ·赞助( sponsor的过去式和过去分词)
+urlbar-result-weather-provider-sponsored = { $provider } ·赞助
 
 ## These strings are used for Realtime suggestions in the urlbar.
 ## Market refers to stocks, indexes, and funds.
 
 # This string is shown as title when Market suggestion are disabled.
-urlbar-result-market-opt-in-title = 获得树干市场资料右在你的搜索棒形图
+urlbar-result-market-opt-in-title = 获得树干市场论据右在你的搜索棒形图
 
 # This string is shown as description when Market suggestion are disabled.
-urlbar-result-market-opt-in-description = 显示市场更新和更多从我们的合伙人何时你均分搜索查询资料与 { -vendor-short-name }. <a data-l10n-name="learn-more-link">学习更多</a>
+urlbar-result-market-opt-in-description = 显示市场更新和更多从我们的合伙人何时你均分搜索查询论据与 { -vendor-short-name }. <a data-l10n-name="learn-more-link">学习更多</a>
 
 # This string is shown as button to activate online when realtime suggestion are disabled.
 urlbar-result-realtime-opt-in-allow = 显示提议
@@ -821,7 +821,7 @@ urlbar-result-dismissal-acknowledgment-all = 谢意为了你的反馈. 你将不
 urlbar-result-dates-countdown =
     { $daysUntilStart ->
         [one] { $name } ·在 { $daysUntilStart } 天
-        *[other] { $name } ·在 { $daysUntilStart } 一生
+        *[other] { $name } ·在 { $daysUntilStart } 天
     }
 
 # The name of a multiple day long event and the number of days until it starts
@@ -832,7 +832,7 @@ urlbar-result-dates-countdown =
 urlbar-result-dates-countdown-range =
     { $daysUntilStart ->
         [one] { $name } ·启动在 { $daysUntilStart } 天
-        *[other] { $name } ·启动在 { $daysUntilStart } 一生
+        *[other] { $name } ·启动在 { $daysUntilStart } 天
     }
 
 # The name of a multiple day long event and the number of days until it ends
@@ -842,8 +842,8 @@ urlbar-result-dates-countdown-range =
 #   $daysUntilEnd (integer) - The number of days until the event ends.
 urlbar-result-dates-ongoing =
     { $daysUntilEnd ->
-        [one] { $name } ·目的在 { $daysUntilEnd } 天
-        *[other] { $name } ·目的在 { $daysUntilEnd } 一生
+        [one] { $name } ·端在 { $daysUntilEnd } 天
+        *[other] { $name } ·端在 { $daysUntilEnd } 天
     }
 
 # The name of an event and a note that it is happening today separated by a
@@ -856,7 +856,7 @@ urlbar-result-dates-today = { $name } ·今天
 # separated by a middot.
 # Variables:
 #   $name (string) - The name of the event.
-urlbar-result-dates-ends-today = { $name } ·目的今天
+urlbar-result-dates-ends-today = { $name } ·端今天
 
 ## Strings used for buttons in the urlbar
 
@@ -972,16 +972,16 @@ urlbar-group-recent-searches =
 # Variables:
 #  $engine (String): the name of the search engine providing the trending suggestions
 urlbar-group-trending =
-  .label = 伸向( trend的现在分词 ) 在 { $engine }
+  .label = 伸向在 { $engine }
 
 # The result menu labels shown next to trending results.
 urlbar-result-menu-trending-dont-show =
-    .label = 不要显示伸向( trend的现在分词 ) 搜索
+    .label = 不要显示伸向搜索
     .accesskey = D
 
 # A message that replaces a result when the user dismisses all suggestions of a
 # particular type.
-urlbar-trending-dismissal-acknowledgment = 谢意为了你的反馈. 你将不看见伸向( trend的现在分词 ) 搜索再也不.
+urlbar-trending-dismissal-acknowledgment = 谢意为了你的反馈. 你将不看见伸向搜索再也不.
 
 ## Reader View toolbar buttons
 
@@ -1004,7 +1004,7 @@ picture-in-picture-urlbar-button-close =
 
 picture-in-picture-panel-header = 图象-在-图象
 picture-in-picture-panel-headline = 这网站（全球资讯网的主机站）做不推荐图象-在-图象
-picture-in-picture-panel-body = 视频文件可能不显示器作为那显影器有意的一会儿图象-在-图象是启用.
+picture-in-picture-panel-body = 影像可能不显示器作为那显影器有意的一会儿图象-在-图象是启用.
 picture-in-picture-enable-toggle =
   .label = 启用无论如何
 
@@ -1028,8 +1028,8 @@ fullscreen-keyboardlock-exit-mac-button = 出口完整筛选 (压和保留转义
 # Please ensure that the domain stays in the `<span data-l10n-name="domain">` markup.
 # Variables
 #  $domain (String): the domain that is using pointer-lock, e.g. "mozilla.org"
-pointerlock-warning-domain = <span data-l10n-name="domain">{ $domain }</span> 有控制的你的指针. 压 Esc 到采取后面的控制.
-pointerlock-warning-no-domain = 这文档有控制的你的指针. 压 Esc 到采取后面的控制.
+pointerlock-warning-domain = <span data-l10n-name="domain">{ $domain }</span> 有控制的你的指针. 压 Esc 到采取回控制.
+pointerlock-warning-no-domain = 这文档有控制的你的指针. 压 Esc 到采取回控制.
 
 ## Bookmarks panels, menus and toolbar
 
@@ -1072,7 +1072,7 @@ bookmarks-tools-toolbar-visibility-panel =
 bookmarks-search =
   .label = 搜索书签
 bookmarks-tools =
-  .label = 书签( bookmark的现在分词 ) 工具
+  .label = 书签工具
 bookmarks-subview-edit-bookmark =
   .label = 编辑这书签…
 
@@ -1172,7 +1172,7 @@ toolbar-button-open-file =
 
 toolbar-button-synced-tabs =
   .label = synchronization 的缩略词标签页
-  .tooltiptext = 显示标签页从其他的德维克（男子名、姓氏）
+  .tooltiptext = 显示标签页从其他的装置
 
 toolbar-button-send-tab =
   .label = 发送标签页
@@ -1320,7 +1320,7 @@ filepicker-blocked-infobar = 你的组织有阻止访问到本地的文件在这
 
 ## Mozilla data reporting notification (Telemetry, Firefox Health Report, etc)
 
-data-reporting-notification-message = { -brand-short-name } 自动地发送一些资料到 { -vendor-short-name } 如此那我们能改良你的经历.
+data-reporting-notification-message = { -brand-short-name } 自动地发送一些论据到 { -vendor-short-name } 如此那我们能改良你的经历.
 data-reporting-notification-button =
     .label = 选取什么电流均分
     .accesskey = C
@@ -1336,11 +1336,11 @@ private-browsing-indicator-tooltip =
 # Variables:
 #   $agentName (String): The name of the DLP agent that is connected
 content-analysis-indicator-tooltip =
-    .tooltiptext = 资料损失阻止 (DLP) 由 { $agentName }. 单击为了更多信息.
-content-analysis-panel-title = 资料保护
+    .tooltiptext = 论据损失阻止 (DLP) 由 { $agentName }. 单击为了更多信息.
+content-analysis-panel-title = 论据保护
 # Variables:
 #   $agentName (String): The name of the DLP agent that is connected
-content-analysis-panel-text-styled = 你的组织使用 <b>{ $agentName }</b> 到防卫反对资料损失. <a data-l10n-name="info">学习更多</a>
+content-analysis-panel-text-styled = 你的组织使用 <b>{ $agentName }</b> 到防卫反对论据损失. <a data-l10n-name="info">学习更多</a>
 
 ## Unified extensions (toolbar) button
 
@@ -1380,7 +1380,7 @@ unified-extensions-button-blocklisted =
 reset-pbm-toolbar-button2 =
     .label = 清除私人的会话
     .tooltiptext = 清除私人的会话
-reset-pbm-panel-heading2 = 清除资料和启动一个开始私人的会话?
+reset-pbm-panel-heading2 = 清除论据和启动一个开始私人的会话?
 reset-pbm-panel-description2 = 这删除历史记录, 饼干, 和所有的其他的站点数据没有关闭你的私人的窗口.
 reset-pbm-panel-always-ask-checkbox =
      .label = 总是询问我
@@ -1391,12 +1391,12 @@ reset-pbm-panel-cancel-button =
 reset-pbm-panel-confirm-button2 =
     .label = 清除私人的会话
     .accesskey = l
-reset-pbm-panel-complete = 私人的会话资料删除
+reset-pbm-panel-complete = 私人的会话论据删除
 
 ## Autorefresh blocker
 
-refresh-blocked-refresh-label = { -brand-short-name } 预防( prevent的过去式和过去分词 ) 这页从自动地重复荷载.
-refresh-blocked-redirect-label = { -brand-short-name } 预防( prevent的过去式和过去分词 ) 这页从自动地（以新的方式或目的）重新使用( redirect的现在分词 ) 到另外的页.
+refresh-blocked-refresh-label = { -brand-short-name } 预防这页从自动地重复荷载.
+refresh-blocked-redirect-label = { -brand-short-name } 预防这页从自动地（以新的方式或目的）重新使用到另外的页.
 
 refresh-blocked-allow =
     .label = 允许
@@ -1423,13 +1423,13 @@ popup-notification-xpinstall-prompt-block-url = 看见详细数据
 
 # Note: Access key is set to p to match "private" in the corresponding localized label.
 popup-notification-addon-privatebrowsing-checkbox2 =
-    .label = 允许扩展名到运行在私人的窗口
+    .label = 允许扩展名到运行在私人的窗
     .accesskey = p
 
 # This string is similar to `webext-perms-description-data-long-technicalAndInteraction`
 # but it is used in the install prompt, and it needs an access key.
 popup-notification-addon-technical-and-interaction-checkbox =
-    .label = 部分技术上的和交互作用资料与扩展名显影器
+    .label = 部分技术上的和交互作用论据与扩展名显影器
     .accesskey = S
 
 ## Pop-up warning
@@ -1438,17 +1438,17 @@ popup-notification-addon-technical-and-interaction-checkbox =
 #   $popupCount (Number): the number of pop-ups blocked.
 popup-warning-message =
     { $popupCount ->
-        [1] { -brand-short-name } 预防( prevent的过去式和过去分词 ) 此站点从打开一个出现点-up 窗口.
-       *[other] { -brand-short-name } 预防( prevent的过去式和过去分词 ) 此站点从打开 { $popupCount } 出现点-up 窗口.
+        [1] { -brand-short-name } 预防此站点从打开一个出现点-up 窗口.
+       *[other] { -brand-short-name } 预防此站点从打开 { $popupCount } 出现点-up 窗.
     }
 
 # Variables:
 #   $popupCount (Number): the number of pop-ups blocked.
 redirect-warning-with-popup-message =
     { $popupCount ->
-        [0] { -brand-short-name } 预防( prevent的过去式和过去分词 ) 此站点从（以新的方式或目的）重新使用( redirect的现在分词 ).
-        [1] { -brand-short-name } 预防( prevent的过去式和过去分词 ) 此站点从打开一个出现点-up 窗口和（以新的方式或目的）重新使用( redirect的现在分词 ).
-       *[other] { -brand-short-name } 预防( prevent的过去式和过去分词 ) 此站点从打开 { $popupCount } 出现点-up 窗口和（以新的方式或目的）重新使用( redirect的现在分词 ).
+        [0] { -brand-short-name } 预防此站点从（以新的方式或目的）重新使用.
+        [1] { -brand-short-name } 预防此站点从打开一个出现点-up 窗口和（以新的方式或目的）重新使用.
+       *[other] { -brand-short-name } 预防此站点从打开 { $popupCount } 出现点-up 窗和（以新的方式或目的）重新使用.
     }
 
 # The singular form is left out for English, since the number of blocked pop-ups is always greater than 1.
@@ -1456,21 +1456,21 @@ redirect-warning-with-popup-message =
 #   $popupCount (Number): the number of pop-ups blocked.
 popup-warning-exceeded-message =
     { $popupCount ->
-       *[other] { -brand-short-name } 预防( prevent的过去式和过去分词 ) 此站点从打开更多比 { $popupCount } 出现点-up 窗口.
+       *[other] { -brand-short-name } 预防此站点从打开更多比 { $popupCount } 出现点-up 窗.
     }
 
 # Variables:
 #   $popupCount (Number): the number of pop-ups blocked.
 popup-warning-exceeded-with-redirect-message =
     { $popupCount ->
-       *[other] { -brand-short-name } 预防( prevent的过去式和过去分词 ) 此站点从打开更多比 { $popupCount } 出现点-up 窗口和（以新的方式或目的）重新使用( redirect的现在分词 ).
+       *[other] { -brand-short-name } 预防此站点从打开更多比 { $popupCount } 出现点-up 窗和（以新的方式或目的）重新使用.
     }
 
 popup-warning-button =
     .label =
         { PLATFORM() ->
             [windows] 选项
-           *[other] 参数选择
+           *[other] 首选项
         }
     .accesskey =
         { PLATFORM() ->
@@ -1490,15 +1490,15 @@ popup-trigger-redirect-menuitem =
 
 ## File-picker crash notification ("FilePickerCrashed.sys.mjs")
 
-file-picker-failed-open = 那窗口文件-dialog 能够不是打开. 无文件或文件夹能够是被选的.
+file-picker-failed-open = 那窗文件-dialog 能够不是打开. 无文件或文件夹能够是被选的.
 #   $path (string): The full path to which the file will be saved (e.g., 'C:\Users\Default User\Downloads\readme.txt').
-file-picker-failed-save-somewhere = 那窗口文件-dialog 能够不是打开. 那文件将是保存到 { $path }.
-file-picker-failed-save-nowhere = 那窗口文件-dialog 能够不是打开. 无默认文件夹能够是发现; 那文件将不是保存.
+file-picker-failed-save-somewhere = 那窗文件-dialog 能够不是打开. 那文件将是保存到 { $path }.
+file-picker-failed-save-nowhere = 那窗文件-dialog 能够不是打开. 无默认文件夹能够是发现; 那文件将不是保存.
 
-file-picker-crashed-open = 那窗口文件-dialog 有失事的. 无文件或文件夹能够是被选的.
+file-picker-crashed-open = 那窗文件-dialog 有失事的. 无文件或文件夹能够是被选的.
 #   $path (string): The full path to which the file will be saved (e.g., 'C:\Users\Default User\Downloads\readme.txt').
-file-picker-crashed-save-somewhere = 那窗口文件-dialog 有失事的. 那文件将是保存到 { $path }.
-file-picker-crashed-save-nowhere = 那窗口文件-dialog 有失事的. 无默认文件夹能够是发现; 那文件将不是保存.
+file-picker-crashed-save-somewhere = 那窗文件-dialog 有失事的. 那文件将是保存到 { $path }.
+file-picker-crashed-save-nowhere = 那窗文件-dialog 有失事的. 无默认文件夹能够是发现; 那文件将不是保存.
 
 # Button used with file-picker-crashed-save-default. Opens the folder in Windows
 # Explorer, with the saved file selected and in focus.
@@ -1544,12 +1544,12 @@ trustpanel-connection-label-secure = 连接无虑的
 trustpanel-connection-label-insecure = 连接不固定
 
 trustpanel-header-enabled = { -brand-product-name } 是在守卫者
-trustpanel-description-enabled2 = you are 你（你们）是受保护的. 如果我们点缀某事, (we shall或 we will 的常用口语形式) 让你知道.
+trustpanel-description-enabled2 = 你是受保护的. 如果我们点缀某事, 我们将让你知道.
 trustpanel-header-enabled-insecure = 是小心的在此站点
-trustpanel-description-enabled-insecure = { -brand-product-name } 注意（ notice的过去式和过去分词）某事可疑的.
+trustpanel-description-enabled-insecure = { -brand-product-name } 注意某事可疑的.
 
 trustpanel-header-disabled = 你变质的关闭保护
-trustpanel-description-disabled = { -brand-product-name } 是关闭-duty. 我们提议旋转保护后面的在.
+trustpanel-description-disabled = { -brand-product-name } 是关闭-duty. 我们提议旋转保护回在.
 
 trustpanel-clear-cookies-button = 清除 Cookie 和站点数据
 trustpanel-privacy-link = 隐私设置
@@ -1587,10 +1587,10 @@ trustpanel-blocker-section-header2 = { $count ->
 }
 trustpanel-blocker-description = { -brand-product-name } 想公司应该跟随你最低成本估算与调度法. 如此我们阻止作为多数作为我们能.
 trustpanel-blocked-header = { -brand-product-name } 阻止这些事物为了你:
-trustpanel-tracking-header = { -brand-product-name } 允许这些事物如此坐不要中断:
+trustpanel-tracking-header = { -brand-product-name } 允许这些事物如此位置不要中断:
 trustpanel-tracking-description = 没有追踪者, 一些按钮, 表单, 和注册(程序) 域可能不工作.
-trustpanel-insecure-section-header = 你的连接 (=is not)不是无虑的
-trustpanel-insecure-description = 那资料 you are 你（你们）是发送到此站点 (=is not)不是加密. 它能够是看（view的过去式与过去分词形式）, steal的过去分词, 或改变的.
+trustpanel-insecure-section-header = 你的连接不是无虑的
+trustpanel-insecure-description = 那论据你是发送到此站点不是加密. 它能够是看, 被偷窃的, 或改变的.
 
 trustpanel-list-label-tracking-cookies = { $count ->
   [one] { $count } 交叉-site 跟踪饼干
@@ -1635,7 +1635,7 @@ trustpanel-tracking-content-not-blocking-tab-header = { $count ->
   [one] { -brand-product-name } 允许 { $count } 追踪者
   *[other] { -brand-product-name } 允许 { $count } 追踪者
 }
-trustpanel-tracking-content-tab-list-header = 这些坐是尝试到跟踪你:
+trustpanel-tracking-content-tab-list-header = 这些位置是尝试到跟踪你:
 
 trustpanel-fingerprinter-blocking-tab-header = { $count ->
   [one] { -brand-product-name } 阻止 { $count } fingerprinter
@@ -1645,7 +1645,7 @@ trustpanel-fingerprinter-not-blocking-tab-header = { $count ->
   [one] { -brand-product-name } 允许 { $count } fingerprinter
   *[other] { -brand-product-name } 允许 { $count } fingerprinters
 }
-trustpanel-fingerprinter-list-header = 这些坐是尝试到采指纹你:
+trustpanel-fingerprinter-list-header = 这些位置是尝试到采指纹你:
 
 trustpanel-cryptominer-blocking-tab-header = { $count ->
   [one] { -brand-product-name } 阻止 { $count } cryptominer
@@ -1655,10 +1655,10 @@ trustpanel-cryptominer-not-blocking-tab-header = { $count ->
   [one] { -brand-product-name } 允许 { $count } cryptominer
   *[other] { -brand-product-name } 允许 { $count } cryptominers
 }
-trustpanel-cryptominer-tab-list-header = 这些坐是尝试到 cryptomine:
+trustpanel-cryptominer-tab-list-header = 这些位置是尝试到 cryptomine:
 # "account on this site" refers to the (breached) site the user is currently visiting, not a Mozilla Monitor account.
 trustpanel-breachalerts-anonymous-breached-header = 有一个帐户在此站点?
-trustpanel-breachalerts-anonymous-breached-description = { -brand-product-name } 发现那此站点有一个资料裂口在那最后 12 月. 发现外面的如果你曾是假装的.
+trustpanel-breachalerts-anonymous-breached-description = { -brand-product-name } 发现那此站点有一个论据裂口在那最后 12 月. 发现外面的如果你曾是假装的.
 trustpanel-breachalerts-anonymous-breached-button-dismiss = 解散
 trustpanel-breachalerts-anonymous-breached-button-check-monitor = 启动自由的网络软件目录
 
@@ -1672,7 +1672,7 @@ reduced-protection-infobar-never-show-button = 不要显示再一次
   .accesskey = D
 
 
-identity-allow-site-data = 总是存储器操作饼干/资料为了此站点
+identity-allow-site-data = 总是存储器操作饼干/论据为了此站点
 urlbar-eme-blocked =
     .tooltiptext = 你有阻止重现的 DRM-controlled 内容为了这网站（全球资讯网的主机站）.
 urlbar-webgl-notification-anchor =

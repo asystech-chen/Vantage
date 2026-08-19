@@ -3,10 +3,10 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 clear-site-data-window2 =
-    .title = 清除资料
+    .title = 清除论据
     .style = min-width: 35媒体用毕符
 
-clear-site-data-description = 清扫所有的 Cookie 和站点数据储存的由 { -brand-short-name } 可以正负号你外面的的网站（全球资讯网的主机站）和移除挂线网内容. 清扫高速缓冲存储器资料将不影响你的注册(程序).
+clear-site-data-description = 清扫所有的 Cookie 和站点数据储存的由 { -brand-short-name } 可以正负号你外面的的网站（全球资讯网的主机站）和移除挂线网内容. 清扫高速缓冲存储器论据将不影响你的注册(程序).
 
 clear-site-data-close-key =
     .key = w
@@ -26,7 +26,7 @@ clear-site-data-cookies-with-data =
 # or the same as clear-site-data-cookies-with-data (except the amount and unit),
 # to avoid flickering.
 clear-site-data-cookies-empty =
-    .label = 饼干和位置资料
+    .label = 饼干和位置论据
     .accesskey = S
 
 clear-site-data-cookies-info = 你可以获得有符号的外面的的网站（全球资讯网的主机站）如果使干净
@@ -49,7 +49,7 @@ clear-site-data-cache-empty =
     .label = 贮藏起来网内容
     .accesskey = W
 
-clear-site-data-cache-info = 将需要网站（全球资讯网的主机站）到再装复数虚部和资料
+clear-site-data-cache-info = 将需要网站（全球资讯网的主机站）到再装图象和论据
 
 clear-site-data-dialog =
     .buttonlabelaccept = 清除

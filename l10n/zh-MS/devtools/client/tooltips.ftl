@@ -95,14 +95,14 @@ inactive-css-highlight-pseudo-elements-not-supported = <strong>{ $property }</st
 
 inactive-css-cue-pseudo-element-not-supported = <strong>{ $property }</strong> 是不被支持的在 ::尾接指令假的-elements.
 
-inactive-css-at-position-try-not-supported = <strong>{ $property }</strong> 是不被支持的在 <strong>@位置-尝试</strong> 右上外侧.
+inactive-css-at-position-try-not-supported = <strong>{ $property }</strong> 是不被支持的在 <strong>@位置-尝试</strong> 规则.
 
 # Variables:
 #   $lineCount (integer) - The number of lines the element has.
 inactive-css-text-wrap-balance-lines-exceeded =
     { $lineCount ->
          [one] <strong>{ $property }</strong> 有无效果在这部分因为它有更多比 { $lineCount } 线路.
-        *[other] <strong>{ $property }</strong> 有无效果在这部分因为它有更多比 { $lineCount } 林.
+        *[other] <strong>{ $property }</strong> 有无效果在这部分因为它有更多比 { $lineCount } 线路.
      }
 
 inactive-css-text-wrap-balance-fragmented = <strong>{ $property }</strong> 有无效果在这部分因为它是成碎片的, 电流.元件. 它的内容是拆分越过倍数列或页.
@@ -188,7 +188,7 @@ inactive-css-resize-fix = 尝试设置 <strong>上溢</strong> 到一个计算�
 
 inactive-css-ruby-element-fix = 尝试更改那 <strong>字体-大小</strong> 的那红宝石电文. { learn-more }
 
-inactive-css-text-wrap-balance-lines-exceeded-fix = 尝试到缩小那数字的林. { learn-more }
+inactive-css-text-wrap-balance-lines-exceeded-fix = 尝试到缩小那数字的线路. { learn-more }
 
 inactive-css-text-wrap-balance-fragmented-fix = 避免爆裂似的那 element's 内容元件.千兆. 由拆迁那列或由使用 <strong>页-中断-内部:避免</strong>. { learn-more }
 

@@ -28,7 +28,7 @@ screenshots-notification-image-copied-title = 发射已复制的
 screenshots-notification-image-copied-details = 你的发射有是已复制的到那剪贴板. 压 {screenshots-meta-key}-溢出到粘贴.
 
 screenshots-too-large-error-title = 你的屏幕截图曾是裁切不正的因为它曾是也大的
-screenshots-too-large-error-details = 尝试选择一个区 (=that is)说得更精确些较小比 32,700 象素在它的最长的旁边或 124,900,000 象素全体的区域.
+screenshots-too-large-error-details = 尝试选择一个区那是较小比 32,700 象素在它的最长的旁边或 124,900,000 象素全体的区域.
 
 screenshots-component-retry-button =
   .title = 重发屏幕截图

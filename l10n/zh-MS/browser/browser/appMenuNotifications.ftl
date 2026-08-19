@@ -15,21 +15,21 @@ appmenu-update-manual2 =
     .buttonaccesskey = D
     .secondarybuttonlabel = 解散
     .secondarybuttonaccesskey = m
-appmenu-update-manual-message2 = { -brand-shorter-name } (=could not)不能更新自动地. 下载那新版本—你将不遗失保存信息或定制.
+appmenu-update-manual-message2 = { -brand-shorter-name } 不能更新自动地. 下载那新版本—你将不遗失保存信息或定制.
 appmenu-update-unsupported2 =
     .label = 不能的到更新
     .buttonlabel = 学习更多
     .buttonaccesskey = L
     .secondarybuttonlabel = 解散
     .secondarybuttonaccesskey = m
-appmenu-update-unsupported-message2 = 你的操作的系统 (=is not)不是相容的与最新版本的 { -brand-shorter-name }.
+appmenu-update-unsupported-message2 = 你的操作的系统不是相容的与最新版本的 { -brand-shorter-name }.
 appmenu-update-restart2 =
     .label = 更新可利用的
     .buttonlabel = 更新和重新启动
     .buttonaccesskey = U
     .secondarybuttonlabel = 解散
     .secondarybuttonaccesskey = m
-appmenu-update-restart-message2 = 获得最新版本的 { -brand-shorter-name }. 打开标签页和窗口将是精力充沛的.
+appmenu-update-restart-message2 = 获得最新版本的 { -brand-shorter-name }. 打开标签页和窗将是精力充沛的.
 appmenu-update-other-instance =
     .label = { -brand-shorter-name } 是不能的到自动地更新到最新版本.
     .buttonlabel = 更新 { -brand-shorter-name } 无论如何
@@ -41,11 +41,11 @@ appmenu-update-other-instance-message = 一个新的 { -brand-shorter-name } 更
 appmenu-theme-installed =
     .secondarybuttonlabel = 撤消
     .secondarybuttonaccesskey = U
-appmenu-addon-post-install-message3 = 管理你的添加-ons 和他们穿越那应用菜单.
+appmenu-addon-post-install-message3 = 管理你的添加-ons 和主题穿越那应用菜单.
 
 # This string is used in the confirmation popup displayed after an extension
 # has been installed, when the data collection feature is enabled.
-appmenu-addon-post-install-message-with-data-collection = 更新许可和资料参数选择任何的时间在那 <a data-l10n-name="settings-link">扩展名设置</a>.
+appmenu-addon-post-install-message-with-data-collection = 更新许可和论据首选项任何的时间在那 <a data-l10n-name="settings-link">扩展名设置</a>.
 appmenu-addon-post-install-pin-toolbarbutton-checkbox =
     .label = 大头针扩展名到工具栏
     .accesskey = P

@@ -14,11 +14,11 @@ more-from-moz-category =
 more-from-moz-subtitle = 复选外面的其他的 { -vendor-short-name } 产品那工作到支持一个健康的因特网.
 
 more-from-moz-firefox-mobile-title = { -brand-product-name } 移动的
-more-from-moz-firefox-mobile-description = 那活动物体浏览器那卖出选择权你的隐私首先.
+more-from-moz-firefox-mobile-description = 那活动物体浏览器那发送文件你的隐私首先.
 more-from-moz-firefox-mobile-title-1 = { -brand-product-name } 为了活动物体
 more-from-moz-firefox-mobile =
     .label = { -brand-product-name } 为了活动物体
-    .description = 那活动物体浏览器那卖出选择权你的隐私首先.
+    .description = 那活动物体浏览器那发送文件你的隐私首先.
 
 more-from-moz-mozilla-vpn-title = { -mozilla-vpn-brand-name }
 more-from-moz-mozilla-vpn-description = 发现一个额外的层的无记录浏览和保护.
@@ -41,7 +41,7 @@ more-from-moz-firefox-relay-button = 获得 { -relay-brand-short-name }
 ## These strings are for the Mozilla Monitor card in about:preferences moreFromMozilla page
 
 more-from-moz-mozilla-monitor-title = { -mozmonitor-brand-name }
-more-from-moz-mozilla-monitor-global-description = 获得警觉的何时你的资料有是在一个裂口.
+more-from-moz-mozilla-monitor-global-description = 获得警觉的何时你的论据有是在一个裂口.
 more-from-moz-mozilla-monitor-button = 获得 { -monitor-brand-short-name }
 
 ## These strings are for the Solo card in about:preferences moreFromMozilla page
@@ -53,13 +53,13 @@ more-from-moz-solo-button = 尝试 { -solo-ai-brand-name }
 ## These strings are for the MDN card in about:preferences moreFromMozilla page
 
 more-from-moz-mdn-title2 = { -mdn-brand-name }
-more-from-moz-mdn-description = 学习网发展与自由的, 广泛的全局唯一标识符（Globally Unique Identifier）和参考文献.
+more-from-moz-mdn-description = 学习网发展与自由的, 广泛的辅助线和引用.
 more-from-moz-mdn-button = 学习网发展
 
 ## These strings are for the Thunderbird card in about:preferences moreFromMozilla page
 
 more-from-moz-thunderbird-title = { -thunderbird-brand-name }
-more-from-moz-thunderbird-description = 自由的电子信函, 日历, 和联系—有组织的你的路.
+more-from-moz-thunderbird-description = 自由的电子信函, 日历, 和联系—有组织的你的方式.
 more-from-moz-thunderbird-button = 获得 { -thunderbird-brand-short-name }
 
 ## These strings are for the Mozilla New Products card in about:preferences moreFromMozilla page
@@ -85,7 +85,7 @@ more-from-moz-mozilla-monitor-card =
 
 more-from-moz-mozilla-vpn-card =
     .label = { -mozilla-vpn-brand-name }
-    .description = 获得额外的事物保护为了全部应用程序—不只是你的浏览器. 保持你的资料保险箱在公众熟铁（Wrought Iron）-格式标识码和不安全的网络.
+    .description = 获得额外的事物保护为了全部应用—不只是你的浏览器. 保持你的论据保险箱在公众熟铁-格式标识码和不安全的网络.
 
 more-from-moz-firefox-relay-card =
     .label = { -relay-brand-name }
@@ -93,7 +93,7 @@ more-from-moz-firefox-relay-card =
 
 more-from-moz-mdn-card =
     .label = { -mdn-brand-name }
-    .description = 学习网发展与自由的全局唯一标识符（Globally Unique Identifier）和参考文献.
+    .description = 学习网发展与自由的辅助线和引用.
 
 more-from-moz-thunderbird-card =
     .label = { -thunderbird-brand-name }
@@ -105,7 +105,7 @@ more-from-moz-solo-card-1 =
 
 more-from-moz-new-products-card2 =
     .label = { -vendor-short-name } 新的产品
-    .description = 探险我们的最近的工业设计优秀奖和实验的技术.
+    .description = 探险我们的最近的主意和实验的技术.
 
 more-from-moz-mozilla-monitor-box-link =
     .label = 获得 { -monitor-brand-short-name }

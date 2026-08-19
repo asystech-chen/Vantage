@@ -47,7 +47,7 @@ text-action-paste-shortcut =
     .key = V
 
 text-action-delete =
-    .label = Delete
+    .label = 删除
     .accesskey = D
 
 text-action-reveal-password =
@@ -81,7 +81,7 @@ text-action-spell-add-dictionaries =
     .accesskey = A
 
 text-action-spell-dictionaries =
-    .label = 语系
+    .label = 语言
     .accesskey = L
 
 text-action-search-text-box-clear =

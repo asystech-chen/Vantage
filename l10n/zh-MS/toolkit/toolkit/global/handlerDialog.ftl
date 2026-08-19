@@ -60,14 +60,14 @@ permission-dialog-btn-choose-app =
       .label = 选取应用
       .accessKey = A
 
-permission-dialog-unset-description = (=you will 需要到选取一个应用.
+permission-dialog-unset-description = 你将需要到选取一个应用.
 
 permission-dialog-set-change-app-link = 选取一个不同的应用.
 
 
 chooser-window =
       .title = 选取应用
-      .style = min-width: 26媒体用毕符; 部长（Minister）-高度: 26媒体用毕符;
+      .style = min-width: 26媒体用毕符; 部长-高度: 26媒体用毕符;
 
 chooser-dialog =
       .buttonlabelaccept = 打开连接
@@ -81,7 +81,7 @@ chooser-dialog-remember =
 chooser-dialog-remember-extra = {
   PLATFORM() ->
       [windows] 这能是更改在 { -brand-short-name }'s 选项.
-     *[other] 这能是更改在 { -brand-short-name }'s 参数选择.
+     *[other] 这能是更改在 { -brand-short-name }'s 首选项.
   }
 
 choose-other-app-description = 选取其他的应用
@@ -90,4 +90,4 @@ choose-app-btn =
       .accessKey = C
 choose-other-app-window-title = 另外的应用…
 
-choose-dialog-privatebrowsing-disabled = 禁用在私人的窗口
+choose-dialog-privatebrowsing-disabled = 禁用在私人的窗

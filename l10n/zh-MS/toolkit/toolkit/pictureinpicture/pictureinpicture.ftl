@@ -17,16 +17,16 @@ pictureinpicture-unmute-btn =
   .tooltip = Unmute ({ $shortcut })
 
 pictureinpicture-unpip-btn =
-  .aria-label = 发送后面的到标签页
-  .tooltip = 后面的到标签页
+  .aria-label = 发送回到标签页
+  .tooltip = 回到标签页
 
 pictureinpicture-close-btn =
   .aria-label = 关闭
   .tooltip = 关闭 ({ $shortcut })
 
 pictureinpicture-subtitles-btn =
-  .aria-label = 说明字幕
-  .tooltip = 说明字幕
+  .aria-label = 副标题
+  .tooltip = 副标题
 
 pictureinpicture-fullscreen-btn2 =
   .aria-label = Fullscreen
@@ -50,9 +50,9 @@ pictureinpicture-seekforward-btn =
   .tooltip = 前推 (→)
 
 
-pictureinpicture-subtitles-panel-accessible = 说明字幕设置
+pictureinpicture-subtitles-panel-accessible = 副标题设置
 
-pictureinpicture-subtitles-label = 说明字幕
+pictureinpicture-subtitles-label = 副标题
 
 pictureinpicture-font-size-label = 字体大小
 

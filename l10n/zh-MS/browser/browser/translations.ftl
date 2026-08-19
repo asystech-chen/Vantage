@@ -32,7 +32,7 @@ translations-panel-settings-button =
 ## Options in the Firefox Translations settings.
 
 translations-panel-settings-manage-languages =
-  .label = 管理语系
+  .label = 管理语言
 translations-panel-settings-about2 =
   .label = 关于转换在 { -brand-shorter-name }
 
@@ -71,15 +71,15 @@ translations-panel-translate-cancel =
 translations-panel-learn-more-link = 学习更多
 
 translations-panel-intro-header = 尝试私人的转换在 { -brand-shorter-name }
-translations-panel-intro-description = 为了你的隐私, 转换从不许可你的装置. 新的语系和进步来临不久!
+translations-panel-intro-description = 为了你的隐私, 转换从不许可你的装置. 新的语言和进步来临不久!
 
 translations-panel-error-translating = 那里曾是一个问题翻译. 请试再一次.
-translations-panel-error-load-languages = (=could not)不能加载语系
+translations-panel-error-load-languages = 不能加载语言
 translations-panel-error-load-languages-hint = 复选你的因特网连接和尝试再一次.
 translations-panel-error-load-languages-hint-button =
   .label = 尝试再一次
 
-translations-panel-error-unsupported = 转换 (=is not)不是可利用的为了这页
+translations-panel-error-unsupported = 转换不是可利用的为了这页
 translations-panel-error-dismiss-button =
   .label = 获得它
 translations-panel-error-change-button =
@@ -123,8 +123,8 @@ translations-manage-header = 转换
 translations-manage-settings-button =
     .label = 设置…
     .accesskey = t
-translations-manage-intro-2 = 日落你的语言和位置转换参数选择和管理语系将（程序为了挂线转换.
-translations-manage-download-description = 下载语系为了挂线转换
+translations-manage-intro-2 = 日落你的语言和位置转换首选项和管理语言将（程序为了挂线转换.
+translations-manage-download-description = 下载语言为了挂线转换
 translations-manage-language-download-button =
     .label = 下载
 translations-manage-language-download-all-button =
@@ -137,23 +137,23 @@ translations-manage-language-remove-all-button =
     .accesskey = e
 translations-manage-error-download = 那里曾是一个问题下装那语言文件. 请试再一次.
 translations-manage-error-remove = 那里曾是一个错误拆迁那语言文件. 请试再一次.
-translations-manage-error-list = 失败的到获得那列表的可利用的语系为了转换. 刷新那页到试再一次.
+translations-manage-error-list = 失败的到获得那列表的可利用的语言为了转换. 刷新那页到试再一次.
 
 translations-settings-title =
     .title = 转换设置
     .style = min-width: 36媒体用毕符
 translations-settings-close-key =
     .key = w
-translations-settings-always-translate-langs-description = 转换将发生自动地为了那下列各项语系
-translations-settings-never-translate-langs-description = 转换将不是提供为了那下列各项语系
-translations-settings-never-translate-sites-description = 转换将不是提供为了那下列各项坐
+translations-settings-always-translate-langs-description = 转换将发生自动地为了那下列各项语言
+translations-settings-never-translate-langs-description = 转换将不是提供为了那下列各项语言
+translations-settings-never-translate-sites-description = 转换将不是提供为了那下列各项位置
 translations-settings-languages-column =
-    .label = 语系
+    .label = 语言
 translations-settings-remove-language-button =
     .label = 移除语言
     .accesskey = R
 translations-settings-remove-all-languages-button =
-    .label = 移除所有的语系
+    .label = 移除所有的语言
     .accesskey = e
 translations-settings-sites-column =
     .label = 网站（全球资讯网的主机站）
@@ -161,7 +161,7 @@ translations-settings-remove-site-button =
     .label = 移除位置
     .accesskey = S
 translations-settings-remove-all-sites-button =
-    .label = 移除所有的坐
+    .label = 移除所有的位置
     .accesskey = m
 translations-settings-close-dialog =
     .buttonlabelaccept = 关闭
@@ -239,7 +239,7 @@ select-translations-panel-idle-placeholder-text = 译本电文将出现这里.
 select-translations-panel-translating-placeholder-text = 翻译…
 
 select-translations-panel-init-failure-message =
-    .message = (=could not)不能加载语系. 复选你的因特网连接和尝试再一次.
+    .message = 不能加载语言. 复选你的因特网连接和尝试再一次.
 
 # Text displayed when the translation fails to complete.
 select-translations-panel-translation-failure-message =
@@ -270,7 +270,7 @@ translations-panel-disable-translations =
 translations-manage-enable = 
   .label = 启用 fullpage 转换
 translations-manage-autopopup = 
-  .label = 激励到转换页那不是（are not）在浏览器中's 配置的语言
+  .label = 激励到转换页那不是在浏览器中's 配置的语言
 
 # Text displayed in the right-click context menu for translating
 # the current page.

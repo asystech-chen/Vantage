@@ -90,24 +90,58 @@ def _clean_def(s: str) -> str:
     return re.sub(r"\[[^\]]*\]", "", s).strip()
 
 
+# ---------- 词典词形注释清洗 ----------
+# ECDICT 里约 2.6 万条变形词条目的释义是词典注释而非真翻译：
+#   ( alternative的复数形式 ) / acute的比较级 / 参见：elementary school
+# 直接输出会污染译文，必须剔除；整条都是注释的词条视为未命中（保留原文）。
+FORM_NOTE_RE = re.compile(
+    r"[（(][^）)]*?(?:的复数(?:形式)?|的过去式|的过去分词|的现在分词|的第三人称单数|的比较级|的最高级|的常用口语形式?|的缩写|等于|复数|过去式|过去分词|现在分词|第三人称单数|比较级|最高级|缩写)[^）)]*[)）]|"
+    r"[a-zA-Z'\s-]+\s*的(?:复数(?:形式)?|过去式|过去分词|现在分词|第三人称单数|比较级|最高级|常用口语形式?|缩写)|"
+    r"(?:参见|同义词)\s*[:：]\s*[a-zA-Z'\s-]+|"
+    r"[（(][a-zA-Z][a-zA-Z' -]{1,}[)）]"
+)
+
+
+def strip_form_notes(s: str) -> str:
+    """剔除释义中的词形/参见注释；整条都是注释时返回空串"""
+    s2 = FORM_NOTE_RE.sub("", s)
+    s2 = s2.strip(" \t,;，；\"'")
+    if not s2 or re.fullmatch(r"(?:[a-z]+\.\s*)+", s2):
+        return ""
+    return s2
+
+
+def _first_def(text: str) -> str:
+    """取一段释义的第一个义项并清洗（跳过词形注释）"""
+    return strip_form_notes(_clean_def(re.split(r"[,;，；]", text)[0]))
+
+
 def pick_def(translation: str, pos: str | None) -> str:
-    """按词性选释义；pos: 'verb' / 'noun' / None（默认第一段）"""
+    """按词性选释义；pos: 'verb' / 'noun' / None。返回空串 = 未命中"""
     segs = parse_segments(translation)
     # [计] 段优先（UI 术语语境）——但 DOS 命令段跳过
     for tags, text in segs:
         if tags and tags[0] == "[计]" and "DOS" not in text:
-            return _clean_def(re.split(r"[,;，；]", text)[0])
+            v = _first_def(text)
+            if v:
+                return v
     if pos == "verb":
         for tags, text in segs:
             if any(t in ("vt", "vi", "v") for t in tags) and "DOS" not in text:
-                return _clean_def(re.split(r"[,;，；]", text)[0])
+                v = _first_def(text)
+                if v:
+                    return v
     elif pos == "noun":
         for tags, text in segs:
             if "n" in tags:
-                return _clean_def(re.split(r"[,;，；]", text)[0])
-    # fallback：第一段
-    if segs:
-        return _clean_def(re.split(r"[,;，；]", segs[0][1])[0])
+                v = _first_def(text)
+                if v:
+                    return v
+    # fallback：逐段尝试，跳过整条都是词形注释的段
+    for tags, text in segs:
+        v = _first_def(text)
+        if v:
+            return v
     return ""
 
 
@@ -152,6 +186,7 @@ OVERRIDES = {
     "from": "从", "on": "在", "your": "你的", "you": "你",
     "this": "这", "that": "那", "it": "它", "we": "我们", "our": "我们的",
     "as": "作为", "mode": "模式", "open": "打开", "save": "保存",
+    "way": "方式", "ways": "方式",
     "close": "关闭", "delete": "删除", "update": "更新", "download": "下载",
     "settings": "设置", "options": "选项", "search": "搜索", "privacy": "隐私",
     "security": "安全", "password": "密码", "bookmark": "书签", "tab": "标签页",
@@ -180,7 +215,18 @@ OVERRIDES = {
     "still": "仍然", "please": "请", "please": "请",
     "they": "他们", "them": "他们", "their": "他们的", "those": "那些",
     "these": "这些", "there": "那里", "here": "这里",
+    "news": "新闻",
+    # 缩写词（词典里释义是注释如 abbr. you are 你（你们）是，直接固定翻译）
     "don't": "不要", "doesn't": "不", "can't": "不能", "won't": "将不", "it's": "它是",
+    "you're": "你是", "we're": "我们是", "they're": "他们是",
+    "you'll": "你将", "we'll": "我们将", "they'll": "他们将",
+    "i'm": "我是", "i've": "我有", "we've": "我们有", "you've": "你有", "they've": "他们有",
+    "that's": "那是", "there's": "那里是", "what's": "什么是", "here's": "这里是",
+    "let's": "让我们", "he's": "他是", "she's": "她是",
+    "aren't": "不是", "isn't": "不是", "wasn't": "不是", "weren't": "不是",
+    "didn't": "没有", "wouldn't": "不会", "couldn't": "不能", "shouldn't": "不应该",
+    "haven't": "没有", "hasn't": "没有", "hadn't": "没有",
+    "i'd": "我将", "you'd": "你将", "he'd": "他将", "we'd": "我们将", "they'd": "他们将",
     # DOS 命令污染词（词典 [计] 段是 DOS 命令）
     "time": "时间", "include": "包含", "more": "更多", "shift": "移动", "home": "主页",
     "pause": "暂停", "vol": "卷", "echo": "回声", "if": "如果",
@@ -239,23 +285,50 @@ IRREGULAR = {
     "asks": "ask", "remembers": "remember", "trusts": "trust",
     "continues": "continue", "creates": "create", "applies": "apply",
     "works": "work", "means": "mean", "contains": "contain", "includes": "include",
+    # 常见三单/复数（短词，len>3 规则不覆盖或避免误伤）
+    "says": "say", "goes": "go", "saying": "say", "calls": "call",
+    "helps": "help", "lets": "let", "tells": "tell", "finds": "find",
+    "gives": "give", "sets": "set", "turns": "turn", "puts": "put",
+    "seems": "seem", "looks": "look", "runs": "run", "pays": "pay",
+    "stays": "stay", "plays": "play", "shows": "show", "hours": "hour",
+    "years": "year", "days": "day", "words": "word", "ways": "way",
+    "names": "name", "types": "type", "kinds": "kind", "parts": "part",
+    "places": "place", "points": "point", "groups": "group", "areas": "area",
+    "people": "person", "children": "child", "men": "man", "women": "woman",
+    "feet": "foot", "teeth": "tooth", "mice": "mouse", "data": "datum",
 }
 
 
-def lemmatize(word: str) -> str:
-    """变形词还原为原形（不规则表 + 保守规则）"""
+def lemmatize_candidates(word: str) -> list:
+    """生成词形还原候选（按优先级排序）。
+
+    调用方必须用词典验证命中，避免 lemmatize 截错
+    （如 alternatives → alternativ 的错误截断）把变形词误导向词典里的
+    「词形注释词条」（释义 = XX的复数形式，不是真翻译）。
+    """
     w = word.lower()
     if w in IRREGULAR:
-        return IRREGULAR[w]
-    # 保守规则：第三人称单数 / 复数去 s/es（排除常见误伤）
-    if len(w) > 4:
+        return [IRREGULAR[w]]
+    cands = []
+    if len(w) > 3:
         if w.endswith("ies") and w not in ("ties", "movies"):
-            return w[:-3] + "y"
-        if w.endswith("es") and not w.endswith(("ss", "zz", "us", "is", "sh", "ch", "x", "o")):
-            return w[:-2]
-        if w.endswith("s") and not w.endswith(("ss", "us", "is", "as", "os")):
-            return w[:-1]
-    return w
+            cands.append(w[:-3] + "y")  # possibilities → possibility
+        elif w.endswith("es"):
+            cands.append(w[:-1])  # alternatives → alternative（复数 +s 优先）
+            cands.append(w[:-2])  # boxes → box（真正的 -es 复数）
+        elif w.endswith("s") and not w.endswith(("ss", "us", "is")):
+            cands.append(w[:-1])  # browsers → browser
+    out = []
+    for c in cands:
+        if c != w and c not in out:
+            out.append(c)
+    return out
+
+
+def lemmatize(word: str) -> str:
+    """变形词还原为原形（取第一个候选；调用方需词典验证）"""
+    cands = lemmatize_candidates(word)
+    return cands[0] if cands else word.lower()
 
 # ---------- 词组表（长文本专用：常用词组 → 正常中文）----------
 # 长段落先做最长匹配词组替换，剩余单词再词典硬翻
@@ -330,7 +403,7 @@ PHRASES = [
 PROTECT_RE = re.compile(
     r"\{[^{}]*\}|<[^>]*>|[A-Za-z_]+\('[^)]*\)|"
     r"add-on\b|min-width\b|max-width\b|\.[a-z]{2,4}\b|"
-    r"\b(?:Ctrl|Control|Shift|Alt|Esc|Cmd|Option|Meta|Tab|Enter|Return|Backspace|Delete|PageUp|PageDown|Arrow|⌘|⌃|⇧|⌥)\b(?:\+[A-Za-z0-9+ ]*)?|"
+    r"\b(?:Ctrl|Control|Shift|Alt|Esc|Cmd|Option|Meta|Tab|Enter|Return|Backspace|PageUp|PageDown|Arrow|⌘|⌃|⇧|⌥)\b(?:\+[A-Za-z0-9+ ]*)?|"
     r"\b[A-Z]{2,}\b|"
     r"\$[a-zA-Z][a-zA-Z0-9]*|-[a-z][a-z0-9-]*(?=[\s.}，。；：！？)])"
 )
@@ -375,7 +448,15 @@ def hard_translate(text: str, phrase_mode: bool = False) -> str:
                 stem = lemmatize(t)
                 w = OVERRIDES.get(stem)  # 还原后查 override（wants→want→想要）
                 if w is None:
-                    d = DICT.get(stem) or DICT.get(t.lower())
+                    # 变形词 → 按候选原形查词典（词典验证命中才算），
+                    # 避免命中「词形注释词条」（释义 = XX的复数形式，不是真翻译）
+                    d = None
+                    for cand in lemmatize_candidates(t):
+                        d = DICT.get(cand)
+                        if d:
+                            break
+                    if d is None:
+                        d = DICT.get(t.lower())
                     if d:
                         # 词性推断：取当前词在 alpha 序列中的前一个
                         ai = alpha_idx.index(i)

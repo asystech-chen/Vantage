@@ -10,7 +10,7 @@
 ## Application Menu (macOS only)
 
 menu-application-preferences =
-    .label = 参数选择
+    .label = 首选项
 # Starting with macOS Ventura (13), the name of the "Preferences" menu item changed to "Settings".
 menu-application-settings =
     .label = 设置…
@@ -229,7 +229,7 @@ menu-history-hidden-tabs =
 menu-history-undo-menu =
     .label = 最近关闭标签页
 menu-history-undo-window-menu =
-    .label = 最近关闭窗口
+    .label = 最近关闭窗
 # "Search" is a verb, as in "Search in History"
 menu-history-search =
     .label = 搜索历史记录
@@ -280,7 +280,7 @@ menu-tools-downloads =
     .label = 下载
     .accesskey = D
 menu-tools-extensions-and-themes =
-    .label = 扩展名和他们
+    .label = 扩展名和主题
     .accesskey = E
 menu-tools-fxa-sign-in2 =
     .label = 正负号在
@@ -344,7 +344,7 @@ menu-help-more-troubleshooting-info =
     .label = 更多发现并修理故障信息
     .accesskey = T
 menu-help-share-ideas =
-    .label = 部分工业设计优秀奖和反馈…
+    .label = 部分主意和反馈…
     .accesskey = S
 menu-help-enter-troubleshoot-mode2 =
     .label = 障碍修理模式…
@@ -361,7 +361,7 @@ menu-help-report-deceptive-site =
     .label = 报告迷惑的位置…
     .accesskey = D
 menu-help-not-deceptive =
-    .label = 这 (=is not)不是一个迷惑的位置…
+    .label = 这不是一个迷惑的位置…
     .accesskey = D
 menu-report-broken-site =
   .label = 报告坏掉的位置

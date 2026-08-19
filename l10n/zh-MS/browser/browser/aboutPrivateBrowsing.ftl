@@ -21,7 +21,7 @@ about-private-browsing-not-private = 你是当前不在一个私人的窗口.
 
 about-private-browsing-hide-activity = 隐藏你的活动和位置, 各处你浏览
 about-private-browsing-get-privacy = 获得隐私保护各处你浏览
-about-private-browsing-hide-activity-1 = 隐藏浏览活动和位置与 { -mozilla-vpn-brand-name }. 一(个) 单击创建一个无虑的连接, 偶数在公众熟铁（Wrought Iron）-格式标识码.
+about-private-browsing-hide-activity-1 = 隐藏浏览活动和位置与 { -mozilla-vpn-brand-name }. 一(个) 单击创建一个无虑的连接, 偶数在公众熟铁-格式标识码.
 about-private-browsing-prominent-cta = 停留私人的与 { -mozilla-vpn-brand-name }
 
 about-private-browsing-focus-promo-cta = 下载 { -focus-brand-name }
@@ -37,11 +37,11 @@ about-private-browsing-focus-promo-text-c = { -focus-brand-name } 清除你的�
 # in a private window.
 # Variables:
 #   $engineName (String) - The engine name that will currently be used for the private window.
-about-private-browsing-search-banner-title = { $engineName } 是你的默认搜索引擎在私人的窗口
+about-private-browsing-search-banner-title = { $engineName } 是你的默认搜索引擎在私人的窗
 about-private-browsing-search-banner-description = {
   PLATFORM() ->
      [windows] 到选择一个不同的搜索引擎去到 <a data-l10n-name="link-options">选项</a>
-    *[other] 到选择一个不同的搜索引擎去到 <a data-l10n-name="link-options">参数选择</a>
+    *[other] 到选择一个不同的搜索引擎去到 <a data-l10n-name="link-options">首选项</a>
   }
 about-private-browsing-search-banner-close-button =
     .aria-label = 关闭
@@ -63,14 +63,14 @@ about-private-browsing-pin-promo-title = 无保存饼干或历史记录, 右从�
 # Simplified version of the headline if the original text doesn't work
 # in your language: `{ -brand-short-name } will show fewer cookie requests`
 about-private-browsing-cookie-banners-promo-heading = { -brand-short-name } 采取小心的饼干旗帜为了你
-about-private-browsing-cookie-banners-promo-body = 我们现在自动地拒绝多数饼干旗帜如此你能获得有履带的最低成本估算与调度法和去后面的到娱乐-free 浏览.
+about-private-browsing-cookie-banners-promo-body = 我们现在自动地拒绝多数饼干旗帜如此你能获得有履带的最低成本估算与调度法和去回到娱乐-free 浏览.
 
 ## Strings for the info section of about:privatebrowsing
 
-about-private-browsing-felt-privacy-v1-info-header = 许可无牵引车辆（Tractor）在这装置
-about-private-browsing-felt-privacy-v1-info-body = { -brand-short-name} 删除你的饼干, 历史记录, 和站点数据何时你关闭所有的你的私人的窗口.
+about-private-browsing-felt-privacy-v1-info-header = 许可无痕迹在这装置
+about-private-browsing-felt-privacy-v1-info-body = { -brand-short-name} 删除你的饼干, 历史记录, 和站点数据何时你关闭所有的你的私人的窗.
 about-private-browsing-felt-privacy-v1-info-link = 谁可能是能干的到看见我的活动?
 
 ## Strings for the Nova redesign of about:privatebrowsing
 
-about-private-browsing-nova-info-body = 关闭所有的你的私人的窗口删除你的饼干, 历史记录和站点数据.
+about-private-browsing-nova-info-body = 关闭所有的你的私人的窗删除你的饼干, 历史记录和站点数据.

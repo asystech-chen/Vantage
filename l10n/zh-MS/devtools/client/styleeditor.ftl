@@ -20,9 +20,9 @@ styleeditor-save-button = 保存
     .accesskey = S
 styleeditor-options-button =
     .tooltiptext = 风格编辑器选项
-styleeditor-at-rules = 在-右上外侧
+styleeditor-at-rules = 在-规则
 styleeditor-no-stylesheet = 这页有无风格工作表.
-styleeditor-no-stylesheet-tip = 也许 (=you had)(=you would) 相似的到 <a data-l10n-name="append-new-stylesheet">附加一个新的风格工作表</a>?
+styleeditor-no-stylesheet-tip = 也许你将相似的到 <a data-l10n-name="append-new-stylesheet">附加一个新的风格工作表</a>?
 styleeditor-open-link-new-tab =
     .label = 打开连接在新的 Tab
 styleeditor-copy-url =
@@ -45,7 +45,7 @@ styleeditor-stylesheet-all-filtered = 无匹配风格工作表有是发现.
 styleeditor-stylesheet-rule-count =
     { $ruleCount ->
         [one] { $ruleCount } 规则.
-       *[other] { $ruleCount } 右上外侧.
+       *[other] { $ruleCount } 规则.
     }
 
 # Title for the pretty print button in the editor footer.

@@ -81,7 +81,7 @@ fonts-proportional-header = 比例的
 fonts-default-serif =
     .label = 衬线
 fonts-default-sans-serif =
-    .label = 没有衬线
+    .label = 存储区域网衬线
 
 fonts-proportional-size = 大小
     .accesskey = z
@@ -89,7 +89,7 @@ fonts-proportional-size = 大小
 fonts-serif = 衬线
     .accesskey = S
 
-fonts-sans-serif = 没有-衬线
+fonts-sans-serif = 存储区域网-衬线
     .accesskey = n
 
 fonts-monospace = 单间隔

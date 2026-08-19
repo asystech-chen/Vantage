@@ -37,7 +37,7 @@ sidebar-history-site-localhost =
   .heading = (本地的文件)
 
 sidebar-history-delete =
-  .title = Delete 从历史记录
+  .title = 删除从历史记录
 
 sidebar-history-clear =
   .label = 清除历史记录
@@ -98,7 +98,7 @@ sidebar-context-menu-open-in-window =
 sidebar-context-menu-open-in-private-window =
   .label = 打开在新的私人的窗口
 sidebar-context-menu-forget-site =
-  .label = 清除所有的资料为了网站（全球资讯网的主机站）…
+  .label = 清除所有的论据为了网站（全球资讯网的主机站）…
 sidebar-context-menu-bookmark-tab =
   .label = 书签 Tab…
 sidebar-context-menu-copy-link =
@@ -121,20 +121,20 @@ sidebar-context-menu-unpin-extension =
 ## Labels for sidebar history context menu items
 
 sidebar-history-context-menu-delete-page-2 =
-  .label = Delete 页从历史记录
+  .label = 删除页从历史记录
 sidebar-history-context-menu-bookmark-page =
   .label = 书签页…
 sidebar-history-context-menu-delete-pages =
-  .label = Delete 页从历史记录
+  .label = 删除页从历史记录
 
 ## Labels for sidebar bookmarks context menu items
 
 sidebar-bookmarks-context-menu-edit-bookmark =
   .label = 编辑书签…
 sidebar-bookmarks-context-menu-delete-bookmark =
-  .label = Delete 书签
+  .label = 删除书签
 sidebar-bookmarks-context-menu-delete-separator =
-  .label = Delete
+  .label = 删除
 
 ## Labels for sidebar menu items.
 
@@ -143,7 +143,7 @@ sidebar-menu-genai-chat-label =
 sidebar-menu-history-label =
   .label = 历史记录
 sidebar-menu-synced-tabs-label =
-  .label = 标签页从其他的德维克（男子名、姓氏）
+  .label = 标签页从其他的装置
 # Label for the Open Tabs panel in the sidebar tools list and customize
 # menu. "Open tabs" is a noun phrase referring to the tabs currently open
 # in the browser, not an instruction to open tabs.
@@ -200,7 +200,7 @@ sidebar-menu-customize-header =
 sidebar-menu-history-header =
   .heading = 历史记录
 sidebar-menu-syncedtabs-header =
-  .heading = 标签页从其他的德维克（男子名、姓氏）
+  .heading = 标签页从其他的装置
 # Heading shown at the top of the Open Tabs sidebar panel. "Open tabs"
 # refers to the tabs currently open in the browser.
 sidebar-menu-open-tabs-header =
@@ -221,7 +221,7 @@ sidebar-bookmarks-folder-mobile = 移动的书签
 
 sidebar-customize-title = 定制其他选项
 sidebar-history-title = 历史记录
-sidebar-syncedtabs-title = 标签页从其他的德维克（男子名、姓氏）
+sidebar-syncedtabs-title = 标签页从其他的装置
 # Title of the Open Tabs sidebar panel. "Open tabs" refers to the tabs
 # currently open in the browser.
 sidebar-opentabs-title = 打开标签页
@@ -229,7 +229,7 @@ sidebar-opentabs-title = 打开标签页
 # Title attribute for the pinned tabs section in the Open Tabs sidebar
 # panel.
 sidebar-opentabs-pinned-tabs =
-  .title = 用针别住(pin的过去分词) 标签页
+  .title = 用针别住标签页
 
 # Heading shown above the tab list for the currently focused window
 # in the Open Tabs sidebar panel.

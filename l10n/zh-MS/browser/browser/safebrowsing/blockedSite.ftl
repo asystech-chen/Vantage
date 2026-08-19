@@ -9,13 +9,13 @@ safeb-blocked-harmful-page-title = 那位置领先的可以包含恶意软件
 safeb-blocked-addon-page-title = 位置阻止为了你的安全
 safeb-blocked-phishing-page-short-desc = { -brand-short-name } 阻止这页因为它可以愚弄你进入...之内行为某事危险的相似的安装软设备或暴露的私人的信息相似的密码或信用量卡片.
 safeb-blocked-malware-page-short-desc = { -brand-short-name } 阻止这页因为它可能尝试到安装怀恶意的软设备那可以剽窃或删除私人的信息在你的计算机.
-safeb-blocked-unwanted-page-short-desc = { -brand-short-name } 阻止这页因为它可能试到愚弄你进入...之内安装程序那伤害你的浏览经历 (为了例子, 由更改你的主页或显示额外的事物精确定义系统在坐你拜访).
-safeb-blocked-harmful-page-short-desc = { -brand-short-name } 阻止这页因为它可能试到安装危险的应用程序那剽窃或删除你的信息 (为了例子, 照片, 密码, 报文和信用量卡片).
+safeb-blocked-unwanted-page-short-desc = { -brand-short-name } 阻止这页因为它可能试到愚弄你进入...之内安装程序那伤害你的浏览经历 (为了例子, 由更改你的主页或显示额外的事物精确定义系统在位置你拜访).
+safeb-blocked-harmful-page-short-desc = { -brand-short-name } 阻止这页因为它可能试到安装危险的应用那剽窃或删除你的信息 (为了例子, 相片, 密码, 报文和信用量卡片).
 safeb-blocked-addon-page-short-desc = { -brand-short-name } 阻止这页因为一(个) 的你的添加-ons 尝试到打开它. 此站点能够是使用到剽窃你的信息—相似的密码或信用量卡片数字.
 # Variables:
 #   $advisoryname (string) - Name of the advisory entity
 safeb-palm-advisory-desc = 顾问的倘若由 <a data-l10n-name='advisory_provider'>{ $advisoryname }</a>.
-safeb-palm-accept-label = 去后面的
+safeb-palm-accept-label = 去回
 safeb-palm-see-details-label = 看见详细数据
 
 ## Variables
@@ -23,7 +23,7 @@ safeb-palm-see-details-label = 看见详细数据
 
 safeb-blocked-phishing-page-error-desc-override = <span data-l10n-name='sitename'>{ $sitename }</span> 有是 <a data-l10n-name='error_desc_link'>报告的作为一个迷惑的位置</a>. 你能 <a data-l10n-name='report_detection'>报告一个检波问题</a> 或 <a data-l10n-name='ignore_warning_link'>忽略那冒险</a> 和去到这不安全的位置.
 safeb-blocked-phishing-page-error-desc-no-override = <span data-l10n-name='sitename'>{ $sitename }</span> 有是 <a data-l10n-name='error_desc_link'>报告的作为一个迷惑的位置</a>. 你能 <a data-l10n-name='report_detection'>报告一个检波问题</a>.
-safeb-blocked-phishing-page-learn-more = 学习更多关于迷惑的坐和网络仿冒在 <a data-l10n-name='learn_more_link'>全球信息网.antiphishing.org</a>. 学习更多关于 { -brand-short-name }'s 网络仿冒和恶意软件保护在 <a data-l10n-name='firefox_support'>支持.摩斯拉.org</a>.
+safeb-blocked-phishing-page-learn-more = 学习更多关于迷惑的位置和网络仿冒在 <a data-l10n-name='learn_more_link'>全球信息网.antiphishing.org</a>. 学习更多关于 { -brand-short-name }'s 网络仿冒和恶意软件保护在 <a data-l10n-name='firefox_support'>支持.摩斯拉.org</a>.
 
 safeb-blocked-malware-page-error-desc-override-sumo = <span data-l10n-name='sitename'>{ $sitename }</span> 有是 <a data-l10n-name='error_desc_link'>报告的作为包含怀恶意的软设备</a>. 你能 <a data-l10n-name='ignore_warning_link'>忽略那冒险</a> 和去到这不安全的位置.
 safeb-blocked-malware-page-error-desc-no-override-sumo = <span data-l10n-name='sitename'>{ $sitename }</span> 有是 <a data-l10n-name='error_desc_link'>报告的作为包含怀恶意的软设备</a>.

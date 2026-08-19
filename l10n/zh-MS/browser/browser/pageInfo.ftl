@@ -3,7 +3,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/. --
 
 page-info-window =
-    .style = 宽度: 600专用小交换机（Private Exchange）; 部长（Minister）-高度: 550专用小交换机（Private Exchange）;
+    .style = 宽度: 600专用小交换机; 部长-高度: 550专用小交换机;
 
 copy =
     .key = C
@@ -98,7 +98,7 @@ security-view-identity-domain =
 security-view-identity-verifier =
     .value = 已查清的由:
 security-view-identity-validity =
-    .value = 期满( expire的第三人称单数 ) 在:
+    .value = 期满在:
 security-view-privacy =
     .value = 隐私 & 历史记录
 security-view-qwac =
@@ -164,7 +164,7 @@ general-strict-mode =
     .value = 标准遵从模式
 page-info-security-no-owner =
     .value = 这网站（全球资讯网的主机站）做不补给所有权信息.
-media-select-folder = 选择一个文件夹到保存那复数虚部
+media-select-folder = 选择一个文件夹到保存那图象
 media-unknown-not-cached =
     .value = 不知道的 (不贮藏起来)
 permissions-use-default =
@@ -178,7 +178,7 @@ general-meta-tags =
     .value =
         { $tags ->
              [one] Meta (1 标记)
-            *[other] Meta ({ $tags } 标签)
+            *[other] Meta ({ $tags } 标记)
         }
 
 # This string is used to display the number of times
@@ -189,7 +189,7 @@ security-visits-number =
     { $visits ->
          [0] 无
          [one] 是, 一次
-        *[other] 是, { $visits } 蒂姆（男子名）
+        *[other] 是, { $visits } 时间
     }
 
 # This string is used to display the size of a media file
@@ -199,7 +199,7 @@ security-visits-number =
 properties-general-size =
     .value = { $bytes ->
          [one] { $kb } KB ({ $bytes } 字节)
-        *[other] { $kb } KB ({ $bytes } bright young things 年轻人用品（英国较年轻者的用品）)
+        *[other] { $kb } KB ({ $bytes } 字节)
     }
 
 # This string is used to display the type and number
@@ -210,7 +210,7 @@ properties-general-size =
 media-animated-image-type =
     .value = { $frames ->
          [one] { $type } 图象 (活生生的, { $frames } 框架)
-        *[other] { $type } 图象 (活生生的, { $frames } 故障估计机（Failure Rate Assessment Machine）)
+        *[other] { $type } 图象 (活生生的, { $frames } 框架)
     }
 
 # This string is used to display the type of
@@ -228,14 +228,14 @@ media-image-type =
 #   $scaledx (number) - The scaled horizontal size of an image
 #   $scaledy (number) - The scaled vertical size of an image
 media-dimensions-scaled =
-    .value = { $dimx }专用小交换机（Private Exchange）× { $dimy }专用小交换机（Private Exchange） (有鳞(斑)的到 { $scaledx }专用小交换机（Private Exchange）× { $scaledy }专用小交换机（Private Exchange）)
+    .value = { $dimx }专用小交换机× { $dimy }专用小交换机 (有鳞(斑)的到 { $scaledx }专用小交换机× { $scaledy }专用小交换机)
 
 # This string is used to display the size of an image in pixels
 # Variables:
 #   $dimx (number) - The horizontal size of an image
 #   $dimy (number) - The vertical size of an image
 media-dimensions =
-    .value = { $dimx }专用小交换机（Private Exchange）× { $dimy }专用小交换机（Private Exchange）
+    .value = { $dimx }专用小交换机× { $dimy }专用小交换机
 
 # This string is used to display the size of a media
 # file in kilobytes

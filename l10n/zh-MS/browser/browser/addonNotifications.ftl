@@ -2,18 +2,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-xpinstall-prompt = { -brand-short-name } 预防( prevent的过去式和过去分词 ) 此站点从请求你到安装软设备在你的计算机.
+xpinstall-prompt = { -brand-short-name } 预防此站点从请求你到安装软设备在你的计算机.
 
 ## Variables:
 ##   $host (String): The hostname of the site the add-on is being installed from.
 
 xpinstall-prompt-header = 允许 { $host } 到安装附加组件?
-xpinstall-prompt-message = 你是试图( attempt的现在分词 ) 到安装附加组件从 { $host }. 确保你信任此站点继续之前.
+xpinstall-prompt-message = 你是试图到安装附加组件从 { $host }. 确保你信任此站点继续之前.
 
 ##
 
 xpinstall-prompt-header-unknown = 允许一个未知物位置到安装附加组件?
-xpinstall-prompt-message-unknown = 你是试图( attempt的现在分词 ) 到安装附加组件从一个未知物位置. 确保你信任此站点继续之前.
+xpinstall-prompt-message-unknown = 你是试图到安装附加组件从一个未知物位置. 确保你信任此站点继续之前.
 
 xpinstall-prompt-dont-allow =
     .label = 不要允许
@@ -35,10 +35,10 @@ xpinstall-prompt-install =
 
 # These messages are shown when a website invokes navigator.requestMIDIAccess.
 
-site-permission-install-first-prompt-midi-header = 此站点是要求访问到你的 MIDI (音乐片工具数字接口) 德维克（男子名、姓氏）. 装置访问能是启用由安装一个 add-on.
+site-permission-install-first-prompt-midi-header = 此站点是要求访问到你的 MIDI (音乐片工具数字接口) 装置. 装置访问能是启用由安装一个 add-on.
 site-permission-install-first-prompt-midi-message = 这访问是不有保证的到是保险箱. 仅继续如果你信任此站点.
 
-site-permission-install-first-prompt-serial-header = 此站点是要求访问到你的连续的德维克（男子名、姓氏）. 装置访问能是启用由安装一个 add-on.
+site-permission-install-first-prompt-serial-header = 此站点是要求访问到你的连续的装置. 装置访问能是启用由安装一个 add-on.
 site-permission-install-first-prompt-serial-message = 这访问是不有保证的到是保险箱. 仅继续如果你信任此站点.
 
 ##
@@ -55,7 +55,7 @@ xpinstall-disabled-button =
 #   $addonId (String): the ID of add-on.
 addon-installation-blocked-by-policy = { $addonName } ({ $addonId }) 是阻止由你的组织.
 # This message is shown when the installation of add-ons from a domain is blocked by enterprise policy.
-addon-install-domain-blocked-by-policy = 你的组织预防( prevent的过去式和过去分词 ) 此站点从请求你到安装软设备在你的计算机.
+addon-install-domain-blocked-by-policy = 你的组织预防此站点从请求你到安装软设备在你的计算机.
 addon-install-full-screen-blocked = 添加-on 安装是不允许一会儿在或在...之前进入 fullscreen 模式.
 
 # Variables:
@@ -85,7 +85,7 @@ addon-mlmodel-removal-body = 如果你使用那特性或扩展名那使用这模
 addon-downloading-and-verifying =
     { $addonCount ->
         [1] 下装和检验 add-on…
-       *[other] 下装和检验 { $addonCount } 添加-奥运信息服务（Olympic News Service）…
+       *[other] 下装和检验 { $addonCount } 添加-奥运信息服务…
     }
 addon-download-verifying = 检验
 
@@ -124,7 +124,7 @@ addon-install-error-network-failure = 那 add-on 能够不是将（程序因为�
 addon-install-error-incorrect-hash = 那 add-on 能够不是安装因为它做不比较那 add-on { -brand-short-name } 预期的.
 addon-install-error-corrupt-file = 那 add-on 将（程序从此站点能够不是安装因为它出现到是腐败的.
 addon-install-error-file-access = { $addonName } 能够不是安装因为 { -brand-short-name } 无法修改那需要的文件.
-addon-install-error-not-signed = { -brand-short-name } 有预防( prevent的过去式和过去分词 ) 此站点从安装一个未经核对的 add-on.
+addon-install-error-not-signed = { -brand-short-name } 有预防此站点从安装一个未经核对的 add-on.
 addon-install-error-invalid-domain = 那 add-on { $addonName } 能不是安装从这位置.
 addon-install-error-no-addon-name-file-access = 那 add-on 能够不是安装因为 { -brand-short-name } 无法修改那需要的文件.
 addon-local-install-error-network-failure = 这 add-on 能够不是安装因为的一个文件系统错误.
@@ -136,7 +136,7 @@ addon-local-install-no-addon-name-error-file-access = 那 add-on 能够不是安
 # Variables:
 #   $appVersion (String): the application version.
 addon-install-error-incompatible = { $addonName } 能够不是安装因为它是不相容的与 { -brand-short-name } { $appVersion }.
-addon-install-error-hard-blocked = { $addonName } 亵渎( violate的第三人称单数 ) Mozilla's 政策和不能是安装在 { -brand-short-name }.
+addon-install-error-hard-blocked = { $addonName } 违犯 Mozilla's 政策和不能是安装在 { -brand-short-name }.
 addon-install-error-soft-blocked2 = { $addonName } 是受限制的和不能是安装在 { -brand-short-name }.
 # Enterprise policies is a feature aimed at system administrators who want to deploy custom settings for Firefox.
 addon-install-error-admin-install-only = 你无法安装 { $addonName } 作为一个端用户, 它能仅是安装由一个组织使用企业政策.

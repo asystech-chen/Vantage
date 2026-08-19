@@ -29,12 +29,12 @@ about-webauthn-results-pin-invalid-error =
         [one] 错误: 不正确的 PIN. 尝试再一次. 你有一(个) 尝试许可.
        *[other] 错误: 不正确的 PIN. 尝试再一次. 你有 { $retriesLeft } 尝试许可.
     }
-about-webauthn-results-pin-blocked-error = 错误: 那里是无尝试许可和你的装置有是上锁的, 因为那错误的 PIN 曾是倘若也多数蒂姆（男子名）. 那装置需要一个重置.
+about-webauthn-results-pin-blocked-error = 错误: 那里是无尝试许可和你的装置有是上锁的, 因为那错误的 PIN 曾是倘若也多数时间. 那装置需要一个重置.
 about-webauthn-results-pin-not-set-error = 错误: PIN 不放. 这运算需要 PIN 保护.
 about-webauthn-results-pin-too-short-error = 错误: 那赠予的 PIN 是也短的.
 about-webauthn-results-pin-too-long-error = 错误: 那赠予的 PIN 是也长.
-about-webauthn-results-pin-auth-blocked-error = 错误: 那里曾是也多数失败的尝试在一个行和 PIN 验证有是暂时阻止. 你的装置需要一个力环路 (拔开...的塞子和赖斯编码-insert).
-about-webauthn-results-cancelled-by-user-error = 错误: 运算有是取消( cancel的过去式和过去分词 ) 由那用户.
+about-webauthn-results-pin-auth-blocked-error = 错误: 那里曾是也多数失败的尝试在一个行和 PIN 验证有是暂时阻止. 你的装置需要一个功率环路 (拔开...的塞子和赖斯编码-insert).
+about-webauthn-results-cancelled-by-user-error = 错误: 运算有是取消由那用户.
 
 
 about-webauthn-new-pin-label = 新的 PIN:
@@ -55,7 +55,7 @@ about-webauthn-list-bio-enrollments-button = 列表登记
 about-webauthn-add-bio-enrollment-button = 添加登记
 about-webauthn-cancel-button = 取消
 about-webauthn-send-pin-button = OK
-about-webauthn-delete-button = Delete
+about-webauthn-delete-button = 删除
 about-webauthn-start-enrollment-button = 启动登记
 about-webauthn-update-button = 更新
 
@@ -70,7 +70,7 @@ about-webauthn-auth-option-nomcgapermissionswithclientpin = 无 MakeCredential /
 about-webauthn-auth-option-largeblobs = 大的一滴
 about-webauthn-auth-option-ep = 企业证明
 about-webauthn-auth-option-bioenroll = 计量生物学登记
-about-webauthn-auth-option-userverificationmgmtpreview = 样机的计量生物学登记 (有铸造缺陷的硬币_2_1_炼油工程师（Petroleum Refining Engineer）)
+about-webauthn-auth-option-userverificationmgmtpreview = 样机的计量生物学登记 (有铸造缺陷的硬币_2_1_炼油工程师)
 about-webauthn-auth-option-uvbioenroll = 计量生物学登记许可
 about-webauthn-auth-option-authnrcfg = 鉴别符显示配置信息命令
 about-webauthn-auth-option-uvacfg = 鉴别符显示配置信息命令许可
@@ -89,7 +89,7 @@ about-webauthn-auth-info-remaining-discoverable-credentials = 剩余的发现的
 about-webauthn-auth-info-certifications = 证明
 about-webauthn-auth-info-uv-modality = 用户验证样式
 about-webauthn-auth-info-preferred-platform-uv-attempts = 首选的平台用户验证尝试
-about-webauthn-auth-info-max-rpids-for-set-min-pin-length = 最大信任( rely的现在分词 ) 宴会标识部分（Identification Section）为了日落最小值 PIN 记录长度
+about-webauthn-auth-info-max-rpids-for-set-min-pin-length = 最大信任宴会标识部分为了日落最小值 PIN 记录长度
 about-webauthn-auth-info-max-cred-blob-length = 最大国书一滴记录长度
 about-webauthn-auth-info-firmware-version = 固件版本
 about-webauthn-auth-info-min-pin-length = 最小值 PIN 记录长度
@@ -112,7 +112,7 @@ about-webauthn-auth-info-null = 不被支持的
 about-webauthn-samples-still-needed =
     { $repeatCount ->
         [one] { $repeatCount } 示例仍然需要的.
-       *[other] { $repeatCount } 样品仍然需要的.
+       *[other] { $repeatCount } 示例仍然需要的.
     }
 
 about-webauthn-ctap2-enroll-feedback-good = 示例曾是善行.
@@ -127,7 +127,7 @@ about-webauthn-ctap2-enroll-feedback-too-right = 示例曾是也右.
 about-webauthn-ctap2-enroll-feedback-too-fast = 示例曾是也快速的.
 about-webauthn-ctap2-enroll-feedback-too-slow = 示例曾是也慢的.
 about-webauthn-ctap2-enroll-feedback-poor-quality = 示例有贫穷的品质.
-about-webauthn-ctap2-enroll-feedback-too-skewed = 示例曾是也歪曲( skew的过去式和过去分词 ).
+about-webauthn-ctap2-enroll-feedback-too-skewed = 示例曾是也歪曲.
 about-webauthn-ctap2-enroll-feedback-too-short = 示例曾是也短的.
 about-webauthn-ctap2-enroll-feedback-merge-failure = 示例合并故障.
 about-webauthn-ctap2-enroll-feedback-exists = 示例已经存在.

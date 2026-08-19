@@ -12,11 +12,11 @@ callout-primary-complete-button-label = 获得它!
 
 # "Tab pickup" refers to the section in Firefox View that displays open
 # tabs from other devices
-callout-firefox-view-tab-pickup-title = 跳跃式传输在...之间德维克（男子名、姓氏）与标签页拾起
+callout-firefox-view-tab-pickup-title = 跳跃式传输在...之间装置与标签页拾起
 
 callout-firefox-view-tab-pickup-subtitle = 很快地抓握打开标签页从你的电话和打开他们这里为了最大值流程.
 
-callout-firefox-view-recently-closed-title = 获得后面的你的关闭标签页在一个子网访问协议
+callout-firefox-view-recently-closed-title = 获得回你的关闭标签页在一个子网访问协议
 
 callout-firefox-view-recently-closed-subtitle = 所有的你的关闭标签页将用魔法地显示向上的这里. 从不担心关于偶然地关闭一个位置再一次.
 
@@ -33,21 +33,21 @@ continuous-onboarding-firefox-view-tab-pickup-primary-button-label = 获得启�
 
 ## PDF.js Feature Tour Strings
 
-callout-pdfjs-edit-title = 编辑 PDFs 与我们的新的电文工具
-callout-pdfjs-edit-body-a = 填充外面的表单, 添加备注, 或采取不直接的在 { -brand-short-name }.
-callout-pdfjs-edit-body-b = 跳过那搜索为了自由的联机编辑器. 填充外面的表单, 添加备注, 或采取不直接的在 { -brand-short-name }.
+callout-pdfjs-edit-title = 编辑概率分部函数与我们的新的电文工具
+callout-pdfjs-edit-body-a = 填充外面的表单, 添加备注, 或采取笔记直接的在 { -brand-short-name }.
+callout-pdfjs-edit-body-b = 跳过那搜索为了自由的联机编辑器. 填充外面的表单, 添加备注, 或采取笔记直接的在 { -brand-short-name }.
 callout-pdfjs-edit-button = 近邻干扰
 
 callout-pdfjs-draw-title = 正负号文档与我们的新的翻牌工具
 # “Mark up” refers to the process of “annotating” or adding free hand text or diagramming to the document.
-callout-pdfjs-draw-body-a = 标志向上的 PDFs, 然后保存你的更改.
+callout-pdfjs-draw-body-a = 标志向上的概率分部函数, 然后保存你的更改.
 # “Mark up” refers to the process of “annotating” or adding free hand text or diagramming to the document.
-callout-pdfjs-draw-body-b = 无更多打印和扫描. 标志向上的 PDFs, 然后保存你的更改.
+callout-pdfjs-draw-body-b = 无更多打印和扫描. 标志向上的概率分部函数, 然后保存你的更改.
 callout-pdfjs-draw-button = 获得它!
 
 ## Firefox View Discoverability Strings
 
-fx-view-discoverability-title = did not 没有低劣的到关闭那标签页?
+fx-view-discoverability-title = 没有低劣的到关闭那标签页?
 fx-view-discoverability-subtitle = 发现和重开它很快地这里. 我们保持一个历史记录的你的最近关闭标签页为了你.
 fx-view-discoverability-primary-button-label = 打开 { -firefoxview-brand-name }
 fx-view-discoverability-secondary-button-label = 解散
@@ -58,12 +58,12 @@ sidebar-button-callout-title = 显示标签页标题在那其他选项
 sidebar-button-callout-subtitle = 使用那其他选项按钮到使膨胀那其他选项, 如此你能看见标签页标题.
 sidebar-button-callout-vertical-tabs = 到显示你的标签页, 选择那其他选项按钮在那工具栏.
 sidebar-deprecation-callout-title = 更新的其他选项来临不久
-sidebar-deprecation-callout-subtitle = (we are 的常用口语形式) 定相外面的那其他选项版本 you are 你（你们）是当前使用. 尝试那更新的其他选项. 它是加快和你获得访问到更多工具.
+sidebar-deprecation-callout-subtitle = 我们是定相外面的那其他选项版本你是当前使用. 尝试那更新的其他选项. 它是加快和你获得访问到更多工具.
 sidebar-deprecation-cta-button = 尝试它现在
 
 ## Sidebar Vertical Tabs Strings
 
-vertical-tabs-callout-1-title = 淹没( overwhelm的过去式和过去分词 ) 由也多数标签页?
+vertical-tabs-callout-1-title = 淹没由也多数标签页?
 vertical-tabs-callout-1-subtitle = 尝试我们的新的垂直的标签页页面布局到很快地网络软件目录你的列表的标签页. 早的考试人报告这页面布局帮忙他们感觉更多有组织的. 开关任何时候.
 vertical-tabs-callout-1-cta-button = 尝试垂直的标签页
 vertical-tabs-callout-2-cta-button = 尝试现在
@@ -84,13 +84,13 @@ pin-tabs-callout-cta-1-button = 大头针这标签页
 pin-tabs-callout-2-title = 大头针标签页你拜访那最多
 pin-tabs-callout-2-subtitle = 到将...用针别住任何的标签页, 拖动它到那启动的那标签页长条. 或右-click 和选取大头针 Tab.
 pin-tabs-callout-cta-2-button = 大头针这标签页
-pin-tabs-callout-3-title = 保持要点坐内部伸出
-pin-tabs-callout-4-title = 大头针坐你拜访那最多
+pin-tabs-callout-3-title = 保持要点位置内部伸出
+pin-tabs-callout-4-title = 大头针位置你拜访那最多
 
 ## Sidebar Onboarding Strings
 
 sidebar-customization-callout-1-title = 其他选项: 你的污点为了工具和标签页
-sidebar-customization-callout-1-subtitle = 那 { -brand-product-name } 其他选项千兆(电子)伏特(giga(electron)volts) 你快的访问到你的浏览历史, 标签页从其他的德维克（男子名、姓氏）, 和一个 AI chatbot —所有的外面离开你的主群组查看.
+sidebar-customization-callout-1-subtitle = 那 { -brand-product-name } 其他选项弹性你快的访问到你的浏览历史, 标签页从其他的装置, 和一个 AI chatbot —所有的外面离开你的主群组查看.
 sidebar-customization-callout-callout-button = 定制其他选项
 sidebar-customization-callout-dismiss-button = 隐藏其他选项
 sidebar-customization-callout-2-title = 使那 { -brand-product-name } 其他选项你的自己的
@@ -131,17 +131,17 @@ sidebar-genai-survey-productive-question =
 
 # Split View Onboarding Strings
 
-splitview-onboarding-callout-title-1 = 拆分查看: 一个较好的路到使处理多重任务
+splitview-onboarding-callout-title-1 = 拆分查看: 一个较好的方式到使处理多重任务
 splitview-onboarding-callout-subtitle-1 = 右单击这标签页和选取“添加拆分查看”到看见二标签页在一次.
 splitview-onboarding-callout-cta-1 = 尝试它现在
 
 splitview-onboarding-callout-title-2 = 看见二标签页在一次与拆分查看
-splitview-onboarding-callout-subtitle-2 = 无额外的事物窗口. 无标签页 adj .讨厌之极的. 右-click 这标签页和选取“添加拆分查看.”
+splitview-onboarding-callout-subtitle-2 = 无额外的事物窗. 无标签页 adj .讨厌之极的. 右-click 这标签页和选取“添加拆分查看.”
 splitview-onboarding-callout-cta-2 = 尝试拆分查看
 
 # Unified Search Button callout strings
 
-unified-search-callout-title = 开关在...之间搜索工程
+unified-search-callout-title = 开关在...之间搜索引擎
 unified-search-callout-subtitle = 选取什么工作最好的为了你的特效药搜索.
 unified-search-callout-primary-label = 近邻干扰
 unified-search-callout-secondary-label = 解散
@@ -180,7 +180,7 @@ split-dismiss-button-manage-settings-option =
 # The 'account icon' is the toolbar button with a 'profile' icon of a human
 # head/shoulders. It's for dealing with your Mozilla account. When hovering the
 # icon, the tooltip says 'Account'.
-login-status-advisory-title = you are 你（你们）是有符号的外面的. 单击那帐户像标到正负号在.
+login-status-advisory-title = 你是有符号的外面的. 单击那帐户像标到正负号在.
 
 ## Bookmarks toolbar callout strings
 
@@ -190,13 +190,13 @@ bookmarks-toolbar-callout-1-primary-button-label = 添加书签
 bookmarks-toolbar-callout-1-secondary-button-label = 无谢意
 # Visible if user adds a bookmark in callout 1, bookmarks toolbar is set to always show when this message renders
 bookmarks-toolbar-callout-2a-title = 容易地添加更多书签
-bookmarks-toolbar-callout-2a-subtitle = 你能拖动和投入标签页这里到保持更多的你的喜欢的事物坐内部伸出.
+bookmarks-toolbar-callout-2a-subtitle = 你能拖动和投入标签页这里到保持更多的你的喜欢的事物位置内部伸出.
 bookmarks-toolbar-callout-2a-primary-button-label = 获得它
 # Reverts the bookmarks toolbar to the default setting
 bookmarks-toolbar-callout-2a-secondary-button-label = 隐藏工具栏
 # Visible if user declines to add a bookmark in callout 1, bookmarks toolbar is set to always show when this message renders
 bookmarks-toolbar-callout-2b-title = 保持你的书签工具栏打开?
-bookmarks-toolbar-callout-2b-subtitle = 你能添加其他的坐你拜访更多时常. 简单地拖动和投入标签页这里到保持喜欢的事物网站（全球资讯网的主机站）内部伸出.
+bookmarks-toolbar-callout-2b-subtitle = 你能添加其他的位置你拜访更多时常. 简单地拖动和投入标签页这里到保持喜欢的事物网站（全球资讯网的主机站）内部伸出.
 bookmarks-toolbar-callout-2b-primary-button-label = 保持打开
 # Reverts the bookmarks toolbar to the default setting
 bookmarks-toolbar-callout-2b-secondary-button-label = 无谢意
@@ -204,12 +204,12 @@ bookmarks-toolbar-callout-2b-secondary-button-label = 无谢意
 ## Perplexity callout strings
 
 perplexity-callout-theme-1-title = 需要那右用户问题及答案新闻组, 右离去?
-perplexity-callout-theme-2-title = 尝试困惑: 一个新的路到搜索
+perplexity-callout-theme-2-title = 尝试困惑: 一个新的方式到搜索
 
-perplexity-callout-theme-1-subtitle-1 = 尝试困惑. 选取它从那搜索按钮何时你想要完全的用户问题及答案新闻组, 输入源包含的.
+perplexity-callout-theme-1-subtitle-1 = 尝试困惑. 选取它从那搜索按钮何时你想要完全的用户问题及答案新闻组, 来源包含的.
 perplexity-callout-theme-1-subtitle-2 = 询问询问. 获得完全的, 井-cited 用户问题及答案新闻组. 到试困惑, 选取它从那搜索按钮.
 
-perplexity-callout-theme-2-subtitle-1 = 询问困惑. (=you will 获得完全的用户问题及答案新闻组, 输入源包含的.
+perplexity-callout-theme-2-subtitle-1 = 询问困惑. 你将获得完全的用户问题及答案新闻组, 来源包含的.
 perplexity-callout-theme-2-subtitle-2 = 询问询问. 获得完全的, 井-cited 用户问题及答案新闻组.
 
 perplexity-callout-primary-label = 询问困惑
@@ -227,33 +227,33 @@ start-page-callout-secondary-label = 解散
 ## Account Adoption Passwords callout strings
 
 # Suggestion to backup passwords by signing up for Mozilla account and using sync
-fxa-adoption-passwords-title = 密码保存. let us 让我们后面的它向上的.
-fxa-adoption-passwords-subtitle = 防卫你的密码由 syncing 他们到你的德维克（男子名、姓氏）与加密.
+fxa-adoption-passwords-title = 密码保存. 让我们回它向上的.
+fxa-adoption-passwords-subtitle = 防卫你的密码由【电影、电视】他们到你的装置与加密.
 # Opens Mozilla accounts sign-up page
 fxa-adoption-passwords-primary-button-label = 正负号向上的
 
 ## Taskbar Tabs callout strings
 
 taskbar-tabs-social-callout-title = 保持你的喜欢的事物送纸在你的任务栏
-taskbar-tabs-social-callout-subtitle = 下水你的联欢会坐相似的一个应用在一个流线的窗口受保护的由 { -brand-short-name }.
+taskbar-tabs-social-callout-subtitle = 下水你的联欢会位置相似的一个应用在一个流线的窗口受保护的由 { -brand-short-name }.
 
 taskbar-tabs-chat-callout-title = 闲谈从你的任务栏
-taskbar-tabs-chat-callout-subtitle = 下水你的闲谈坐相似的一个应用在一个流线的窗口受保护的由 { -brand-short-name }.
+taskbar-tabs-chat-callout-subtitle = 下水你的闲谈位置相似的一个应用在一个流线的窗口受保护的由 { -brand-short-name }.
 
 taskbar-tabs-email-callout-title = 保持你的电子信函在你的任务栏
 taskbar-tabs-email-callout-subtitle = 下水你的 webmail 相似的一个应用在一个流线的窗口受保护的由 { -brand-short-name }.
 
-taskbar-tabs-media-callout-title = 获得后面的到流从你的任务栏
-taskbar-tabs-media-callout-subtitle = 下水你的流坐相似的一个应用在一个流线的窗口受保护的由 { -brand-short-name }.
+taskbar-tabs-media-callout-title = 获得回到流从你的任务栏
+taskbar-tabs-media-callout-subtitle = 下水你的流位置相似的一个应用在一个流线的窗口受保护的由 { -brand-short-name }.
 
 taskbar-tabs-value-prop-callout-title = 添加此站点到你的任务栏
 taskbar-tabs-value-prop-callout-subtitle = 下水它在它的自己的窗口和一个简化了的接口与一个单精度型单击.
 
 ## Windows 10 EoS Sync messages group 1 callouts
 
-windows-10-eos-sync-urgency-title-1 = 不要遗失每件事物 you have 你（们）已经保存何时你移动到窗口 11.
+windows-10-eos-sync-urgency-title-1 = 不要遗失每件事物你有保存何时你移动到窗11.
 windows-10-eos-sync-urgency-subtitle-1 = 同步的现在到保持你的 { -brand-short-name } 书签, 密码, 和设置保险箱和容易的到回复.
-windows-10-eos-sync-urgency-title-2 = 叙述再见到窗口 10? 防卫你的资料何时你开关.
+windows-10-eos-sync-urgency-title-2 = 说再见到窗10? 防卫你的论据何时你开关.
 windows-10-eos-sync-urgency-subtitle-2 = 偶数如果你不要使用 { -brand-short-name } 每日的, 同步的到保持书签和密码保险箱和易接近的.
 
 windows-10-eos-sync-new-device-title-1 = 不要冒险开端结束在你的近邻干扰装置.
@@ -262,15 +262,15 @@ windows-10-eos-sync-new-device-title-2 = 动人的到一个新的装置? 不要�
 windows-10-eos-sync-new-device-subtitle-2 = 无事件如何时常你使用 { -brand-short-name }, 【电影、电视】防卫你的书签, 密码, 和设置.
 windows-10-eos-sync-new-device-primary-label = 同步的现在
 
-windows-10-eos-sync-general-title-1 = 防卫那 { -brand-short-name } you have 你（们）已经使你的.
-windows-10-eos-sync-general-subtitle-1 = 后面的向上的和同步的你的密码, 书签, 设置, 和其他的资料到保护什么你计数在.
-windows-10-eos-sync-general-title-2 = Now's 一个善行时间到使后退向上的你的密码和书签.
-windows-10-eos-sync-general-subtitle-2 = 同步的现在到防卫那原料你信任 { -brand-short-name } 与—和获得它使后退无论何处, 任何时候.
+windows-10-eos-sync-general-title-1 = 防卫那 { -brand-short-name } 你有使你的.
+windows-10-eos-sync-general-subtitle-1 = 回向上的和同步的你的密码, 书签, 设置, 和其他的论据到保护什么你计数在.
+windows-10-eos-sync-general-title-2 = Now's 一个善行时间到回向上的你的密码和书签.
+windows-10-eos-sync-general-subtitle-2 = 同步的现在到防卫那原料你信任 { -brand-short-name } 与—和获得它回无论何处, 任何时候.
 
 windows-10-eos-sync-tour-title-1 = 也多数标签页? 椅子的背罩向上的与标签页创建组.
 windows-10-eos-sync-tour-subtitle-1 = 拖动一(个) 标签页在 TOP协议的另外的到创建一个创建组和保持事物有组织的.
-windows-10-eos-sync-tour-title-2 = 获得有组织的为了窗口 11.
-windows-10-eos-sync-tour-subtitle-2 = 同步的你的书签, 密码, 和设置到使后退他们向上的在...之前你开关.
+windows-10-eos-sync-tour-title-2 = 获得有组织的为了窗11.
+windows-10-eos-sync-tour-subtitle-2 = 同步的你的书签, 密码, 和设置到回他们向上的在...之前你开关.
 
 windows-10-eos-sync-split-dismiss-button-show-fewer-option =
     .label = 显示较少的推荐

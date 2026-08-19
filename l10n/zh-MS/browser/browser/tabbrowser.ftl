@@ -108,7 +108,7 @@ tabbrowser-ask-close-tabs-checkbox = 询问在...之前关闭倍数标签页
 #   $windowCount (Number): The number of windows that will be closed.
 tabbrowser-confirm-close-windows-title =
     { $windowCount ->
-       *[other] 关闭 { $windowCount } 窗口?
+       *[other] 关闭 { $windowCount } 窗?
     }
 tabbrowser-confirm-close-windows-button =
     { PLATFORM() ->
@@ -151,13 +151,13 @@ tabbrowser-confirm-open-multiple-tabs-checkbox = 警告我何时打开倍数标�
 ## Confirmation dialog for enabling caret browsing
 
 tabbrowser-confirm-caretbrowsing-title = ^符号浏览
-tabbrowser-confirm-caretbrowsing-message = 紧迫的故障7 转弯 ^符号浏览在或关闭. 这特性 placebo capsule 安慰剂胶囊一个活动的东西光标在网页, 允许（allow的现在分词）你到选择电文与那键盘. 你是否想要到使旋转 ^符号浏览在?
+tabbrowser-confirm-caretbrowsing-message = 紧迫的故障7 转弯 ^符号浏览在或关闭. 这特性地方一个活动的东西光标在网页, 允许你到选择电文与那键盘. 你是否想要到使旋转 ^符号浏览在?
 tabbrowser-confirm-caretbrowsing-checkbox = 做不显示我这对话方框再一次.
 
 ## Confirmation dialog for closing all duplicate tabs
 
 tabbrowser-confirm-close-all-duplicate-tabs-title = 关闭复制标签页?
-tabbrowser-confirm-close-all-duplicate-tabs-text = (we shall或 we will 的常用口语形式) 关闭复制标签页在这窗口. 那最后活跃的
+tabbrowser-confirm-close-all-duplicate-tabs-text = 我们将关闭复制标签页在这窗口. 那最后活跃的
  标签页将制止打开.
 tabbrowser-confirm-close-all-duplicate-tabs-button-closetabs = 关闭标签页
 
@@ -357,7 +357,7 @@ tab-group-editor-action-save =
 tab-group-editor-action-ungroup =
     .label = 取消组标签页
 tab-group-editor-action-delete =
-    .label = Delete 创建组
+    .label = 删除创建组
 tab-group-editor-done =
     .label = 完成了的
     .accessKey = D
@@ -386,7 +386,7 @@ tab-context-ungroup-tab =
 tab-groups-list-create-group-button = 新的创建组
 
 tab-groups-list-empty-header = 椅子的背罩向上的你的标签页
-tab-groups-list-empty-description = 拖动一(个) 标签页在...之上另外的或右-click 一个标签页到启动组织. (we shall或 we will 的常用口语形式) 保存你的创建组这里如此 they are 他们是容易的到发现以后.
+tab-groups-list-empty-description = 拖动一(个) 标签页在...之上另外的或右-click 一个标签页到启动组织. 我们将保存你的创建组这里如此他们是容易的到发现以后.
 tab-groups-list-empty-button = 创建一个标签页创建组
 
 ## Open/saved tab group context menu
@@ -410,7 +410,7 @@ tab-group-context-move-to-this-window =
 # do not save it. For a tab group that is closed but saved by the user, clicking
 # this will forget the saved tab group.
 tab-group-context-delete =
-    .label = Delete 创建组
+    .label = 删除创建组
 
 # For a saved tab group that is not open in any window, open the tab group
 # in the user's current window.
@@ -435,7 +435,7 @@ tab-context-edit-note =
 # but it seems likely to return, so this string is being left in place for now.
 
 tab-context-delete-note =
-    .label = Delete 笔记
+    .label = 删除笔记
     .accesskey = D
 tab-note-editor-title-create = 添加笔记
 tab-note-editor-title-edit = 编辑笔记
@@ -448,8 +448,8 @@ tab-note-editor-button-save =
     .label = 保存
     .accesskey = S
 tab-note-editor-button-delete =
-    .title = Delete 笔记
-    .aria-label = Delete 笔记
+    .title = 删除笔记
+    .aria-label = 删除笔记
     .accesskey = D
 tab-note-preview-edit-icon =
     .alt = 编辑笔记

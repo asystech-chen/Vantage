@@ -35,9 +35,9 @@ content-sharing-modal-title-2 = 部分这些页与任何人
 
 content-sharing-modal-title-signed-in = 你的连接是预备好的状态到均分
 
-content-sharing-modal-description-2 = 正负号在到创建一个容易的到均分页的连接. 它不能是编辑（edit的过去式和过去分词）或删除和期满( expire的第三人称单数 ) 在...之后 7 一生.
+content-sharing-modal-description-2 = 正负号在到创建一个容易的到均分页的连接. 它不能是编辑或删除和期满在...之后 7 天.
 
-content-sharing-modal-description-signed-in = 我们使一个容易的到均分页与你的连接. 它不能是编辑（edit的过去式和过去分词）或删除和期满( expire的第三人称单数 ) 在...之后 7 一生.
+content-sharing-modal-description-signed-in = 我们使一个容易的到均分页与你的连接. 它不能是编辑或删除和期满在...之后 7 天.
 
 content-sharing-modal-policy = 由共享, 你同意到我们的 <a data-l10n-name="aup-link">可接受的使用政策</a>
 
@@ -58,13 +58,13 @@ content-sharing-modal-no-shareable-links =
 content-sharing-modal-too-many-pages =
   .heading =
     { $count ->
-        [one] you have 你（们）已经共享的 { $count } 页
-       *[other] you have 你（们）已经共享的 { $count } 页
+        [one] 你有共享的 { $count } 页
+       *[other] 你有共享的 { $count } 页
     }
-  .message = 尝试再一次在...之后一(个) 的你的页期满( expire的第三人称单数 ).
+  .message = 尝试再一次在...之后一(个) 的你的页期满.
 
 content-sharing-modal-some-invalid-links = 一些连接不能是共享的.
 
 content-sharing-modal-generic-error-2 =
   .heading = 某事去错误的
-  .message = 我们 (=could not)不能创建你的共享的页这时间. 尝试再一次以后.
+  .message = 我们不能创建你的共享的页这时间. 尝试再一次以后.

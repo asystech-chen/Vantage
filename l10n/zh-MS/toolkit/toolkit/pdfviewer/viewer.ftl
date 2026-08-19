@@ -96,9 +96,9 @@ pdfjs-document-properties-button-label = 文档属性…
 pdfjs-document-properties-file-name = 文件名称:
 pdfjs-document-properties-file-size = 文件大小:
 
-pdfjs-document-properties-size-kb = { NUMBER($kb, maximumSignificantDigits: 3) } KB ({ $b } bright young things 年轻人用品（英国较年轻者的用品）)
+pdfjs-document-properties-size-kb = { NUMBER($kb, maximumSignificantDigits: 3) } KB ({ $b } 字节)
 
-pdfjs-document-properties-size-mb = { NUMBER($mb, maximumSignificantDigits: 3) } MB ({ $b } bright young things 年轻人用品（英国较年轻者的用品）)
+pdfjs-document-properties-size-mb = { NUMBER($mb, maximumSignificantDigits: 3) } MB ({ $b } 字节)
 
 pdfjs-document-properties-title = 标题:
 pdfjs-document-properties-author = 作家:
@@ -175,8 +175,8 @@ pdfjs-find-highlight-checkbox = 突出所有的
 pdfjs-find-match-case-checkbox-label = 比较情形
 pdfjs-find-match-diacritics-checkbox-label = 比较可区别的
 pdfjs-find-entire-word-checkbox-label = 全部字
-pdfjs-find-reached-top = 到达( reach的过去式和过去分词 ) TOP协议的文档, 继续的从底部
-pdfjs-find-reached-bottom = 到达( reach的过去式和过去分词 ) 端的文档, 继续的从 TOP协议
+pdfjs-find-reached-top = 到达 TOP协议的文档, 继续的从底部
+pdfjs-find-reached-bottom = 到达端的文档, 继续的从 TOP协议
 
 pdfjs-find-match-count =
     { $total ->
@@ -205,11 +205,11 @@ pdfjs-page-landmark =
     .aria-label = 页 { $page }
 
 
-pdfjs-loading-error = 一个错误发生（occur的过去分词）一会儿装载那 PDF.
+pdfjs-loading-error = 一个错误发生一会儿装载那 PDF.
 pdfjs-invalid-file-error = 病人或毁坏的 PDF 文件.
 pdfjs-missing-file-error = 不见的 PDF 文件.
 pdfjs-unexpected-response-error = 料想不到的服务器应答.
-pdfjs-rendering-error = 一个错误发生（occur的过去分词）一会儿翻译那页.
+pdfjs-rendering-error = 一个错误发生一会儿翻译那页.
 
 
 pdfjs-annotation-date-time-string = { DATETIME($dateObj, dateStyle: "short", timeStyle: "medium") }
@@ -236,8 +236,8 @@ pdfjs-editor-color-picker-ink-input =
     .title = 更改绘图颜色
 pdfjs-editor-ink-button-label = 翻牌
 pdfjs-editor-stamp-button =
-    .title = 添加或编辑复数虚部
-pdfjs-editor-stamp-button-label = 添加或编辑复数虚部
+    .title = 添加或编辑图象
+pdfjs-editor-stamp-button-label = 添加或编辑图象
 pdfjs-editor-highlight-button =
     .title = 突出
 pdfjs-editor-highlight-button-label = 突出
@@ -294,7 +294,7 @@ pdfjs-editor-free-highlight-thickness-input = 厚度
 pdfjs-editor-free-highlight-thickness-title =
     .title = 更改厚度何时突出性项其他的比电文
 pdfjs-editor-add-signature-container =
-    .aria-label = 签名附件控制和保存签名
+    .aria-label = 签名附件控制和保存签名附件
 pdfjs-editor-signature-add-signature-button =
     .title = 添加新的签名附件
 pdfjs-editor-signature-add-signature-button-label = 添加新的签名附件
@@ -330,15 +330,15 @@ pdfjs-editor-alt-text-edit-button =
 pdfjs-editor-alt-text-dialog-label = 选取一个选项
 pdfjs-editor-alt-text-dialog-description = Alt 电文 (选择对象电文) 帮忙何时人不能看见那图象或何时它不加载.
 pdfjs-editor-alt-text-add-description-label = 添加一个描述
-pdfjs-editor-alt-text-add-description-description = 医学文摘索引为了 1-2 判决那描述那主题, 设置, 或操作.
+pdfjs-editor-alt-text-add-description-description = 医学文摘索引为了 1-2 句子那描述那主题, 设置, 或操作.
 pdfjs-editor-alt-text-mark-decorative-label = 标志作为装饰性的
-pdfjs-editor-alt-text-mark-decorative-description = 这是使用为了装饰物复数虚部, 相似的边框或水位标志.
+pdfjs-editor-alt-text-mark-decorative-description = 这是使用为了装饰物图象, 相似的边框或水位标志.
 pdfjs-editor-alt-text-cancel-button = 取消
 pdfjs-editor-alt-text-save-button = 保存
 pdfjs-editor-alt-text-decorative-tooltip = 有记号的作为装饰性的
 
 pdfjs-editor-alt-text-textarea =
-    .placeholder = 为了例子, “一个青年们城域网坐（sit的第三人称单数形式）向下在一个表格到吃一个一餐”
+    .placeholder = 为了例子, “一个青年们城域网坐向下在一个表格到吃一个一餐”
 
 
 pdfjs-editor-resizer-top-left =
@@ -364,7 +364,7 @@ pdfjs-editor-highlight-colorpicker-label = 突出颜色
 pdfjs-editor-colorpicker-button =
     .title = 更改颜色
 pdfjs-editor-colorpicker-dropdown =
-    .aria-label = 颜色选择（choice的复数）
+    .aria-label = 颜色选择
 pdfjs-editor-colorpicker-yellow =
     .title = 黄色
 pdfjs-editor-colorpicker-green =
@@ -396,7 +396,7 @@ pdfjs-editor-new-alt-text-disclaimer-learn-more-url = 学习更多
 
 pdfjs-editor-new-alt-text-create-automatically-button-label = 创建更换电文自动地
 pdfjs-editor-new-alt-text-not-now-button = 不现在
-pdfjs-editor-new-alt-text-error-title = (=could not)不能创建更换电文自动地
+pdfjs-editor-new-alt-text-error-title = 不能创建更换电文自动地
 pdfjs-editor-new-alt-text-error-description = 请书写器你的自己的更换电文或尝试再一次以后.
 pdfjs-editor-new-alt-text-error-close-button = 关闭
 
@@ -429,7 +429,7 @@ pdfjs-editor-alt-text-settings-create-model-description = 提议描述到帮助�
 
 pdfjs-editor-alt-text-settings-editor-title = Alt 电文编辑器
 pdfjs-editor-alt-text-settings-show-dialog-button-label = 显示更换电文编辑器右离去何时加法的一个图象
-pdfjs-editor-alt-text-settings-show-dialog-description = 帮忙你确保所有的你的复数虚部有更换电文.
+pdfjs-editor-alt-text-settings-show-dialog-description = 帮忙你确保所有的你的图象有更换电文.
 pdfjs-editor-alt-text-settings-close-button = 关闭
 
 
@@ -460,7 +460,7 @@ pdfjs-editor-undo-bar-close-button =
 pdfjs-editor-undo-bar-close-button-label = 关闭
 
 
-pdfjs-editor-add-signature-dialog-label = 这模态的允许那用户到创建一个签名附件到添加到一个 PDF 文档. 那用户能编辑那名称 (哪个也服务器作为那更换电文), 和随意地保存那签名附件为了重复的使用.
+pdfjs-editor-add-signature-dialog-label = 这模态的允许那用户到创建一个签名附件到添加到一个 PDF 文档. 那用户能编辑那名称 (哪个也可作...用作为那更换电文), 和随意地保存那签名附件为了重复的使用.
 pdfjs-editor-add-signature-dialog-title = 添加一个签名附件
 
 
@@ -499,8 +499,8 @@ pdfjs-editor-add-signature-clear-button-label = 清除签名附件
 pdfjs-editor-add-signature-clear-button =
     .title = 清除签名附件
 pdfjs-editor-add-signature-save-checkbox = 保存签名附件
-pdfjs-editor-add-signature-save-warning-message = you have 你（们）已经到达( reach的过去式和过去分词 ) 那界限的 5 保存签名. 移除一(个) 到保存更多.
-pdfjs-editor-add-signature-image-upload-error-title = (=could not)不能上装图象
+pdfjs-editor-add-signature-save-warning-message = 你有到达那界限的 5 保存签名附件. 移除一(个) 到保存更多.
+pdfjs-editor-add-signature-image-upload-error-title = 不能上装图象
 pdfjs-editor-add-signature-image-upload-error-description = 复选你的网络连接或尝试另外的图象.
 pdfjs-editor-add-signature-image-no-data-error-title = 不能转换这图象进入...之内一个签名附件
 pdfjs-editor-add-signature-image-no-data-error-description = 请试上传一个不同的图象.
@@ -590,7 +590,7 @@ pdfjs-views-manager-pages-status-none-action-label = 选择页
 pdfjs-views-manager-pages-status-action-button-label = 管理
 pdfjs-views-manager-pages-status-copy-button-label = 复制
 pdfjs-views-manager-pages-status-cut-button-label = 剪切
-pdfjs-views-manager-pages-status-delete-button-label = Delete
+pdfjs-views-manager-pages-status-delete-button-label = 删除
 pdfjs-views-manager-pages-status-export-selected-button-label = 导出被选的…
 
 pdfjs-views-manager-status-undo-cut-label =
@@ -614,10 +614,10 @@ pdfjs-views-manager-pages-status-undo-delete-label =
 pdfjs-views-manager-pages-status-waiting-ready-label = 采煤你的文件预备好的状态…
 pdfjs-views-manager-pages-status-waiting-uploading-label = 上传文件…
 
-pdfjs-views-manager-status-warning-cut-label = (=could not)不能剪切. 刷新页和尝试再一次.
-pdfjs-views-manager-status-warning-copy-label = (=could not)不能复制. 刷新页和尝试再一次.
-pdfjs-views-manager-status-warning-delete-label = (=could not)不能删除. 刷新页和尝试再一次.
-pdfjs-views-manager-status-warning-save-label = (=could not)不能保存. 刷新页和尝试再一次.
+pdfjs-views-manager-status-warning-cut-label = 不能剪切. 刷新页和尝试再一次.
+pdfjs-views-manager-status-warning-copy-label = 不能复制. 刷新页和尝试再一次.
+pdfjs-views-manager-status-warning-delete-label = 不能删除. 刷新页和尝试再一次.
+pdfjs-views-manager-status-warning-save-label = 不能保存. 刷新页和尝试再一次.
 pdfjs-views-manager-status-undo-button-label = 撤消
 pdfjs-views-manager-status-done-button-label = 完成了的
 pdfjs-views-manager-status-close-button =

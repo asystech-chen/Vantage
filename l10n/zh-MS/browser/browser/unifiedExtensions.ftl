@@ -11,7 +11,7 @@ unified-extensions-manage-extensions =
     .label = 管理扩展名
 unified-extensions-discover-extensions =
     .label = 发现扩展名
-unified-extensions-empty-reason-private-browsing-not-allowed = 你有扩展名安装, 除了不启用在私人的窗口
+unified-extensions-empty-reason-private-browsing-not-allowed = 你有扩展名安装, 除了不启用在私人的窗
 unified-extensions-empty-reason-extension-not-enabled = 你有扩展名安装, 除了不启用
 # In this headline, “Level up” means to enhance your browsing experience.
 unified-extensions-empty-reason-zero-extensions-onboarding = 级别向上的你的浏览与扩展名
@@ -62,7 +62,7 @@ unified-extensions-notice-safe-mode =
 # .heading is processed by moz-message-bar to be used as a heading attribute
 unified-extensions-mb-quarantined-domain-message-3 =
     .heading = 一些扩展名是不允许
-    .message = 到防卫你的资料, 一些扩展名不能读取或更改资料在此站点. 使用那 extension's 设置到允许在坐受限制的由 { -vendor-short-name }.
+    .message = 到防卫你的论据, 一些扩展名不能读取或更改论据在此站点. 使用那 extension's 设置到允许在位置受限制的由 { -vendor-short-name }.
 
 unified-extensions-mb-quarantined-domain-learn-more = 学习更多
     .aria-label = 学习更多: 一些扩展名是不允许
@@ -82,7 +82,7 @@ unified-extensions-mb-blocklist-warning-single2 =
 unified-extensions-mb-blocklist-error-single =
     .heading = { $extensionName } 禁用
     .message =
-        这扩展名亵渎( violate的第三人称单数 ) Mozilla's 政策和有是禁用.
+        这扩展名违犯 Mozilla's 政策和有是禁用.
 
 # Variables:
 #   $extensionsCount (Number) - Number of extensions disabled through both soft and hard-blocks (always going to be greater than 1)
@@ -103,4 +103,4 @@ unified-extensions-mb-blocklist-error-multiple =
             *[other] { $extensionsCount } 扩展名禁用
         }
     .message =
-        一些的你的扩展名有是禁用为了亵渎( violate的现在分词 ) Mozilla's 政策.
+        一些的你的扩展名有是禁用为了亵渎 Mozilla's 政策.

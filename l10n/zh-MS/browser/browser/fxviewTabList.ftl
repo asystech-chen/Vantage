@@ -31,7 +31,7 @@ fxviewtabrow-just-now-timestamp = 只是现在
 # Strings below are used for context menu options within panel-list.
 # For developers, this duplicates command because the label attribute is required.
 
-fxviewtabrow-delete = Delete
+fxviewtabrow-delete = 删除
     .accesskey = D
 fxviewtabrow-forget-about-this-site = 忘记关于这位置…
     .accesskey = F

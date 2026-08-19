@@ -79,7 +79,7 @@ language-name-ie = Interlingue
 language-name-ig = (=Ibo)伊博人
 language-name-ii = 四川(位于中国西南部、长江上游) 彝人
 language-name-ik = 伊努皮克人（居住在阿拉斯加北部的因纽特人的一支）
-language-name-io = （联合国）工业开发组织（Industrial Development Organization）
+language-name-io = （联合国）工业开发组织
 language-name-is = 冰岛的
 language-name-it = 意大利人
 language-name-iu = 因纽特语
@@ -182,7 +182,7 @@ language-name-te = 泰卢固语（印度东部德拉维拉语言）
 language-name-tg = 塔吉克人
 language-name-th = 泰国人
 language-name-ti = 提格里尼亚语(属闪含语系
-language-name-tig = (Tigre)人名
+language-name-tig = 人名
 language-name-tk = 土库曼人
 language-name-tl = (居住在菲律宾吕宋岛和棉兰老岛的)塔加路族人
 language-name-tlh = 克林贡语

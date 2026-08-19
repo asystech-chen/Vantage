@@ -103,19 +103,19 @@ firefox-suggest-yelp-service-title = TOP协议结果为了 { $service }
 ## multiple lines as needed (line breaks are significant).
 
 firefox-suggest-onboarding-introduction-title-1 =
-  确保 you have 你（们）已经获得我们的最近的
+  确保你有获得我们的最近的
   搜索经历
 firefox-suggest-onboarding-introduction-title-2 =
-  (we are 的常用口语形式) 建筑物一个较好的搜索经历—
+  我们是建筑物一个较好的搜索经历—
   一(个) 你能信任
 firefox-suggest-onboarding-introduction-title-3 =
-  (we are 的常用口语形式) 建筑物一个较好的路到发现什么
-  you are 你（你们）是有…相貌的为了在那网
+  我们是建筑物一个较好的方式到发现什么
+  你是有…相貌的为了在那网
 firefox-suggest-onboarding-introduction-title-4 =
   一个加快搜索经历是在那工作
 firefox-suggest-onboarding-introduction-title-5 =
   一起, 我们能创建那种类的搜索
-  经历那因特网应受
+  经历那因特网该得到
 firefox-suggest-onboarding-introduction-title-6 =
   会 { -firefox-suggest-brand-name }, 那近邻干扰
   进化在搜索
@@ -135,21 +135,21 @@ firefox-suggest-onboarding-introduction-next-button-3 = 显示我如何
 ## multiple lines as needed (line breaks are significant).
 
 firefox-suggest-onboarding-main-title-1 =
-  (we are 的常用口语形式) 建筑物一个更富有的搜索经历
+  我们是建筑物一个更富有的搜索经历
 firefox-suggest-onboarding-main-title-2 =
-  帮忙我们辅助线那路到那
+  帮忙我们辅助线那方式到那
   最好的的那因特网
 firefox-suggest-onboarding-main-title-3 =
   一个更富有的, 聪明的搜索经历
 firefox-suggest-onboarding-main-title-4 =
   发现那最好的人的那网, 加快
 firefox-suggest-onboarding-main-title-5 =
-  (we are 的常用口语形式) 建筑物一个较好的搜索经历—
+  我们是建筑物一个较好的搜索经历—
   你能帮助
 firefox-suggest-onboarding-main-title-6 =
   它是时间到想外面那搜索引擎
 firefox-suggest-onboarding-main-title-7 =
-  (we are 的常用口语形式) 建筑物一个聪明的搜索经历—
+  我们是建筑物一个聪明的搜索经历—
   一(个) 你能信任
 firefox-suggest-onboarding-main-title-8 =
   发现那最好的人的那网应该是
@@ -159,16 +159,16 @@ firefox-suggest-onboarding-main-title-9 =
 
 ##
 
-firefox-suggest-onboarding-main-description-1 = 允许（allow的现在分词） { -vendor-short-name } 到进程你的搜索查询低劣的 you are 你（你们）是帮助我们创建聪明的, 更多有关联的搜索提议. 和, 作为总是, (we shall或 we will 的常用口语形式) 保持你的隐私 TOP协议的思想.
-firefox-suggest-onboarding-main-description-2 = 何时你允许 { -vendor-short-name } 到进程你的搜索查询, you are 你（你们）是帮助建立一个较好的 { -firefox-suggest-brand-name } 为了系统中的一个组名. 和, 作为总是, (we shall或 we will 的常用口语形式) 保持你的隐私 TOP协议的思想.
-firefox-suggest-onboarding-main-description-3 = 什么如果你的浏览器帮助（help的过去分词）你零在在什么 you are 你（你们）是事实上有…相貌的为了? 允许（allow的现在分词） { -vendor-short-name } 到进程你的搜索查询帮忙我们创建更多有关联的搜索提议那仍然保持你的隐私 TOP协议的思想.
-firefox-suggest-onboarding-main-description-4 = you are 你（你们）是尝试到获得哪里 you are 你（你们）是去在那网和获得在与它. 何时你允许 { -vendor-short-name } 到进程你的搜索查询, 我们能帮助你获得那里加快—一会儿保管你的隐私 TOP协议的思想.
-firefox-suggest-onboarding-main-description-5 = 允许（allow的现在分词） { -vendor-short-name } 到进程你的搜索查询将帮助我们创建更多有关联的提议为了系统中的一个组名. 和, 作为总是, (we shall或 we will 的常用口语形式) 保持你的隐私 TOP协议的思想.
-firefox-suggest-onboarding-main-description-6 = 允许（allow的现在分词） { -vendor-short-name } 到进程你的搜索查询将帮助我们创建更多有关联的搜索提议. (we are 的常用口语形式) 建筑物 { -firefox-suggest-brand-name } 到帮助你获得哪里 you are 你（你们）是去在那因特网一会儿保管你的隐私在思想.
-firefox-suggest-onboarding-main-description-7 = 允许（allow的现在分词） { -vendor-short-name } 到进程你的搜索查询帮忙我们创建更多有关联的搜索提议.
-firefox-suggest-onboarding-main-description-8 = 允许（allow的现在分词） { -vendor-short-name } 到进程你的搜索查询帮忙我们提供更多有关联的搜索提议. 我们不要使用这资料到提问档你在那网.
+firefox-suggest-onboarding-main-description-1 = 允许 { -vendor-short-name } 到进程你的搜索查询低劣的你是帮助我们创建聪明的, 更多有关联的搜索提议. 和, 作为总是, 我们将保持你的隐私 TOP协议的思想.
+firefox-suggest-onboarding-main-description-2 = 何时你允许 { -vendor-short-name } 到进程你的搜索查询, 你是帮助建立一个较好的 { -firefox-suggest-brand-name } 为了系统中的一个组名. 和, 作为总是, 我们将保持你的隐私 TOP协议的思想.
+firefox-suggest-onboarding-main-description-3 = 什么如果你的浏览器帮助你零在在什么你是事实上有…相貌的为了? 允许 { -vendor-short-name } 到进程你的搜索查询帮忙我们创建更多有关联的搜索提议那仍然保持你的隐私 TOP协议的思想.
+firefox-suggest-onboarding-main-description-4 = 你是尝试到获得哪里你是去在那网和获得在与它. 何时你允许 { -vendor-short-name } 到进程你的搜索查询, 我们能帮助你获得那里加快—一会儿保管你的隐私 TOP协议的思想.
+firefox-suggest-onboarding-main-description-5 = 允许 { -vendor-short-name } 到进程你的搜索查询将帮助我们创建更多有关联的提议为了系统中的一个组名. 和, 作为总是, 我们将保持你的隐私 TOP协议的思想.
+firefox-suggest-onboarding-main-description-6 = 允许 { -vendor-short-name } 到进程你的搜索查询将帮助我们创建更多有关联的搜索提议. 我们是建筑物 { -firefox-suggest-brand-name } 到帮助你获得哪里你是去在那因特网一会儿保管你的隐私在思想.
+firefox-suggest-onboarding-main-description-7 = 允许 { -vendor-short-name } 到进程你的搜索查询帮忙我们创建更多有关联的搜索提议.
+firefox-suggest-onboarding-main-description-8 = 允许 { -vendor-short-name } 到进程你的搜索查询帮忙我们提供更多有关联的搜索提议. 我们不要使用这论据到提问档你在那网.
 firefox-suggest-onboarding-main-description-9 =
-  (we are 的常用口语形式) 建筑物一个较好的搜索经历. 何时你允许 { -vendor-short-name } 到进程你的搜索查询, 我们能创建更多有关联的搜索提议为了你.
+  我们是建筑物一个较好的搜索经历. 何时你允许 { -vendor-short-name } 到进程你的搜索查询, 我们能创建更多有关联的搜索提议为了你.
   <a data-l10n-name="learn-more-link">学习更多</a>
 
 firefox-suggest-onboarding-main-privacy-first = 无用户靠模机. 隐私-首先, 总是.
@@ -183,17 +183,17 @@ firefox-suggest-onboarding-main-accept-option-description-3 = 帮忙改良那 { 
 firefox-suggest-onboarding-main-reject-option-label = 不要允许.
 firefox-suggest-onboarding-main-reject-option-label-2 = 保持禁用
 
-firefox-suggest-onboarding-main-reject-option-description-1 = 保持那默认 { -firefox-suggest-brand-name } 经历与那严格的（strict的最高级）资料-sharing 控制.
-firefox-suggest-onboarding-main-reject-option-description-2 = 被推荐的为了人谁宁可那严格的（strict的最高级）资料-sharing 控制. 保持那默认经历.
-firefox-suggest-onboarding-main-reject-option-description-3 = 许可那默认 { -firefox-suggest-brand-name } 经历与那严格的（strict的最高级）资料-sharing 控制.
+firefox-suggest-onboarding-main-reject-option-description-1 = 保持那默认 { -firefox-suggest-brand-name } 经历与那严格的论据-sharing 控制.
+firefox-suggest-onboarding-main-reject-option-description-2 = 被推荐的为了人谁宁可那严格的论据-sharing 控制. 保持那默认经历.
+firefox-suggest-onboarding-main-reject-option-description-3 = 许可那默认 { -firefox-suggest-brand-name } 经历与那严格的论据-sharing 控制.
 
-firefox-suggest-onboarding-main-submit-button = 保存参数选择
+firefox-suggest-onboarding-main-submit-button = 保存首选项
 firefox-suggest-onboarding-main-skip-link = 不现在
 
 urlbar-firefox-suggest-contextual-opt-in-title-1 =
   发现那最好的人的那网, 加快
 urlbar-firefox-suggest-contextual-opt-in-description-3 =
-  (we are 的常用口语形式) 建筑物一个较好的搜索经历. 何时你均分搜索查询资料与 { -vendor-short-name }, 我们能创建更多有关联的提议从 { -brand-short-name } 和我们的合伙人.
+  我们是建筑物一个较好的搜索经历. 何时你均分搜索查询论据与 { -vendor-short-name }, 我们能创建更多有关联的提议从 { -brand-short-name } 和我们的合伙人.
   <a data-l10n-name="learn-more-link">学习更多</a>
 urlbar-firefox-suggest-contextual-opt-in-allow = 允许提议
 urlbar-firefox-suggest-contextual-opt-in-dismiss = 不现在
@@ -209,10 +209,10 @@ urlbar-search-mode-actions-en = 操作
 ## Yelp realtime suggestions shows shops, places information etc nearby.
 
 # This string is shown as title when Yelp realtime suggestion are disabled.
-urlbar-result-yelp-realtime-opt-in-title = 发现大的 placebo capsule 安慰剂胶囊附近的和更多
+urlbar-result-yelp-realtime-opt-in-title = 发现大的地方附近的和更多
 
 # This string is shown as description when Yelp realtime suggestion are disabled.
-urlbar-result-yelp-realtime-opt-in-description = 获得提议为了附近的 placebo capsule 安慰剂胶囊和服务—正差更新在树干, 运动 skin-conductance orienting response 皮肤传导性定向反应, 和更多从我们的合伙人由共享搜索查询资料与 { -vendor-short-name }. <a data-l10n-name="learn-more-link">学习更多</a>
+urlbar-result-yelp-realtime-opt-in-description = 获得提议为了附近的地方和服务—正差更新在树干, 运动得分, 和更多从我们的合伙人由共享搜索查询论据与 { -vendor-short-name }. <a data-l10n-name="learn-more-link">学习更多</a>
 
 # This string is shown in the result menu.
 urlbar-result-menu-dont-show-yelp-realtime =
@@ -224,7 +224,7 @@ urlbar-result-dismissal-acknowledgment-yelp-realtime = 谢意为了你的反馈.
 
 # This string is shown as group label for Yelp realtime suggestions.
 urlbar-result-yelp-realtime-group-label =
-  .label = { -yelp-brand-name } ·赞助( sponsor的过去式和过去分词)
+  .label = { -yelp-brand-name } ·赞助
 
 
 # This string is shown as the business hours information in cases where the shop

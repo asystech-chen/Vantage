@@ -28,7 +28,7 @@ webrtc-sharing-menuitem-unknown-host = 不知道的原点
 webrtc-sharing-menuitem =
     .label = { $origin } ({ $itemList })
 webrtc-sharing-menu =
-    .label = 标签页共享德维克（男子名、姓氏）
+    .label = 标签页共享装置
     .accesskey = d
 
 webrtc-sharing-window = 你是共享另外的应用窗口.
@@ -110,7 +110,7 @@ webrtc-indicator-menuitem-sharing-window-with-n-tabs =
     .label =
         { $tabCount ->
             [one] 共享一个窗口与 { $tabCount } 标签页
-           *[other] 共享窗口与 { $tabCount } 标签页
+           *[other] 共享窗与 { $tabCount } 标签页
         }
 
 webrtc-indicator-menuitem-sharing-browser-with =
@@ -171,8 +171,8 @@ webrtc-allow-share-screen-and-audio-capture-unsafe-delegation = 允许 { $origin
 
 ##
 
-webrtc-share-screen-warning = 仅部分筛选与坐你信任. 共享能允许迷惑的坐到浏览作为你和剽窃你的私人的资料.
-webrtc-share-browser-warning = 仅部分 { -brand-short-name } 与坐你信任. 共享能允许迷惑的坐到浏览作为你和剽窃你的私人的资料.
+webrtc-share-screen-warning = 仅部分筛选与位置你信任. 共享能允许迷惑的位置到浏览作为你和剽窃你的私人的论据.
+webrtc-share-browser-warning = 仅部分 { -brand-short-name } 与位置你信任. 共享能允许迷惑的位置到浏览作为你和剽窃你的私人的论据.
 
 webrtc-pick-window-or-screen = 选择窗口或筛选
 webrtc-share-entire-screen = 整个筛选
@@ -186,7 +186,7 @@ webrtc-share-monitor = 筛选 { $monitorIndex }
 webrtc-share-application =
     { $windowCount ->
         [one] { $appName } ({ $windowCount } 窗口)
-       *[other] { $appName } ({ $windowCount } 窗口)
+       *[other] { $appName } ({ $windowCount } 窗)
     }
 
 ## These buttons are the possible answers to the various prompts in the "webrtc-allow-share-*" strings.
@@ -207,9 +207,9 @@ webrtc-action-not-now =
 ##
 
 webrtc-remember-allow-checkbox = 记住这判定
-webrtc-remember-allow-checkbox-camera = 记住为了全部照相机
+webrtc-remember-allow-checkbox-camera = 记住为了全部摄影
 webrtc-remember-allow-checkbox-microphone = 记住为了全部扩音器
-webrtc-remember-allow-checkbox-camera-and-microphone = 记住为了全部照相机和扩音器
+webrtc-remember-allow-checkbox-camera-and-microphone = 记住为了全部摄影和扩音器
 webrtc-mute-notifications-checkbox = 哑子网站（全球资讯网的主机站）通知一会儿共享
 
 webrtc-reason-for-no-permanent-allow-screen = { -brand-short-name } 能不允许永久的访问到你的筛选.

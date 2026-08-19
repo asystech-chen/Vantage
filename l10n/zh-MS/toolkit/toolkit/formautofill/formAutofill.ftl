@@ -1,18 +1,18 @@
 
 
 autofill-use-payment-method-os-prompt-macos = 使用储存的付款方法信息
-autofill-use-payment-method-os-prompt-windows = { -brand-short-name } 正尝试使用储存的付款方法信息. 确认访问到这窗口帐户在下面.
+autofill-use-payment-method-os-prompt-windows = { -brand-short-name } 正尝试使用储存的付款方法信息. 确认访问到这窗帐户在下面.
 autofill-use-payment-method-os-prompt-other = { -brand-short-name } 正尝试使用储存的付款方法信息.
 
 
 autofill-edit-payment-method-os-prompt-macos = 显示储存的付款方法信息
-autofill-edit-payment-method-os-prompt-windows = { -brand-short-name } 正尝试显示储存的付款方法信息. 确认访问到这窗口帐户在下面.
+autofill-edit-payment-method-os-prompt-windows = { -brand-short-name } 正尝试显示储存的付款方法信息. 确认访问到这窗帐户在下面.
 autofill-edit-payment-method-os-prompt-other = { -brand-short-name } 正尝试显示储存的付款方法信息.
 
 autofill-options-link = 表单自动填充选项
 
 
-credit-card-doorhanger-credit-cards-sync-checkbox = 同步的所有的保存卡片越过我的德维克（男子名、姓氏）
+credit-card-doorhanger-credit-cards-sync-checkbox = 同步的所有的保存卡片越过我的装置
 
 credit-card-save-doorhanger-header = 安全地保存这卡片?
 credit-card-save-doorhanger-description = { -brand-short-name } 加密你的卡片数字. 你的安全代码将不是保存.

@@ -1,7 +1,7 @@
 
 profiledowngrade-window2 =
-    .title = you have 你（们）已经发射( launch的过去式和过去分词 ) 一个年长的版本的 { -brand-product-name }
-    .style = min-width: 490专用小交换机（Private Exchange）;
+    .title = 你有发射一个年长的版本的 { -brand-product-name }
+    .style = min-width: 490专用小交换机;
 
 profiledowngrade-window-create =
     .label = 创建新的提问档

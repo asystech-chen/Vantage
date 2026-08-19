@@ -66,7 +66,7 @@ protections-panel-not-found-label = 一点也不检测到的
 
 ## Smartblock strings
 
-protections-panel-smartblock-desc-label = { -brand-short-name } 阻止跟踪内容一会儿 you are 你（你们）是在此站点除非你允许它.
+protections-panel-smartblock-desc-label = { -brand-short-name } 阻止跟踪内容一会儿你是在此站点除非你允许它.
 # Variables
 #  $trackername (String): the name of the tracker that is currently being blocked.
 protections-panel-smartblock-blocking-toggle =
@@ -74,7 +74,7 @@ protections-panel-smartblock-blocking-toggle =
 
 #  $trackername (String): the name of the tracker that is currently being blocked.
 smartblock-placeholder-title = { $trackername } 追踪者和内容阻止
-smartblock-placeholder-desc = 你的 { -brand-short-name } 设置阻止这内容从跟踪你越过坐或存在使用为了精确定义系统.
+smartblock-placeholder-desc = 你的 { -brand-short-name } 设置阻止这内容从跟踪你越过位置或存在使用为了精确定义系统.
 #  $websitehost (String): host of website with blocked content.
 smartblock-placeholder-button-text = 允许在 { $websitehost }
 # Caption shown above the original text and links extracted from a blocked
@@ -88,10 +88,10 @@ smartblock-placeholder-content-header = 内容从阻止嵌入
 protections-panel-settings-label = 保护设置
 protections-panel-protectionsdashboard-label = 保护仪表板
 
-protections-panel-cross-site-tracking-cookies = 这些饼干跟随你从位置到给...择址到聚集资料关于什么你做联机. 他们是日落由第三宴会如此的作为做广告者和分析的公司.
-protections-panel-cryptominers = Cryptominers 使用你的 system's 计算力到挖掘数字金钱. Cryptomining 手写体排水沟你的电池, 慢的向下你的计算机, 和能增加你的精力帐单.
+protections-panel-cross-site-tracking-cookies = 这些饼干跟随你从位置到给...择址到聚集论据关于什么你做联机. 他们是日落由第三宴会如此的作为做广告者和分析的公司.
+protections-panel-cryptominers = Cryptominers 使用你的 system's 计算功率到挖掘数字金钱. Cryptomining 手写体排水沟你的电池, 慢的向下你的计算机, 和能增加你的精力帐单.
 protections-panel-fingerprinters = Fingerprinters 收集设置从你的浏览器和计算机到创建一个提问档的你. 使用这数字指纹, 他们能跟踪你越过不同的网站（全球资讯网的主机站）.
-protections-panel-tracking-content = 网站（全球资讯网的主机站）可以加载外部精确定义系统, 视频文件, 和其他的内容与跟踪代码. 组成块跟踪内容能帮助坐加载加快, 除了一些按钮, 表单, 和注册(程序) 域可能不工作.
+protections-panel-tracking-content = 网站（全球资讯网的主机站）可以加载外部精确定义系统, 影像, 和其他的内容与跟踪代码. 组成块跟踪内容能帮助位置加载加快, 除了一些按钮, 表单, 和注册(程序) 域可能不工作.
 protections-panel-social-media-trackers = 社会的网络地方追踪者在其他的网站（全球资讯网的主机站）到跟随什么你做, 看见, 和观察联机. 这允许社会的媒质公司到学习更多关于你超过什么你均分在你的联欢会媒质提问档.
 
 protections-panel-description-shim-allowed = 一些追踪者有记号的在下面有是部分地非块式在这页因为你相互作用与他们.
@@ -132,5 +132,5 @@ protections-panel-report-broken-site =
 ## Protections panel info message
 
 cfr-protections-panel-header = 浏览没有存在跟随的
-cfr-protections-panel-body = 保持你的资料到你自己. { -brand-short-name } 防卫你从多数的那最多公用块追踪者那跟随什么你做联机.
+cfr-protections-panel-body = 保持你的论据到你自己. { -brand-short-name } 防卫你从多数的那最多公用块追踪者那跟随什么你做联机.
 cfr-protections-panel-link-text = 学习更多

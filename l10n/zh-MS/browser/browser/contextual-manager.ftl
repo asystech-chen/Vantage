@@ -27,7 +27,7 @@ contextual-manager-passwords-command-help = 帮忙
 contextual-manager-passwords-os-auth-dialog-caption = { -brand-full-name }
 
 # This message can be seen when attempting to export a password in about:logins on Windows.
-contextual-manager-passwords-export-os-auth-dialog-message-win = 到导出你的密码, 输入你的窗口注册(程序) 国书. 这帮忙防卫那安全的你的帐户.
+contextual-manager-passwords-export-os-auth-dialog-message-win = 到导出你的密码, 输入你的窗注册(程序) 国书. 这帮忙防卫那安全的你的帐户.
 # This message can be seen when attempting to export a password in about:logins
 # The macOS strings are preceded by the operating system with "Firefox is trying to "
 # and includes subtitle of "Enter password for the user "xxx" to allow this." These
@@ -35,21 +35,21 @@ contextual-manager-passwords-export-os-auth-dialog-message-win = 到导出你的
 contextual-manager-passwords-export-os-auth-dialog-message-macosx = 导出保存密码
 
 # This message can be seen when attempting to reveal a password in contextual password manager on Windows
-contextual-manager-passwords-reveal-password-os-auth-dialog-message-win = 到查看你的密码, 输入你的窗口注册(程序) 国书. 这帮忙防卫那安全的你的帐户.
+contextual-manager-passwords-reveal-password-os-auth-dialog-message-win = 到查看你的密码, 输入你的窗注册(程序) 国书. 这帮忙防卫那安全的你的帐户.
 # The MacOS string is preceded by the operating system with "Firefox is trying to ".
 # Only provide the reason that account verification is needed. Do not put a complete sentence here.
 contextual-manager-passwords-reveal-password-os-auth-dialog-message-macosx = 露出那保存密码
 
 
 # This message can be seen when attempting to edit a login in contextual password manager on Windows.
-contextual-manager-passwords-edit-password-os-auth-dialog-message-win = 到编辑你的密码, 输入你的窗口注册(程序) 国书. 这帮忙防卫那安全的你的帐户.
+contextual-manager-passwords-edit-password-os-auth-dialog-message-win = 到编辑你的密码, 输入你的窗注册(程序) 国书. 这帮忙防卫那安全的你的帐户.
 # The MacOS string is preceded by the operating system with "Firefox is trying to ".
 # On MacOS, only provide the reason that account verification is needed. Do not put a complete sentence here.
 contextual-manager-passwords-edit-password-os-auth-dialog-message-macosx = 编辑那保存密码
 
 
 # This message can be seen when attempting to copy a password in contextual password manager on Windows.
-contextual-manager-passwords-copy-password-os-auth-dialog-message-win = 到复制你的密码, 输入你的窗口注册(程序) 国书. 这帮忙防卫那安全的你的帐户.
+contextual-manager-passwords-copy-password-os-auth-dialog-message-win = 到复制你的密码, 输入你的窗注册(程序) 国书. 这帮忙防卫那安全的你的帐户.
 # The MacOS string is preceded by the operating system with "Firefox is trying to ".
 # Only provide the reason that account verification is needed. Do not put a complete sentence here.
 contextual-manager-passwords-copy-password-os-auth-dialog-message-macosx = 复制那保存密码
@@ -80,14 +80,14 @@ contextual-manager-passwords-import-success-heading =
 #   $modified (number) - Number of modified passwords
 #   $no_change (number) - Number of duplicate passwords
 #   $error (number) - Number of invalid passwords
-contextual-manager-passwords-import-success-message-2 = 新的: { $added }, 更新的: { $modified }, 完全一样的东西: { $no_change }, 错误: { $error }
+contextual-manager-passwords-import-success-message-2 = 新的: { $added }, 更新的: { $modified }, 复制: { $no_change }, 错误: { $error }
 
 contextual-manager-passwords-import-detailed-report = 查看详细的报告
 contextual-manager-passwords-import-success-button = 完成了的
 
 contextual-manager-passwords-import-error-heading-and-message =
-  .heading = (=could not)不能引入密码
-  .message = 确保你的文件包含一个列为了网站（全球资讯网的主机站）, usernames, 和密码.
+  .heading = 不能引入密码
+  .message = 确保你的文件包含一个列为了网站（全球资讯网的主机站）, 由字母或数字组成的用户名称, 和密码.
 contextual-manager-passwords-import-error-button-try-again = 尝试再一次
 contextual-manager-passwords-import-error-button-cancel = 取消
 contextual-manager-passwords-import-learn-more = 学习关于导入密码
@@ -152,8 +152,8 @@ contextual-manager-passwords-remove-all-message =
 #   $total (number) - Total number of passwords
 contextual-manager-passwords-remove-all-message-sync =
   { $total ->
-     [1] 这将移除那密码保存到 { -brand-short-name } 在全部你的 synchronization 的缩略词德维克（男子名、姓氏）和移除任何的裂口警觉的. 你无法撤消此操作.
-    *[other] 这将移除所有的密码保存到 { -brand-short-name } 在全部你的 synchronization 的缩略词德维克（男子名、姓氏）和移除任何的裂口警觉的. 你无法撤消此操作.
+     [1] 这将移除那密码保存到 { -brand-short-name } 在全部你的 synchronization 的缩略词装置和移除任何的裂口警觉的. 你无法撤消此操作.
+    *[other] 这将移除所有的密码保存到 { -brand-short-name } 在全部你的 synchronization 的缩略词装置和移除任何的裂口警觉的. 你无法撤消此操作.
   }
 
 contextual-manager-passwords-origin-label = 网站（全球资讯网的主机站）
@@ -209,7 +209,7 @@ contextual-manager-passwords-remove-login-card-title = 移除密码?
 # This message warns the user that deleting a login is permanent.
 contextual-manager-passwords-remove-login-card-message = 你不能撤消这.
 # This message gives the user an option to go back to the edit login form.
-contextual-manager-passwords-remove-login-card-back-message = 后面的
+contextual-manager-passwords-remove-login-card-back-message = 回
 # This message confirms that the user wants to remove an existing login.
 contextual-manager-passwords-remove-login-card-remove-button = 移除
 # This message gives the user the option to cancel their attempt to remove a login.
@@ -218,13 +218,13 @@ contextual-manager-passwords-remove-login-card-cancel-button = 取消
 contextual-manager-passwords-alert-card =
   .aria-label = 密码警觉的
 contextual-manager-passwords-alert-back-button =
-  .label = 后面的
+  .label = 回
 contextual-manager-passwords-alert-list =
   .aria-label = 警觉的列表
 
 contextual-manager-passwords-breached-origin-heading-and-message =
   .heading = 密码更改被推荐的
-  .message = 密码从这网站（全球资讯网的主机站）曾是报告的 steal的过去分词或漏的. 更改你的密码到防卫你的帐户.
+  .message = 密码从这网站（全球资讯网的主机站）曾是报告的被偷窃的或漏的. 更改你的密码到防卫你的帐户.
 contextual-manager-passwords-breached-origin-link-message = 如何做 { -brand-product-name } 知道关于裂口?
 contextual-manager-passwords-change-password-button = 更改密码
 
@@ -247,7 +247,7 @@ contextual-manager-passwords-update-label =
   .label = 更新密码
 contextual-manager-passwords-remove-label =
   .title = 移除密码
-contextual-manager-passwords-origin-tooltip = Enter 那精确的地址哪里 (=you will 正负号在到此站点.
+contextual-manager-passwords-origin-tooltip = Enter 那精确的地址哪里你将正负号在到此站点.
 contextual-manager-passwords-username-tooltip = Enter 那由字母或数字组成的用户名称, 电子信函地址, 或帐户数字你使用到正负号在.
 contextual-manager-passwords-password-tooltip-2 = Enter 那密码到正负号在到这帐户.
 
@@ -334,7 +334,7 @@ contextual-manager-passwords-no-passwords-found-message-2 = 尝试一个不同�
 contextual-manager-passwords-no-passwords-header-2 = 保存你的密码到一个保险箱污点
 # This string informs that we (Firefox) store all passwords securely and will notify them of any breaches and alerts their
 # passwords may be involved in.
-contextual-manager-passwords-no-passwords-message = 所有的密码是加密和 (we shall或 we will 的常用口语形式) 观察外面的为了裂口和警觉的如果 you are 你（你们）是假装的.
+contextual-manager-passwords-no-passwords-message = 所有的密码是加密和我们将观察外面的为了裂口和警觉的如果你是假装的.
 # This string encourages the user to save their passwords to Firefox again.
 contextual-manager-passwords-no-passwords-get-started-message = 添加他们这里到获得启动.
 # This string is displayed in a button. If the user clicks it, they will be taken to a form to create a new password.
@@ -347,7 +347,7 @@ contextual-manager-passwords-discard-changes-heading-and-message =
   .heading = 关闭没有保存?
   .message = 你的更改将不是保存.
 contextual-manager-passwords-discard-changes-close-button = 关闭
-contextual-manager-passwords-discard-changes-go-back-button = 去后面的
+contextual-manager-passwords-discard-changes-go-back-button = 去回
 
 #   $total (number) - Total number of passwords
 contextual-manager-passwords-remove-all-passwords-checkbox =

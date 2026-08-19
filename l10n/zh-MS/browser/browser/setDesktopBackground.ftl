@@ -9,7 +9,7 @@ set-desktop-background-accept =
   .label = 日落桌面背景
 
 open-desktop-prefs =
-  .label = 打开桌面参数选择
+  .label = 打开桌面首选项
 
 set-desktop-background-downloading =
   .label = 保存图象…

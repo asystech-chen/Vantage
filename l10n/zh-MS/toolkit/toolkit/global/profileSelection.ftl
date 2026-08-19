@@ -17,13 +17,13 @@ profile-selection-rename-button =
   .accesskey = R
 
 profile-selection-delete-button =
-  .label = Delete 提问档…
+  .label = 删除提问档…
   .accesskey = D
 
 profile-selection-conflict-message = 另外的复制的 { -brand-product-name } 有使更改到提问档. 你必须重新启动 { -brand-short-name } 在...之前制造更多更改.
 
 
-profile-manager-description = { -brand-short-name } 贮藏（storage）信息关于你的设置, 参数选择, 和其他的用户项在你的用户提问档.
+profile-manager-description = { -brand-short-name } 存储器操作信息关于你的设置, 首选项, 和其他的用户项在你的用户提问档.
 
 profile-manager-work-offline =
   .label = 工作挂线

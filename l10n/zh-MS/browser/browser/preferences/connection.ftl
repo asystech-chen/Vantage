@@ -64,7 +64,7 @@ connection-proxy-noproxy = 无代理为了
 connection-proxy-noproxy-desc = 例子: .摩斯拉.org, .net.nz, 192.168.1.0/24
 
 # Do not translate "localhost", "127.0.0.1/8" and "::1". (You can translate "and".)
-connection-proxy-noproxy-localhost-desc-2 = 连接到本地主机, 127.0.0.1/8, 和 ::1 是从不 (proxy 的过去分词) n. 代理.
+connection-proxy-noproxy-localhost-desc-2 = 连接到本地主机, 127.0.0.1/8, 和 ::1 是从不 n. 代理.
 
 connection-proxy-autotype =
     .label = 自动手枪代理配置 URL
@@ -77,7 +77,7 @@ connection-proxy-reload =
 connection-proxy-autologin-checkbox =
     .label = 做不激励为了验证如果密码是保存
     .accesskey = i
-    .tooltiptext = 这选项默默地证明是真实的、可靠的或有效的( authenticate的名词复数 ) 你到代理何时你有保存国书为了他们. 你将是引起如果验证失败.
+    .tooltiptext = 这选项默默地证明可信你到代理何时你有保存国书为了他们. 你将是引起如果验证失败.
 
 connection-proxy-socks4-remote-dns =
     .label = 代理 DNS 何时使用 SOCKS 溢出4

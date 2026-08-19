@@ -4,7 +4,7 @@
 
 # Strings in this file are used to localize button titles displayed on the
 # MacBook Touch Bar.
-back = 后面的
+back = 回
 forward = 前推
 reload = 再装
 home = 主页
@@ -31,6 +31,6 @@ search-search-in = 搜索在:
 search-bookmarks = 书签
 search-history = 历史记录
 search-opentabs = 打开标签页
-search-tags = 标签
+search-tags = 标记
 
 ##

@@ -30,12 +30,12 @@ default-browser-prompt-button-secondary = 不现在
 default-browser-guidance-notification-title = 完成制造 { -brand-short-name } 你的默认
 # Quoted text are keywords to look for in the Windows Settings app.
 default-browser-guidance-notification-body-instruction-win10 =
-    步骤 1: 去到设置 > 默认应用程序
+    步骤 1: 去到设置 > 默认应用
     步骤 2: 滚动向下到“结网浏览器”
     步骤 3: 选择和选取 { -brand-short-name }
 # Quoted text are keywords to look for in the Windows Settings app.
 default-browser-guidance-notification-body-instruction-win11 =
-    步骤 1: 去到设置 > 默认应用程序
+    步骤 1: 去到设置 > 默认应用
     步骤 2: 选择“日落默认”为了 { -brand-short-name }
 default-browser-guidance-notification-info-page = 显示我
 default-browser-guidance-notification-dismiss = 完成了的

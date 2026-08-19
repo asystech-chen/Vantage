@@ -16,7 +16,7 @@ all-tabs-menu-close-all-duplicate-tabs =
   .label = 关闭所有的复制标签页
 
 all-tabs-menu-synced-tabs =
-  .label = 标签页从其他的德维克（男子名、姓氏）
+  .label = 标签页从其他的装置
 
 # "Recent" refers to tab groups being sorted in recently used order. We show up
 # to five of these in this section.

@@ -4,4 +4,4 @@
 
 security-privacy-issue-warning-test =
   .label = 一个测试设置是启用
-  .description = 这 (CAU 的复数)  命令/运算部件 { -brand-short-name } 到显示这假造的警告, 和无别的
+  .description = 这原因 { -brand-short-name } 到显示这假造的警告, 和无别的

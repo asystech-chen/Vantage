@@ -14,7 +14,7 @@ findbar-highlight-all2 =
         [macos] l
        *[other] a
     }
-    .tooltiptext = 突出所有的发生( occurrence的复数形式 ) 的那短语
+    .tooltiptext = 突出所有的发生的那短语
 
 findbar-case-sensitive =
     .label = 比较情形
@@ -33,8 +33,8 @@ findbar-entire-word =
 
 findbar-not-found = 短语不发现
 
-findbar-wrapped-to-top = 到达( reach的过去式和过去分词 ) 端的页, 继续的从 TOP协议
-findbar-wrapped-to-bottom = 到达( reach的过去式和过去分词 ) TOP协议的页, 继续的从底部
+findbar-wrapped-to-top = 到达端的页, 继续的从 TOP协议
+findbar-wrapped-to-bottom = 到达 TOP协议的页, 继续的从底部
 
 findbar-normal-find =
     .placeholder = 发现在页

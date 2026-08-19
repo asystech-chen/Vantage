@@ -1,7 +1,7 @@
 
 page-title = 发现并修理故障信息
 page-subtitle =
-    这页包含技术上的信息那可能是有用的何时 you are 你（你们）是
+    这页包含技术上的信息那可能是有用的何时你是
     尝试到求解一个问题. 如果你是有…相貌的为了用户问题及答案新闻组到公用块询问
     关于 { -brand-short-name }, 复选外面的我们的 <a data-l10n-name="support-link">支持网站（全球资讯网的主机站）</a>.
 
@@ -10,7 +10,7 @@ crashes-id = 报告 ID
 crashes-send-date = 递交
 crashes-all-reports = 所有的崩溃报告
 crashes-no-config = 这应用有不是配置的到显示器崩溃报告.
-support-addons-title = 添加-奥运信息服务（Olympic News Service）
+support-addons-title = 添加-奥运信息服务
 support-addons-name = 名称
 support-addons-type = 类型
 support-addons-enabled = 启用
@@ -57,11 +57,11 @@ app-basics-rosetta = 罗塞塔（城市名）译本
 app-basics-memory-use = 存储器使用
 app-basics-performance = 施行
 app-basics-service-workers = 注册的服务工人
-app-basics-third-party = 第三-party 模的
+app-basics-third-party = 第三-party 模块
 app-basics-profiles = 提问档
 app-basics-launcher-process-status = 发射者进程
-app-basics-multi-process-support = 多过程窗口
-app-basics-fission-support = 裂开窗口
+app-basics-multi-process-support = 多过程窗
+app-basics-fission-support = 裂开窗
 app-basics-remote-processes-count = 远程进程
 app-basics-enterprise-policies = 企业政策
 app-basics-location-service-key-google = 谷歌位置服务键
@@ -70,7 +70,7 @@ app-basics-key-mozilla = 摩斯拉位置服务键
 app-basics-safe-mode = 保险箱模式
 app-basics-memory-size = 存储器大小 (RAM)
 app-basics-disk-available = 磁盘空白可利用的
-app-basics-pointing-devices = 指向德维克（男子名、姓氏）
+app-basics-pointing-devices = 指向装置
 
 app-basics-data-size = { $value } { $unit }
 
@@ -83,12 +83,12 @@ show-dir-label =
 environment-variables-title = 环境变量
 environment-variables-name = 名称
 environment-variables-value = 计算结果
-modified-key-prefs-title = 要点改良的参数选择
+modified-key-prefs-title = 要点改良的首选项
 modified-prefs-name = 名称
 modified-prefs-value = 计算结果
-user-js-title = 用户.js 参数选择
-user-js-description = 你的提问档文件夹包含一个 <a data-l10n-name="user-js-link">用户.js 文件</a>, 哪个包含参数选择那曾是不创建由 { -brand-short-name }.
-locked-key-prefs-title = 要点上锁的参数选择
+user-js-title = 用户.js 首选项
+user-js-description = 你的提问档文件夹包含一个 <a data-l10n-name="user-js-link">用户.js 文件</a>, 哪个包含首选项那曾是不创建由 { -brand-short-name }.
+locked-key-prefs-title = 要点上锁的首选项
 locked-prefs-name = 名称
 locked-prefs-value = 计算结果
 graphics-title = 图形的
@@ -103,7 +103,7 @@ graphics-workarounds-title = 工作区
 graphics-device-pixel-ratios = 窗口装置象素比
 graphics-window-protocol = 窗口协议
 graphics-desktop-environment = 桌面环境
-place-database-title = placebo capsule 安慰剂胶囊数据库
+place-database-title = 地方数据库
 place-database-stats = 统计量
 place-database-stats-show = 显示统计量
 place-database-stats-hide = 隐藏统计量
@@ -125,7 +125,7 @@ a11y-handler-used = 易接近的处理者使用
 a11y-instantiator = 易接近 Instantiator
 library-version-title = 库版本
 copy-text-to-clipboard-label = 复制电文到剪贴板
-copy-raw-data-to-clipboard-label = 复制写后读资料到剪贴板
+copy-raw-data-to-clipboard-label = 复制写后读论据到剪贴板
 sandbox-title = 沙箱
 sandbox-sys-call-log-title = 被弃之物系统呼叫
 sandbox-sys-call-index = #
@@ -135,7 +135,7 @@ sandbox-sys-call-tid = TID
 sandbox-sys-call-proc-type = 进程类型
 sandbox-sys-call-number = 系统调用
 sandbox-sys-call-args = 参数
-troubleshoot-mode-title = 诊断议题
+troubleshoot-mode-title = 诊断发行
 restart-in-troubleshoot-mode-label = 障碍修理模式…
 clear-startup-cache-title = 尝试清扫那启动高速缓冲存储器
 clear-startup-cache-label = 清除启动高速缓冲存储器…
@@ -149,8 +149,8 @@ max-audio-channels = 最大信道
 sample-rate = 首选的示例比率
 roundtrip-latency = 来回的传输时间 (标准背离)
 media-title = 媒质
-media-output-devices-title = 输出德维克（男子名、姓氏）
-media-input-devices-title = 输入德维克（男子名、姓氏）
+media-output-devices-title = 输出装置
+media-input-devices-title = 输入装置
 media-device-name = 名称
 media-device-group = 创建组
 media-device-vendor = 计算机销售商
@@ -172,11 +172,11 @@ media-codec-support-hw-encoding = 硬件编码
 media-codec-support-codec-name = 编码译码器名称
 media-codec-support-supported = 被支持的
 media-codec-support-unsupported = 未经证实的
-media-codec-support-error = 编码译码器支持信息得不到的. 尝试再一次在...之后游戏后面的一个媒质文件.
+media-codec-support-error = 编码译码器支持信息得不到的. 尝试再一次在...之后游戏回一个媒质文件.
 media-codec-support-lack-of-extension = 安装扩展名
 
 
-media-content-decryption-modules-title = 内容解密模的信息
+media-content-decryption-modules-title = 内容解密模块信息
 media-key-system-name = 键系统名称
 media-video-robustness = 影像健壮性
 media-audio-robustness = 音频的健壮性
@@ -186,13 +186,13 @@ media-cdm-clear-lead = 清除铅
 
 intl-title = 国际化 & 局限
 intl-app-title = 应用设置
-intl-locales-requested = 要求的本地的
-intl-locales-available = 可利用的本地的
-intl-locales-supported = 应用本地的
+intl-locales-requested = 要求的场所
+intl-locales-available = 可利用的场所
+intl-locales-supported = 应用场所
 intl-locales-default = 默认场所
 intl-os-title = 操作的系统
-intl-os-prefs-system-locales = 系统本地的
-intl-regional-prefs = 地方的参数选择
+intl-os-prefs-system-locales = 系统场所
+intl-regional-prefs = 地方的首选项
 
 
 remote-debugging-title = 远程调试 (铬协议)
@@ -203,13 +203,13 @@ remote-debugging-url = URL
 report-crash-for-days =
     { $days ->
         [one] 崩溃报告为了那最后 { $days } 天
-       *[other] 崩溃报告为了那最后 { $days } 一生
+       *[other] 崩溃报告为了那最后 { $days } 天
     }
 
 crashes-time-minutes =
     { $minutes ->
         [one] { $minutes } 分以前
-       *[other] { $minutes } 分钟以前
+       *[other] { $minutes } 分以前
     }
 
 crashes-time-hours =
@@ -221,7 +221,7 @@ crashes-time-hours =
 crashes-time-days =
     { $days ->
         [one] { $days } 天以前
-       *[other] { $days } 一生以前
+       *[other] { $days } 天以前
     }
 
 pending-reports =
@@ -230,19 +230,19 @@ pending-reports =
        *[other] 所有的崩溃报告 (包含 { $reports } 未决定的崩溃在那赠予的时间量程)
     }
 
-raw-data-copied = 写后读资料已复制的到剪贴板
+raw-data-copied = 写后读论据已复制的到剪贴板
 text-copied = 电文已复制的到剪贴板
 
 
 blocked-driver = 阻止为了你的图形的驾驶员版本.
-blocked-gfx-card = 阻止为了你的图形的卡片因为的非分辩的驾驶员议题.
+blocked-gfx-card = 阻止为了你的图形的卡片因为的非分辩的驾驶员发行.
 blocked-os-version = 阻止为了你的操作的系统版本.
 blocked-mismatched-version = 阻止为了你的图形的驾驶员版本错配在...之间登录库和 DLL.
 try-newer-driver = 阻止为了你的图形的驾驶员版本. 尝试校正你的图形的驾驶员到版本 { $driverVersion } 或更新的.
 
 clear-type-parameters = ClearType 参量
 
-compositing = (composit 的现在分词) adj. 合成的
+compositing = adj. 合成的
 support-font-determination = 字体可见性除错信息
 hardware-h264 = 硬件硬件264 译码的
 main-thread-no-omtc = 主群组线索, 无 OMTC
@@ -280,7 +280,7 @@ webgl2-extensions = WebGL 2 扩展名
 webgpu-default-adapter = WebGPU 默认衔接器
 webgpu-fallback-adapter = WebGPU 撤退衔接器
 
-support-blocklisted-bug = Blocklisted 由于已知的议题: <a data-l10n-name="bug-link">缺点 { $bugNumber }</a>
+support-blocklisted-bug = Blocklisted 由于已知的发行: <a data-l10n-name="bug-link">缺点 { $bugNumber }</a>
 
 unknown-failure = Blocklisted; 故障代码 { $failureCode }
 
@@ -303,8 +303,8 @@ loaded-lib-versions = 版本在使用
 
 has-seccomp-bpf = Seccomp-BPF (系统呼叫过滤)
 has-seccomp-tsync = Seccomp 线索同步
-has-user-namespaces = 用户 Namespaces
-has-privileged-user-namespaces = 用户 Namespaces 为了有特权的进程
+has-user-namespaces = 用户命名空间
+has-privileged-user-namespaces = 用户命名空间为了有特权的进程
 support-user-namespaces-unavailable =
     { $status } — This feature is not allowed by your system. This can restrict security features of { -brand-short-name }.
 can-sandbox-content = 内容进程 Sandboxing
@@ -316,12 +316,12 @@ support-sandbox-gpu-level = GPU 进程沙箱级别
 sandbox-proc-type-content = 内容
 sandbox-proc-type-file = 文件内容
 sandbox-proc-type-media-plugin = 媒质相关插件
-sandbox-proc-type-data-decoder = 资料译码器
+sandbox-proc-type-data-decoder = 论据译码器
 
 startup-cache-title = 启动高速缓冲存储器
 startup-cache-disk-cache-path = 磁盘高速缓冲存储器路径
 startup-cache-ignore-disk-cache = 忽略磁盘高速缓冲存储器
-startup-cache-found-disk-cache-on-init = 发现磁盘高速缓冲存储器在初始化（initialization）
+startup-cache-found-disk-cache-on-init = 发现磁盘高速缓冲存储器在初始化
 startup-cache-wrote-to-disk-cache = 书写器到磁盘高速缓冲存储器
 
 launcher-process-status-0 = 启用
@@ -350,8 +350,8 @@ autoscroll-enabled = autoscroll 启用
 zooming-enabled = 平滑的捏-zoom 启用
 
 
-wheel-warning = 异步的轮子输入禁用由于未经证实的优先（preference）: { $preferenceKey }
-touch-warning = 异步的触觉输入禁用由于未经证实的优先（preference）: { $preferenceKey }
+wheel-warning = 异步的轮子输入禁用由于未经证实的优先: { $preferenceKey }
+touch-warning = 异步的触觉输入禁用由于未经证实的优先: { $preferenceKey }
 
 
 policies-inactive = 非活动的
@@ -376,7 +376,7 @@ support-remote-settings-local-timestamp = 本地的时间戳
 support-remote-settings-sync-history = 历史记录
 support-remote-settings-sync-history-status = 状态
 support-remote-settings-sync-history-datetime = 日期
-support-remote-settings-sync-history-infos = Infos
+support-remote-settings-sync-history-infos = 信息
 
 
 support-remote-experiments-title = 远程实验
@@ -392,7 +392,7 @@ support-remote-features-status = 状态
 pointing-device-mouse = 鼠标
 pointing-device-touchscreen = 触摸屏
 pointing-device-pen-digitizer = 钢笔数字化设备
-pointing-device-none = 无指向德维克（男子名、姓氏）
+pointing-device-none = 无指向装置
 
 
 content-analysis-title = 内容分析机 (DLP)

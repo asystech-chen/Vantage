@@ -8,9 +8,9 @@
 network-menu-summary-tooltip-perf =
     .title = 启动施行分析机
 network-menu-summary-tooltip-domcontentloaded =
-    .title = 时间何时“DOMContentLoaded”事件发生（occur的过去分词）
+    .title = 时间何时“DOMContentLoaded”事件发生
 network-menu-summary-tooltip-load =
-    .title = 时间何时“加载”事件发生（occur的过去分词）
+    .title = 时间何时“加载”事件发生
 # This label is displayed in the network table footer providing the
 # number of requests
 # Variables:

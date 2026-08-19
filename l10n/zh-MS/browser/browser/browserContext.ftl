@@ -13,13 +13,13 @@ navbar-tooltip-instruction =
 # Variables
 #   $shortcut (String) - A keyboard shortcut for the Go Back command.
 main-context-menu-back-2 =
-    .tooltiptext = 去后面的一(个) 页 ({ $shortcut })
-    .aria-label = 后面的
+    .tooltiptext = 去回一(个) 页 ({ $shortcut })
+    .aria-label = 回
     .accesskey = B
 
 # This menuitem is only visible on macOS
 main-context-menu-back-mac =
-    .label = 后面的
+    .label = 回
     .accesskey = B
 
 navbar-tooltip-back-2 =
@@ -495,7 +495,7 @@ main-context-menu-pdfjs-cut-page =
     .label = 剪切页
 
 main-context-menu-pdfjs-delete-page =
-    .label = Delete 页
+    .label = 删除页
 
 main-context-menu-pdfjs-save-page =
     .label = 保存选择作为…

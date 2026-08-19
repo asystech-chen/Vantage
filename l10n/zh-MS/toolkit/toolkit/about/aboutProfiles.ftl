@@ -9,7 +9,7 @@ profiles-restart-normal = 重新启动正规地…
 profiles-conflict = 另外的复制的 { -brand-product-name } 有使更改到提问档. 你必须重新启动 { -brand-short-name } 在...之前制造更多更改.
 profiles-flush-fail-title = 更改不保存
 profiles-flush-conflict = { profiles-conflict }
-profiles-flush-failed = 一个料想不到的错误有预防( prevent的过去式和过去分词 ) 你的更改从存在保存.
+profiles-flush-failed = 一个料想不到的错误有预防你的更改从存在保存.
 profiles-flush-restart-button = 重新启动 { -brand-short-name }
 
 profiles-name = 提问档: { $name }
@@ -38,16 +38,16 @@ profiles-rename-profile = 重新命名提问档 { $name }
 profiles-invalid-profile-name-title = 病人提问档名称
 profiles-invalid-profile-name = 那提问档名称“{ $name }”是不允许.
 
-profiles-delete-profile-title = Delete 提问档
+profiles-delete-profile-title = 删除提问档
 profiles-delete-profile-confirm =
     删除一个提问档将移除那提问档从那列表的可利用的提问档和无法撤销.
-    你可以也选取到删除那提问档资料文件, 包含你的设置, 证明书和其他的用户-related 资料. 这选项将删除那文件夹“{ $dir }”和无法撤销.
-    会你喜欢到删除那提问档资料文件?
-profiles-delete-files = Delete 文件
-profiles-dont-delete-files = 不要 Delete 文件
+    你可以也选取到删除那提问档论据文件, 包含你的设置, 证书和其他的用户-related 论据. 这选项将删除那文件夹“{ $dir }”和无法撤销.
+    会你喜欢到删除那提问档论据文件?
+profiles-delete-files = 删除文件
+profiles-dont-delete-files = 不要删除文件
 
 profiles-delete-profile-failed-title = 错误
-profiles-delete-profile-failed-message = 那里曾是一个错误一会儿试图( attempt的现在分词 ) 到删除这提问档.
+profiles-delete-profile-failed-message = 那里曾是一个错误一会儿试图到删除这提问档.
 
 
 profiles-opendir =

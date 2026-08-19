@@ -14,7 +14,7 @@ colorpicker-tooltip-eyedropper-title = 拾取颜色在页
 # A title text for the closest color name shown in the color picker tooltip, used together with the actual color.
 # Variables:
 #   $colorName (String): the color name the current color is closest to.
-colorpicker-tooltip-color-name-title = 最靠近的（close的最高级）到: { $colorName }
+colorpicker-tooltip-color-name-title = 最靠近的到: { $colorName }
 
 # A title text for the hue slider in the color picker tooltip.
 colorpicker-tooltip-hue-slider-title = 色调
@@ -23,4 +23,4 @@ colorpicker-tooltip-hue-slider-title = 色调
 colorpicker-tooltip-alpha-slider-title = 不透明
 
 # A text for the toggle for the element-specific pseudo-classes panel.
-inspector-element-specific-pseudo-classes-heading = 部分-specific 假的-类别
+inspector-element-specific-pseudo-classes-heading = 部分-specific 假的-架势（加拿大的Hi-End音响品牌名）

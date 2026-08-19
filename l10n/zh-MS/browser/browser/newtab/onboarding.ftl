@@ -15,12 +15,12 @@ mr1-onboarding-get-started-primary-button-label = 获得启动
 
 ## Custom Return To AMO onboarding strings
 
-return-to-amo-subtitle = 大的, you have 你（们）已经获得 { -brand-short-name }
+return-to-amo-subtitle = 大的, 你有获得 { -brand-short-name }
 # <img data-l10n-name="icon"/> will be replaced with the icon belonging to the extension
 #
 # Variables:
 #   $addon-name (String) - Name of the add-on
-return-to-amo-addon-title = 现在 let us 让我们获得你 <img data-l10n-name="icon"/> <b>{ $addon-name }</b>.
+return-to-amo-addon-title = 现在让我们获得你 <img data-l10n-name="icon"/> <b>{ $addon-name }</b>.
 return-to-amo-add-extension-label = 添加那扩展名
 return-to-amo-add-theme-label = 添加那主题
 return-to-amo-theme-install-complete-label = 主题安装
@@ -29,7 +29,7 @@ return-to-amo-extension-install-complete-label = 扩展名安装
 ##  Variables: $addon-name (String) - Name of the add-on to be installed
 
 mr1-return-to-amo-subtitle = 说喂到 { -brand-short-name }
-mr1-return-to-amo-addon-title = you have 你（们）已经获得一个绝食, 私人的浏览器在你的指尖. 现在你能添加 <b>{ $addon-name }</b> 和做偶数更多与 { -brand-short-name }.
+mr1-return-to-amo-addon-title = 你有获得一个绝食, 私人的浏览器在你的指尖. 现在你能添加 <b>{ $addon-name }</b> 和做偶数更多与 { -brand-short-name }.
 mr1-return-to-amo-add-extension-label = 添加 { $addon-name }
 
 ## Multistage onboarding strings (about:welcome pages)
@@ -86,57 +86,57 @@ onboarding-animation-play-button =
 mr1-onboarding-theme-tooltip-system =
   .title =
     跟随那操作的系统主题
-    为了按钮, 菜单, 和窗口.
+    为了按钮, 菜单, 和窗.
 
 # Input description for system theme
 mr1-onboarding-theme-description-system =
   .aria-description =
     跟随那操作的系统主题
-    为了按钮, 菜单, 和窗口.
+    为了按钮, 菜单, 和窗.
 
 # Tooltip displayed on hover of light theme
 mr1-onboarding-theme-tooltip-light =
   .title =
     使用一个光主题为了按钮,
-    菜单, 和窗口.
+    菜单, 和窗.
 
 # Input description for light theme
 mr1-onboarding-theme-description-light =
   .aria-description =
     使用一个光主题为了按钮,
-    菜单, 和窗口.
+    菜单, 和窗.
 
 # Tooltip displayed on hover of dark theme
 mr1-onboarding-theme-tooltip-dark =
   .title =
     使用一个黑暗主题为了按钮,
-    菜单, 和窗口.
+    菜单, 和窗.
 
 # Input description for dark theme
 mr1-onboarding-theme-description-dark =
   .aria-description =
     使用一个黑暗主题为了按钮,
-    菜单, 和窗口.
+    菜单, 和窗.
 
 # Tooltip displayed on hover of Alpenglow theme
 mr1-onboarding-theme-tooltip-alpenglow =
   .title =
     使用一个动态的, 华美的主题为了按钮,
-    菜单, 和窗口.
+    菜单, 和窗.
 
 # Input description for Alpenglow theme
 mr1-onboarding-theme-description-alpenglow =
   .aria-description =
     使用一个动态的, 华美的主题为了按钮,
-    菜单, 和窗口.
+    菜单, 和窗.
 
 # Selector description for default themes
-mr2-onboarding-default-theme-label = 探险默认他们.
+mr2-onboarding-default-theme-label = 探险默认主题.
 
 ## Strings for Thank You page
 
 mr2-onboarding-thank-you-header = 谢意你为了选择我们
-mr2-onboarding-thank-you-text = { -brand-short-name } 是一个独立自主者浏览器有背的由一个非-profit. 一起, (we are 的常用口语形式) 制造那网更安全（safe的比较级）, 更健康（healthy的比较级）, 和更多私人的.
+mr2-onboarding-thank-you-text = { -brand-short-name } 是一个独立自主者浏览器有背的由一个非-profit. 一起, 我们是制造那网更安全, 更健康, 和更多私人的.
 mr2-onboarding-start-browsing-button-label = 启动浏览
 
 ## Multistage live language reloading onboarding strings (about:welcome pages)
@@ -152,10 +152,10 @@ onboarding-live-language-header = 选取你的语言
 
 mr2022-onboarding-live-language-text = { -brand-short-name } 说你的语言
 
-mr2022-language-mismatch-subtitle = 谢意到我们的社区, { -brand-short-name } 是译本在结束 90 语系. 它看相似的你的系统是使用 { $systemLanguage }, 和 { -brand-short-name } 是使用 { $appLanguage }.
+mr2022-language-mismatch-subtitle = 谢意到我们的社区, { -brand-short-name } 是译本在结束 90 语言. 它看相似的你的系统是使用 { $systemLanguage }, 和 { -brand-short-name } 是使用 { $appLanguage }.
 
 onboarding-live-language-button-label-downloading = 下装那语言压缩为了 { $negotiatedLanguage }…
-onboarding-live-language-waiting-button = 采煤可利用的语系…
+onboarding-live-language-waiting-button = 采煤可利用的语言…
 onboarding-live-language-installing = 安装那语言压缩为了 { $negotiatedLanguage }…
 
 mr2022-onboarding-live-language-switch-to = 开关到 { $negotiatedLanguage }
@@ -177,7 +177,7 @@ fx100-thank-you-hero-text =
   100
   谢意
   <span data-l10n-name="zap">你们</span>
-fx100-thank-you-subtitle = 它是我们的 100钍(90号元素) 版本! 谢意为了帮助我们建立一个较好的, 更健康（healthy的比较级）因特网.
+fx100-thank-you-subtitle = 它是我们的 100钍(90号元素) 版本! 谢意为了帮助我们建立一个较好的, 更健康因特网.
 fx100-thank-you-pin-primary-button-label = { PLATFORM() ->
     [macos] 保持 { -brand-short-name } 在码头
    *[other] 大头针 { -brand-short-name } 到任务栏
@@ -186,7 +186,7 @@ fx100-thank-you-pin-primary-button-label = { PLATFORM() ->
 fx100-upgrade-thanks-header = 100 谢意-你们
 # Message shown with a start-browsing button. Emphasis <em> should be for "you"
 # but "Thank" can be used instead if there's no "you" in the translation.
-fx100-upgrade-thank-you-body = 它是我们的 100钍(90号元素) 版本的 { -brand-short-name }. 谢意 <em>你</em> 为了帮助我们建立一个较好的, 更健康（healthy的比较级）因特网.
+fx100-upgrade-thank-you-body = 它是我们的 100钍(90号元素) 版本的 { -brand-short-name }. 谢意 <em>你</em> 为了帮助我们建立一个较好的, 更健康因特网.
 # Message shown with either a pin-to-taskbar or set-default button.
 fx100-upgrade-thanks-keep-body = 它是我们的 100钍(90号元素) 版本! 谢意为了存在一个部分的我们的社区. 保持 { -brand-short-name } 一(个) 单击离去为了那近邻干扰 100.
 
@@ -209,7 +209,7 @@ mr2022-onboarding-easy-setup-import-checkbox-label = 引入从早先的浏览器
 # If this translation does not make sense in your language, feel free to use the word "discover."
 mr2022-onboarding-welcome-pin-header = 打开向上的一个令人惊异的因特网
 # Subtitle is used on onboarding page for new users page when Firefox is not pinned
-mr2022-onboarding-welcome-pin-subtitle = 下水 { -brand-short-name } 从无论何处与一个单精度型单击. 每一时间你做, you are 你（你们）是选择一个更多打开和独立自主者网.
+mr2022-onboarding-welcome-pin-subtitle = 下水 { -brand-short-name } 从无论何处与一个单精度型单击. 每一时间你做, 你是选择一个更多打开和独立自主者网.
 # Primary button string used on welcome page for when Firefox is not pinned.
 mr2022-onboarding-pin-primary-button-label = { PLATFORM() ->
     [macos] 保持 { -brand-short-name } 在码头
@@ -224,7 +224,7 @@ mr2022-onboarding-pin-primary-button-label-msix = 大头针 { -brand-short-name 
 # Title used on multistage onboarding page for existing users when Firefox is not pinned
 mr2022-onboarding-existing-pin-header = 谢意你为了亲爱的 { -brand-product-name }
 # Subtitle is used on onboarding page for existing users when Firefox is not pinned
-mr2022-onboarding-existing-pin-subtitle = 下水一个更健康（healthy的比较级）因特网从无论何处与一个单精度型单击. 我们的最近的更新是压缩的与新的事物我们想 (=you will 崇拜.
+mr2022-onboarding-existing-pin-subtitle = 下水一个更健康因特网从无论何处与一个单精度型单击. 我们的最近的更新是压缩的与新的事物我们想你将崇拜.
 # Subtitle will be used on the welcome screen for existing users
 # when they already have Firefox pinned but not set as default
 mr2022-onboarding-existing-set-default-only-subtitle = 使用一个浏览器那防护你的隐私一会儿你给...以速度包围那网. 我们的最近的更新是压缩的与事物那你崇拜.
@@ -245,7 +245,7 @@ mr2022-onboarding-set-default-subtitle = 使用一个浏览器有背的由一个
 
 # When translating "zip", please feel free to pick a verb that signifies movement and/or exploration
 # and makes sense in the context of navigating the web.
-mr2022-onboarding-get-started-primary-subtitle = 我们的最近的版本是建立包围你, 制造它更简单比曾经到给...以速度包围那网. 它是压缩的与特性我们想 (=you will 崇拜.
+mr2022-onboarding-get-started-primary-subtitle = 我们的最近的版本是建立包围你, 制造它更简单比曾经到给...以速度包围那网. 它是压缩的与特性我们想你将崇拜.
 mr2022-onboarding-get-started-primary-button-label = 日落向上的在秒
 
 mr2022-onboarding-import-primary-button-label-no-attribution = 引入从早先的浏览器
@@ -268,22 +268,22 @@ mr2022-upgrade-onboarding-pin-private-window-primary-button-label = { PLATFORM()
 ## MR2022 Privacy Segmentation screen strings
 
 mr2022-onboarding-privacy-segmentation-title = 我们总是尊敬你的隐私
-mr2022-onboarding-privacy-segmentation-subtitle = 从聪明的提议到聪明的搜索, (we are 的常用口语形式) 不变地工作到创建一个较好的, 更多私人的 { -brand-product-name }.
-mr2022-onboarding-privacy-segmentation-text-cta = 什么你是否想要到看见何时我们提供新的特性那使用你的资料到提高你的浏览?
+mr2022-onboarding-privacy-segmentation-subtitle = 从聪明的提议到聪明的搜索, 我们是不变地工作到创建一个较好的, 更多私人的 { -brand-product-name }.
+mr2022-onboarding-privacy-segmentation-text-cta = 什么你是否想要到看见何时我们提供新的特性那使用你的论据到提高你的浏览?
 mr2022-onboarding-privacy-segmentation-button-primary-label = 使用 { -brand-product-name } 推荐
 mr2022-onboarding-privacy-segmentation-button-secondary-label = 显示详细的信息
 
 ## MR2022 Multistage Gratitude screen strings
 
-mr2022-onboarding-gratitude-title = you are 你（你们）是帮助我们建立一个较好的网
-mr2022-onboarding-gratitude-subtitle = 谢意你为了使用 { -brand-short-name }, 有背的由那摩斯拉基础. 与你的支持, (we are 的常用口语形式) 工作到使那因特网更多打开, 易接近的, 和较好的为了系统中的一个组名.
-mr2022-onboarding-gratitude-primary-button-label = 看见（尤当 has 为助动词时新的
+mr2022-onboarding-gratitude-title = 你是帮助我们建立一个较好的网
+mr2022-onboarding-gratitude-subtitle = 谢意你为了使用 { -brand-short-name }, 有背的由那摩斯拉基础. 与你的支持, 我们是工作到使那因特网更多打开, 易接近的, 和较好的为了系统中的一个组名.
+mr2022-onboarding-gratitude-primary-button-label = 看见什么是新的
 mr2022-onboarding-gratitude-secondary-button-label = 启动浏览
 
 ## Onboarding spotlight for infrequent users
 
 onboarding-infrequent-import-title = 使你自己在主页
-onboarding-infrequent-import-subtitle = 是否 you are 你（你们）是沉淀物在或只是停机的由, 记住你能引入你的书签, 密码, 和更多.
+onboarding-infrequent-import-subtitle = 是否你是沉淀物在或只是停机的由, 记住你能引入你的书签, 密码, 和更多.
 onboarding-infrequent-import-primary-button = 引入到 { -brand-short-name }
 
 ## MR2022 Illustration alt tags
@@ -296,7 +296,7 @@ mr2022-onboarding-default-image-alt =
 mr2022-onboarding-import-image-alt =
   .aria-label = 人骑一个溜冰板与一个方框的软设备像标
 mr2022-onboarding-mobile-download-image-alt =
-  .aria-label = 青蛙跳跃越过百合波纹细丝带与一个 QR 代码到下载 { -brand-product-name } 为了活动物体在那居中
+  .aria-label = 青蛙跳跃越过百合焊接点与一个 QR 代码到下载 { -brand-product-name } 为了活动物体在那居中
 mr2022-onboarding-pin-private-image-alt =
   .aria-label = 魔术棒使 { -brand-product-name } 私人的浏览徽标出现外面的的一个帽子
 mr2022-onboarding-privacy-segmentation-image-alt =
@@ -308,17 +308,17 @@ mr2022-onboarding-gratitude-image-alt =
 
 onboarding-device-migration-image-alt =
   .aria-label = 一个狐狸在那筛选的一个膝上型的计算机波浪状的. 那膝上型的有一个鼠标塞紧的进入...之内它.
-onboarding-device-migration-title = 欢迎后面的!
+onboarding-device-migration-title = 欢迎回!
 onboarding-device-migration-subtitle2 = 正负号在到你的帐户到带来你的书签, 密码, 和历史记录与你在你的新的装置.
 onboarding-device-migration-primary-button-label = 正负号在
 
 ## Add-ons Picker screen
 
 amo-picker-title = 定制你的 { -brand-short-name }
-amo-picker-subtitle = 扩展名是相似的应用程序为了你的浏览器, 和他们让你防卫密码, 下载视频文件, 发现发牌, 阻止恼人的精确定义系统, 更改如何你的浏览器一看, 和大量更多.
+amo-picker-subtitle = 扩展名是相似的应用为了你的浏览器, 和他们让你防卫密码, 下载影像, 发现发牌, 阻止恼人的精确定义系统, 更改如何你的浏览器一看, 和大量更多.
 amo-picker-install-button-label = 添加到 { -brand-short-name }
 amo-picker-install-complete-label = 安装
-amo-picker-collection-link = 探险更多添加-奥运信息服务（Olympic News Service）
+amo-picker-collection-link = 探险更多添加-奥运信息服务
 
 ## The following screens have been updated to use security and privacy focused strings:
 
@@ -327,15 +327,15 @@ onboarding-easy-setup-security-and-privacy-title = 我们爱保管你保险箱
 onboarding-easy-setup-security-and-privacy-subtitle = 我们的非-profit 有背的浏览器帮忙停止公司从秘密地下列各项你包围那网.
 
 # Mobile download screen
-onboarding-mobile-download-security-and-privacy-title = 停留加密何时你跳跃式传输在...之间德维克（男子名、姓氏）
-onboarding-mobile-download-security-and-privacy-subtitle = 何时 you are 你（你们）是 synchronization 的缩略词向上的, { -brand-short-name } 加密你的密码, 书签, 和更多. 正差你能抓取标签页从你的其他的德维克（男子名、姓氏）.
+onboarding-mobile-download-security-and-privacy-title = 停留加密何时你跳跃式传输在...之间装置
+onboarding-mobile-download-security-and-privacy-subtitle = 何时你是 synchronization 的缩略词向上的, { -brand-short-name } 加密你的密码, 书签, 和更多. 正差你能抓取标签页从你的其他的装置.
 
 # Gratitude screen
-onboarding-gratitude-security-and-privacy-title = { -brand-short-name } 有你的背部
-onboarding-gratitude-security-and-privacy-subtitle = 谢意你为了使用 { -brand-short-name }, 有背的由那摩斯拉基础. 与你的支持, (we are 的常用口语形式) 工作到使那因特网更安全（safe的比较级）和更多易接近的为了系统中的一个组名.
+onboarding-gratitude-security-and-privacy-title = { -brand-short-name } 有你的回
+onboarding-gratitude-security-and-privacy-subtitle = 谢意你为了使用 { -brand-short-name }, 有背的由那摩斯拉基础. 与你的支持, 我们是工作到使那因特网更安全和更多易接近的为了系统中的一个组名.
 
 # Sign up or Sign in screen
-onboarding-sign-up-title = 同步的你的资料越过德维克（男子名、姓氏）
+onboarding-sign-up-title = 同步的你的论据越过装置
 onboarding-sign-up-description = 正负号向上的为了一个帐户和所有的的你的要点信息—密码, 书签, 和更多—将是安全地储存的和可利用的何时你正负号在到任何的装置.
 onboarding-sign-up-button = 正负号向上的或正负号在
 onboarding-sign-up-secondary-button = 启动浏览
@@ -352,14 +352,14 @@ onboarding-new-user-survey-next-button-label = 近邻干扰
 onboarding-new-user-survey-legal-link-label = 由选择“{ onboarding-new-user-survey-next-button-label },”你同意到 { -brand-product-name }'s <a data-l10n-name="privacy_notice">隐私注意</a>
 
 # When translating "brand new" it means completely new.
-onboarding-new-user-survey-time-based-option-1 = 我是（缩写）商标新的
+onboarding-new-user-survey-time-based-option-1 = 我是商标新的
 onboarding-new-user-survey-time-based-option-2 = 最低成本估算与调度法比 1 月
 onboarding-new-user-survey-time-based-option-3 = 更多比 1 月, 有规则地
 onboarding-new-user-survey-time-based-option-4 = 更多比 1 月, 有时候
 # When translating "brand new" it means completely new.
-onboarding-new-user-survey-familiarity-based-option-1 = 我是（缩写）商标新的
-onboarding-new-user-survey-familiarity-based-option-2 = （等于I have）使用它一些
-onboarding-new-user-survey-familiarity-based-option-3 = 我是（缩写）真正的熟悉的与它
+onboarding-new-user-survey-familiarity-based-option-1 = 我是商标新的
+onboarding-new-user-survey-familiarity-based-option-2 = 我有使用它一些
+onboarding-new-user-survey-familiarity-based-option-3 = 我是真正的熟悉的与它
 onboarding-new-user-survey-familiarity-based-option-4 = 电流使用它在那过去, 除了它是是一个一会儿
 
 ## UI strings for the sidebar and vertical tabs
@@ -367,13 +367,13 @@ onboarding-new-user-survey-familiarity-based-option-4 = 电流使用它在那过
 # New users
 
 # Setup screen for vertical tabs
-onboarding-new-tabs-title = 告诉我们哪里 (=you had)(=you would) 相似的你的标签页
+onboarding-new-tabs-title = 告诉我们哪里你将相似的你的标签页
 
 # Setup screen for vertical tabs - "Switch it up" refers to switching between horizontal and vertical tabs.
 onboarding-new-tabs-subtitle = 开关它向上的每当你想要在那其他选项设置.
 
 # Setup screen for vertical tabs - too many tabs variation
-onboarding-many-tabs-title = 你的标签页, 你的路
+onboarding-many-tabs-title = 你的标签页, 你的方式
 
 # Setup screen for vertical tabs - subtitle for too many tabs variation
 onboarding-many-tabs-subtitle = 保持一个运气的标签页打开? 尝试你的标签页在那旁边为了一个更多流线的查看. 或保持它古典作品与标签页在那 TOP协议. 开关任何时候.
@@ -432,7 +432,7 @@ onboarding-horizontal-tabs-description =
 onboarding-genai-sidebar-title = 尝试一个 AI chatbot 在那其他选项
 
 # Setup card for setting up AI chatbot in the sidebar; "Providers" refers to AI chatbot providers (e.g. OpenAI, etc). "Switch anytime" refers to allowing the user to switch to a different chatbot.
-onboarding-genai-sidebar-subtitle = 概述网内容, 灵机一动工业设计优秀奖, 草稿报文—所有的作为你浏览. 选取从倍数提供器. 开关任何时候. <a data-l10n-name="learn-more">学习更多</a>
+onboarding-genai-sidebar-subtitle = 概述网内容, 灵机一动主意, 草稿报文—所有的作为你浏览. 选取从倍数提供器. 开关任何时候. <a data-l10n-name="learn-more">学习更多</a>
 onboarding-genai-sidebar-primary-button = 选取一个 chatbot
 onboarding-genai-sidebar-secondary-button = 启动浏览
 
@@ -488,21 +488,21 @@ desktop-to-mobile-qr-code-alt =
 
 ## Fx Backup onboarding: Create Backup spotlight
 
-create-backup-screen-1-title = 升级到窗口 11?
-    let us 让我们后面的向上的你的 { -brand-product-name } 资料.
-create-backup-screen-1-subtitle = 自动地防卫你的密码, 书签, 和更多在 1–2 分钟.
+create-backup-screen-1-title = 升级到窗11?
+    让我们回向上的你的 { -brand-product-name } 论据.
+create-backup-screen-1-subtitle = 自动地防卫你的密码, 书签, 和更多在 1–2 分.
 create-backup-screen-1-flair = 被推荐的
 create-backup-learn-more-link = <a data-l10n-name="learn-more-label">学习更多</a>
 create-backup-screen-1-sync-label = 同步的与 { -brand-product-name }
-create-backup-screen-1-sync-body = 后面的向上的所有的有符号的在德维克（男子名、姓氏）
-create-backup-screen-1-backup-label = 后面的向上的到 PC
+create-backup-screen-1-sync-body = 回向上的所有的有符号的在装置
+create-backup-screen-1-backup-label = 回向上的到 PC
 create-backup-screen-1-backup-body = 保存到你的装置或 OneDrive
 create-backup-select-tile-button-label = 选择
-create-backup-back-button-label = 后面的
+create-backup-back-button-label = 回
 create-backup-show-fewer =
   .label = 显示较少的相似的这
-create-backup-screen-2-title = 选取 { -brand-product-name } 资料到使后退向上的
-create-backup-screen-2-subtitle = 仅采取一个分. 你的资料是有背的向上的一次一个天.
+create-backup-screen-2-title = 选取 { -brand-product-name } 论据到回向上的
+create-backup-screen-2-subtitle = 仅采取一个分. 你的论据是有背的向上的一次一个天.
 # Label for the "Easy setup" backup option
 create-backup-screen-2-easy-label = 容易的设置
 # Preceded by a green check mark indicating that these are included in "Easy setup" backup
@@ -512,7 +512,7 @@ create-backup-screen-2-easy-list-2 = 不包含密码和付款
 # Preceded by a red X indicating that "Easy setup" backups are not encrypted
 create-backup-screen-2-easy-list-3 = 不加密
 # Label for the "All data" backup option
-create-backup-screen-2-all-label = 所有的资料
+create-backup-screen-2-all-label = 所有的论据
 # Preceded by a green check mark indicating that these are included in the "All data" backup
 create-backup-screen-2-all-list-2 = 包含密码和付款
 # Preceded by a green check mark and shield indicating "All data" backups are encrypted
@@ -522,7 +522,7 @@ create-backup-screen-2-all-list-3 = 加密与一个密码
 create-backup-screen-3-location = 哪里你是否想要你的倒车保存?
 # Title for a screen asking users to create a password that will encrypt the backup
 create-backup-screen-3-title = 创建一个倒车文件密码
-create-backup-screen-3-subtitle = 必需的到加密你的资料. 存储器操作它在一个地方 (=you will 记住.
+create-backup-screen-3-subtitle = 必需的到加密你的论据. 存储器操作它在一个地方你将记住.
 
 # These strings appear in the embedded backup component.
 
@@ -530,7 +530,7 @@ fx-backup-opt-in-header = 选取文件位置
 fx-backup-opt-in-filepath-label = 拾取一个地方你计划到传送到一个新的装置, 相似的 OneDrive.
 fx-backup-opt-in-create-password-label = Enter 密码
 fx-backup-opt-in-confirm-btn-label = 继续
-fx-backup-opt-in-cancel-btn-label = 后面的
+fx-backup-opt-in-cancel-btn-label = 回
 
 ## Fx Backup confirmation screen strings
 
@@ -539,36 +539,36 @@ fx-backup-confirmation-screen-close-button = 关闭
 
 ## These strings appear as a confirmation of which items will or won't be included as part of the selected backup method.
 
-fx-backup-confirmation-screen-all-data-item-text-1 = 所有的浏览资料包含的
+fx-backup-confirmation-screen-all-data-item-text-1 = 所有的浏览论据包含的
 fx-backup-confirmation-screen-all-data-item-text-2 = 保存到你的装置
 fx-backup-confirmation-screen-all-data-item-text-3 = 加密和密码受保护的
 
-fx-backup-confirmation-screen-easy-setup-item-text-1 = 书签, 历史记录, 设置, 和其他的资料包含的
+fx-backup-confirmation-screen-easy-setup-item-text-1 = 书签, 历史记录, 设置, 和其他的论据包含的
 fx-backup-confirmation-screen-easy-setup-item-text-2 = 保存到你的装置
 fx-backup-confirmation-screen-easy-setup-item-text-3 = 密码和付款不包含的
-fx-backup-confirmation-screen-easy-setup-item-subtext-3 = 去到 <a data-l10n-name="settings">设置</a> 到包含敏感的资料.
+fx-backup-confirmation-screen-easy-setup-item-subtext-3 = 去到 <a data-l10n-name="settings">设置</a> 到包含敏感的论据.
 
-fx-backup-confirmation-screen-item-subtext-1 = 你的倒车将启动在一个少数分钟和将运行一次一个天. 你能复选进步在 <a data-l10n-name="settings">设置</a>.
+fx-backup-confirmation-screen-item-subtext-1 = 你的倒车将启动在一个少数分和将运行一次一个天. 你能复选进步在 <a data-l10n-name="settings">设置</a>.
 fx-backup-confirmation-screen-item-subtext-2 = { -brand-short-name } 将看为了你的倒车如果你需要到使从新正式就职.
 
 ## Restore from Backup Flow about:welcome screens
 
 restore-from-backup-secondary-top-button = 回复从倒车
-restore-from-backup-title = let us 让我们获得 { -brand-short-name } 后面的如何你喜欢它
-restore-from-backup-subtitle = 恢复所有的你的书签, 历史记录, 和其他的资料到获得后面的到浏览.
+restore-from-backup-title = 让我们获得 { -brand-short-name } 回如何你喜欢它
+restore-from-backup-subtitle = 恢复所有的你的书签, 历史记录, 和其他的论据到获得回到浏览.
 restore-from-backup-secondary-button = 不要回复
 
 multiple-backups-info-tile = <strong>倍数倒车文件发现.</strong> 那最多最近的文件是被选的. 回复其他的提问档在 <a data-l10n-name="settings-label">设置.</a>
 
 ## Restored from Backup spotlight
 
-restored-from-backup-success-title = (we are 的常用口语形式) 后面的! 你的 { -brand-short-name } 资料有是精力充沛的.
+restored-from-backup-success-title = 我们是回! 你的 { -brand-short-name } 论据有是精力充沛的.
 restored-from-backup-success-with-checklist-subtitle = 想要到保持你的喜欢的事物隐私-focused 浏览器一(个) 单击离去?
 restored-from-backup-success-no-checklist-subtitle = 你能使旋转倒车在为了这装置在 <a data-l10n-name="settings">设置</a>.
 restored-from-backup-success-with-checklist-primary-button = 保存和继续
 restored-from-backup-success-with-checklist-secondary-button = 跳过这步骤
 restored-from-backup-success-no-checklist-primary-button = 继续
-restored-from-backup-error-title = 隐马尔可夫模型（Hidden Markov Model）, 那里曾是一个问题与你的倒车文件.
+restored-from-backup-error-title = 隐马尔可夫模型, 那里曾是一个问题与你的倒车文件.
 restored-from-backup-error-subtitle = 如果你有另外的 { -brand-short-name } 倒车文件, 尝试恢复的从那一(个). <a data-l10n-name="restore-problems">仍然财产问题?</a>
 restored-from-backup-error-primary-button = 关闭
 
@@ -576,7 +576,7 @@ restored-from-backup-error-primary-button = 关闭
 ## A screen shown to users during the onboarding process that asks them two qualifying questions about their use of the browser
 
 onboarding-personalization-title = 定制你的 { -brand-short-name } 经历
-onboarding-personalization-subtitle = 用户问题及答案新闻组一个少数询问和 (we shall或 we will 的常用口语形式) 推荐特性和扩展名到提高你的使用的 { -brand-short-name }.
+onboarding-personalization-subtitle = 用户问题及答案新闻组一个少数询问和我们将推荐特性和扩展名到提高你的使用的 { -brand-short-name }.
 onboarding-personalization-use-case-title = 什么将你使用 { -brand-short-name } 为了?
 onboarding-personalization-use-case-personal-option = 私人的
 onboarding-personalization-use-case-school-option = 学校
@@ -588,17 +588,17 @@ onboarding-personalization-motivation-other-option = 其他的
 
 ## Onboarding 2026 brand refresh
 
-onboarding-refresh-pin-set-default-subtitle = 我们防卫你的资料和阻止公司从间谍活动在你的单击—自动地.
+onboarding-refresh-pin-set-default-subtitle = 我们防卫你的论据和阻止公司从间谍活动在你的单击—自动地.
 # "safe paws" is a play on "safe hands", meaning you're being well taken care of or protected
 # If it doesn’t translate well, you can use the alternative: “You’re safe with Firefox.”
-onboarding-refresh-pin-set-default-title = you are 你（你们）是在保险箱（等于Polar Automatic Weather Station）极地自动天气站
+onboarding-refresh-pin-set-default-title = 你是在保险箱爪
 onboarding-refresh-import-subtitle = 带来结束你的密码, 书签, 历史记录和更多.
 onboarding-refresh-import-title = 使 { -brand-short-name } 感觉更多相似的主页
-onboarding-refresh-onboarding-addons-subtitle = 扩展名是很少的应用程序那出租屋你定制 { -brand-short-name }. 他们能使...有力量向上的你的隐私, 提高生产力, 更改那路 { -brand-short-name } 一看, 和如此大量更多.
+onboarding-refresh-onboarding-addons-subtitle = 扩展名是很少的应用那出租屋你定制 { -brand-short-name }. 他们能功率向上的你的隐私, 提高生产力, 更改那方式 { -brand-short-name } 一看, 和如此大量更多.
 # "Give your browsing a boost" means to enhance or improve the browsing experience
 onboarding-refresh-onboarding-addons-title = 弹性你的浏览一个推进
-onboarding-refresh-sync-subtitle = 抓握书签, 密码, 和更多各处 you are 你（你们）是有符号的在到 { -brand-short-name }. 正差, 你的资料是加密如此仅你能看见它.
+onboarding-refresh-sync-subtitle = 抓握书签, 密码, 和更多各处你是有符号的在到 { -brand-short-name }. 正差, 你的论据是加密如此仅你能看见它.
 onboarding-refresh-sync-title = 去无论何处. 同步的每件事物.
-onboarding-refresh-gratitude-subtitle = 谢意你为了使用 { -brand-short-name }, 那仅主要浏览器有背的由一个非-profit. 与你的支持, (we are 的常用口语形式) 工作到使那因特网更安全（safe的比较级）和更多易接近的为了系统中的一个组名.
+onboarding-refresh-gratitude-subtitle = 谢意你为了使用 { -brand-short-name }, 那仅主要浏览器有背的由一个非-profit. 与你的支持, 我们是工作到使那因特网更安全和更多易接近的为了系统中的一个组名.
 # "has your back" is an idiom suggesting support and protection
-onboarding-refresh-gratitude-title = { -brand-short-name } 有你的背部
+onboarding-refresh-gratitude-title = { -brand-short-name } 有你的回

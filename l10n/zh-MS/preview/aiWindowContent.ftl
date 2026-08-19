@@ -7,16 +7,16 @@ smartwindow-messages-document-title = 聪明的窗口闲谈报文
 ## Error messages in the chat content
 
 smartwindow-assistant-error-generic-header = 某事去错误的. 请试再一次.
-smartwindow-assistant-error-budget-header = you have 你（们）已经到达( reach的过去式和过去分词 ) today's 闲谈界限.
-smartwindow-assistant-error-account-header = 到使用聪明的窗口, (=you will 需要到正负号在.
+smartwindow-assistant-error-budget-header = 你有到达 today's 闲谈界限.
+smartwindow-assistant-error-account-header = 到使用聪明的窗口, 你将需要到正负号在.
 smartwindow-assistant-error-capacity-header = 聪明的窗口是在容量右现在. 请试再一次以后.
 
 ## TODO: ET timezone should be replaced before rolling to other locales: https://bugzilla.mozilla.org/show_bug.cgi?id=2017944
 
 smartwindow-assistant-error-budget-body = 你能仍然浏览在这窗口. 闲谈将是可利用的再一次在...之后午夜 ET.
 smartwindow-assistant-error-many-requests-header = 请等待一个片刻和尝试再一次. 也多数报文曾是发送在一个扼要时间.
-smartwindow-assistant-error-max-length-header = 它是时间到启动一个新的闲谈. 这人们的到达( reach的过去式和过去分词 ) 它的记录长度界限.
-smartwindow-assistant-error-request-blocked-header = 聪明的窗口 (=could not)不能伸出那服务器. 尝试一个不同的网络, 或禁用你的 VPN.
+smartwindow-assistant-error-max-length-header = 它是时间到启动一个新的闲谈. 这人们的到达它的记录长度界限.
+smartwindow-assistant-error-request-blocked-header = 聪明的窗口不能伸出那服务器. 尝试一个不同的网络, 或禁用你的 VPN.
 # Variables:
 #   $status (Number) - HTTP status code returned by the inference back-end
 smartwindow-assistant-error-http-header = 服务器错误 (HTTP { $status }). 请试再一次.
@@ -27,7 +27,7 @@ smartwindow-signin-btn = 正负号在
 ## Assistant Message footer
 
 aiwindow-memories-used = 存储器使用
-aiwindow-memories-callout-description = 存储器帮助（help的过去分词） (贬)使个人化这应答.
+aiwindow-memories-callout-description = 存储器帮助 (贬)使个人化这应答.
 aiwindow-memories-learn-more = 学习更多
 aiwindow-manage-memories =
     .label = 存储器设置
@@ -55,7 +55,7 @@ aiwindow-applied-memories-list =
 # Variables:
 #   $summary (String) - The memory text that will be deleted
 aiwindow-delete-memory-button =
-    .aria-label = Delete { $summary }
+    .aria-label = 删除 { $summary }
 
 ## Jump to Bottom Button
 
@@ -106,19 +106,19 @@ smart-window-cancelled-label = 请求被取消的.
 ## Action log
 
 action-log-searching-tabs = 搜索的标签页
-action-log-searched-open-tabs = 找寻( search的过去式和过去分词 ) 打开标签页
+action-log-searched-open-tabs = 找寻打开标签页
 action-log-searching-history = 搜索的历史记录
-action-log-searched-history = 找寻( search的过去式和过去分词 ) 历史记录
+action-log-searched-history = 找寻历史记录
 action-log-reading-page = 阅读页
 action-log-read-page = 读取页内容
 action-log-searching-web = 搜索的那网
-action-log-searched-web = 找寻( search的过去式和过去分词 ) 那网
+action-log-searched-web = 找寻那网
 action-log-checking-memories = 检查的存储器
 action-log-checked-memories = 选中的存储器
 action-log-searching-settings = 搜索的设置
-action-log-searched-settings = 找寻( search的过去式和过去分词 ) 设置
+action-log-searched-settings = 找寻设置
 action-log-searching-world-cup-matches = 搜索的世界杯子比较
-action-log-searched-world-cup-matches = 找寻( search的过去式和过去分词 ) 世界杯子比较
+action-log-searched-world-cup-matches = 找寻世界杯子比较
 action-log-checking-world-cup-live = 检查的活的世界杯子比较
 action-log-checked-world-cup-live = 选中的活的世界杯子比较
 

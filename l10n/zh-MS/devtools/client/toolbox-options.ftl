@@ -15,14 +15,14 @@ options-tool-not-supported-label = * 不被支持的为了当前的工具箱目�
 
 # The label for the heading of group of checkboxes corresponding to the developer tools
 # added by add-ons. This heading is hidden when there is no developer tool installed by add-ons.
-options-select-additional-tools-label = 显影器工具安装由添加-奥运信息服务（Olympic News Service）
+options-select-additional-tools-label = 显影器工具安装由添加-奥运信息服务
 
 # The label for the heading of group of checkboxes corresponding to the default developer
 # tool buttons.
 options-select-enabled-toolbox-buttons-label = 可利用的工具箱按钮
 
 # The label for the heading of the radiobox corresponding to the theme
-options-select-dev-tools-theme-label = 他们
+options-select-dev-tools-theme-label = 主题
 
 ## Inspector section
 
@@ -30,9 +30,9 @@ options-select-dev-tools-theme-label = 他们
 options-context-inspector = 检查员
 
 # The label for the checkbox option to show user agent styles
-options-show-user-agent-styles-label = 显示浏览器捷克国际服装展览会
+options-show-user-agent-styles-label = 显示浏览器风格
 options-show-user-agent-styles-tooltip =
-    .title = 旋转这在将显示默认捷克国际服装展览会那是有负载的由那浏览器.
+    .title = 旋转这在将显示默认风格那是有负载的由那浏览器.
 
 # The label for the checkbox option to show all anonymous content
 options-show-user-agent-shadow-dom-label = 显示浏览器阴影 DOM
@@ -40,25 +40,25 @@ options-show-user-agent-shadow-dom-tooltip =
     .title = 旋转这在将显示阴影 DOM 部分有把手的由那浏览器.
 
 # The label for the checkbox option to enable collapse attributes
-options-collapse-attrs-label = 切去头端 DOM 属性（attribute的复数）
+options-collapse-attrs-label = 切去头端 DOM 属性
 options-collapse-attrs-tooltip =
-    .title = 切去头端长属性（attribute的复数）在那检查员
+    .title = 切去头端长属性在那检查员
 
 # The label for the checkbox option to enable the display of comments in the Inspector
 options-show-comments-label = 显示备注
 options-show-comments-tooltip =
-    .title = 显示器备注点头在那检查员
+    .title = 显示器备注节点在那检查员
 
 # The label for the checkbox option to enable the "drag to update" feature
-options-inspector-draggable-properties-label = 单击和拖动到编辑大小对价值的看法
+options-inspector-draggable-properties-label = 单击和拖动到编辑大小计算结果
 options-inspector-draggable-properties-tooltip =
-    .title = 单击和拖动到编辑大小对价值的看法在那检查员右上外侧查看.
+    .title = 单击和拖动到编辑大小计算结果在那检查员规则查看.
 
 # The label for the checkbox option to enable simplified highlighting on page elements
 # within the inspector for users who enabled prefers-reduced-motion = reduce
 options-inspector-simplified-highlighters-label = 使用药草采集者萤光笔与宁可-减少的-移动
 options-inspector-simplified-highlighters-tooltip =
-    .title = 启用简化了的萤光笔何时宁可-reduced-motion 是启用. 翻牌林作为替代的加满的 <数>长方形包围突出的部分到避免闪光效果.
+    .title = 启用简化了的萤光笔何时宁可-reduced-motion 是启用. 翻牌线路作为替代的加满的长方形包围突出的部分到避免闪光效果.
 
 # The label for the checkbox option to make the Enter key move the focus to the next input
 # when editing a property name or value in the Inspector rules view
@@ -74,7 +74,7 @@ options-default-color-unit-hex = 十六进制
 options-default-color-unit-hsl = HSL(一个)
 options-default-color-unit-rgb = RGB(一个)
 options-default-color-unit-hwb = HWB
-options-default-color-unit-name = 颜色全国制造商协会(美国)
+options-default-color-unit-name = 颜色名称
 
 ## Web Console section
 
@@ -94,7 +94,7 @@ options-styleeditor-label = 风格编辑器
 # The label for the checkbox that toggles autocompletion of css in the Style Editor
 options-stylesheet-autocompletion-label = Autocomplete CSS
 options-stylesheet-autocompletion-tooltip =
-    .title = Autocomplete CSS 属性, 对价值的看法和选择器在风格编辑器作为你打字
+    .title = Autocomplete CSS 属性, 计算结果和选择器在风格编辑器作为你打字
 
 ## Screenshot section
 
@@ -114,7 +114,7 @@ options-screenshot-audio-tooltip =
 ## Editor section
 
 # The heading
-options-sourceeditor-label = 编辑器参数选择
+options-sourceeditor-label = 编辑器首选项
 
 options-sourceeditor-detectindentation-tooltip =
     .title = 猜测缩进立基于在来源内容
@@ -123,8 +123,8 @@ options-sourceeditor-autoclosebrackets-tooltip =
     .title = 自动地插入关闭方括号
 options-sourceeditor-autoclosebrackets-label = Autoclose 方括号
 options-sourceeditor-expandtab-tooltip =
-    .title = 使用空间作为替代的那标签页字符
-options-sourceeditor-expandtab-label = 缩进使用空间
+    .title = 使用空白作为替代的那标签页字符
+options-sourceeditor-expandtab-label = 缩进使用空白
 options-sourceeditor-tabsize-label = Tab 大小
 options-sourceeditor-keybinding-label = Keybindings
 options-sourceeditor-keybinding-default-label = 默认
@@ -136,7 +136,7 @@ options-local-mode-label = 本地的模式
 
 options-local-mode-only-work-locally = 本地的模式仅工作地方性地和是禁用何时调试远程上下文
 
-options-local-mode-behavior = 本地的模式允许你到加载本地的文件经由超文本传输协议 URL 没有任何的外部属国. 那资源定位符（Uniform Resource Locators）能仅是有负载的从标签页与 DevTools 打开.
+options-local-mode-behavior = 本地的模式允许你到加载本地的文件经由超文本传输协议 URL 没有任何的外部属国. 那统一资源定位器能仅是有负载的从标签页与 DevTools 打开.
 
 options-local-mode-domain-label = 定制域:
 
@@ -190,7 +190,7 @@ options-disable-http-cache-tooltip =
 # The label for checkbox that toggles JavaScript on or off
 options-disable-javascript-label-2 = 禁用 Java描述语言（一种程序语言）
 options-disable-javascript-tooltip =
-    .title = 旋转这选项在将禁用 Java描述语言（一种程序语言）为了当前标签页. 如果那标签页或那工具箱是关闭然后这设置将是 forget的过去分词.
+    .title = 旋转这选项在将禁用 Java描述语言（一种程序语言）为了当前标签页. 如果那标签页或那工具箱是关闭然后这设置将是 forgotten.
 
 # The label for checkbox that toggles chrome debugging, i.e. the devtools.chrome.enabled preference
 options-enable-chrome-label = 启用浏览器铬和 add-on 调试工具箱
@@ -210,7 +210,7 @@ options-enable-f12-tooltip =
 # The label for checkbox that toggles custom formatters for objects
 options-enable-custom-formatters-label = 启用定制划盘程序
 options-enable-custom-formatters-tooltip =
-    .title = 旋转这选项在将允许坐到定义定制划盘程序为了 DOM 对象
+    .title = 旋转这选项在将允许位置到定义定制划盘程序为了 DOM 对象
 
 # The label for checkbox that toggles the service workers testing over HTTP on or off.
 options-enable-service-workers-http-label = 启用服务工人结束 HTTP (何时工具箱是打开)
@@ -218,9 +218,9 @@ options-enable-service-workers-http-tooltip =
     .title = 旋转这选项在将启用那服务工人结束 HTTP 为了全部标签页那有那工具箱打开.
 
 # The label for the checkbox that toggles source maps in all tools.
-options-source-maps-label = 启用来源管理分析与规划系统（Management Analysis and Planning System）
+options-source-maps-label = 启用来源实用程序
 options-source-maps-tooltip =
-    .title = 如果你启用这选项输入源将是计划在那工具.
+    .title = 如果你启用这选项来源将是计划在那工具.
 
 # The message shown for settings that trigger page reload and will only apply to the current session
 # This appears underneath the applicable options (e.g. options-disable-javascript-label-2).

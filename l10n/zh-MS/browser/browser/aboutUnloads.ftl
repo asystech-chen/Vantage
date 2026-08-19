@@ -10,7 +10,7 @@ about-unloads-intro =
     { -brand-short-name } has a feature that automatically unloads tabs
     到预防那应用从猛撞的由于不够的存储器
     何时那 system's 可利用的存储器是低点. 那近邻干扰标签页到是空载的是
-    choose的过去分词立基于在倍数属性（attribute的复数）. 这页显示如何
+    chosen 立基于在倍数属性. 这页显示如何
     { -brand-short-name } prioritizes tabs and which tab will be unloaded
     何时标签页转储是触发的. 你能切换开关标签页转储用手
     由微小静电干扰声那 <em>卸载</em> 按钮在下面.
@@ -34,13 +34,13 @@ about-unloads-column-priority = 优先级
 about-unloads-column-host = 主机
 about-unloads-column-last-accessed = 最后的接近
 about-unloads-column-weight = 基准粗细
-  .title = 标签页是首先分选的由这计算结果, 哪个 derivation 引出从一些专辑属性（attribute的复数）如此的作为游戏一个声音, WebRTC, 及其他.
+  .title = 标签页是首先分选的由这计算结果, 哪个得自从一些专辑属性如此的作为游戏一个声音, WebRTC, 及其他.
 about-unloads-column-sortweight = 中级的粗细
-  .title = 如果可利用的, 标签页是分选的由这计算结果在...之后存在分选的由那基准粗细. 那计算结果 derivation 引出从 tab's 存储器用法和那计数的进程.
+  .title = 如果可利用的, 标签页是分选的由这计算结果在...之后存在分选的由那基准粗细. 那计算结果得自从 tab's 存储器用法和那计数的进程.
 about-unloads-column-memory = 存储器
   .title = Tab's 估算的存储器用法
-about-unloads-column-processes = 进程标识部分（Identification Section）
-  .title = 标识部分（Identification Section）的那进程作战 tab's 内容
+about-unloads-column-processes = 进程标识部分
+  .title = 标识部分的那进程作战 tab's 内容
 
 about-unloads-last-accessed = { DATETIME($date,
         year: "numeric", month: "numeric", day: "numeric",

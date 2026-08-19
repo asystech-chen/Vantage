@@ -27,7 +27,7 @@ taskbar-tab-shortcut-description = { $name } 网应用
 # they will be replaced by underscores. (This generally means to not
 # use: '<' '>' ':' '"' '/' '\' '|' '?' '*' . All other characters
 # should be fine.)
-taskbar-tab-shortcut-folder = { -brand-short-name } 网应用程序
+taskbar-tab-shortcut-folder = { -brand-short-name } 网应用
 
 ## These strings are used as the tooltip for the mute/unmute button.
 

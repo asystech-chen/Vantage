@@ -5,8 +5,8 @@ csp-error-illegal-keyword = '{ $directive }' 指令包含一个被禁止的 { $k
 
 csp-error-illegal-protocol = '{ $directive }' 指令包含一个被禁止的 { $scheme }: 协议来源
 
-csp-error-missing-host = { $scheme }: 协议需要一个主机在 '{ $directive }' 正式的指示
+csp-error-missing-host = { $scheme }: 协议需要一个主机在 '{ $directive }' 指令
 
 csp-error-missing-source = '{ $directive }' 必须包含那来源 { $source }
 
-csp-error-illegal-host-wildcard = { $scheme }: 通配符输入源在 '{ $directive }' 正式的指示必须包含在最少一(个) 非-generic 子程式-domain (元件.千兆., *.例子.com 宁可比 *.com)
+csp-error-illegal-host-wildcard = { $scheme }: 通配符来源在 '{ $directive }' 指令必须包含在最少一(个) 非-generic 子程式-domain (元件.千兆., *.例子.com 宁可比 *.com)

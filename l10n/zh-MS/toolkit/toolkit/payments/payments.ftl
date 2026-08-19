@@ -1,6 +1,6 @@
 
 
-credit-card-expiration = 期满( expire的第三人称单数 ) 在 { $month }/{ $year }
+credit-card-expiration = 期满在 { $month }/{ $year }
 
 
 credit-card-label-number-2 = { $number }

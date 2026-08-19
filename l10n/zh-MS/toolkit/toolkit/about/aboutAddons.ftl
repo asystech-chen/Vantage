@@ -7,7 +7,7 @@ search-header =
 
 
 list-empty-get-extensions-message =
-    获得扩展名和他们在 <a data-l10n-name="get-extensions">{ $domain }</a>
+    获得扩展名和主题在 <a data-l10n-name="get-extensions">{ $domain }</a>
 
 list-empty-get-dictionaries-message =
     获得词典在 <a data-l10n-name="get-extensions">{ $domain }</a>
@@ -23,13 +23,13 @@ list-empty-available-updates =
     .value = 无更新发现
 
 list-empty-recent-updates =
-    .value = 你 =have not 最近更新的任何的添加-奥运信息服务（Olympic News Service）
+    .value = 你没有最近更新的任何的添加-奥运信息服务
 
 list-empty-find-updates =
     .label = 复选为了更新
 
 list-empty-button =
-    .label = 学习更多关于添加-奥运信息服务（Olympic News Service）
+    .label = 学习更多关于添加-奥运信息服务
 
 help-button = 添加-ons 支持
 sidebar-help-button-title =
@@ -65,7 +65,7 @@ detail-update-type =
 
 detail-update-default =
     .label = 默认
-    .tooltiptext = 自动地安装更新仅如果 (=that is)说得更精确些那默认
+    .tooltiptext = 自动地安装更新仅如果那是那默认
 
 detail-update-automatic =
     .label = 在
@@ -75,12 +75,12 @@ detail-update-manual =
     .label = 关闭
     .tooltiptext = 不要自动地安装更新
 
-detail-private-browsing-label = 运行在私人的窗口
+detail-private-browsing-label = 运行在私人的窗
 
-detail-private-disallowed-label = 不允许在私人的窗口
+detail-private-disallowed-label = 不允许在私人的窗
 detail-private-disallowed-description2 = 这扩展名做不运行一会儿私人的浏览. <a data-l10n-name="learn-more">学习更多</a>
 
-detail-private-required-label = 需要访问到私人的窗口
+detail-private-required-label = 需要访问到私人的窗
 detail-private-required-description2 = 这扩展名有访问到你的联机活动一会儿私人的浏览. <a data-l10n-name="learn-more">学习更多</a>
 
 detail-private-browsing-on =
@@ -112,7 +112,7 @@ detail-show-preferences =
     .label =
         { PLATFORM() ->
             [windows] 选项
-           *[other] 参数选择
+           *[other] 首选项
         }
     .accesskey =
         { PLATFORM() ->
@@ -122,7 +122,7 @@ detail-show-preferences =
     .tooltiptext =
         { PLATFORM() ->
             [windows] 更改这 add-on's 选项
-           *[other] 更改这 add-on's 参数选择
+           *[other] 更改这 add-on's 首选项
         }
 
 detail-rating =
@@ -153,17 +153,17 @@ legacy-extensions =
     .value = 祖先传下来之物扩展名
 
 legacy-extensions-description =
-    这些扩展名做不遇见当前的 { -brand-short-name } 标准如此他们有是解除动员( deactivate的过去式和过去分词 ). <label data-l10n-name="legacy-learn-more">学习关于那更改到添加-奥运信息服务（Olympic News Service）</label>
+    这些扩展名做不遇见当前的 { -brand-short-name } 标准如此他们有是解除动员. <label data-l10n-name="legacy-learn-more">学习关于那更改到添加-奥运信息服务</label>
 
 private-browsing-description2 =
     { -brand-short-name } is changing how extensions work in private browsing. Any new extensions you add to
     { -brand-short-name } won’t run by default in Private Windows. Unless you allow it in settings, the
     扩展名将不工作一会儿私人的浏览, 和将不有访问到你的联机活动
-    那里. （尤当 have 为助动词时使这更改到保持你的私人的浏览私人的.
+    那里. 我们有使这更改到保持你的私人的浏览私人的.
     <label data-l10n-name="private-browsing-learn-more">学习如何到管理扩展名设置</label>
 
 aboutaddons-sidebar =
-    .heading = 添加-奥运信息服务（Olympic News Service）
+    .heading = 添加-奥运信息服务
 
 addon-category-discover = 推荐
 addon-category-discover-title =
@@ -171,18 +171,18 @@ addon-category-discover-title =
 addon-category-extension = 扩展名
 addon-category-extension-title =
     .title = 扩展名
-addon-category-theme = 他们
+addon-category-theme = 主题
 addon-category-theme-title =
-    .title = 他们
+    .title = 主题
 addon-category-plugin = 相关插件
 addon-category-plugin-title =
     .title = 相关插件
 addon-category-dictionary = 词典
 addon-category-dictionary-title =
     .title = 词典
-addon-category-locale = 语系
+addon-category-locale = 语言
 addon-category-locale-title =
-    .title = 语系
+    .title = 语言
 addon-category-available-updates = 可利用的更新
 addon-category-available-updates-title =
     .title = 可利用的更新
@@ -227,7 +227,7 @@ addon-updates-reset-updates-to-manual = 重置所有的添加-ons 到更新用�
     .accesskey = R
 
 
-addon-updates-updating = 校正添加-奥运信息服务（Olympic News Service）
+addon-updates-updating = 校正添加-奥运信息服务
 addon-updates-installed = 你的添加-ons 有是更新的.
 addon-updates-none-found = 无更新发现
 addon-updates-manual-updates-found = 查看可利用的更新
@@ -238,8 +238,8 @@ addon-install-from-file = 安装添加-on 从文件…
 addon-install-or-update-from-file = 安装或更新添加-on 从文件…
     .accesskey = I
 addon-install-from-file-dialog-title = 选择 add-on 到安装
-addon-install-from-file-filter-name = 添加-奥运信息服务（Olympic News Service）
-addon-open-about-debugging = 除错添加-奥运信息服务（Olympic News Service）
+addon-install-from-file-filter-name = 添加-奥运信息服务
+addon-open-about-debugging = 除错添加-奥运信息服务
     .accesskey = b
 
 
@@ -278,33 +278,33 @@ shortcuts-card-expand-button =
 shortcuts-card-collapse-button = 显示最低成本估算与调度法
 
 header-back-button =
-    .title = 去后面的
+    .title = 去回
 
 
 discopane-intro3 =
-    扩展名和他们让你定制 { -brand-product-name }. 他们能推进隐私,
-    提高生产力, 改良媒质, 更改那路 { -brand-product-name } 一看, 和
-    如此大量更多. 这些狭小部分软设备程序是时常发达的（国家或地区）由一个第三宴会. (=here is. Here's to you)! 干杯
+    扩展名和主题让你定制 { -brand-product-name }. 他们能推进隐私,
+    提高生产力, 改良媒质, 更改那方式 { -brand-product-name } 一看, 和
+    如此大量更多. 这些狭小部分软设备程序是时常发达的（国家或地区）由一个第三宴会. 这里是
     一个选择火狐 <a data-l10n-name="learn-more-trigger">推荐</a> 为了
     例外的安全, 施行, 和功能性.
 
 discopane-notice-recommendations2 =
     .message =
         一些的这些推荐是个人化的. 他们是立基于在其他的
-        扩展名 you have 你（们）已经安装, 提问档参数选择, 和用法统计量.
+        扩展名你有安装, 提问档首选项, 和用法统计量.
 discopane-notice-learn-more = 学习更多
 
 colorway-removal-notice-message =
     .heading = 你的色彩设计主题(标量) 曾是离开的.
     .message =
         { -brand-product-name } updated its colorways collection. We removed
-        那以前版本(标量) 从你的“保存他们”列表. 获得新的版本在
+        那以前版本(标量) 从你的“保存主题”列表. 获得新的版本在
         那添加-ons 位置.
 colorway-removal-notice-learn-more = 学习更多
-colorway-removal-notice-button = 获得更新的色彩设计他们
+colorway-removal-notice-button = 获得更新的色彩设计主题
 
 forced-colors-theme-notice =
-    .message = 你的窗口反差设置是重迭 { -brand-short-name } 他们. 转弯关闭这些设置到使用他们在 { -brand-short-name }.
+    .message = 你的窗反差设置是重迭 { -brand-short-name } 主题. 转弯关闭这些设置到使用主题在 { -brand-short-name }.
 
 privacy-policy = 隐私政策
 
@@ -313,8 +313,8 @@ user-count = 用户: { $dailyUsers }
 install-extension-button = 添加到 { -brand-product-name }
 install-theme-button = 安装主题
 manage-addon-button = 管理
-find-more-addons = 发现更多添加-奥运信息服务（Olympic News Service）
-find-more-themes = 发现更多他们
+find-more-addons = 发现更多添加-奥运信息服务
+find-more-themes = 发现更多主题
 
 addon-options-button =
     .aria-label = 更多选项
@@ -330,17 +330,17 @@ extension-enable-addon-button-label =
 preferences-addon-button =
     { PLATFORM() ->
         [windows] 选项
-       *[other] 参数选择
+       *[other] 首选项
     }
 details-addon-button = 详细数据
-release-notes-addon-button = 版本不
+release-notes-addon-button = 版本笔记
 permissions-addon-button = 许可
 
 extension-enabled-heading = 启用
 extension-disabled-heading = 禁用
 
 theme-enabled-heading = 启用
-theme-disabled-heading2 = 保存他们
+theme-disabled-heading2 = 保存主题
 
 plugin-enabled-heading = 启用
 plugin-disabled-heading = 禁用
@@ -390,7 +390,7 @@ addon-detail-group-label-updates =
     .aria-label = { addon-detail-updates-label }
 
 addon-badge-private-browsing-allowed3 =
-    .title = 允许在私人的窗口
+    .title = 允许在私人的窗
 addon-detail-private-browsing-help = 何时允许, 那扩展名将有访问到你的联机活动一会儿私人的浏览. <a data-l10n-name="learn-more">学习更多</a>
 addon-detail-private-browsing-allow = 允许
 addon-detail-private-browsing-disallow = 不要允许
@@ -398,8 +398,8 @@ addon-detail-group-label-private-browsing =
     .aria-label = { detail-private-browsing-label }
 
 
-addon-detail-quarantined-domains-label = 运行在坐与限定
-addon-detail-quarantined-domains-help = 何时允许, 那扩展名将有访问到坐受限制的由 { -vendor-short-name }. 允许仅如果你信任这扩展名.
+addon-detail-quarantined-domains-label = 运行在位置与限定
+addon-detail-quarantined-domains-help = 何时允许, 那扩展名将有访问到给...择址受限制的由 { -vendor-short-name }. 允许仅如果你信任这扩展名.
 addon-detail-quarantined-domains-allow = 允许
 addon-detail-quarantined-domains-disallow = 不要允许
 addon-detail-group-label-quarantined-domains =
@@ -418,7 +418,7 @@ available-updates-heading = 可利用的更新
 recent-updates-heading = 最近的更新
 
 release-notes-loading = 装载…
-release-notes-error = 难过的, 除了那里曾是一个错误装载那版本不.
+release-notes-error = 难过的, 除了那里曾是一个错误装载那版本笔记.
 
 addon-permissions-heading = 许可
 addon-permissions-empty2 = 这扩展名不需要任何的许可.
@@ -428,7 +428,7 @@ addon-permissions-learnmore = 学习更多关于许可
 addon-permissions-managed-by-policy = 一些许可是与中央化计划及管制有关的由你的组织.
 
 recommended-extensions-heading = 被推荐的扩展名
-recommended-themes-heading = 被推荐的他们
+recommended-themes-heading = 被推荐的主题
 
 addon-sitepermissions-required = 授权命令那下列各项能力到 <span data-l10n-name="hostname">{ $hostname }</span>:
 
@@ -436,16 +436,16 @@ recommended-theme-1 = 摸有创造力的? <a data-l10n-name="link">建立你的�
 
 
 extension-heading = 管理你的扩展名
-theme-heading = 管理你的他们
+theme-heading = 管理你的主题
 plugin-heading = 管理你的相关插件
 dictionary-heading = 管理你的词典
-locale-heading = 管理你的语系
+locale-heading = 管理你的语言
 updates-heading = 管理你的更新
 sitepermission-heading = 管理你的位置许可
 discover-heading = (贬)使个人化你的 { -brand-short-name }
 shortcuts-heading = 管理扩展名快捷方式
 
-default-heading-search-label = 发现更多添加-奥运信息服务（Olympic News Service）
+default-heading-search-label = 发现更多添加-奥运信息服务
 addons-heading-search-input =
     .placeholder = 搜索插件.摩斯拉.org
 addons-heading-search-button =
@@ -453,7 +453,7 @@ addons-heading-search-button =
     .aria-label = 搜索插件.摩斯拉.org
 
 addon-page-options-button =
-    .title = 工具为了全部添加-奥运信息服务（Olympic News Service）
+    .title = 工具为了全部添加-奥运信息服务
 
 
 details-notification-incompatible2 =
@@ -466,9 +466,9 @@ details-notification-unsigned2 =
     .message = { $name } 能够不是已查清的为了使用在 { -brand-short-name }. 继续进行与警告.
 
 details-notification-hard-blocked-extension =
-    .message = 这扩展名是阻止为了亵渎( violate的现在分词 ) Mozilla's 政策和有是禁用.
+    .message = 这扩展名是阻止为了亵渎 Mozilla's 政策和有是禁用.
 details-notification-hard-blocked-other =
-    .message = 这 add-on 是阻止为了亵渎( violate的现在分词 ) Mozilla's 政策和有是禁用.
+    .message = 这 add-on 是阻止为了亵渎 Mozilla's 政策和有是禁用.
 details-notification-blocked-link2 = 看见详细数据
 
 details-notification-soft-blocked-extension-disabled2 =
@@ -489,26 +489,26 @@ plugins-gmp-license-info = 执照信息
 plugins-gmp-privacy-info = 隐私信息
 
 plugins-openh264-name = OpenH264 影像编码译码器倘若由加拿大白鲑系统, 根据法律组成的公司.
-plugins-openh264-description = 这相关插件是自动地安装由摩斯拉到顺从与那 WebRTC 规范和到启用 WebRTC 呼叫与德维克（男子名、姓氏）那需要那硬件.264 影像编码译码器. 拜访超文本传输协议://全球信息网.openh264.org/ 到查看那编码译码器来源代码和学习更多关于那实施.
+plugins-openh264-description = 这相关插件是自动地安装由摩斯拉到顺从与那 WebRTC 规范和到启用 WebRTC 呼叫与装置那需要那硬件.264 影像编码译码器. 拜访超文本传输协议://全球信息网.openh264.org/ 到查看那编码译码器来源代码和学习更多关于那实施.
 
 plugins-widevine-name = Widevine 内容解密模块倘若由谷歌根据法律组成的公司.
-plugins-widevine-description = 这相关插件启用重现的加密媒质在遵从与那加密媒质扩展名规范. 加密媒质是代表性地使用由坐到防卫反对仿形的的额外补贴媒质内容. 拜访超文本传输协议://全球信息网.等待3.org/TR/加密-媒质/ 为了更多信息在加密媒质扩展名.
+plugins-widevine-description = 这相关插件启用重现的加密媒质在遵从与那加密媒质扩展名规范. 加密媒质是代表性地使用由位置到防卫反对仿形的的额外补贴媒质内容. 拜访超文本传输协议://全球信息网.等待3.org/TR/加密-媒质/ 为了更多信息在加密媒质扩展名.
 
 
-addon-permissions-data-collection-heading = 资料收集
-addon-permissions-data-collection-empty = 那显影器说（第三人称单数）这扩展名不需要资料收集.
+addon-permissions-data-collection-heading = 论据收集
+addon-permissions-data-collection-empty = 那显影器说这扩展名不需要论据收集.
 addon-data-collection-provided = 信息倘若由那扩展名显影器
-addon-data-collection-learnmore = 学习更多关于资料收集
+addon-data-collection-learnmore = 学习更多关于论据收集
 
-permissions-data-addon-button = 许可和资料
+permissions-data-addon-button = 许可和论据
 
 mlmodel-extension-label = 使用由那扩展名 { $extensionName }
 
 
 mlmodel-about-inference = { -brand-short-name } 使用这在关于:推论
 mlmodel-link-preview = { -brand-short-name } 使用这到产生键点何时你预览连接
-mlmodel-pdfjs = { -brand-short-name } 使用这到创建更换电文为了复数虚部你添加到 PDFs
-mlmodel-smart-tab-topic-engine = { -brand-short-name } 使用这到提议全国制造商协会(美国) 为了你的标签页创建组
+mlmodel-pdfjs = { -brand-short-name } 使用这到创建更换电文为了图象你添加到概率分部函数
+mlmodel-smart-tab-topic-engine = { -brand-short-name } 使用这到提议名称为了你的标签页创建组
 mlmodel-smart-tab-embedding-engine = { -brand-short-name } 使用这到提议标签页为了你的标签页创建组
 
 mlmodel-formfill-engine = { -brand-short-name } 使用这到帮助填充在地址表单
@@ -519,7 +519,7 @@ addon-category-mlmodel-title =
 
 mlmodel-heading = 管理在-装置 AI 模型
 mlmodel-description =
-  一些特性和扩展名在 { -brand-short-name } 是有动力装置的由 AI 模型那工作地方性地在你的装置. 这接近防卫你的隐私和, 在多数中国科学院（Chinese Academy of Sciences）, 中央处理机速度设置程序向上的施行. <a data-l10n-name="learn-more">学习更多</a>
+  一些特性和扩展名在 { -brand-short-name } 是有动力装置的由 AI 模型那工作地方性地在你的装置. 这接近防卫你的隐私和, 在多数情形, 中央处理机速度设置程序向上的施行. <a data-l10n-name="learn-more">学习更多</a>
 
 mlmodel-remove-addon-button =
   .aria-label = 移除

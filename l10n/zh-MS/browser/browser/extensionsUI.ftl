@@ -23,12 +23,12 @@ addon-post-install-message = { $addonName } 曾是额外的.
 # Variables:
 #   $addonName (String): localized name of the extension.
 webext-quarantine-confirmation-title =
-    运行 { $addonName } 在受限制的坐?
+    运行 { $addonName } 在受限制的位置?
 
 webext-quarantine-confirmation-line-1 =
-    到防卫你的资料, 这扩展名是不允许在此站点.
+    到防卫你的论据, 这扩展名是不允许在此站点.
 webext-quarantine-confirmation-line-2 =
-    允许这扩展名如果你信任它到读取和更改你的资料在坐受限制的由 { -vendor-short-name }.
+    允许这扩展名如果你信任它到读取和更改你的论据在位置受限制的由 { -vendor-short-name }.
 
 webext-quarantine-confirmation-allow =
     .label = 允许

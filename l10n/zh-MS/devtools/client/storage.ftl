@@ -8,7 +8,7 @@
 storage-filter-key = CmdOrCtrl+故障
 
 # Hint shown when the selected storage host does not contain any data
-storage-table-empty-text = 无资料现在为了被选的主机
+storage-table-empty-text = 无论据现在为了被选的主机
 
 # Hint shown when the cookies storage type is selected. Clicking the link will open
 # https://firefox-source-docs.mozilla.org/devtools-user/storage_inspector/cookies/
@@ -40,14 +40,14 @@ storage-search-box =
 
 # Placeholder text in the sidebar search box
 storage-variable-view-search-box =
-  .placeholder = 过滤器对价值的看法
+  .placeholder = 过滤器计算结果
 
 # Add Item button title
 storage-add-button =
   .title = 添加项
 
 storage-delete-all-button =
-  .title = Delete 所有的
+  .title = 删除所有的
 
 # Refresh button title
 storage-refresh-button =
@@ -55,11 +55,11 @@ storage-refresh-button =
 
 # Context menu action to delete all storage items
 storage-context-menu-delete-all =
-  .label = Delete 所有的
+  .label = 删除所有的
 
 # Context menu action to delete all session cookies
 storage-context-menu-delete-all-session-cookies =
-  .label = Delete 所有的会话饼干
+  .label = 删除所有的会话饼干
 
 # Context menu action to copy a storage item
 storage-context-menu-copy =
@@ -69,7 +69,7 @@ storage-context-menu-copy =
 # Variables:
 #   $itemName (String) - Name of the storage item that will be deleted
 storage-context-menu-delete =
-  .label = Delete “{ $itemName }”
+  .label = 删除“{ $itemName }”
 
 # Context menu action to add an item
 storage-context-menu-add-item =
@@ -79,14 +79,14 @@ storage-context-menu-add-item =
 # Variables:
 #   $host (String) - Host for which we want to delete the items
 storage-context-menu-delete-all-from =
-  .label = Delete 所有的从“{ $host }”
+  .label = 删除所有的从“{ $host }”
 
 ## Header names of the columns in the Storage Table for each type of storage available
 ## through the Storage Tree to the side.
 
 storage-table-headers-cookies-name = 名称
 storage-table-headers-cookies-value = 计算结果
-storage-table-headers-cookies-expires = 期满( expire的第三人称单数 ) / 最大-年龄
+storage-table-headers-cookies-expires = 期满 / 最大-年龄
 storage-table-headers-cookies-size = 大小
 storage-table-headers-cookies-last-accessed = 最后的接近
 storage-table-headers-cookies-creation-time = 创建
@@ -119,10 +119,10 @@ storage-collapse-pane =
 storage-expires-session = 会话
 
 # Heading displayed over the item value in the sidebar
-storage-data = 资料
+storage-data = 论据
 
 # Heading displayed over the item parsed value in the sidebar
-storage-parsed-value = 从语法上描述或分析（词句等）( parse的过去式和过去分词 ) 计算结果
+storage-parsed-value = 从语法上描述或分析（词句等）计算结果
 
 # Warning notification when IndexedDB database could not be deleted immediately.
 # Variables:

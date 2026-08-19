@@ -13,7 +13,7 @@ panic-button-forget-button =
 
 panic-main-timeframe-desc = 忘记那最后:
 panic-button-5min =
-    .label = 五分钟
+    .label = 五分
 panic-button-2hr =
     .label = 二小时
 panic-button-day =
@@ -26,6 +26,6 @@ panic-button-day =
 ## words "Cookies", "History", "Tabs" and "Windows". The translation should do the same.
 
 panic-button-action-desc = 进行将:
-panic-button-delete-cookies = Delete 最近的 <strong>饼干</strong>
-panic-button-delete-history = Delete 最近的 <strong>历史记录</strong>
-panic-button-delete-tabs-and-windows = 关闭所有的 <strong>标签页</strong> 和 <strong>窗口</strong>
+panic-button-delete-cookies = 删除最近的 <strong>饼干</strong>
+panic-button-delete-history = 删除最近的 <strong>历史记录</strong>
+panic-button-delete-tabs-and-windows = 关闭所有的 <strong>标签页</strong> 和 <strong>窗</strong>

@@ -87,8 +87,8 @@ places-edit-folder2 =
 places-delete-folder =
   .label =
       { $count ->
-          [1] Delete 文件夹
-         *[other] Delete 文件夹
+          [1] 删除文件夹
+         *[other] 删除文件夹
       }
   .accesskey = D
 # Variables:
@@ -96,8 +96,8 @@ places-delete-folder =
 places-delete-page =
   .label =
       { $count ->
-          [1] Delete 页
-         *[other] Delete 页
+          [1] 删除页
+         *[other] 删除页
       }
   .accesskey = D
 
@@ -121,8 +121,8 @@ places-show-in-folder =
 places-delete-bookmark =
   .label =
       { $count ->
-          [1] Delete 书签
-         *[other] Delete 书签
+          [1] 删除书签
+         *[other] 删除书签
       }
   .accesskey = D
 
@@ -210,14 +210,14 @@ places-export-bookmarks-to-html =
   .accesskey = E
 
 places-import-other-browser =
-  .label = 引入资料从另外的浏览器…
+  .label = 引入论据从另外的浏览器…
   .accesskey = A
 
 places-view-sort-col-name =
   .label = 名称
 
 places-view-sort-col-tags =
-  .label = 标签
+  .label = 标记
 
 places-view-sort-col-url =
   .label = 位置
@@ -253,14 +253,14 @@ places-view-sortby-last-modified =
   .label = 种类由最后改良的
   .accesskey = M
 places-view-sortby-tags =
-  .label = 种类由标签
+  .label = 种类由标记
   .accesskey = T
 
 places-cmd-find-key =
   .key = f
 
 places-back-button =
-  .tooltiptext = 去后面的
+  .tooltiptext = 去回
 
 places-forward-button =
   .tooltiptext = 去前推

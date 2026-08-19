@@ -43,7 +43,7 @@ aboutdebugging-sidebar-runtime-connection-status-connected = 连接的
 aboutdebugging-sidebar-runtime-connection-status-disconnected = 分离的
 
 # Text displayed in the about:debugging sidebar when no device was found.
-about-debugging-sidebar-no-devices = 无德维克（男子名、姓氏）发现
+about-debugging-sidebar-no-devices = 无装置发现
 
 # Text displayed in buttons found in sidebar items representing remote runtimes.
 # Clicking on the button will attempt to connect to the runtime.
@@ -69,7 +69,7 @@ about-debugging-sidebar-runtime-item-waiting-for-browser = 等候为了浏览器
 
 # Text displayed in sidebar items for remote devices that have been disconnected from the
 # computer.
-about-debugging-sidebar-runtime-item-unplugged = 拔去（电源）插头( unplug的过去式和过去分词 )
+about-debugging-sidebar-runtime-item-unplugged = 拔去（电源）插头
 
 # Title for runtime sidebar items that are related to a specific device (USB, WiFi).
 # Variables:
@@ -95,7 +95,7 @@ about-debugging-sidebar-support-icon =
 
 # Text displayed in a sidebar button to refresh the list of USB devices. Clicking on it
 # will attempt to update the list of devices displayed in the sidebar.
-about-debugging-refresh-usb-devices-button = 刷新德维克（男子名、姓氏）
+about-debugging-refresh-usb-devices-button = 刷新装置
 
 # Setup Page strings
 
@@ -119,10 +119,10 @@ about-debugging-setup-usb-disabled = 有可能这将下载和添加那必需的�
 
 # Text of the button displayed in the USB section of the setup page when USB debugging is disabled.
 # Clicking on it will download components needed to debug USB Devices remotely.
-about-debugging-setup-usb-enable-button = 启用 USB 德维克（男子名、姓氏）
+about-debugging-setup-usb-enable-button = 启用 USB 装置
 
 # Text of the button displayed in the USB section of the setup page when USB debugging is enabled.
-about-debugging-setup-usb-disable-button = 禁用 USB 德维克（男子名、姓氏）
+about-debugging-setup-usb-disable-button = 禁用 USB 装置
 
 # Text of the button displayed in the USB section of the setup page while USB debugging
 # components are downloaded and installed.

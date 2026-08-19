@@ -5,11 +5,11 @@ about-translations-description = 立即转换那尊敬你的隐私.
 about-translations-learn-more-link = 学习更多
 
 about-translations-unsupported-info-message-2 =
-  .heading = 转换 (=is not)不是可利用的在这装置
+  .heading = 转换不是可利用的在这装置
   .message = 尝试交换到一个不同的装置.
 
 about-translations-policy-disabled-info-message =
-  .heading = 转换不是（are not）可利用的为了你的组织
+  .heading = 转换不是可利用的为了你的组织
   .message = 这是一个政策日落由你的管理人.
 
 about-translations-feature-blocked-info-message =
@@ -18,7 +18,7 @@ about-translations-feature-blocked-info-message =
 about-translations-feature-blocked-unblock-button = 解锁
 
 about-translations-language-load-error-message-2 =
-  .heading = (=could not)不能加载语系
+  .heading = 不能加载语言
   .message = 复选你的因特网连接和尝试再一次.
 about-translations-language-load-error-button = 尝试再一次
 
@@ -56,7 +56,7 @@ about-translations-select-label =
 about-translations-translating-message = 翻译…
 
 about-translations-swap-languages =
-  .title = 交换语系
+  .title = 交换语言
 
 about-translations-clear-button =
   .title = 清除来源电文

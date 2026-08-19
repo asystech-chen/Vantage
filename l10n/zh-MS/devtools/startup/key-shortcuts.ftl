@@ -5,7 +5,7 @@
 # Key pressed to open a toolbox with the default panel selected
 devtools-commandkey-toggle-toolbox = I
 # Alternative key pressed to open a toolbox with the default panel selected
-devtools-commandkey-toggle-toolbox-f12 = 维生素k（vitamin k）_故障12
+devtools-commandkey-toggle-toolbox-f12 = 维生素k_故障12
 # Key pressed to open the Browser Toolbox, used for debugging Firefox itself
 devtools-commandkey-browser-toolbox = I
 # Key pressed to open the Browser Console, used for debugging Firefox itself
@@ -21,18 +21,18 @@ devtools-commandkey-jsdebugger = Z
 # Key pressed to open a toolbox with the network monitor panel selected
 devtools-commandkey-netmonitor = E
 # Key pressed to open a toolbox with the style editor panel selected
-devtools-commandkey-styleeditor = 维生素k（vitamin k）_故障7
+devtools-commandkey-styleeditor = 维生素k_故障7
 # Key pressed to open a toolbox with the performance panel selected
-devtools-commandkey-performance = 维生素k（vitamin k）_故障5
+devtools-commandkey-performance = 维生素k_故障5
 # Key pressed to open a toolbox with the storage panel selected
-devtools-commandkey-storage = 维生素k（vitamin k）_故障9
+devtools-commandkey-storage = 维生素k_故障9
 # Key pressed to open a toolbox with the DOM panel selected
 devtools-commandkey-dom = W
 # Key pressed to open a toolbox with the accessibility panel selected
-devtools-commandkey-accessibility-f12 = 维生素k（vitamin k）_故障12
+devtools-commandkey-accessibility-f12 = 维生素k_故障12
 # Key pressed to start or stop the performance profiler
-devtools-commandkey-profiler-start-stop = 维生素k（vitamin k）_1
+devtools-commandkey-profiler-start-stop = 维生素k_1
 # Key pressed to capture a recorded performance profile
-devtools-commandkey-profiler-capture = 维生素k（vitamin k）_2
+devtools-commandkey-profiler-capture = 维生素k_2
 # Key pressed to toggle the JavaScript tracing
-devtools-commandkey-javascript-tracing-toggle = 维生素k（vitamin k）_5
+devtools-commandkey-javascript-tracing-toggle = 维生素k_5

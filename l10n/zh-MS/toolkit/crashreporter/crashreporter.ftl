@@ -1,8 +1,8 @@
 
 crashreporter-branded-title = { -brand-short-name } 崩溃记者
 
-crashreporter-apology = (we are 的常用口语形式) 难过的
-crashreporter-crashed-and-restore = { -brand-short-name } 有一个问题和失事的. (we shall或 we will 的常用口语形式) 尝试到回复你的标签页和窗口何时它重新启动.
+crashreporter-apology = 我们是难过的
+crashreporter-crashed-and-restore = { -brand-short-name } 有一个问题和失事的. 我们将尝试到回复你的标签页和窗何时它重新启动.
 crashreporter-plea = 到帮助我们诊断和修复那问题, 你能发送我们一个崩溃报告.
 
 crashreporter-information = 这应用是运行在...之后一个崩溃到报告那问题到 { -vendor-short-name }. 它应该不是运行直接的.
@@ -29,9 +29,9 @@ crashreporter-checkbox-include-url = 包含那地址的那页电流曾是在.
 
 crashreporter-submit-status = 你的崩溃报告将是递交在...之前你结束或重新启动.
 crashreporter-submit-waiting-hardware-tests = 检查的为了硬件和配置问题…
-crashreporter-submit-in-progress = 顺从( submit的现在分词 ) 你的报告…
+crashreporter-submit-in-progress = 顺从你的报告…
 crashreporter-submit-success = 报告递交成功!
-crashreporter-submit-failure = 那里曾是一个问题顺从( submit的现在分词 ) 你的报告.
+crashreporter-submit-failure = 那里曾是一个问题顺从你的报告.
 
 crashreporter-resubmit-status = Resending 报告那先前地失败的到发送…
 

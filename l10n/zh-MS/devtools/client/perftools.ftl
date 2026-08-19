@@ -8,7 +8,7 @@
 
 perftools-intro-title = 靠模工具机设置
 perftools-intro-description =
-  记录的下水靠模工具机.火狐.com 在一个新的标签页. 所有的资料是储存的
+  记录的下水靠模工具机.火狐.com 在一个新的标签页. 所有的论据是储存的
   地方性地, 除了你能选取到上装它为了共享.
 
 ## All of the headings for the various sections.
@@ -26,10 +26,10 @@ perftools-heading-local-build = 本地的建立
 ##
 
 perftools-description-intro =
-  记录的下水 <a>靠模工具机.火狐.com</a> 在一个新的标签页. 所有的资料是储存的
+  记录的下水 <a>靠模工具机.火狐.com</a> 在一个新的标签页. 所有的论据是储存的
   地方性地, 除了你能选取到上装它为了共享.
 perftools-description-local-build =
-  如果 you are 你（你们）是靠模机一个构造那你有编译的你自己, 在这
+  如果你是靠模机一个构造那你有编译的你自己, 在这
   机器, 请添加你的 build's objdir 到那列表在下面如此那
   它能是使用到看向上的符号信息.
 perftools-pick-local-build-directory = 拾取建立目录
@@ -50,7 +50,7 @@ perftools-memory-unit-mib = { NUMBER($num, maxFractionalUnits: 2) } 管理信息
 # Gibibyte
 perftools-memory-unit-gib = { NUMBER($num, maxFractionalUnits: 2) } 凹字形楔
 # Tebibyte
-perftools-memory-unit-tib = { NUMBER($num, maxFractionalUnits: 2) } (Tib)人名
+perftools-memory-unit-tib = { NUMBER($num, maxFractionalUnits: 2) } 人名
 # Pebibyte
 perftools-memory-unit-pib = { NUMBER($num, maxFractionalUnits: 2) } power ionosphere beacon 功率电离层信标
 # Exbibyte
@@ -86,7 +86,7 @@ perftools-request-to-get-profile-and-stop-profiler = 捕捉（capture的ing形�
 perftools-button-start-recording = 启动记录的
 perftools-button-capture-recording = 截获命令记录的
 perftools-button-cancel-recording = 取消记录的
-perftools-button-save-settings = 保存设置和去后面的
+perftools-button-save-settings = 保存设置和去回
 perftools-button-restart = 重新启动
 perftools-button-add-directory = 添加一个目录
 perftools-button-remove-directory = 移除被选的
@@ -107,9 +107,9 @@ perftools-thread-gecko-main =
 perftools-thread-compositor =
   .title = 合成的一起不同的描画的部分在那页
 perftools-thread-dom-worker =
-  .title = 这把两者的网工人和服务工人
+  .title = 这句柄两者的网工人和服务工人
 perftools-thread-renderer =
-  .title = 何时 WebRender 是启用, 那线索那执行（法令）( execute的第三人称单数 ) Open Graphics Library一套三维图形处理库呼叫
+  .title = 何时 WebRender 是启用, 那线索那执行 Open Graphics Library一套三维图形处理库呼叫
 perftools-thread-render-backend =
   .title = 那 WebRender RenderBackend 线索
 perftools-thread-timer =
@@ -145,7 +145,7 @@ perftools-record-all-registered-threads =
   旁路选择在上方和录制所有的注册的线索
 
 perftools-tools-threads-input-label =
-  .title = 这些线索全国制造商协会(美国) 是一个逗点分居列表那是使用到启用靠模机的那线索在那靠模工具机. 那名称需要到是仅一个分音比较的那线索名称到是包含的. 它是空白敏感的.
+  .title = 这些线索名称是一个逗点分居列表那是使用到启用靠模机的那线索在那靠模工具机. 那名称需要到是仅一个分音比较的那线索名称到是包含的. 它是空白敏感的.
 
 ## Onboarding UI labels. These labels are displayed in the new performance panel UI, when
 ## devtools.performance.new-panel-onboarding preference is true.
@@ -168,26 +168,26 @@ perftools-presets-firefox-label = { -brand-shorter-name }
 perftools-presets-firefox-description = 被推荐的边框形式为了靠模机 { -brand-shorter-name }.
 
 perftools-presets-graphics-label = 图形的
-perftools-presets-graphics-description = 边框形式为了调查图形的疯狂的在 { -brand-shorter-name }.
+perftools-presets-graphics-description = 边框形式为了调查图形的缺点在 { -brand-shorter-name }.
 
 perftools-presets-media-label = 媒质
-perftools-presets-media-description2 = 边框形式为了调查音频的和影像疯狂的在 { -brand-shorter-name }.
+perftools-presets-media-description2 = 边框形式为了调查音频的和影像缺点在 { -brand-shorter-name }.
 
 perftools-presets-ml-label = 机器学习
-perftools-presets-ml-description2 = 边框形式为了调查机器学习疯狂的在 { -brand-shorter-name }.
+perftools-presets-ml-description2 = 边框形式为了调查机器学习缺点在 { -brand-shorter-name }.
 
 perftools-presets-networking-label = 连网
-perftools-presets-networking-description = 边框形式为了调查连网疯狂的在 { -brand-shorter-name }.
+perftools-presets-networking-description = 边框形式为了调查连网缺点在 { -brand-shorter-name }.
 
 # "Power" is used in the sense of energy (electricity used by the computer).
-perftools-presets-power-label = 力
-perftools-presets-power-description = 边框形式为了调查力使用疯狂的在 { -brand-shorter-name }, 与低点总开销.
+perftools-presets-power-label = 功率
+perftools-presets-power-description = 边框形式为了调查功率使用缺点在 { -brand-shorter-name }, 与低点总开销.
 
 perftools-presets-debug-label = 除错
 perftools-presets-debug-description = 边框形式为了调试在 { -brand-shorter-name }. 高度总开销, 做不使用为了施行工作除了使用为了调焦在理解浏览器行为.
 
 perftools-presets-web-compat-label = 网兼容
-perftools-presets-web-compat-description = 被推荐的边框形式为了调试网兼容性议题在网站（全球资讯网的主机站）, 宁可比跟踪施行.
+perftools-presets-web-compat-description = 被推荐的边框形式为了调试网兼容性发行在网站（全球资讯网的主机站）, 宁可比跟踪施行.
 
 perftools-presets-custom-label = 定制
 

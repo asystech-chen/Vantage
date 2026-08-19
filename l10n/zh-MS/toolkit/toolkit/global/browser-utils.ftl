@@ -1,5 +1,5 @@
 
-browser-utils-url-data = (资料)
+browser-utils-url-data = (论据)
 
 browser-utils-url-scheme = { $scheme } 资源
 browser-utils-file-scheme = 本地的文件

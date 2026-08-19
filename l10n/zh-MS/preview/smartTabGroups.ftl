@@ -28,13 +28,13 @@ tab-group-editor-no-tabs-found-title =
 tab-group-editor-no-tabs-found-message = 打开相似的标签页, 和 AI 将提议一个名称和创建组他们与这 window's 标签页.
 
 # Message is shown to the user whenever there are smart tags suggest
-tab-group-editor-information-message = AI 提议全国制造商协会(美国) 和标签页立基于在相似的东西打开标签页在这窗口.
+tab-group-editor-information-message = AI 提议名称和标签页立基于在相似的东西打开标签页在这窗口.
 
 # Title appears when user is shown the opt-in flow to use smart tab grouping
 tab-group-suggestions-optin-title = 提议更多的我的标签页
 
 # Message appears when user is shown the opt-in flow to use smart tab grouping
-tab-group-suggestions-optin-message = { -brand-short-name } 使用 AI 到读取你的打开 tabs' 标题和描述到 <a data-l10n-name="support">提议更多标签页和创建组全国制造商协会(美国)</a>. 这发生在你的装置.
+tab-group-suggestions-optin-message = { -brand-short-name } 使用 AI 到读取你的打开 tabs' 标题和描述到 <a data-l10n-name="support">提议更多标签页和创建组名称</a>. 这发生在你的装置.
 
 tab-group-suggestions-optin-title-download = 发现提议…
 

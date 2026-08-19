@@ -1,12 +1,12 @@
 
 wizard-macos-button-back =
-  .label = 去后面的
+  .label = 去回
   .accesskey = B
 wizard-linux-button-back =
-  .label = 后面的
+  .label = 回
   .accesskey = B
 wizard-win-button-back =
-  .label = < 后面的
+  .label = < 回
   .accesskey = B
 
 wizard-macos-button-next =

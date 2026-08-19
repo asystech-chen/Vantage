@@ -12,7 +12,7 @@ about-logins-login-filter2 =
 create-login-button =
   .title = 添加密码
 
-fxaccounts-sign-in-text = 获得你的密码在你的其他的德维克（男子名、姓氏）
+fxaccounts-sign-in-text = 获得你的密码在你的其他的装置
 fxaccounts-sign-in-sync-button = 正负号在到同步的
 fxaccounts-avatar-button =
   .title = 管理帐户
@@ -31,7 +31,7 @@ about-logins-menu-menuitem-remove-all-logins2 = 移除所有的密码…
 menu-menuitem-preferences =
   { PLATFORM() ->
       [windows] 选项
-     *[other] 参数选择
+     *[other] 首选项
   }
 about-logins-menu-menuitem-help = 帮忙
 
@@ -73,22 +73,22 @@ login-list-item-title-new-login2 = 添加密码
 
 login-list-item-subtitle-missing-username = (无由字母或数字组成的用户名称)
 about-logins-list-item-breach-icon =
-  .title = 攻破( breach的现在分词 ) 网站（全球资讯网的主机站）
+  .title = 攻破网站（全球资讯网的主机站）
 about-logins-list-item-vulnerable-password-icon =
   .title = 易受伤害的密码
-about-logins-list-section-breach = 攻破( breach的现在分词 ) 网站（全球资讯网的主机站）
+about-logins-list-section-breach = 攻破网站（全球资讯网的主机站）
 about-logins-list-section-vulnerable = 易受伤害的密码
 about-logins-list-section-nothing = 无警报
 about-logins-list-section-today = 今天
 about-logins-list-section-yesterday = 昨天
-about-logins-list-section-week = 最后的 7 一生
+about-logins-list-section-week = 最后的 7 天
 
 ## Introduction screen
 
 about-logins-login-intro-heading-message = 保存你的密码到一个保险箱污点
-login-intro-description2 = 所有的密码你保存到 { -brand-product-name } 是加密. 正差, 我们看外面的为了裂口和警觉的你如果 you are 你（你们）是假装的. <a data-l10n-name="breach-alert-link">学习更多</a>
+login-intro-description2 = 所有的密码你保存到 { -brand-product-name } 是加密. 正差, 我们看外面的为了裂口和警觉的你如果你是假装的. <a data-l10n-name="breach-alert-link">学习更多</a>
 login-intro-instructions-fxa2 = 创建或正负号在到你的帐户在那装置哪里你的注册(程序) 是保存.
-login-intro-instructions-fxa-settings = 去到设置 > 同步的 > 转弯在 syncing…选择那注册(程序) 和密码检验栏.
+login-intro-instructions-fxa-settings = 去到设置 > 同步的 > 转弯在【电影、电视】…选择那注册(程序) 和密码检验栏.
 login-intro-instructions-fxa-passwords-help = 拜访 <a data-l10n-name="passwords-help-link">密码支持</a> 为了更多帮忙.
 about-logins-intro-import3 = 选择那正差正负号按钮在上方到添加一个密码现在. 你能也 <a data-l10n-name="import-browser-link">引入密码从另外的浏览器</a> 或 <a data-l10n-name="import-file-link">从一个文件</a>.
 
@@ -102,8 +102,8 @@ login-item-origin-label = 网站（全球资讯网的主机站）地址
 about-logins-origin-tooltip2 = Enter 那完整地址和确保它是一个精确的比较为了哪里你正负号在.
 # Variables
 #   $webTitle (String) - Website title of the password being changed.
-about-logins-edit-password-tooltip = 确保 you are 你（你们）是保存你的当前的密码为了此站点. 更改那密码这里做不更改它与 { $webTitle }.
-about-logins-add-password-tooltip = 确保 you are 你（你们）是保存你的当前的密码为了此站点.
+about-logins-edit-password-tooltip = 确保你是保存你的当前的密码为了此站点. 更改那密码这里做不更改它与 { $webTitle }.
+about-logins-add-password-tooltip = 确保你是保存你的当前的密码为了此站点.
 login-item-origin =
   .placeholder = 超文本传输协议://全球信息网.例子.com
 login-item-username-label = 由字母或数字组成的用户名称
@@ -150,25 +150,25 @@ about-logins-os-auth-dialog-message=
   }
 
 # This message can be seen when attempting to edit a login in about:logins on Windows.
-about-logins-edit-login-os-auth-dialog-message2-win = 到编辑你的密码, 输入你的窗口注册(程序) 国书. 这帮忙防卫那安全的你的帐户.
+about-logins-edit-login-os-auth-dialog-message2-win = 到编辑你的密码, 输入你的窗注册(程序) 国书. 这帮忙防卫那安全的你的帐户.
 # This message can be seen when attempting to edit a login in about:logins
 # On MacOS, only provide the reason that account verification is needed. Do not put a complete sentence here.
 about-logins-edit-login-os-auth-dialog-message2-macosx = 编辑那保存密码
 
 # This message can be seen when attempting to reveal a password in about:logins on Windows.
-about-logins-reveal-password-os-auth-dialog-message-win = 到查看你的密码, 输入你的窗口注册(程序) 国书. 这帮忙防卫那安全的你的帐户.
+about-logins-reveal-password-os-auth-dialog-message-win = 到查看你的密码, 输入你的窗注册(程序) 国书. 这帮忙防卫那安全的你的帐户.
 # This message can be seen when attempting to reveal a password in about:logins
 # On MacOS, only provide the reason that account verification is needed. Do not put a complete sentence here.
 about-logins-reveal-password-os-auth-dialog-message-macosx = 露出那保存密码
 
 # This message can be seen when attempting to copy a password in about:logins on Windows.
-about-logins-copy-password-os-auth-dialog-message-win = 到复制你的密码, 输入你的窗口注册(程序) 国书. 这帮忙防卫那安全的你的帐户.
+about-logins-copy-password-os-auth-dialog-message-win = 到复制你的密码, 输入你的窗注册(程序) 国书. 这帮忙防卫那安全的你的帐户.
 # This message can be seen when attempting to copy a password in about:logins
 # On MacOS, only provide the reason that account verification is needed. Do not put a complete sentence here.
 about-logins-copy-password-os-auth-dialog-message-macosx = 复制那保存密码
 
 # This message can be seen when attempting to export a password in about:logins on Windows.
-about-logins-export-password-os-auth-dialog-message2-win = 到导出你的密码, 输入你的窗口注册(程序) 国书. 这帮忙防卫那安全的你的帐户.
+about-logins-export-password-os-auth-dialog-message2-win = 到导出你的密码, 输入你的窗注册(程序) 国书. 这帮忙防卫那安全的你的帐户.
 # This message can be seen when attempting to export a password in about:logins
 # On MacOS, only provide the reason that account verification is needed. Do not put a complete sentence here.
 about-logins-export-password-os-auth-dialog-message2-macosx = 导出保存密码
@@ -224,22 +224,22 @@ about-logins-confirm-remove-all-dialog-message2 =
 # Title for modal to confirm the removal of all saved passwords when user IS SYNCED
 about-logins-confirm-remove-all-sync-dialog-title2 =
   { $count ->
-     [one] 移除 { $count } 密码从全部德维克（男子名、姓氏）?
-    *[other] 移除所有的 { $count } 密码从全部德维克（男子名、姓氏）?
+     [one] 移除 { $count } 密码从全部装置?
+    *[other] 移除所有的 { $count } 密码从全部装置?
   }
 
 # Message for modal to confirm the removal of saved passwords when user IS synced.
 about-logins-confirm-remove-all-sync-dialog-message3 =
   { $count ->
-    [1] 这将移除那密码保存到 { -brand-short-name } 在全部你的 synchronization 的缩略词德维克（男子名、姓氏）. 这将也移除任何的裂口警觉的那出现这里. 你无法撤消此操作.
-    *[other] 这将移除所有的密码保存到 { -brand-short-name } 在全部你的 synchronization 的缩略词德维克（男子名、姓氏）. 这将也移除任何的裂口警觉的那出现这里. 你无法撤消此操作.
+    [1] 这将移除那密码保存到 { -brand-short-name } 在全部你的 synchronization 的缩略词装置. 这将也移除任何的裂口警觉的那出现这里. 你无法撤消此操作.
+    *[other] 这将移除所有的密码保存到 { -brand-short-name } 在全部你的 synchronization 的缩略词装置. 这将也移除任何的裂口警觉的那出现这里. 你无法撤消此操作.
   }
 
 ##
 
 about-logins-confirm-export-dialog-title2 = 一个笔记关于输出的密码
 about-logins-confirm-export-dialog-message2 = 何时你导出, 你的密码是保存到一个文件与值得一读的电文.
-    何时 you are 你（你们）是完成了的使用那文件, 我们推荐删除它如此其他的谁使用这装置不能看见你的密码.
+    何时你是完成了的使用那文件, 我们推荐删除它如此其他的谁使用这装置不能看见你的密码.
 about-logins-confirm-export-dialog-confirm-button2 = 继续与导出
 
 about-logins-alert-import-message = 查看详细的引入摘要
@@ -251,8 +251,8 @@ confirm-discard-changes-dialog-confirm-button = 丢弃
 ## Breach Alert notification
 
 about-logins-breach-alert-title = 网站（全球资讯网的主机站）裂口
-breach-alert-text = 密码曾是漏的或 steal的过去分词从这网站（全球资讯网的主机站）自...以后你持续更新的你的注册(程序) 详细数据. 更改你的密码到防卫你的帐户.
-about-logins-breach-alert-date = 这裂口发生（occur的过去分词）在 { DATETIME($date, day: "numeric", month: "long", year: "numeric") }
+breach-alert-text = 密码曾是漏的或被偷窃的从这网站（全球资讯网的主机站）自...以后你持续更新的你的注册(程序) 详细数据. 更改你的密码到防卫你的帐户.
+about-logins-breach-alert-date = 这裂口发生在 { DATETIME($date, day: "numeric", month: "long", year: "numeric") }
 # Variables:
 #   $hostname (String) - The hostname of the website associated with the login, e.g. "example.com"
 about-logins-breach-alert-link = 去到 { $hostname }
@@ -260,7 +260,7 @@ about-logins-breach-alert-link = 去到 { $hostname }
 ## Vulnerable Password notification
 
 about-logins-vulnerable-alert-title = 易受伤害的密码
-about-logins-vulnerable-alert-text2 = 这密码有是使用在另外的帐户那曾是有可能的在一个资料裂口. 再用国书卖出选择权所有的你的帐户在冒险. 更改这密码.
+about-logins-vulnerable-alert-text2 = 这密码有是使用在另外的帐户那曾是有可能的在一个论据裂口. 再用国书发送文件所有的你的帐户在冒险. 更改这密码.
 # Variables:
 #   $hostname (String) - The hostname of the website associated with the login, e.g. "example.com"
 about-logins-vulnerable-alert-link = 去到 { $hostname }
@@ -275,7 +275,7 @@ about-logins-vulnerable-alert-learn-more-link = 学习更多
 about-logins-error-message-duplicate-login-with-link = 一个登录项为了 { $loginTitle } 与那由字母或数字组成的用户名称已经存在. <a data-l10n-name="duplicate-link">去到现成的登录项?</a>
 
 # This is a generic error message.
-about-logins-error-message-default = 一个错误发生（occur的过去分词）一会儿尝试到保存这密码.
+about-logins-error-message-default = 一个错误发生一会儿尝试到保存这密码.
 
 ## Login Export Dialog
 
@@ -339,8 +339,8 @@ about-logins-import-dialog-items-error =
 about-logins-import-dialog-done = 完成了的
 
 about-logins-import-dialog-error-title = 引入错误
-about-logins-import-dialog-error-conflicting-values-title = 倍数冲突的对价值的看法为了一(个) 注册(程序)
-about-logins-import-dialog-error-conflicting-values-description = 为了例子: 倍数 usernames, 密码, 资源定位符（Uniform Resource Locators）, 及其他. 为了一(个) 注册(程序).
+about-logins-import-dialog-error-conflicting-values-title = 倍数冲突的计算结果为了一(个) 注册(程序)
+about-logins-import-dialog-error-conflicting-values-description = 为了例子: 倍数由字母或数字组成的用户名称, 密码, 统一资源定位器, 及其他. 为了一(个) 注册(程序).
 about-logins-import-dialog-error-file-format-title = 文件开本发行
 about-logins-import-dialog-error-file-format-description = 不正确的或不见的列页眉. 确保那文件包含列为了由字母或数字组成的用户名称, 密码和 URL.
 about-logins-import-dialog-error-file-permission-title = 不能的到读取文件
@@ -368,7 +368,7 @@ about-logins-import-report-row-description-error = 错误: 不见的域
 ## Variables:
 ##  $field (String) - The name of the field from the CSV file for example url, username or password
 
-about-logins-import-report-row-description-error-multiple-values = 错误: 倍数对价值的看法为了 { $field }
+about-logins-import-report-row-description-error-multiple-values = 错误: 倍数计算结果为了 { $field }
 about-logins-import-report-row-description-error-missing-field = 错误: 不见的 { $field }
 
 ##

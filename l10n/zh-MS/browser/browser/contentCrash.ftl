@@ -37,8 +37,8 @@ pending-crash-reports-always-send =
 #   $reportCount (Number): the number of pending crash reports
 requested-crash-reports-message-new =
     { $reportCount ->
-        [one] 你有一个未送出(或寄发)的崩溃报告讲述的到崩溃存在调查( investigate的过去式和过去分词 ), 发送它将帮助我们改良 { -brand-product-name }. 关闭这通知将忽略这报告.
-       *[other] 你有 { $reportCount } 未送出(或寄发)的崩溃报告讲述的到崩溃存在调查( investigate的过去式和过去分词 ), 发送他们将帮助我们改良 { -brand-product-name }. 关闭这通知将忽略这些报告.
+        [one] 你有一个未送出(或寄发)的崩溃报告讲述的到崩溃存在调查, 发送它将帮助我们改良 { -brand-product-name }. 关闭这通知将忽略这报告.
+       *[other] 你有 { $reportCount } 未送出(或寄发)的崩溃报告讲述的到崩溃存在调查, 发送他们将帮助我们改良 { -brand-product-name }. 关闭这通知将忽略这些报告.
     }
 
 requested-crash-reports-dont-show-again =

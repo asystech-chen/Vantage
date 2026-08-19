@@ -6,7 +6,7 @@
 
 accessibility-learn-more = 学习更多
 
-accessibility-text-label-header = 电文标签和全国制造商协会(美国)
+accessibility-text-label-header = 电文标签和名称
 
 accessibility-keyboard-header = 键盘
 
@@ -21,7 +21,7 @@ accessibility-progress-initializing = 初始的…
 accessibility-progress-progressbar =
     { $nodeCount ->
         [one] 检查的 { $nodeCount } 节点
-       *[other] 检查的 { $nodeCount } 点头
+       *[other] 检查的 { $nodeCount } 节点
     }
 
 accessibility-progress-finishing = 最后的向上的…
@@ -36,13 +36,13 @@ accessibility-fail =
   .alt = 错误
 
 accessibility-best-practices =
-  .alt = 最好的实践的
+  .alt = 最好的实践
 
 ## Text entries for a paragraph used in the accessibility panel sidebar's checks section
 ## that describe that currently selected accessible object has an accessibility issue
 ## with its text label or accessible name.
 
-accessibility-text-label-issue-area = 使用 <code>更换</code> 属性到贴标签于 <div>区域</div> 部分那有那 <span>超文本引用（hypertext reference）</span> 属性. <a>学习更多</a>
+accessibility-text-label-issue-area = 使用 <code>更换</code> 属性到贴标签于 <div>区域</div> 部分那有那 <span>超文本引用</span> 属性. <a>学习更多</a>
 
 accessibility-text-label-issue-dialog = 对话应该是有标签的. <a>学习更多</a>
 
@@ -50,7 +50,7 @@ accessibility-text-label-issue-document-title = 文档必须有一个 <code>标�
 
 accessibility-text-label-issue-embed = 植入的内容必须是有标签的. <a>学习更多</a>
 
-accessibility-text-label-issue-figure = 图形与可选择的标题应该是有标签的. <a>学习更多</a>
+accessibility-text-label-issue-figure = 数字与可选择的标题应该是有标签的. <a>学习更多</a>
 
 accessibility-text-label-issue-fieldset = <code>fieldset</code> 部分必须是有标签的. <a>学习更多</a>
 
@@ -70,7 +70,7 @@ accessibility-text-label-issue-heading-content = 上标题应该有看得见的�
 
 accessibility-text-label-issue-iframe = 使用 <code>标题</code> 属性到描述 <span>内嵌框架</span> 内容. <a>学习更多</a>
 
-accessibility-text-label-issue-image = 内容与复数虚部必须是有标签的. <a>学习更多</a>
+accessibility-text-label-issue-image = 内容与图象必须是有标签的. <a>学习更多</a>
 
 accessibility-text-label-issue-interactive = 交互部分必须是有标签的. <a>学习更多</a>
 

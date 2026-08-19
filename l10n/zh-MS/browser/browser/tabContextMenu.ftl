@@ -133,7 +133,7 @@ tab-context-close-duplicate-tabs =
     .label = 关闭复制标签页
     .accesskey = x
 tab-context-close-duplicate-tabs2 =
-    .label = 关闭完全一样的东西的这 Tab
+    .label = 关闭复制的这 Tab
     .accesskey = x
 tab-context-share-url =
     .label = 部分
@@ -194,7 +194,7 @@ tab-context-send-to-device =
         }
     .accesskey = n
 tab-context-send-to-device2 =
-    .label = 发送到你的德维克（男子名、姓氏）
+    .label = 发送到你的装置
     .accesskey = n
 # The following string intentionally omits the word "Tab" from the singular and includes it in the plural.
 tab-context-send-to-mobile =

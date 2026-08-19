@@ -5,7 +5,7 @@
 aboutDialog-title =
     .title = 关于 { -brand-full-name }
 
-releaseNotes-link = （尤当 has 为助动词时新的
+releaseNotes-link = 什么是新的
 
 update-checkForUpdatesButton =
     .label = 复选为了更新
@@ -113,7 +113,7 @@ aboutdialog-version-arch = { $version } ({ $arch })
 aboutdialog-version-arch-nightly = { $version } ({ $isodate }) ({ $arch })
 
 
-about-librewolf = 优势浏览器是发达的（国家或地区）由 ASYS 技术, 建立在那摩斯拉火狐和 LibreWolf 打开-source 计划. 一会儿保留 Firefox's 完整特性日落, 它加强隐私保护 (禁止的资料报道和遥测技术), 继续( pursue的现在分词 ) 一个平衡的隐私, 中央处理机速度设置程序, 和安乐的使用.
+about-librewolf = 优势浏览器是发达的（国家或地区）由 ASYS 技术, 建立在那摩斯拉火狐和 LibreWolf 打开-source 计划. 一会儿保留 Firefox's 完整特性日落, 它加强隐私保护 (禁止的论据报道和遥测技术), 继续一个平衡的隐私, 中央处理机速度设置程序, 和安乐的使用.
 official-site1 = 官员位置
-changelog-link = （尤当 has 为助动词时新的
+changelog-link = 什么是新的
 github-link = GitHub

@@ -11,10 +11,10 @@ account-finish-account-setup = 完成帐户设置
 account-disconnected2 = 帐户分离的
 
 # Menu item that sends a tab to all synced devices.
-account-send-to-all-devices = 发送到所有的德维克（男子名、姓氏）
+account-send-to-all-devices = 发送到所有的装置
 
 # Menu item that links to the Firefox Accounts settings for connected devices.
-account-manage-devices = 管理德维克（男子名、姓氏）…
+account-manage-devices = 管理装置…
 
 ## Variables:
 ##   $email (String): = Email address of user's Firefox Account.
@@ -24,8 +24,8 @@ account-verify = 证明 { $email }
 
 ## Displayed in the Send Tab/Page/Link to Device context menu when right clicking a tab, a page or a link.
 
-account-send-to-all-devices-titlecase = 发送到所有的德维克（男子名、姓氏）
-account-manage-devices-titlecase = 管理德维克（男子名、姓氏）…
+account-send-to-all-devices-titlecase = 发送到所有的装置
+account-manage-devices-titlecase = 管理装置…
 
 ## Displayed in the Send Tabs context menu when right clicking a tab, a page or a link
 ## and the Sync account is unverified. Redirects to the Sync preferences page.
@@ -83,8 +83,8 @@ account-multiple-tabs-arriving-from-single-device =
     }
 account-multiple-tabs-arriving-from-multiple-devices =
     { $tabCount ->
-        [one] { $tabCount } 标签页有抵达从你的连接的德维克（男子名、姓氏）
-       *[other] { $tabCount } 标签页有抵达从你的连接的德维克（男子名、姓氏）
+        [one] { $tabCount } 标签页有抵达从你的连接的装置
+       *[other] { $tabCount } 标签页有抵达从你的连接的装置
     }
 # This version is used when we don't know any device names.
 account-multiple-tabs-arriving-from-unknown-device =

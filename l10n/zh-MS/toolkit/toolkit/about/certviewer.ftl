@@ -60,19 +60,19 @@ certificate-viewer-business-category = 生意分类
 certificate-viewer-subject-name = 主题名称
 certificate-viewer-issuer-name = 发行者名称
 certificate-viewer-validity = 有效性
-certificate-viewer-subject-alt-names = 主题 Alt 全国制造商协会(美国)
+certificate-viewer-subject-alt-names = 主题 Alt 名称
 certificate-viewer-public-key-info = 公众键信息
 certificate-viewer-miscellaneous = 各种的
 certificate-viewer-fingerprints = 指纹
 certificate-viewer-basic-constraints = 基本原理约束
-certificate-viewer-key-usages = 键惯例
-certificate-viewer-extended-key-usages = 延续的键惯例
+certificate-viewer-key-usages = 键用法
+certificate-viewer-extended-key-usages = 延续的键用法
 certificate-viewer-ocsp-stapling = OCSP 环套角钢
 certificate-viewer-subject-key-id = 主题键 ID
 certificate-viewer-authority-key-id = 权力键 ID
 certificate-viewer-authority-info-aia = 权力信息 (AIA)
 certificate-viewer-certificate-policies = 证书政策
-certificate-viewer-embedded-scts = 植入的 SFOF communications terminal subsystem 空间飞行操作设备通信终端子系统
+certificate-viewer-embedded-scts = 植入的简单碰撞理论
 certificate-viewer-crl-endpoints = CRL 端点
 
 certificate-viewer-download = 下载
@@ -98,7 +98,7 @@ certificate-viewer-unknown-group-label = (不知道的)
 certificate-viewer-unknown-file-name = 证书
 
 
-certificate-viewer-tab-mine = 你的证明书
+certificate-viewer-tab-mine = 你的证书
 certificate-viewer-tab-people = 人
 certificate-viewer-tab-servers = 服务器
 certificate-viewer-tab-ca = 权力

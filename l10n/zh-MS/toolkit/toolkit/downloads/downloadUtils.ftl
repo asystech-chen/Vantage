@@ -26,7 +26,7 @@ download-utils-status = { $timeLeft } — { $transfer } ({ $rate } { $unit }/秒
 download-utils-status-infinite-rate = { $timeLeft } — { $transfer } (实际上快速的)
 download-utils-status-no-rate = { $timeLeft } — { $transfer }
 
-download-utils-bytes = bright young things 年轻人用品（英国较年轻者的用品）
+download-utils-bytes = 字节
 download-utils-kilobyte = KB
 download-utils-megabyte = MB
 download-utils-gigabyte = GB

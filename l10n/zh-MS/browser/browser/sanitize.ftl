@@ -10,7 +10,7 @@ sanitize-prefs-style =
     .style = 宽度: 17媒体用毕符
 
 sanitize-dialog-title2 =
-    .title = 清除浏览资料和饼干
+    .title = 清除浏览论据和饼干
     .style = min-width: 34媒体用毕符
 
 sanitize-dialog-title =
@@ -89,10 +89,10 @@ item-cookies-site-data-with-size =
     .accesskey = e
 
 item-cookies-site-data =
-    .label = 饼干和位置资料
+    .label = 饼干和位置论据
     .accesskey = e
 
-item-cookies-site-data-description = 可以正负号你外面的的坐或空买东西二轮运货马车
+item-cookies-site-data-description = 可以正负号你外面的的位置或空买东西二轮运货马车
 
 item-active-logins =
     .label = 活跃的注册(程序)
@@ -113,7 +113,7 @@ item-cached-content =
     .label = 临时贮藏起来文件和页
     .accesskey = f
 
-item-cached-content-description = 清除项那帮忙坐加载加快
+item-cached-content-description = 清除项那帮忙位置加载加快
 
 item-form-search-history =
     .label = 表单 & 搜索历史记录
@@ -127,18 +127,18 @@ item-formdata-prefs =
     .label = 保存表单信息
     .accesskey = o
 
-item-formdata-description = 清除事物相似的全国制造商协会(美国), 电子信函, 和其他的项你输入在表单
+item-formdata-description = 清除事物相似的名称, 电子信函, 和其他的项你输入在表单
 
-item-site-prefs-description = 重置你的许可和位置参数选择到最初的设置
+item-site-prefs-description = 重置你的许可和位置首选项到最初的设置
 
-data-section-label = 资料
+data-section-label = 论据
 
 item-site-settings =
     .label = 位置设置
     .accesskey = S
 
 item-offline-apps =
-    .label = 挂线网站（全球资讯网的主机站）资料
+    .label = 挂线网站（全球资讯网的主机站）论据
     .accesskey = O
 
 sanitize-everything-undo-warning = 此操作无法撤销.

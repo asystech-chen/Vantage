@@ -33,11 +33,11 @@ process-type-inference = 推论
 process-type-utility = Sandboxed IPC 男演员
 process-type-utility-actor-audio-decoder-generic = 实用程序一般的音频的译码器
 process-type-utility-actor-audio-decoder-applemedia = 实用程序 AppleMedia
-process-type-utility-actor-audio-decoder-wmf = 实用程序窗口媒质基础
+process-type-utility-actor-audio-decoder-wmf = 实用程序窗媒质基础
 process-type-utility-actor-mf-media-engine = 实用程序媒质基础引擎
 process-type-utility-actor-js-oracle = 实用程序 Java描述语言（一种程序语言）神谕
-process-type-utility-actor-windows-utils = 实用程序窗口跑龙套
-process-type-utility-actor-windows-file-dialog = 实用程序窗口文件对话
+process-type-utility-actor-windows-utils = 实用程序窗跑龙套
+process-type-utility-actor-windows-file-dialog = 实用程序窗文件对话
 
 
 process-type-unknown = 不知道的

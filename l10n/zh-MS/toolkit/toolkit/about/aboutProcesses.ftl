@@ -30,11 +30,11 @@ about-processes-file-process = 文件 ({ $pid })
 about-processes-extension-process = 扩展名 ({ $pid })
 about-processes-privilegedabout-process = 关于页 ({ $pid })
 about-processes-plugin-process = 相关插件 ({ $pid })
-about-processes-privilegedmozilla-process = { -vendor-short-name } 坐 ({ $pid })
+about-processes-privilegedmozilla-process = { -vendor-short-name } 位置 ({ $pid })
 about-processes-gmp-plugin-process = 壁虎媒质相关插件 ({ $pid })
 about-processes-gpu-process = GPU ({ $pid })
 about-processes-vr-process = VR ({ $pid })
-about-processes-rdd-process = 资料译码器 ({ $pid })
+about-processes-rdd-process = 论据译码器 ({ $pid })
 about-processes-socket-process = 网络 ({ $pid })
 about-processes-fork-server-process = 派生指令服务器 ({ $pid })
 about-processes-preallocated-process = 预分配的 ({ $pid })
@@ -71,17 +71,17 @@ about-processes-preloaded-tab = 预装入的新的 Tab
 
 about-processes-frame-name-one = 子框架: { $url }
 
-about-processes-frame-name-many = (subframe 的第三人称 -s形式)  子框架 ({ $number }): { $shortUrl }
+about-processes-frame-name-many = 子框架 ({ $number }): { $shortUrl }
 
 
 about-processes-utility-actor-unknown = 不知道的男演员
 about-processes-utility-actor-audio-decoder-generic = 一般的音频的译码器
 about-processes-utility-actor-audio-decoder-applemedia = 苹果媒质音频的译码器
-about-processes-utility-actor-audio-decoder-wmf = 窗口媒质结构音频的译码器
-about-processes-utility-actor-mf-media-engine = 窗口媒质基础媒质引擎 CDM
+about-processes-utility-actor-audio-decoder-wmf = 窗媒质结构音频的译码器
+about-processes-utility-actor-mf-media-engine = 窗媒质基础媒质引擎 CDM
 about-processes-utility-actor-js-oracle = Java描述语言（一种程序语言）神谕
-about-processes-utility-actor-windows-utils = 窗口跑龙套
-about-processes-utility-actor-windows-file-dialog = 窗口文件对话
+about-processes-utility-actor-windows-utils = 窗跑龙套
+about-processes-utility-actor-windows-file-dialog = 窗文件对话
 about-processes-utility-actor-pkcs11-module = 安全模块帮忙者
 
 
