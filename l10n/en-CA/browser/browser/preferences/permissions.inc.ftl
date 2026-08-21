@@ -1,0 +1,16 @@
+## Site Permissions - EME
+
+permissions-site-eme-window2 =
+    .title = Settings - EME Permissions
+    .style = { permissions-window2.style }
+permissions-site-eme-desc = The following websites have requested to play DRM-controlled content. You can specify which websites are allowed to play DRM-controlled content. You can also block new requests asking to play DRM-controlled content.
+permissions-site-eme-disable-label =
+    .label = Block new requests asking to play DRM-controlled content
+permissions-site-eme-disable-desc = This will prevent any websites not listed above from requesting permission to play DRM-controlled content.
+
+## Site Permissions - WebGL
+
+permissions-site-webgl-window2 =
+    .title = Settings - WebGL Permissions
+    .style = { permissions-window2.style }
+permissions-site-webgl-desc = The following websites have requested to create a WebGL context. You can specify which websites are allowed to create a WebGL context. You can also block new requests asking to create a WebGL context.
