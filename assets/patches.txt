@@ -9,7 +9,6 @@ patches/firefox-in-ua.patch
 patches/fpp-canvas-fix.patch
 patches/eme-permission.patch
 patches/extensions-setUninstallURL.patch
-patches/fix-canvas-extraction-permission.patch
 patches/webgl-permission-helper.patch
 patches/languages.patch
 patches/zh-ms-locale.patch

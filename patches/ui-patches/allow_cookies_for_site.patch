@@ -85,7 +85,7 @@ index 04b7aa551c..f693dccc7a 100644
        document
          .getElementById("identity-popup-remove-cert-exception")
          .addEventListener("click", () => this.#removeCertException());
-@@ -272,6 +275,30 @@ class TrustPanel {
+@@ -306,6 +309,30 @@ class TrustPanel {
      }
    }
  
@@ -113,7 +113,7 @@ index 04b7aa551c..f693dccc7a 100644
 +      ) === Services.perms.ALLOW_ACTION;
 +  }
 +
-   async showPopup(opts = {}) {
+   async showPopup({ event, reason }) {
      this.#initializePopup();
  
 @@ -395,6 +422,9 @@ class TrustPanel {

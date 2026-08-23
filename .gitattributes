@@ -1,0 +1,2 @@
+# 7zSFX 品牌 patch 必须保持 CRLF（目标 other-licenses/7zstub/firefox/resource.rc 是 CRLF）
+patches/fix-7zsfx-branding.patch text eol=crlf
