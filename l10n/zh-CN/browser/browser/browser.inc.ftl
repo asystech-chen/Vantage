@@ -3,3 +3,6 @@ urlbar-webgl-notification-anchor =
     .tooltiptext = 管理WebGL上下文创建权限
 urlbar-webgl-blocked =
     .tooltiptext = 您已阻止此网站创建WebGL上下文。
+toolbar-undo-close-button =
+    .label = 恢复最近关闭
+    .tooltiptext = 恢复最近关闭的标签页或窗口

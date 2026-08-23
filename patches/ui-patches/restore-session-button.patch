@@ -1,0 +1,63 @@
+diff --git a/browser/components/customizableui/CustomizableUI.sys.mjs b/browser/components/customizableui/CustomizableUI.sys.mjs
+index 9d2b745..4beb9db 100644
+--- a/browser/components/customizableui/CustomizableUI.sys.mjs
++++ b/browser/components/customizableui/CustomizableUI.sys.mjs
+@@ -363,6 +363,7 @@ var CustomizableUIInternal = {
+       "urlbar-container",
+       "spring",
+       "downloads-button",
++      "undo-close-button",
+       "screenshot-button",
+       AppConstants.MOZ_DEV_EDITION ? "developer-button" : null,
+       lazy.ippEnabled ? "ipprotection-button" : null,
+diff --git a/browser/components/customizableui/CustomizableWidgets.sys.mjs b/browser/components/customizableui/CustomizableWidgets.sys.mjs
+index 954698a..4c31105 100644
+--- a/browser/components/customizableui/CustomizableWidgets.sys.mjs
++++ b/browser/components/customizableui/CustomizableWidgets.sys.mjs
+@@ -260,6 +260,16 @@ export const CustomizableWidgets = [
+       aNode.setAttribute("command", "Browser:SavePage");
+     },
+   },
++  {
++    id: "undo-close-button",
++    l10nId: "toolbar-undo-close-button",
++    defaultArea: "nav-bar",
++    _introducedInVersion: 25,
++    onCommand(aEvent) {
++      let win = aEvent.target.documentGlobal;
++      win.SessionWindowUI.restoreLastClosedTabOrWindowOrSession(win);
++    },
++  },
+   {
+     id: "print-button",
+     l10nId: "navbar-print",
+diff --git a/browser/locales/en-US/browser/browser.ftl b/browser/locales/en-US/browser/browser.ftl
+index f05045a..c563890 100644
+--- a/browser/locales/en-US/browser/browser.ftl
++++ b/browser/locales/en-US/browser/browser.ftl
+@@ -1284,6 +1284,10 @@ navbar-home =
+     .label = Home
+     .tooltiptext = { -brand-short-name } Home Page
+ 
++toolbar-undo-close-button =
++    .label = Undo Close Tab or Window
++    .tooltiptext = Restore the most recently closed tab or window
++
+ navbar-library =
+     .label = Library
+     .tooltiptext = View history, saved bookmarks, and more
+diff --git a/browser/themes/shared/toolbarbutton-icons.css b/browser/themes/shared/toolbarbutton-icons.css
+index 46f86c2..c6bc7b2 100644
+--- a/browser/themes/shared/toolbarbutton-icons.css
++++ b/browser/themes/shared/toolbarbutton-icons.css
+@@ -103,6 +103,10 @@
+   list-style-image: url("chrome://global/skin/icons/search-glass.svg");
+ }
+ 
++#undo-close-button {
++  list-style-image: url("chrome://global/skin/icons/undo.svg");
++}
++
+ #print-button {
+   list-style-image: url("chrome://global/skin/icons/print.svg");
+ }
