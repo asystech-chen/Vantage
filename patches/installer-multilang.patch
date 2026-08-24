@@ -1,5 +1,5 @@
---- a/toolkit/mozapps/installer/windows/nsis/preprocess-locale.py	2026-08-24 16:32:02.243103122 +0800
-+++ b/toolkit/mozapps/installer/windows/nsis/preprocess-locale.py	2026-08-24 16:35:57.525163317 +0800
+--- a/toolkit/mozapps/installer/windows/nsis/preprocess-locale.py	2026-08-12 07:18:10.000000000 +0800
++++ b/toolkit/mozapps/installer/windows/nsis/preprocess-locale.py	2026-08-24 16:32:27.672636181 +0800
 @@ -118,6 +118,96 @@
      fp.close()
  
@@ -158,8 +158,8 @@
      elif options.preprocessSingle:
          if len(args) not in (4, 5):
              p.error(preprocess_single_file_args_help_string)
---- a/browser/installer/windows/nsis/installer.nsi	2026-08-24 16:32:02.247103361 +0800
-+++ b/browser/installer/windows/nsis/installer.nsi	2026-08-24 16:35:57.525163317 +0800
+--- a/browser/installer/windows/nsis/installer.nsi	2026-08-24 01:20:50.385328031 +0800
++++ b/browser/installer/windows/nsis/installer.nsi	2026-08-24 16:32:33.696998822 +0800
 @@ -1177,7 +1177,9 @@
  ################################################################################
  # Language
@@ -179,8 +179,8 @@
    ${SetBrandNameVars} "$EXEDIR\core\distribution\setup.ini"
  
    ; Don't install on systems that don't support SSE2. The parameter value of
---- a/browser/installer/windows/nsis/uninstaller.nsi	2026-08-24 16:32:02.255103844 +0800
-+++ b/browser/installer/windows/nsis/uninstaller.nsi	2026-08-24 16:35:57.529163554 +0800
+--- a/browser/installer/windows/nsis/uninstaller.nsi	2026-08-24 01:20:50.385328031 +0800
++++ b/browser/installer/windows/nsis/uninstaller.nsi	2026-08-24 16:32:48.041861488 +0800
 @@ -776,7 +776,9 @@
  ################################################################################
  # Language
@@ -201,8 +201,8 @@
    ${un.UninstallUnOnInitCommon}
  
    ; setup the application model id registration value
---- a/browser/installer/windows/nsis/extensionsLocale.nsh	2026-08-24 16:32:02.259104088 +0800
-+++ b/browser/installer/windows/nsis/extensionsLocale.nsh	2026-08-24 16:35:57.533163791 +0800
+--- a/browser/installer/windows/nsis/extensionsLocale.nsh	2026-08-12 07:17:51.000000000 +0800
++++ b/browser/installer/windows/nsis/extensionsLocale.nsh	2026-08-24 16:32:39.741362452 +0800
 @@ -3,18 +3,20 @@
  # file, You can obtain one at http://mozilla.org/MPL/2.0/.
  
@@ -237,8 +237,8 @@
 +LangString EXTENSIONS_PAGE_SUBTITLE 1028  "$ExtensionRecommender 推薦安裝以下擴充功能"
 +LangString OPTIONAL_EXTENSIONS_CHECKBOX_DESC 1028  "安裝擴充功能(&E):"
 +LangString OPTIONAL_EXTENSIONS_DESC 1028  "您可以隨時按一下瀏覽器的功能表按鈕並選擇\u201c附加元件\u201d，以新增或移除擴充功能。"
---- a/browser/installer/windows/Makefile.in	2026-08-24 16:32:02.267104569 +0800
-+++ b/browser/installer/windows/Makefile.in	2026-08-24 16:35:57.537164028 +0800
+--- a/browser/installer/windows/Makefile.in	2026-08-24 01:20:50.361326806 +0800
++++ b/browser/installer/windows/Makefile.in	2026-08-24 16:33:05.598915831 +0800
 @@ -59,14 +59,18 @@
  
  ifdef IS_LANGUAGE_REPACK
@@ -277,3 +277,15 @@
  	$(PYTHON3) $(topsrcdir)/toolkit/mozapps/installer/windows/nsis/preprocess-locale.py \
  	  --convert-utf8-utf16le \
  	  $(srcdir)/nsis/extensionsLocale.nsh $(CONFIG_DIR)/extensionsLocale.nsh
+--- a/toolkit/mozapps/installer/windows/nsis/makensis.mk	2026-08-12 07:18:13.000000000 +0800
++++ b/toolkit/mozapps/installer/windows/nsis/makensis.mk	2026-08-24 20:22:10.897110898 +0800
+@@ -104,8 +104,7 @@
+ 	-DTOPOBJDIR=$(topobjdir) \
+ 	  $(srcdir)/nsis/defines.nsi.in -o $(CONFIG_DIR)/defines.nsi)
+ 	$(PYTHON3) $(topsrcdir)/toolkit/mozapps/installer/windows/nsis/preprocess-locale.py \
+-	  --preprocess-locale $(topsrcdir) \
+-	  $(PPL_LOCALE_ARGS) $(AB_CD) $(CONFIG_DIR)
++	  --preprocess-multilocale $(topsrcdir) $(CONFIG_DIR) $(PPL_LOCALE_ARGS)
+ 	$(INSTALL) $(addprefix $(MOZILLA_DIR)/toolkit/mozapps/installer/windows/nsis/,$(TOOLKIT_NSIS_FILES)) $(CONFIG_DIR)
+ 	$(INSTALL) $(addprefix $(MOZILLA_DIR)/other-licenses/nsis/Plugins/,$(CUSTOM_NSIS_PLUGINS)) $(CONFIG_DIR)
+ 	cd $(CONFIG_DIR) && $(MAKENSISU) $(MAKENSISU_FLAGS) uninstaller.nsi
