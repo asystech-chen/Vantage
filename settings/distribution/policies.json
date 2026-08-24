@@ -59,6 +59,12 @@
       },
       "{b184d107-461b-4cfe-b4ba-771406e90c48}": {
         "installation_mode": "blocked"
+      },
+      "firefox@tampermonkey.net": {
+        "installation_mode": "blocked"
+      },
+      "easyscreenshot@mozillaonline.com": {
+        "installation_mode": "blocked"
       }
     },
     "SearchEngines": {
