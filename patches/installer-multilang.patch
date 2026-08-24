@@ -1,0 +1,279 @@
+--- a/toolkit/mozapps/installer/windows/nsis/preprocess-locale.py	2026-08-24 16:32:02.243103122 +0800
++++ b/toolkit/mozapps/installer/windows/nsis/preprocess-locale.py	2026-08-24 16:35:57.525163317 +0800
+@@ -118,6 +118,96 @@
+     fp.close()
+ 
+ 
++
++
++LANG_TABLE = {
++    "en-US": ("English", "1033"),
++    "zh-CN": ("SimpChinese", "2052"),
++    "zh-TW": ("TradChinese", "1028"),
++}
++
++
++def preprocess_multilocale_files(config_dir, locale_dirs):
++    """
++    Preprocesses installer locale properties files for multiple languages
++    (en-US / zh-CN / zh-TW) into the format required by NSIS.  Each language
++    gets its own nlf/nsh pair (with the real NSIS language ID), and the
++    override/custom LangString files are merged with per-language IDs so the
++    installer can auto-select the OS UI language at runtime.
++
++    Parameters:
++    config_dir   - the path to the destination directory
++    locale_dirs  - dict mapping locale code to a list of lookup directories
++    """
++    for code, (nsis_name, lang_id) in LANG_TABLE.items():
++        dirs = locale_dirs.get(code, locale_dirs.get("en-US", []))
++
++        # Per-language nlf (real NSIS language ID; all our locales are LTR)
++        fp = open_utf16le_file(join(config_dir, nsis_name + ".nlf"))
++        fp.write(
++            (
++                """# Header, don't edit
++NLF v6
++# Start editing here
++# Language ID
++%s
++# Font and size - dash (-) means default
++-
++-
++# Codepage - dash (-) means ANSI code page
++-
++# RTL - anything else than RTL means LTR
++-
++"""
++                % lang_id
++            ).encode("utf-16-le")
++        )
++        fp.close()
++
++        # Per-language MUI language file
++        fp = open_utf16le_file(join(config_dir, nsis_name + ".nsh"))
++        fp.write(
++            (
++                """;NSIS Modern User Interface - Language File
++;Compatible with Modern UI 1.68
++;Language: %s (%s)
++!insertmacro MOZ_MUI_LANGUAGEFILE_BEGIN \"%s\"
++!define MUI_LANGNAME \"%s\"
++"""
++                % (nsis_name, lang_id, nsis_name, nsis_name)
++            ).encode("utf-16-le")
++        )
++        locale_strings = get_locale_strings(
++            lookup("mui.properties", dirs), "!define ", " ", True
++        )
++        fp.write(locale_strings.encode("utf-16-le"))
++        fp.write("!insertmacro MOZ_MUI_LANGUAGEFILE_END\n".encode("utf-16-le"))
++        fp.close()
++
++    # Merged override strings (LangString ^name <id>)
++    fp = open_utf16le_file(join(config_dir, "overrideLocale.nsh"))
++    for code, (nsis_name, lang_id) in LANG_TABLE.items():
++        dirs = locale_dirs.get(code, locale_dirs.get("en-US", []))
++        fp.write(
++            get_locale_strings(
++                lookup("override.properties", dirs),
++                "LangString ^", " %s " % lang_id, False,
++            ).encode("utf-16-le")
++        )
++    fp.close()
++
++    # Merged custom strings (LangString name <id>)
++    fp = open_utf16le_file(join(config_dir, "customLocale.nsh"))
++    for code, (nsis_name, lang_id) in LANG_TABLE.items():
++        dirs = locale_dirs.get(code, locale_dirs.get("en-US", []))
++        fp.write(
++            get_locale_strings(
++                lookup("custom.properties", dirs),
++                "LangString ", " %s " % lang_id, True,
++            ).encode("utf-16-le")
++        )
++    fp.close()
++
+ def create_nlf_file(moz_dir, ab_cd, config_dir):
+     """
+     Create a basic NSIS nlf file.
+@@ -215,6 +305,7 @@
+  --preprocess-single-file   - Preprocesses a single properties file into the
+                               format required by NSIS
+  --create-nlf-file          - Creates a basic NSIS nlf file
++ --preprocess-multilocale  - Preprocesses locale files for multiple languages
+ 
+ preprocess-locale.py --preprocess-locale <src> <locale> <code> <dest>
+ 
+@@ -284,6 +375,19 @@
+         dest="preprocessSingle",
+     )
+     p.add_option(
++        "--preprocess-multilocale",
++        action="store_true",
++        default=False,
++        dest="preprocessMulti",
++    )
++    p.add_option(
++        "--locale-dir",
++        action="append",
++        default=[],
++        dest="locale_dirs_multi",
++        help="Locale lookup directory in the form code=dir (repeatable)",
++    )
++    p.add_option(
+         "--create-nlf-file", action="store_true", default=False, dest="createNlf"
+     )
+     p.add_option(
+@@ -312,6 +416,11 @@
+             p.error("More than one command specified")
+         else:
+             foundOne = True
++    if options.preprocessMulti:
++        if foundOne:
++            p.error("More than one command specified")
++        else:
++            foundOne = True
+     if options.createNlf:
+         if foundOne:
+             p.error("More than one command specified")
+@@ -341,6 +450,20 @@
+         # Create the output files
+         create_nlf_file(moz_dir, ab_cd, config_dir)
+         preprocess_locale_files(config_dir, l10n_dirs)
++    elif options.preprocessMulti:
++        if len(args) != 2:
++            p.error(
++                "preprocess-locale.py --preprocess-multilocale <src> <dest> "
++                "--locale-dir code=dir ..."
++            )
++        config_dir = args[1]
++        locale_dirs = {}
++        for spec in options.locale_dirs_multi:
++            code, ldir = spec.split("=", 1)
++            locale_dirs.setdefault(code, []).append(ldir)
++        if not locale_dirs:
++            p.error("--preprocess-multilocale requires at least one --locale-dir")
++        preprocess_multilocale_files(config_dir, locale_dirs)
+     elif options.preprocessSingle:
+         if len(args) not in (4, 5):
+             p.error(preprocess_single_file_args_help_string)
+--- a/browser/installer/windows/nsis/installer.nsi	2026-08-24 16:32:02.247103361 +0800
++++ b/browser/installer/windows/nsis/installer.nsi	2026-08-24 16:35:57.525163317 +0800
+@@ -1177,7 +1177,9 @@
+ ################################################################################
+ # Language
+ 
+-!insertmacro MOZ_MUI_LANGUAGE 'baseLocale'
++!insertmacro MOZ_MUI_LANGUAGE 'English'
++!insertmacro MOZ_MUI_LANGUAGE 'SimpChinese'
++!insertmacro MOZ_MUI_LANGUAGE 'TradChinese'
+ !verbose push
+ !verbose 3
+ !include "overrideLocale.nsh"
+@@ -1630,7 +1632,6 @@
+ 
+ 
+   StrCpy $PageName ""
+-  StrCpy $LANGUAGE 0
+   ${SetBrandNameVars} "$EXEDIR\core\distribution\setup.ini"
+ 
+   ; Don't install on systems that don't support SSE2. The parameter value of
+--- a/browser/installer/windows/nsis/uninstaller.nsi	2026-08-24 16:32:02.255103844 +0800
++++ b/browser/installer/windows/nsis/uninstaller.nsi	2026-08-24 16:35:57.529163554 +0800
+@@ -776,7 +776,9 @@
+ ################################################################################
+ # Language
+ 
+-!insertmacro MOZ_MUI_LANGUAGE 'baseLocale'
++!insertmacro MOZ_MUI_LANGUAGE 'English'
++!insertmacro MOZ_MUI_LANGUAGE 'SimpChinese'
++!insertmacro MOZ_MUI_LANGUAGE 'TradChinese'
+ !verbose push
+ !verbose 3
+ !include "overrideLocale.nsh"
+@@ -1063,8 +1065,6 @@
+   ; This only effects LoadLibrary calls and not implicitly loaded DLLs.
+   System::Call 'kernel32::SetDllDirectoryW(w "")'
+ 
+-  StrCpy $LANGUAGE 0
+-
+   ${un.UninstallUnOnInitCommon}
+ 
+   ; setup the application model id registration value
+--- a/browser/installer/windows/nsis/extensionsLocale.nsh	2026-08-24 16:32:02.259104088 +0800
++++ b/browser/installer/windows/nsis/extensionsLocale.nsh	2026-08-24 16:35:57.533163791 +0800
+@@ -3,18 +3,20 @@
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+ ; Strings for the optional extensions page. This is not in the locale
+-; directory so these strings are only translated to zh-CN.
++; directory so these strings are translated for all supported installer
++; languages (en-US / zh-CN / zh-TW) with explicit NSIS language IDs.
+ 
+-!if "${AB_CD}" == "en-US"
+-LangString EXTENSIONS_PAGE_TITLE 0  "Install Optional Extensions"
+-LangString EXTENSIONS_PAGE_SUBTITLE 0  "$ExtensionRecommender recommends these extensions"
+-LangString OPTIONAL_EXTENSIONS_CHECKBOX_DESC 0  "Install &Extension:"
+-LangString OPTIONAL_EXTENSIONS_DESC 0  "You can add or remove these extensions at any time. Click the menu button and choose “Add-ons”."
+-!endif
++LangString EXTENSIONS_PAGE_TITLE 1033  "Install Optional Extensions"
++LangString EXTENSIONS_PAGE_SUBTITLE 1033  "$ExtensionRecommender recommends these extensions"
++LangString OPTIONAL_EXTENSIONS_CHECKBOX_DESC 1033  "Install &Extension:"
++LangString OPTIONAL_EXTENSIONS_DESC 1033  "You can add or remove these extensions at any time. Click the menu button and choose \u201cAdd-ons\u201d."
+ 
+-!if "${AB_CD}" == "zh-CN"
+-LangString EXTENSIONS_PAGE_TITLE 0  "安装可选扩展"
+-LangString EXTENSIONS_PAGE_SUBTITLE 0  "$ExtensionRecommender 推荐安装以下扩展"
+-LangString OPTIONAL_EXTENSIONS_CHECKBOX_DESC 0  "安装扩展(&E):"
+-LangString OPTIONAL_EXTENSIONS_DESC 0  "您随时可以点击浏览器的菜单按钮并选择“附加组件”来添加或移除扩展。"
+-!endif
++LangString EXTENSIONS_PAGE_TITLE 2052  "安装可选扩展"
++LangString EXTENSIONS_PAGE_SUBTITLE 2052  "$ExtensionRecommender 推荐安装以下扩展"
++LangString OPTIONAL_EXTENSIONS_CHECKBOX_DESC 2052  "安装扩展(&E):"
++LangString OPTIONAL_EXTENSIONS_DESC 2052  "您随时可以点击浏览器的菜单按钮并选择\u201c附加组件\u201d来添加或移除扩展。"
++
++LangString EXTENSIONS_PAGE_TITLE 1028  "安裝選用擴充功能"
++LangString EXTENSIONS_PAGE_SUBTITLE 1028  "$ExtensionRecommender 推薦安裝以下擴充功能"
++LangString OPTIONAL_EXTENSIONS_CHECKBOX_DESC 1028  "安裝擴充功能(&E):"
++LangString OPTIONAL_EXTENSIONS_DESC 1028  "您可以隨時按一下瀏覽器的功能表按鈕並選擇\u201c附加元件\u201d，以新增或移除擴充功能。"
+--- a/browser/installer/windows/Makefile.in	2026-08-24 16:32:02.267104569 +0800
++++ b/browser/installer/windows/Makefile.in	2026-08-24 16:35:57.537164028 +0800
+@@ -59,14 +59,18 @@
+ 
+ ifdef IS_LANGUAGE_REPACK
+ PPL_LOCALE_ARGS = \
+-  --l10n-dir=$(REAL_LOCALE_MERGEDIR)/browser/installer \
+-  --l10n-dir=$(call EXPAND_LOCALE_SRCDIR,browser/locales)/installer \
+-  --l10n-dir=$(topsrcdir)/browser/locales/en-US/installer \
++  --locale-dir=en-US=$(REAL_LOCALE_MERGEDIR)/browser/installer \
++  --locale-dir=en-US=$(call EXPAND_LOCALE_SRCDIR,browser/locales)/installer \
++  --locale-dir=zh-CN=$(REAL_LOCALE_MERGEDIR)/browser/installer \
++  --locale-dir=zh-TW=$(REAL_LOCALE_MERGEDIR)/browser/installer \
+   $(NULL)
+ else
+ PPL_LOCALE_ARGS = \
+-  --l10n-dir=$(topsrcdir)/lw/l10n/zh-CN/browser/installer \
+-  --l10n-dir=$(call EXPAND_LOCALE_SRCDIR,browser/locales)/installer \
++  --locale-dir=en-US=$(call EXPAND_LOCALE_SRCDIR,browser/locales)/installer \
++  --locale-dir=zh-CN=$(topsrcdir)/lw/l10n/zh-CN/browser/installer \
++  --locale-dir=zh-CN=$(call EXPAND_LOCALE_SRCDIR,browser/locales)/installer \
++  --locale-dir=zh-TW=$(topsrcdir)/lw/l10n/zh-TW/browser/installer \
++  --locale-dir=zh-TW=$(call EXPAND_LOCALE_SRCDIR,browser/locales)/installer \
+   $(NULL)
+ endif
+ 
+@@ -77,12 +81,7 @@
+ 	-DTOPOBJDIR=$(topobjdir) \
+ 	  $(srcdir)/nsis/defines.nsi.in -o $(CONFIG_DIR)/defines.nsi)
+ 	$(PYTHON3) $(topsrcdir)/toolkit/mozapps/installer/windows/nsis/preprocess-locale.py \
+-	  --preprocess-locale $(topsrcdir) \
+-	  $(PPL_LOCALE_ARGS) $(AB_CD) $(CONFIG_DIR)
+-	$(PYTHON3) $(topsrcdir)/toolkit/mozapps/installer/windows/nsis/preprocess-locale.py \
+-	  --preprocess-single-file $(topsrcdir) \
+-	  $(PPL_LOCALE_ARGS) $(CONFIG_DIR) \
+-	  nsisstrings.properties nsisstrings.nlf
++	  --preprocess-multilocale $(topsrcdir) $(CONFIG_DIR) $(PPL_LOCALE_ARGS)
+ 	$(PYTHON3) $(topsrcdir)/toolkit/mozapps/installer/windows/nsis/preprocess-locale.py \
+ 	  --convert-utf8-utf16le \
+ 	  $(srcdir)/nsis/extensionsLocale.nsh $(CONFIG_DIR)/extensionsLocale.nsh

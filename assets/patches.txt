@@ -53,6 +53,7 @@ patches/ui-patches/neterror.patch
 patches/ui-patches/add-translate-page-context-menu.patch
 patches/installer-zhcn.patch
 patches/installer-locale.patch
+patches/installer-multilang.patch
 patches/installer-publisher.patch
 patches/uninstaller-cleanup.patch
 patches/vantage-ai-sidebar.patch
