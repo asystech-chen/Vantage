@@ -32,6 +32,7 @@ jobs:
       - name: Release & Upload（仅发布，不构建）
         run: |
           export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          export GH_REPO="asystech-chen/Vantage"
           TAG="${{ github.event.inputs.tag }}"
           VERSION="${TAG#v}"
 

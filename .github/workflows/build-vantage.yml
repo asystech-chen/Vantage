@@ -107,6 +107,7 @@ jobs:
       - name: Create Release & Upload
         run: |
           export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          export GH_REPO="asystech-chen/Vantage"
           if [ -n "${{ github.event.inputs.tag }}" ]; then
             TAG="${{ github.event.inputs.tag }}"
           else
