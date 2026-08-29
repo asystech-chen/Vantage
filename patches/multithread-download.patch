@@ -1,0 +1,998 @@
+diff --git a/toolkit/components/downloads/DownloadCore.sys.mjs b/toolkit/components/downloads/DownloadCore.sys.mjs
+index 0223747..9b154ec 100644
+--- a/toolkit/components/downloads/DownloadCore.sys.mjs
++++ b/toolkit/components/downloads/DownloadCore.sys.mjs
+@@ -18,6 +18,7 @@ ChromeUtils.defineESModuleGetters(lazy, {
+   DownloadPaths: "resource://gre/modules/DownloadPaths.sys.mjs",
+   E10SUtils: "resource://gre/modules/E10SUtils.sys.mjs",
+   FileUtils: "resource://gre/modules/FileUtils.sys.mjs",
++  MultiThreadSaver: "resource://gre/modules/MultiThreadSaver.sys.mjs",
+   NetUtil: "resource://gre/modules/NetUtil.sys.mjs",
+ });
+ 
+@@ -2288,6 +2289,9 @@ DownloadSaver.fromSerializable = function (aSerializable) {
+     case "legacy":
+       saver = DownloadLegacySaver.fromSerializable(serializable);
+       break;
++    case "multithread":
++      saver = lazy.MultiThreadSaver.fromSerializable(serializable);
++      break;
+     default:
+       throw new Error("Unrecoginzed download saver type.");
+   }
+diff --git a/toolkit/components/downloads/DownloadLegacy.sys.mjs b/toolkit/components/downloads/DownloadLegacy.sys.mjs
+index a60af5e..69604ec 100644
+--- a/toolkit/components/downloads/DownloadLegacy.sys.mjs
++++ b/toolkit/components/downloads/DownloadLegacy.sys.mjs
+@@ -98,6 +98,11 @@ DownloadLegacyTransfer.prototype = {
+       // object to be available before notifying.
+       this._promiseDownload
+         .then(download => {
++          // Vantage: the download is handled by MultiThreadSaver; the native
++          // transfer has been abandoned.
++          if (this._usesMultithread) {
++            return;
++          }
+           download.source.triggeredByContentDispositionHeader = false;
+           if (aRequest instanceof Ci.nsIHttpChannel) {
+             try {
+@@ -136,6 +141,11 @@ DownloadLegacyTransfer.prototype = {
+       // associated Download object to be available before notifying.
+       this._promiseDownload
+         .then(download => {
++          // Vantage: the download is handled by MultiThreadSaver; the native
++          // transfer has been abandoned.
++          if (this._usesMultithread) {
++            return;
++          }
+           // At this point, the hash has been set and we need to copy it to the
+           // DownloadSaver.
+           if (Components.isSuccessCode(aStatus)) {
+@@ -203,6 +213,11 @@ DownloadLegacyTransfer.prototype = {
+     aCurTotalProgress,
+     aMaxTotalProgress
+   ) {
++    // Vantage: the download is handled by MultiThreadSaver, which reports its
++    // own progress; the abandoned native transfer must not drive the saver.
++    if (this._usesMultithread) {
++      return;
++    }
+     // Since this progress function is invoked frequently, we use a slightly
+     // more complex solution that optimizes the case where we already have an
+     // associated Download object, avoiding the Promise overhead.
+@@ -424,6 +439,25 @@ DownloadLegacyTransfer.prototype = {
+       this._cancelable = null;
+     }
+ 
++    // Vantage: use the multithreaded saver for http(s) downloads when the
++    // preference is enabled.  We abandon the native C++ transfer (it only
++    // supports a single stream) and let MultiThreadSaver drive the download
++    // with parallel Range requests.  The transfer callbacks are short-circuited
++    // below via this._usesMultithread.
++    if (
++      serialisedDownload.saver == "legacy" &&
++      Services.prefs.getBoolPref("vantage.download.multithread", true) &&
++      /^https?:/i.test(aSource.spec)
++    ) {
++      serialisedDownload.saver = "multithread";
++      this._usesMultithread = true;
++      try {
++        if (this._cancelable) {
++          this._cancelable.cancel(Cr.NS_BINDING_ABORTED);
++        }
++      } catch (e) {}
++    }
++
+     lazy.Downloads.createDownload(serialisedDownload)
+       .then(async aDownload => {
+         // Legacy components keep partial data when they use a ".part" file.
+@@ -496,6 +530,12 @@ DownloadLegacyTransfer.prototype = {
+    */
+   _componentFailed: false,
+ 
++  /**
++   * Vantage: true when the download has been handed over to MultiThreadSaver
++   * and the native transfer callbacks must be short-circuited.
++   */
++  _usesMultithread: false,
++
+   /**
+    * Save the SHA-256 hash in raw bytes of the downloaded file.
+    */
+diff --git a/toolkit/components/downloads/Downloads.sys.mjs b/toolkit/components/downloads/Downloads.sys.mjs
+index 2eb8ead..a126e3f 100644
+--- a/toolkit/components/downloads/Downloads.sys.mjs
++++ b/toolkit/components/downloads/Downloads.sys.mjs
+@@ -91,6 +91,21 @@ export const Downloads = {
+    * @rejects JavaScript exception.
+    */
+   async createDownload(properties) {
++    // Vantage: enable the multithreaded download saver for http(s) sources
++    // when the preference is on, unless the caller explicitly requested a
++    // different saver.
++    const url =
++      typeof properties.source === "string"
++        ? properties.source
++        : properties.source?.url;
++    if (
++      properties.saver == null &&
++      Services.prefs.getBoolPref("vantage.download.multithread", true) &&
++      url &&
++      /^https?:/i.test(url)
++    ) {
++      properties = { ...properties, saver: "multithread" };
++    }
+     return Download.fromSerializable(properties);
+   },
+ 
+diff --git a/toolkit/components/downloads/MultiThreadSaver.sys.mjs b/toolkit/components/downloads/MultiThreadSaver.sys.mjs
+new file mode 100644
+index 0000000..99f1838
+--- /dev/null
++++ b/toolkit/components/downloads/MultiThreadSaver.sys.mjs
+@@ -0,0 +1,853 @@
++/* This Source Code Form is subject to the terms of the Mozilla Public
++ * License, v. 2.0. If a copy of the MPL was not distributed with this
++ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
++
++/**
++ * A DownloadSaver that downloads a single file using multiple parallel HTTP
++ * Range requests, then merges the parts on disk.
++ *
++ * If the server does not support Range requests, the file is smaller than
++ * the configured threshold, or any unexpected error occurs, it silently
++ * falls back to a single-channel download equivalent to the native one.
++ *
++ * This module is imported lazily by DownloadCore.sys.mjs (see the
++ * "multithread" case in DownloadSaver.fromSerializable).  It imports
++ * DownloadCore statically, so the prototype chain below can be established
++ * without a circular dependency.
++ */
++
++import { DownloadError, DownloadSaver } from "resource://gre/modules/DownloadCore.sys.mjs";
++
++const lazy = {};
++
++ChromeUtils.defineESModuleGetters(lazy, {
++  DownloadPaths: "resource://gre/modules/DownloadPaths.sys.mjs",
++  FileUtils: "resource://gre/modules/FileUtils.sys.mjs",
++  NetUtil: "resource://gre/modules/NetUtil.sys.mjs",
++});
++
++// Same background file saver used by the native download implementation.
++const BackgroundFileSaverStreamListener = Components.Constructor(
++  "@mozilla.org/network/background-file-saver;1?mode=streamlistener",
++  "nsIBackgroundFileSaver"
++);
++
++// Number of parallel parts.
++const kPartCount = 4;
++
++// Files smaller than this are downloaded with a single channel.
++// 500 KB: small enough that parallel parts would not help, while still
++// letting users benefit from faster downloads in good network conditions.
++const kMinSizeThreshold = 500 * 1024;
++
++// Chunk size used when merging part files (controls peak memory usage).
++const kMergeChunkSize = 4 * 1024 * 1024;
++
++/**
++ * Returns true if the file at the given path exists and is empty.  Used to
++ * decide whether the final target is just the placeholder created at the
++ * start of the download and can therefore be removed safely.
++ */
++async function isPlaceholder(path) {
++  try {
++    if ((await IOUtils.stat(path)).size == 0) {
++      return true;
++    }
++  } catch (ex) {
++    // Canceling the download may have removed the placeholder already.
++    if (ex.name != "NotFoundError") {
++      console.error(ex);
++    }
++  }
++  return false;
++}
++
++/**
++ * Saver that downloads a file using multiple parallel HTTP Range requests.
++ */
++export var MultiThreadSaver = function () {};
++
++MultiThreadSaver.prototype = {
++  /**
++   * Download object associated with this saver.
++   */
++  download: null,
++
++  /**
++   * True if the download has been canceled.
++   */
++  _canceled: false,
++
++  /**
++   * Currently active channels, canceled by cancel().
++   */
++  _channels: [],
++
++  /**
++   * SHA-256 hash and signature info.  Only populated by the single-channel
++   * fallback (the native hashing is not enabled for segmented downloads).
++   */
++  _sha256Hash: null,
++  _signatureInfo: null,
++
++  /**
++   * Part files written during a segmented download, removed by removeData().
++   */
++  _partFiles: [],
++
++  /**
++   * Path of the complete file before it is moved to the final target.
++   */
++  _completePath: null,
++
++  /**
++   * Implements "DownloadSaver.execute".
++   */
++  async execute(aSetProgressBytesFn, aSetPropertiesFn) {
++    // Reset the cancellation flag: the same saver instance may be reused
++    // when the download is restarted after being canceled (mirrors the
++    // native DownloadCopySaver).
++    this._canceled = false;
++    let download = this.download;
++    let targetPath = download.target.path;
++    let partFilePath = download.target.partFilePath;
++
++    // Add the download to history the first time it is started in this
++    // session (same behavior as the native implementation).
++    if (!this.alreadyAddedToHistory) {
++      this.addToHistory();
++      this.alreadyAddedToHistory = true;
++    }
++
++    // Create a placeholder for the final target file as soon as possible,
++    // to reduce the chance that other downloads reuse the same file name.
++    try {
++      await IOUtils.writeUTF8(targetPath, "", { mode: "appendOrCreate" });
++    } catch (ex) {
++      if (!DOMException.isInstance(ex)) {
++        throw ex;
++      }
++      let error = new DownloadError({ message: ex.message });
++      error.becauseTargetFailed = true;
++      throw error;
++    }
++
++    if (this._canceled) {
++      throw new DownloadError({ message: "Saver canceled." });
++    }
++
++    // Probe for Range support and decide between a segmented download and
++    // the single-channel fallback.
++    let probe = await this._probeRange();
++    let minSize = Services.prefs.getIntPref(
++      "vantage.download.multithread.minSize",
++      kMinSizeThreshold
++    );
++    if (probe && probe.supported && probe.totalBytes >= minSize) {
++      // Segmented download: parts are merged into a "complete" part file.
++      this._completePath = partFilePath || targetPath + ".part";
++      if (probe.contentType) {
++        aSetPropertiesFn({ contentType: probe.contentType });
++      }
++      await this._downloadSegmented(probe.totalBytes, aSetProgressBytesFn);
++    } else {
++      // Single-channel fallback, equivalent to the native implementation.
++      this._completePath = partFilePath || targetPath;
++      await this._downloadSingleChannel(aSetProgressBytesFn, aSetPropertiesFn);
++    }
++
++    // Move the completed file to its final target.
++    if (this._completePath != targetPath) {
++      try {
++        await IOUtils.move(this._completePath, targetPath);
++      } catch (e) {
++        if (e.name === "NotAllowedError") {
++          // In case we cannot write to the target file, retry with a new
++          // unique name.
++          let uniquePath = lazy.DownloadPaths.createNiceUniqueFile(
++            new lazy.FileUtils.File(targetPath)
++          ).path;
++          await IOUtils.move(this._completePath, uniquePath);
++          this.download.target.path = uniquePath;
++        } else {
++          throw e;
++        }
++      }
++    }
++  },
++
++  /**
++   * Implements "DownloadSaver.cancel".
++   */
++  cancel() {
++    this._canceled = true;
++    for (let channel of this._channels) {
++      try {
++        channel.cancel(Cr.NS_BINDING_ABORTED);
++      } catch (e) {}
++    }
++    this._channels = [];
++  },
++
++  /**
++   * Implements "DownloadSaver.removeData".
++   */
++  async removeData(canRemoveFinalTarget = false) {
++    // Remove any part files left over from a segmented download.
++    for (let path of this._partFiles) {
++      await this._tryToRemoveFile(path);
++    }
++    this._partFiles = [];
++
++    if (this.download.target.partFilePath) {
++      await this._tryToRemoveFile(this.download.target.partFilePath);
++    }
++    // Also remove the merged complete file when it is not the final target.
++    if (
++      this._completePath &&
++      this._completePath != this.download.target.path
++    ) {
++      await this._tryToRemoveFile(this._completePath);
++    }
++
++    if (this.download.target.path) {
++      if (
++        canRemoveFinalTarget ||
++        (await isPlaceholder(this.download.target.path))
++      ) {
++        await this._tryToRemoveFile(this.download.target.path);
++      }
++      this.download.target.exists = false;
++      this.download.target.size = 0;
++    }
++  },
++
++  /**
++   * Implements "DownloadSaver.toSerializable".
++   */
++  toSerializable() {
++    return { type: "multithread" };
++  },
++
++  /**
++   * Implements "DownloadSaver.getSha256Hash".  The hash is only available
++   * when the download used the single-channel fallback (which enables the
++   * native hashing); segmented downloads return null.
++   */
++  getSha256Hash() {
++    return this._sha256Hash || null;
++  },
++
++  /**
++   * Implements "DownloadSaver.getSignatureInfo".
++   */
++  getSignatureInfo() {
++    return this._signatureInfo || null;
++  },
++
++  /* ---- internal methods ---- */
++
++  /**
++   * Creates a channel for the download source, mirroring the property setup
++   * of the native implementation (private browsing, referrer, cookies, auth
++   * header, user context, download throttling).
++   *
++   * @param {string|null} aRangeHeader
++   *        Optional "Range" header value, e.g. "bytes=0-1023".
++   */
++  _createChannel(aRangeHeader) {
++    let download = this.download;
++    let channel;
++    if (download.source.loadingPrincipal) {
++      channel = lazy.NetUtil.newChannel({
++        uri: download.source.url,
++        contentPolicyType: Ci.nsIContentPolicy.TYPE_SAVEAS_DOWNLOAD,
++        loadingPrincipal: download.source.loadingPrincipal,
++        // triggeringPrincipal must be the system principal to prevent the
++        // request from being mistaken as a third-party request.
++        triggeringPrincipal:
++          Services.scriptSecurityManager.getSystemPrincipal(),
++        securityFlags:
++          Ci.nsILoadInfo.SEC_ALLOW_CROSS_ORIGIN_SEC_CONTEXT_IS_NULL,
++      });
++    } else {
++      channel = lazy.NetUtil.newChannel({
++        uri: download.source.url,
++        contentPolicyType: Ci.nsIContentPolicy.TYPE_SAVEAS_DOWNLOAD,
++        loadUsingSystemPrincipal: true,
++      });
++    }
++    if (channel instanceof Ci.nsIPrivateBrowsingChannel) {
++      channel.setPrivate(download.source.isPrivate);
++    }
++    if (
++      channel instanceof Ci.nsIHttpChannel &&
++      download.source.referrerInfo
++    ) {
++      channel.referrerInfo = download.source.referrerInfo;
++    }
++    if (
++      channel instanceof Ci.nsIHttpChannel &&
++      download.source.cookieJarSettings
++    ) {
++      channel.loadInfo.cookieJarSettings = download.source.cookieJarSettings;
++    }
++    if (
++      channel instanceof Ci.nsIHttpChannel &&
++      download.source.authHeader
++    ) {
++      try {
++        channel.setRequestHeader(
++          "Authorization",
++          download.source.authHeader,
++          true
++        );
++      } catch (e) {}
++    }
++    if (download.source.userContextId) {
++      // Getters and setters only exist on originAttributes, so it has to be
++      // cloned, changed, and re-set.
++      channel.loadInfo.originAttributes = {
++        ...channel.loadInfo.originAttributes,
++        userContextId: download.source.userContextId,
++      };
++    }
++    // This makes the channel be correctly throttled during page loads and
++    // also prevents its caching.
++    if (channel instanceof Ci.nsIHttpChannelInternal) {
++      channel.channelIsForDownload = true;
++      // Include cookies even if cookieBehavior is BEHAVIOR_REJECT_FOREIGN.
++      channel.forceAllowThirdPartyCookie = true;
++    }
++    if (aRangeHeader) {
++      channel
++        .QueryInterface(Ci.nsIHttpChannel)
++        .setRequestHeader("Range", aRangeHeader, false);
++    }
++    return channel;
++  },
++
++  /**
++   * Probes the server for HTTP Range support.
++   *
++   * @returns {Promise<object|null>}
++   *          Resolves to { supported, totalBytes } when Range is supported,
++   *          { supported: false, totalBytes } when the file is too small to
++   *          be worth segmenting, or null when Range support cannot be
++   *          determined (single-channel fallback).
++   */
++  async _probeRange() {
++    // Try a HEAD request first.  Some servers reject HEAD (405/403), in
++    // which case we fall back to a Range GET probe below.
++    let result = await new Promise(resolve => {
++      let channel = this._createChannel();
++      if (!(channel instanceof Ci.nsIHttpChannel)) {
++        resolve(null);
++        return;
++      }
++      let done = false;
++      let finish = value => {
++        if (done) {
++          return;
++        }
++        done = true;
++        try {
++          channel.cancel(Cr.NS_BINDING_ABORTED);
++        } catch (e) {}
++        resolve(value);
++      };
++
++      let listener = {
++        onStartRequest(aRequest) {
++          try {
++            let http = aRequest.QueryInterface(Ci.nsIHttpChannel);
++            let headers = {};
++            http.visitResponseHeaders((header, value) => {
++              headers[header.toLowerCase()] = value;
++            });
++            let status = http.responseStatus;
++            let contentLength = parseInt(headers["content-length"] || "-1", 10);
++            let contentType = headers["content-type"] || null;
++            if (status == 200 && contentLength > 0) {
++              if (
++                headers["accept-ranges"] &&
++                headers["accept-ranges"].toLowerCase().includes("bytes")
++              ) {
++                finish({
++                  supported: true,
++                  totalBytes: contentLength,
++                  contentType,
++                });
++              } else if (contentLength < kMinSizeThreshold) {
++                // Too small to segment; no need for a further probe.
++                finish({
++                  supported: false,
++                  totalBytes: contentLength,
++                  contentType,
++                });
++              } else {
++                finish({ needsVerify: true, contentType });
++              }
++            } else {
++              // HEAD rejected or empty body: verify with a Range GET.
++              finish({ needsVerify: true, contentType });
++            }
++          } catch (e) {
++            finish(null);
++          }
++        },
++        onDataAvailable() {},
++        onStopRequest() {
++          finish(null);
++        },
++      };
++
++      let http = channel.QueryInterface(Ci.nsIHttpChannel);
++      http.requestMethod = "HEAD";
++      try {
++        channel.asyncOpen(listener);
++      } catch (e) {
++        finish(null);
++      }
++    });
++
++    if (result && result.needsVerify) {
++      return this._verifyRange();
++    }
++    return result;
++  },
++
++  /**
++   * Verifies Range support with a "bytes=0-0" GET request and reads the
++   * total size from the Content-Range response header.
++   */
++  _verifyRange() {
++    return new Promise(resolve => {
++      let channel = this._createChannel("bytes=0-0");
++      let done = false;
++      let finish = value => {
++        if (done) {
++          return;
++        }
++        done = true;
++        try {
++          channel.cancel(Cr.NS_BINDING_ABORTED);
++        } catch (e) {}
++        resolve(value);
++      };
++
++      let listener = {
++        onStartRequest(aRequest) {
++          try {
++            let http = aRequest.QueryInterface(Ci.nsIHttpChannel);
++            if (http.responseStatus == 206) {
++              let contentRange = "";
++              let contentType = null;
++              http.visitResponseHeaders((header, value) => {
++                if (header.toLowerCase() == "content-range") {
++                  contentRange = value;
++                } else if (header.toLowerCase() == "content-type") {
++                  contentType = value;
++                }
++              });
++              // Expected format: "bytes 0-0/TOTAL".
++              let match = /bytes\s+0-0\/(\d+)/i.exec(contentRange);
++              if (match) {
++                finish({
++                  supported: true,
++                  totalBytes: parseInt(match[1], 10),
++                  contentType,
++                });
++              } else {
++                finish(null);
++              }
++            } else {
++              // The server ignored the Range header (or rejected it).
++              finish(null);
++            }
++          } catch (e) {
++            finish(null);
++          }
++        },
++        onDataAvailable() {},
++        onStopRequest() {
++          finish(null);
++        },
++      };
++
++      try {
++        channel.asyncOpen(listener);
++      } catch (e) {
++        finish(null);
++      }
++    });
++  },
++
++  /**
++   * Downloads the file as kPartCount parallel Range requests, then merges
++   * the part files into this._completePath.
++   */
++  async _downloadSegmented(aTotalBytes, aSetProgressBytesFn) {
++    // Compute part boundaries.
++    let partSize = Math.ceil(aTotalBytes / kPartCount);
++    let parts = [];
++    for (let i = 0; i < kPartCount; i++) {
++      let start = i * partSize;
++      let end = i == kPartCount - 1 ? aTotalBytes - 1 : (i + 1) * partSize - 1;
++      if (start > end) {
++        break;
++      }
++      parts.push({ start, end, file: this._completePath + ".mt" + i });
++    }
++    this._partFiles = parts.map(part => part.file);
++
++    // Download all parts in parallel.  Progress is reported continuously:
++    // each part reports its own network progress on top of the bytes already
++    // completed by the other parts, so the UI never freezes on slow links.
++    let progress = { completed: 0 };
++    try {
++      await Promise.all(
++        parts.map(part =>
++          this._downloadPart(
++            part,
++            progress,
++            aTotalBytes,
++            aSetProgressBytesFn,
++            () => {
++              progress.completed += part.end - part.start + 1;
++              aSetProgressBytesFn(progress.completed, aTotalBytes, false);
++            }
++          )
++        )
++      );
++    } catch (ex) {
++      // A part failed: cancel the remaining channels so that no other part
++      // keeps downloading in the background.  The Download framework calls
++      // removeData() to clean up the part files.
++      for (let channel of this._channels) {
++        try {
++          channel.cancel(Cr.NS_BINDING_ABORTED);
++        } catch (e) {}
++      }
++      this._channels = [];
++      throw ex;
++    }
++
++    // Merge the parts into the complete file.  Progress is not reported
++    // here: all bytes are already downloaded, and the UI shows 100%.
++    await this._mergeParts(parts);
++  },
++
++  /**
++   * Downloads a single part using a Range request and a background file
++   * saver.  Resolves once the part has been written to disk.
++   */
++  _downloadPart(aPart, aProgress, aTotalBytes, aSetProgressBytesFn, aOnPartComplete) {
++    return new Promise((resolve, reject) => {
++      if (this._canceled) {
++        reject(new DownloadError({ message: "Saver canceled." }));
++        return;
++      }
++
++      let channel = this._createChannel(`bytes=${aPart.start}-${aPart.end}`);
++      this._channels.push(channel);
++
++      let backgroundFileSaver = new BackgroundFileSaverStreamListener();
++      backgroundFileSaver.QueryInterface(Ci.nsIStreamListener);
++
++      backgroundFileSaver.observer = {
++        onTargetChange() {},
++        onSaveComplete: (aSaver, aStatus) => {
++          backgroundFileSaver.observer = null;
++          let index = this._channels.indexOf(channel);
++          if (index != -1) {
++            this._channels.splice(index, 1);
++          }
++          if (Components.isSuccessCode(aStatus)) {
++            aOnPartComplete();
++            resolve();
++          } else {
++            reject(
++              new DownloadError({ result: aStatus, inferCause: true })
++            );
++          }
++        },
++      };
++
++      try {
++        // Parts are never kept on failure (keepPartialData = false).
++        backgroundFileSaver.setTarget(
++          new lazy.FileUtils.File(aPart.file),
++          false
++        );
++      } catch (ex) {
++        reject(new DownloadError({ message: ex.message }));
++        return;
++      }
++
++      let streamListener = {
++        onStartRequest: aRequest => {
++          // The probe confirmed Range support; if a part still receives a
++          // non-206 response (e.g. the server changed behavior), abort.
++          if (aRequest instanceof Ci.nsIHttpChannel) {
++            let http = aRequest.QueryInterface(Ci.nsIHttpChannel);
++            if (http.responseStatus != 206) {
++              aRequest.cancel(Cr.NS_BINDING_ABORTED);
++              reject(
++                new DownloadError({
++                  message: "Server did not honor the Range request.",
++                })
++              );
++              return;
++            }
++          }
++          backgroundFileSaver.onStartRequest(aRequest);
++        },
++        onDataAvailable: (aRequest, aInputStream, aOffset, aCount) => {
++          // Check if the download has been canceled in the meantime.
++          if (this._canceled) {
++            aRequest.cancel(Cr.NS_BINDING_ABORTED);
++            return;
++          }
++          backgroundFileSaver.onDataAvailable(
++            aRequest,
++            aInputStream,
++            aOffset,
++            aCount
++          );
++        },
++        onStopRequest: (aRequest, aStatusCode) => {
++          try {
++            backgroundFileSaver.onStopRequest(aRequest, aStatusCode);
++          } finally {
++            // If the data transfer completed successfully, indicate to the
++            // background file saver that the operation can finish.
++            if (Components.isSuccessCode(aStatusCode)) {
++              backgroundFileSaver.finish(Cr.NS_OK);
++            }
++          }
++        },
++      };
++
++      channel.notificationCallbacks = {
++        QueryInterface: ChromeUtils.generateQI(["nsIInterfaceRequestor"]),
++        getInterface: ChromeUtils.generateQI(["nsIProgressEventSink"]),
++        onProgress: (aRequest, aProgressBytes, aProgressMax) => {
++          // Report this part's bytes on top of the parts already completed,
++          // so the total progress stays smooth.
++          aSetProgressBytesFn(
++            aProgress.completed + aProgressBytes,
++            aTotalBytes,
++            false
++          );
++        },
++        onStatus() {},
++      };
++
++      try {
++        channel.asyncOpen(streamListener);
++      } catch (ex) {
++        reject(new DownloadError({ message: ex.message }));
++      }
++    });
++  },
++
++  /**
++   * Streams the part files into this._completePath in order, removing each
++   * part once it has been merged.
++   */
++  async _mergeParts(aParts) {
++    // Create (or truncate) the complete file; subsequent writes append to it.
++    // "overwrite" is used instead of "appendOrCreate" so that a leftover file
++    // from a previous attempt cannot pollute the merged content.
++    await IOUtils.writeUTF8(this._completePath, "", {
++      mode: "overwrite",
++    });
++    try {
++      for (let part of aParts) {
++        let offset = 0;
++        while (true) {
++          if (this._canceled) {
++            throw new DownloadError({ message: "Saver canceled." });
++          }
++          let bytes = await IOUtils.read(part.file, {
++            maxBytes: kMergeChunkSize,
++            offset,
++          });
++          if (!bytes.length) {
++            break;
++          }
++          await IOUtils.write(this._completePath, bytes, { mode: "append" });
++          offset += bytes.length;
++        }
++        // Remove the part file once merged.
++        await IOUtils.remove(part.file);
++      }
++    } catch (ex) {
++      // Remove the incomplete merged file; remaining part files are cleaned
++      // up by removeData().
++      try {
++        await IOUtils.remove(this._completePath);
++      } catch (e) {}
++      throw ex;
++    }
++  },
++
++  /**
++   * Single-channel fallback, mirroring the essential path of the native
++   * DownloadCopySaver (without resume/entityID logic).
++   */
++  _downloadSingleChannel(aSetProgressBytesFn, aSetPropertiesFn) {
++    return new Promise((resolve, reject) => {
++      if (this._canceled) {
++        reject(new DownloadError({ message: "Saver canceled." }));
++        return;
++      }
++
++      let channel = this._createChannel();
++      this._channels.push(channel);
++
++      let backgroundFileSaver = new BackgroundFileSaverStreamListener();
++      backgroundFileSaver.QueryInterface(Ci.nsIStreamListener);
++      let partFilePath = this.download.target.partFilePath;
++      let keepPartialData = this.download.tryToKeepPartialData;
++
++      backgroundFileSaver.observer = {
++        onTargetChange() {},
++        onSaveComplete: (aSaver, aStatus) => {
++          backgroundFileSaver.observer = null;
++          let index = this._channels.indexOf(channel);
++          if (index != -1) {
++            this._channels.splice(index, 1);
++          }
++          if (Components.isSuccessCode(aStatus)) {
++            // The hash and signature info are only available on success.
++            this._sha256Hash = aSaver.sha256Hash;
++            this._signatureInfo = aSaver.signatureInfo;
++            resolve();
++          } else {
++            reject(
++              new DownloadError({ result: aStatus, inferCause: true })
++            );
++          }
++        },
++      };
++
++      try {
++        // Enable hashing and signature verification before setting the
++        // target, like the native implementation.
++        backgroundFileSaver.enableSha256();
++        backgroundFileSaver.enableSignatureInfo();
++        if (partFilePath) {
++          backgroundFileSaver.setTarget(
++            new lazy.FileUtils.File(partFilePath),
++            keepPartialData
++          );
++        } else {
++          // Set the final target file, and delete it on failure.
++          backgroundFileSaver.setTarget(
++            new lazy.FileUtils.File(this.download.target.path),
++            false
++          );
++        }
++      } catch (ex) {
++        reject(new DownloadError({ message: ex.message }));
++        return;
++      }
++
++      let notificationCallbacks = {
++        QueryInterface: ChromeUtils.generateQI(["nsIInterfaceRequestor"]),
++        getInterface: ChromeUtils.generateQI(["nsIProgressEventSink"]),
++        onProgress: (aRequest, aProgress, aProgressMax) => {
++          aSetProgressBytesFn(
++            aProgress,
++            aProgressMax == -1 ? -1 : aProgressMax,
++            aProgress > 0 && partFilePath && keepPartialData
++          );
++        },
++        onStatus() {},
++      };
++
++      let streamListener = {
++        onStartRequest: aRequest => {
++          if (aRequest instanceof Ci.nsIHttpChannel) {
++            // Check if the request's response has been blocked by Windows
++            // Parental Controls with an HTTP 450 error code.
++            if (aRequest.responseStatus == 450) {
++              this.download._blockedByParentalControls = true;
++              aRequest.cancel(Cr.NS_BINDING_ABORTED);
++              return;
++            }
++          }
++
++          if (aRequest instanceof Ci.nsIChannel) {
++            aSetPropertiesFn({ contentType: aRequest.contentType });
++            // Ensure we report the value of "Content-Length", if available,
++            // even if the download doesn't generate any progress events
++            // later.
++            if (aRequest.contentLength >= 0) {
++              aSetProgressBytesFn(0, aRequest.contentLength);
++            }
++          }
++          backgroundFileSaver.onStartRequest(aRequest);
++        },
++        onDataAvailable: (aRequest, aInputStream, aOffset, aCount) => {
++          // Check if the download has been canceled in the meantime.
++          if (this._canceled) {
++            aRequest.cancel(Cr.NS_BINDING_ABORTED);
++            return;
++          }
++          backgroundFileSaver.onDataAvailable(
++            aRequest,
++            aInputStream,
++            aOffset,
++            aCount
++          );
++        },
++        onStopRequest: (aRequest, aStatusCode) => {
++          try {
++            backgroundFileSaver.onStopRequest(aRequest, aStatusCode);
++          } finally {
++            // If the data transfer completed successfully, indicate to the
++            // background file saver that the operation can finish.
++            if (Components.isSuccessCode(aStatusCode)) {
++              backgroundFileSaver.finish(Cr.NS_OK);
++            }
++          }
++        },
++      };
++
++      channel.notificationCallbacks = notificationCallbacks;
++
++      try {
++        channel.asyncOpen(streamListener);
++      } catch (ex) {
++        reject(new DownloadError({ message: ex.message }));
++      }
++    });
++  },
++
++  /**
++   * Removes a file, ignoring "not found" errors (mirrors the native helper).
++   */
++  async _tryToRemoveFile(path) {
++    try {
++      await IOUtils.remove(path);
++    } catch (ex) {
++      // On Windows we may get an access denied error instead of a no such
++      // file error if the file existed before, and was recently deleted.
++      if (!["NotFoundError", "NotAllowedError"].includes(ex.name)) {
++        console.error(ex);
++      }
++    }
++  },
++};
++
++/**
++ * Factory, structurally identical to DownloadCopySaver.fromSerializable.
++ */
++MultiThreadSaver.fromSerializable = function () {
++  return new MultiThreadSaver();
++};
++
++Object.setPrototypeOf(MultiThreadSaver.prototype, DownloadSaver.prototype);
+diff --git a/toolkit/components/downloads/moz.build b/toolkit/components/downloads/moz.build
+index 9b9f22c..ae57d82 100644
+--- a/toolkit/components/downloads/moz.build
++++ b/toolkit/components/downloads/moz.build
+@@ -36,6 +36,7 @@ EXTRA_JS_MODULES += [
+     "Downloads.sys.mjs",
+     "DownloadStore.sys.mjs",
+     "DownloadUIHelper.sys.mjs",
++    "MultiThreadSaver.sys.mjs",
+ ]
+ 
+ XPCOM_MANIFESTS += [

@@ -19,7 +19,7 @@ NC='\033[0m'
 errors=0
 warnings=0
 
-err()  { errors=$((errors+1)); echo -e "${RED}❌ $*${NC}"; ((errors++)); }
+err()  { errors=$((errors+1)); echo -e "${RED}❌ $*${NC}"; }
 warn() { warnings=$((warnings+1)); echo -e "${YELLOW}⚠️  $*${NC}"; ((warnings++)); }
 ok()   { echo -e "${GREEN}✅ $*${NC}"; }
 info() { echo -e "   $*"; }
@@ -72,6 +72,7 @@ VANTAGE_PATCHES=(
     "patches/hide-passwordmgr.patch"
     "patches/fix-7zsfx-branding.patch"
     "patches/installer-winupdater.patch"
+    "patches/multithread-download.patch"
 )
 
 for p in "${VANTAGE_PATCHES[@]}"; do

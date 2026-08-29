@@ -63,3 +63,4 @@ patches/ui-patches/screenshot-button-toolbar.patch
 patches/installer-winupdater.patch
 patches/gfx-zhms-font.patch
 patches/ui-patches/restore-session-button.patch
+patches/multithread-download.patch
