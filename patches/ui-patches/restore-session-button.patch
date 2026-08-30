@@ -22,7 +22,7 @@ index 954698a..4c31105 100644
 +    id: "undo-close-button",
 +    l10nId: "toolbar-undo-close-button",
 +    defaultArea: "nav-bar",
-+    _introducedInVersion: 25,
++    _introducedInVersion: 0,
 +    onCommand(aEvent) {
 +      let win = aEvent.target.documentGlobal;
 +      win.SessionWindowUI.restoreLastClosedTabOrWindowOrSession(win);
