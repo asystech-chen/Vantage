@@ -58,3 +58,12 @@ fi
 #   - clang-cl / MSVC headers / Windows SDK 都由 --enable-bootstrap 自动管理
 #   - 目标设备：Surface Pro X, Snapdragon 笔记本等 Windows ARM64 设备
 #   - 完整功能支持（WebRTC ✅、geckodriver ✅）
+
+# ---- MSVC Redistributable（winget 审核必需：安装包内置 VC++ runtime DLL）----
+# 自动定位 mach bootstrap 下载的 MSVC Redist CRT 目录（ARM64 目标）
+REDIST_DIR="$(ls -d "$HOME/.mozbuild/vs/VC/Redist/MSVC"/*/arm64/Microsoft.VC*.CRT 2>/dev/null | sort -V | tail -1)"
+if [ -n "$REDIST_DIR" ]; then
+    ac_add_options --with-redist="$REDIST_DIR"
+else
+    echo "⚠️ 未找到 MSVC Redist CRT 目录（$HOME/.mozbuild/vs/VC/Redist/MSVC/*/arm64/Microsoft.VC*.CRT），--with-redist 跳过"
+fi

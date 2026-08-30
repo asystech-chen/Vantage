@@ -61,3 +61,13 @@ fi
 #   - 不需要 -include _mingw.h / -fms-extensions
 #   - 不需要 --disable-webrtc / --disable-geckodriver / --disable-update-agent
 #     （那些只是 MinGW 下的编译限制，MSVC 路线完全支持）
+
+# ---- MSVC Redistributable（winget 审核必需：安装包内置 VC++ runtime DLL）----
+# 自动定位 mach bootstrap 下载的 MSVC Redist CRT 目录（路径随版本变化，动态找最新）
+# 找不到时跳过并警告（configure 无 --with-redist 则安装包不含 vcruntime/msvcp DLL）
+REDIST_DIR="$(ls -d "$HOME/.mozbuild/vs/VC/Redist/MSVC"/*/x64/Microsoft.VC*.CRT 2>/dev/null | sort -V | tail -1)"
+if [ -n "$REDIST_DIR" ]; then
+    ac_add_options --with-redist="$REDIST_DIR"
+else
+    echo "⚠️ 未找到 MSVC Redist CRT 目录（$HOME/.mozbuild/vs/VC/Redist/MSVC/*/x64/Microsoft.VC*.CRT），--with-redist 跳过"
+fi

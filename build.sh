@@ -220,6 +220,12 @@ build_target() {
   export MOZCONFIG="$REPO_ROOT/$mozconfig"
   make dir
 
+  # Windows 目标：替换 Vantage 7zSFX stub（make dir 后、打包前；CI 之前漏跑导致安装器带 Firefox stub）
+  if [[ "$os_type" == "windows" ]]; then
+    green ">>> Windows 目标：应用 Vantage 7zSFX stub..."
+    ./scripts/setup-7zsfx.sh || red "⚠️ setup-7zsfx.sh 失败（非致命，安装器可能带 Firefox stub）"
+  fi
+
   # Step 2: 编译
   green ">>> [2/3] 编译 (make build)..."
   make build || { red "❌ $label 编译失败"; return 1; }

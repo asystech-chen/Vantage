@@ -7,7 +7,9 @@
 set -e
 
 SRC_DIR="${1:-$(ls -d librewolf-*/ 2>/dev/null | head -1)}"
-ASSET_DIR="$(cd "$(dirname "$0")/assets/7zsfx" && pwd)"
+# 脚本在 scripts/ 下，assets/ 在仓库根（此前写 dirname $0/assets 会找 scripts/assets 导致失败）
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ASSET_DIR="$(cd "$SCRIPT_DIR/../assets/7zsfx" && pwd)"
 
 if [ -z "$SRC_DIR" ]; then
     echo "Error: No librewolf source directory found."
