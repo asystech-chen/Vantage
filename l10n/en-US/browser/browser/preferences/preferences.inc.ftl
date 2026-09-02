@@ -47,6 +47,9 @@ librewolf-styling-checkbox =
 librewolf-network-heading = Networking
 librewolf-ipv6-checkbox =
     .label = Enable IPv6
+vantage-doh-checkbox =
+    .label = Enable DNS over HTTPS (DoH)
+vantage-doh-description = When enabled: DNS queries are encrypted and resolved through AliDNS. Falls back to system DNS when DoH is unavailable, so intranet and VPN access keeps working.
 
 librewolf-privacy-heading = Privacy
 librewolf-webrtc-ip-checkbox =
@@ -89,6 +92,19 @@ librewolf-download-tmp-checkbox =
 librewolf-download-tmp-description = When enabled: Downloaded files are saved to the system temporary directory and automatically cleaned up when the browser closes, preventing data traces.
 librewolf-download-tmp-warning1 = When disabled: Files are saved directly to your download folder for easier access. Note that downloaded files may leave recoverable traces even after deletion.
 
+# Download speedup
+vantage-download-speed-heading = Download Speedup (Experimental)
+vantage-download-mt-checkbox =
+    .label = Enable multi-threaded downloads
+vantage-download-mt-description = When enabled: Files from servers that support range requests are downloaded in parallel segments and merged, speeding up large downloads. Disable if downloads fail on certain websites.
+vantage-download-maxparts-label = Maximum connections:
+vantage-download-maxparts-warning = More than 8 connections may be rate-limited or blocked by some websites.
+vantage-download-minsize-label = Minimum file size for multi-threading:
+vantage-download-tmpdir-label = Part cache directory:
+vantage-download-tmpdir-browse = Browse…
+vantage-download-tmpdir-hint = Leave empty to use the system temporary directory. Choose a location with enough free space for large downloads.
+vantage-download-tmpdir-picker-title = Choose part cache directory
+
 librewolf-tabs-heading = Tab Behavior
 librewolf-tabs-scroll-checkbox =
     .label = Scroll to switch tabs
@@ -102,6 +118,8 @@ librewolf-tabs-search-checkbox =
     .label = Open search in new tab
 librewolf-tabs-ctrlTab-checkbox =
     .label = Ctrl+Tab by recent use
+librewolf-tabs-unload-checkbox =
+    .label = Sleep inactive tabs under memory pressure
 
 librewolf-styling-description = When enabled: Customize the browser appearance (toolbar, tabs, etc.) via a userChrome.css file. Ideal for advanced users who want a personalized look.
 librewolf-styling-warning1 = When disabled: Uses the default browser appearance. Only load CSS themes from trusted sources — malicious stylesheets could capture your input.
@@ -167,3 +185,9 @@ vantage-backup-import-done = Profile restored. The browser will restart now.
 
 vantage-backup-export-confirm-title = Export Profile Backup
 vantage-backup-export-confirm = The backup will contain sensitive data: cookies (website login sessions), browsing history, saved form data and website data. Login passwords are excluded for your safety. Please store the backup file securely and never share it. Continue?
+
+vantage-download-resume-checkbox =
+    .label = Resume interrupted downloads
+vantage-download-resume-description = When enabled: if a download is interrupted before it finishes (for example, the browser is closed), clicking “Retry” continues it from where it left off instead of downloading the whole file again. Only applies when multi-connection download is enabled.
+
+vantage-download-minsize-description = Files smaller than this size are downloaded with a single connection (splitting them would only make them slower). Larger files are split into multiple parts, up to the maximum connections set above.

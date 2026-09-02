@@ -2848,3 +2848,27 @@ vantage-backup-import-done = 提问档精力充沛的. 那浏览器将重启现�
 
 vantage-backup-export-confirm-title = 导出提问档倒车
 vantage-backup-export-confirm = 那倒车将包含敏感的论据: 饼干 (网站（全球资讯网的主机站）注册(程序) 会话), 浏览历史, 保存表单论据和网站（全球资讯网的主机站）论据. 注册(程序) 密码是排除为了你的安全. 请存储器操作那倒车文件安全地和从不部分它. 继续?
+
+
+vantage-download-speed-heading = 下载加速（实验功能）
+vantage-download-mt-checkbox =
+    .label = 启用多-threaded 下载
+vantage-download-mt-description = 何时启用: 文件从服务器那支持量程请求是将（程序在并联段和合并, 超速行驶向上的大的下载. 禁用如果下载失败在确定的网站（全球资讯网的主机站）.
+vantage-download-maxparts-label = 最大值连接:
+vantage-download-maxparts-warning = 更多比 8 连接可以是比率-limited 或阻止由一些网站（全球资讯网的主机站）.
+vantage-download-minsize-label = 最小值文件大小为了多-穿线:
+vantage-download-tmpdir-label = 部分高速缓冲存储器目录:
+vantage-download-tmpdir-browse = 浏览…
+vantage-download-tmpdir-hint = 许可空到使用那系统临时目录. 选取一个位置与充足自由的空白为了大的下载.
+vantage-download-tmpdir-picker-title = 选取部分高速缓冲存储器目录
+vantage-doh-checkbox =
+    .label = 启用 DNS 结束 HTTPS (卫生部)
+vantage-doh-description = 何时启用: DNS 查询是加密和下定决心的穿越 AliDNS. 落下回到系统 DNS 何时卫生部是得不到的, 如此内联网和 VPN 访问保持工作.
+librewolf-tabs-unload-checkbox =
+    .label = 睡眠非活动的标签页在...之下存储器压
+
+vantage-download-resume-checkbox =
+    .label = 恢复中断的下载
+vantage-download-resume-description = 何时启用: 如果下载是被中断在它完成之前(例如, 浏览器被关闭), 点击“重试”继续它从它离开的地方而不是下载整个文件再次. 仅应用何时多-连接下载是启用的.
+
+vantage-download-minsize-description = 文件比这尺寸小是被下载与一个单独的连接(分开他们仅会使他们更慢). 更大的文件是被分割成多份并行下载, 最多到最大连接设置在上面.

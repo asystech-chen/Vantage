@@ -184,6 +184,96 @@
   <hbox>
     <checkbox id="librewolf-tabs-ctrlTab-checkbox" data-l10n-id="librewolf-tabs-ctrlTab-checkbox" preference="browser.ctrlTab.sortByRecentlyUsed" flex="1" />
   </hbox>
+  <hbox>
+    <checkbox id="librewolf-tabs-unload-checkbox" data-l10n-id="librewolf-tabs-unload-checkbox" preference="browser.tabs.unloadOnLowMemory" flex="1" />
+  </hbox>
+</groupbox>
+
+<groupbox hidden="true" data-category="paneVantage">
+  <html:h2 data-l10n-id="vantage-download-speed-heading" />
+
+  <vbox>
+    <!-- 总开关：说明文字折叠 -->
+    <hbox>
+      <checkbox id="vantage-download-mt-checkbox" data-l10n-id="vantage-download-mt-checkbox" preference="vantage.download.multithread" flex="1" />
+      <html:label for="vantage-download-mt-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
+    </hbox>
+    <vbox class="librewolf-collapse indent">
+      <html:input type="checkbox" id="vantage-download-mt-collapse" />
+      <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
+        <label data-l10n-id="vantage-download-mt-description" />
+      </vbox>
+    </vbox>
+
+    <!-- 最大连接数：>8 警告折叠（选 >8 自动展开） -->
+    <hbox align="center">
+      <label data-l10n-id="vantage-download-maxparts-label" flex="1" />
+      <menulist id="vantage-download-maxparts">
+        <menupopup>
+          <menuitem value="4" label="4" />
+          <menuitem value="8" label="8" />
+          <menuitem value="16" label="16" />
+          <menuitem value="24" label="24" />
+          <menuitem value="32" label="32" />
+        </menupopup>
+      </menulist>
+      <html:label for="vantage-download-maxparts-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
+    </hbox>
+    <vbox class="librewolf-collapse indent">
+      <html:input type="checkbox" id="vantage-download-maxparts-collapse" />
+      <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
+        <html:div> <image src="chrome://browser/skin/warning.svg" /> <label data-l10n-id="vantage-download-maxparts-warning" class="librewolf-warning" /> </html:div>
+      </vbox>
+    </vbox>
+
+    <!-- 最小文件尺寸：说明折叠 -->
+    <hbox align="center">
+      <label data-l10n-id="vantage-download-minsize-label" flex="1" />
+      <menulist id="vantage-download-minsize">
+        <menupopup>
+          <menuitem value="262144" label="256 KB" />
+          <menuitem value="524288" label="512 KB" />
+          <menuitem value="1048576" label="1 MB" />
+          <menuitem value="5242880" label="5 MB" />
+          <menuitem value="10485760" label="10 MB" />
+        </menupopup>
+      </menulist>
+      <html:label for="vantage-download-minsize-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
+    </hbox>
+    <vbox class="librewolf-collapse indent">
+      <html:input type="checkbox" id="vantage-download-minsize-collapse" />
+      <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
+        <label data-l10n-id="vantage-download-minsize-description" class="librewolf-warning" />
+      </vbox>
+    </vbox>
+
+    <!-- 分片缓存目录：提示文字折叠 -->
+    <hbox align="center">
+      <label data-l10n-id="vantage-download-tmpdir-label" flex="1" />
+      <html:input type="text" id="vantage-download-tmpdir" flex="1" />
+      <button id="vantage-download-tmpdir-browse" data-l10n-id="vantage-download-tmpdir-browse" />
+      <html:label for="vantage-download-tmpdir-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
+    </hbox>
+    <vbox class="librewolf-collapse indent">
+      <html:input type="checkbox" id="vantage-download-tmpdir-collapse" />
+      <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
+        <label data-l10n-id="vantage-download-tmpdir-hint" class="librewolf-warning" />
+      </vbox>
+    </vbox>
+
+    <!-- 断点续传：说明折叠 -->
+    <hbox align="center">
+      <checkbox id="vantage-download-resume-checkbox" data-l10n-id="vantage-download-resume-checkbox" preference="vantage.download.multithread.resume" flex="1" />
+      <html:label for="vantage-download-resume-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
+    </hbox>
+    <vbox class="librewolf-collapse indent">
+      <html:input type="checkbox" id="vantage-download-resume-collapse" />
+      <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
+        <label data-l10n-id="vantage-download-resume-description" />
+      </vbox>
+    </vbox>
+  </vbox>
+
 </groupbox>
 
 <groupbox hidden="true" data-category="paneVantage">
@@ -199,6 +289,17 @@
       <label data-l10n-id="librewolf-ipv6-description" />
       <html:div> <image src="chrome://browser/skin/warning.svg" /> <label data-l10n-id="librewolf-ipv6-warning1" class="librewolf-warning" /> </html:div>
       <checkbox preference="network.dns.disableIPv6" label="network.dns.disableIPv6" />
+    </vbox>
+  </vbox>
+
+  <hbox>
+    <checkbox id="vantage-doh-checkbox" data-l10n-id="vantage-doh-checkbox" flex="1" />
+    <html:label for="vantage-doh-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
+  </hbox>
+  <vbox class="librewolf-collapse indent">
+    <html:input type="checkbox" id="vantage-doh-collapse" />
+    <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
+      <label data-l10n-id="vantage-doh-description" />
     </vbox>
   </vbox>
 

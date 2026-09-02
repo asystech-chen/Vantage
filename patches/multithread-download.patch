@@ -127,10 +127,10 @@ index 2eb8ead..a126e3f 100644
  
 diff --git a/toolkit/components/downloads/MultiThreadSaver.sys.mjs b/toolkit/components/downloads/MultiThreadSaver.sys.mjs
 new file mode 100644
-index 0000000..99f1838
+index 0000000..26ee941
 --- /dev/null
 +++ b/toolkit/components/downloads/MultiThreadSaver.sys.mjs
-@@ -0,0 +1,853 @@
+@@ -0,0 +1,1023 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -165,7 +165,8 @@ index 0000000..99f1838
 +  "nsIBackgroundFileSaver"
 +);
 +
-+// Number of parallel parts.
++// Default number of parallel parts.  Users can configure this through the
++// "vantage.download.multithread.maxParts" preference (clamped in execute()).
 +const kPartCount = 4;
 +
 +// Files smaller than this are downloaded with a single channel.
@@ -269,6 +270,29 @@ index 0000000..99f1838
 +      throw new DownloadError({ message: "Saver canceled." });
 +    }
 +
++    // Read the configurable parallelism settings.  These are re-read on
++    // every execute() call so that a restart picks up pref changes.
++    this._partCount = kPartCount;
++    this._tmpDir = "";
++    try {
++      let prefParts = Services.prefs.getIntPref(
++        "vantage.download.multithread.maxParts",
++        kPartCount
++      );
++      if (Number.isInteger(prefParts) && prefParts >= 1) {
++        // Clamp to a sane maximum: more than 32 parallel connections is
++        // never useful and usually triggers rate limiting.
++        this._partCount = Math.min(prefParts, 32);
++      }
++      this._tmpDir = Services.prefs
++        .getStringPref("vantage.download.multithread.tmpDir", "")
++        .trim();
++      this._resume = Services.prefs.getBoolPref(
++        "vantage.download.multithread.resume",
++        false
++      );
++    } catch (ex) {}
++
 +    // Probe for Range support and decide between a segmented download and
 +    // the single-channel fallback.
 +    let probe = await this._probeRange();
@@ -281,6 +305,19 @@ index 0000000..99f1838
 +      this._completePath = partFilePath || targetPath + ".part";
 +      if (probe.contentType) {
 +        aSetPropertiesFn({ contentType: probe.contentType });
++      }
++      if (this._tmpDir) {
++        // Make sure the configured part cache directory exists.  When it
++        // cannot be created (or is not writable), fall back to writing the
++        // part files next to the complete file.
++        try {
++          await IOUtils.makeDirectory(this._tmpDir, {
++            ignoreExisting: true,
++            createAncestors: true,
++          });
++        } catch (ex) {
++          this._tmpDir = "";
++        }
 +      }
 +      await this._downloadSegmented(probe.totalBytes, aSetProgressBytesFn);
 +    } else {
@@ -617,41 +654,163 @@ index 0000000..99f1838
 +  },
 +
 +  /**
-+   * Downloads the file as kPartCount parallel Range requests, then merges
-+   * the part files into this._completePath.
++   * Returns the path of the part file with the given index.  Part files are
++   * written next to the complete file by default; when the
++   * "vantage.download.multithread.tmpDir" preference is set, they are
++   * written into that directory instead (named after the complete file so
++   * that concurrent downloads of different files do not collide).
++   */
++  _partFilePath(aIndex) {
++    if (this._tmpDir) {
++      return PathUtils.join(
++        this._tmpDir,
++        PathUtils.filename(this._completePath) + ".mt" + aIndex
++      );
++    }
++    return this._completePath + ".mt" + aIndex;
++  },
++
++  /**
++   * Checks whether a previous segmented attempt left a complete, consistent
++   * set of part files on disk that can be resumed.
++   *
++   * Returns an array with the current size of each part file, or null when
++   * there is nothing usable (missing parts, parts from an attempt with a
++   * different part count, or a server file whose size no longer matches).
++   * Leftover files are removed whenever they cannot be resumed, so that
++   * interrupted downloads do not accumulate garbage on disk.
++   */
++  async _detectResumeParts(aParts, aTotalBytes) {
++    // Parts left over from an older attempt with a different part count do
++    // not line up with the current byte ranges and can never be resumed.
++    // Remove any file with an index at or beyond the current part count,
++    // then start over from scratch.
++    let sawExtra = false;
++    for (let i = aParts.length; ; i++) {
++      try {
++        await IOUtils.remove(this._partFilePath(i));
++        sawExtra = true;
++      } catch (ex) {
++        break;
++      }
++    }
++    if (sawExtra) {
++      await this._removeLeftoverParts(aParts);
++      return null;
++    }
++
++    let sizes = [];
++    let expectedTotal = 0;
++    for (let part of aParts) {
++      expectedTotal += part.end - part.start + 1;
++      try {
++        sizes.push((await IOUtils.stat(part.file)).size);
++      } catch (ex) {
++        // A part file is missing: nothing to resume.  Remove any other
++        // leftovers of this download so the next attempt starts clean.
++        await this._removeLeftoverParts(aParts);
++        return null;
++      }
++    }
++    // The leftover parts must cover exactly the size of the file we are
++    // about to download; otherwise the server content changed in between
++    // and the cached bytes are stale.
++    if (expectedTotal != aTotalBytes) {
++      await this._removeLeftoverParts(aParts);
++      return null;
++    }
++    // All part files exist but are empty: nothing useful was downloaded.
++    if (!sizes.some(size => size > 0)) {
++      return null;
++    }
++    for (let i = 0; i < sizes.length; i++) {
++      let len = aParts[i].end - aParts[i].start + 1;
++      if (sizes[i] > len) {
++        // Inconsistent leftover: restart from scratch.
++        await this._removeLeftoverParts(aParts);
++        return null;
++      }
++    }
++    return sizes;
++  },
++
++  /**
++   * Removes all leftover part files of the current download (used when a
++   * resume attempt is not possible and the download restarts from zero).
++   */
++  async _removeLeftoverParts(aParts) {
++    for (let part of aParts) {
++      try {
++        await IOUtils.remove(part.file);
++      } catch (ex) {}
++    }
++  },
++
++  /**
++   * Downloads the file as this._partCount parallel Range requests, then
++   * merges the part files into this._completePath.
 +   */
 +  async _downloadSegmented(aTotalBytes, aSetProgressBytesFn) {
 +    // Compute part boundaries.
-+    let partSize = Math.ceil(aTotalBytes / kPartCount);
++    let partCount = this._partCount || kPartCount;
++    let partSize = Math.ceil(aTotalBytes / partCount);
 +    let parts = [];
-+    for (let i = 0; i < kPartCount; i++) {
++    for (let i = 0; i < partCount; i++) {
 +      let start = i * partSize;
-+      let end = i == kPartCount - 1 ? aTotalBytes - 1 : (i + 1) * partSize - 1;
++      let end = i == partCount - 1 ? aTotalBytes - 1 : (i + 1) * partSize - 1;
 +      if (start > end) {
 +        break;
 +      }
-+      parts.push({ start, end, file: this._completePath + ".mt" + i });
++      parts.push({ start, end, file: this._partFilePath(i) });
 +    }
 +    this._partFiles = parts.map(part => part.file);
++
++    // Resume support: when a segmented download is interrupted before the
++    // parts are merged (e.g. the browser is closed), the part files remain
++    // on disk.  When the resume preference is enabled and a complete set of
++    // consistent leftovers is found, continue each part from the bytes
++    // already written instead of restarting from zero.
++    let initialBytes = 0;
++    if (this._resume) {
++      let sizes = await this._detectResumeParts(parts, aTotalBytes);
++      if (sizes) {
++        for (let i = 0; i < parts.length; i++) {
++          let len = parts[i].end - parts[i].start + 1;
++          parts[i].existing = Math.min(sizes[i], len);
++          parts[i].skip = parts[i].existing >= len;
++          initialBytes += parts[i].existing;
++        }
++        // Let the UI start from the bytes already on disk.
++        if (initialBytes > 0) {
++          aSetProgressBytesFn(initialBytes, aTotalBytes, false);
++        }
++      }
++    }
 +
 +    // Download all parts in parallel.  Progress is reported continuously:
 +    // each part reports its own network progress on top of the bytes already
 +    // completed by the other parts, so the UI never freezes on slow links.
-+    let progress = { completed: 0 };
++    let progress = { completed: initialBytes };
 +    try {
 +      await Promise.all(
-+        parts.map(part =>
-+          this._downloadPart(
-+            part,
-+            progress,
-+            aTotalBytes,
-+            aSetProgressBytesFn,
-+            () => {
-+              progress.completed += part.end - part.start + 1;
-+              aSetProgressBytesFn(progress.completed, aTotalBytes, false);
-+            }
++        parts
++          .filter(part => !part.skip)
++          .map(part =>
++            this._downloadPart(
++              part,
++              progress,
++              aTotalBytes,
++              aSetProgressBytesFn,
++              () => {
++                // Count only the bytes fetched in this run: bytes resumed
++                // from disk already contribute to progress.completed.
++                progress.completed +=
++                  part.end - part.start + 1 - (part.existing || 0);
++                aSetProgressBytesFn(progress.completed, aTotalBytes, false);
++              },
++              part.existing || 0
++            )
 +          )
-+        )
 +      );
 +    } catch (ex) {
 +      // A part failed: cancel the remaining channels so that no other part
@@ -674,15 +833,20 @@ index 0000000..99f1838
 +  /**
 +   * Downloads a single part using a Range request and a background file
 +   * saver.  Resolves once the part has been written to disk.
++   *
++   * When aResumeOffset is greater than zero, the part file already exists
++   * with that many bytes written and the request continues from there,
++   * appending to the existing file (interrupted download resume).
 +   */
-+  _downloadPart(aPart, aProgress, aTotalBytes, aSetProgressBytesFn, aOnPartComplete) {
++  _downloadPart(aPart, aProgress, aTotalBytes, aSetProgressBytesFn, aOnPartComplete, aResumeOffset = 0) {
 +    return new Promise((resolve, reject) => {
 +      if (this._canceled) {
 +        reject(new DownloadError({ message: "Saver canceled." }));
 +        return;
 +      }
 +
-+      let channel = this._createChannel(`bytes=${aPart.start}-${aPart.end}`);
++      let start = aPart.start + aResumeOffset;
++      let channel = this._createChannel(`bytes=${start}-${aPart.end}`);
 +      this._channels.push(channel);
 +
 +      let backgroundFileSaver = new BackgroundFileSaverStreamListener();
@@ -708,10 +872,16 @@ index 0000000..99f1838
 +      };
 +
 +      try {
-+        // Parts are never kept on failure (keepPartialData = false).
++        if (aResumeOffset > 0) {
++          // Continue writing at the end of the existing part file.
++          backgroundFileSaver.enableAppend();
++        }
++        // Parts are never kept on failure (keepPartialData = false), except
++        // when resuming, where the partial file must survive a failure so
++        // that a later attempt can continue from it again.
 +        backgroundFileSaver.setTarget(
 +          new lazy.FileUtils.File(aPart.file),
-+          false
++          aResumeOffset > 0
 +        );
 +      } catch (ex) {
 +        reject(new DownloadError({ message: ex.message }));

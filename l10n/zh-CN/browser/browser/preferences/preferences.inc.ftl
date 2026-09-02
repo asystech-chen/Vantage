@@ -41,6 +41,9 @@ librewolf-styling-checkbox =
 librewolf-network-heading = 网络
 librewolf-ipv6-checkbox =
     .label = 启用 IPv6
+vantage-doh-checkbox =
+    .label = 启用 DNS over HTTPS（DoH）
+vantage-doh-description = 开启后：DNS 查询通过加密的 HTTPS 发送至阿里 AliDNS 解析。DoH 不可用时自动回退系统 DNS，内网/VPN 访问不受影响。
 librewolf-privacy-heading = 隐私
 librewolf-webrtc-ip-checkbox =
     .label = 限制 WebRTC 本地 IP 暴露
@@ -75,6 +78,20 @@ librewolf-download-tmp-checkbox =
     .label = 下载文件存入临时目录
 librewolf-download-tmp-description = 开启后：下载的文件存入系统临时目录，关闭浏览器后自动清理，避免数据残留。
 librewolf-download-tmp-warning1 = 关闭后：文件直接存入下载文件夹，方便管理。注意即使手动删除，下载文件仍可能被恢复工具找回。
+
+# 下载提速
+vantage-download-speed-heading = 下载提速（实验功能）
+vantage-download-mt-checkbox =
+    .label = 启用多线程下载
+vantage-download-mt-description = 开启后：支持分段请求的服务器会并行下载文件片段再合并，提升大文件下载速度。若某些网站下载失败，可关闭此选项。
+vantage-download-maxparts-label = 最大连接数：
+vantage-download-maxparts-warning = 超过 8 个连接可能被部分网站限速或封禁。
+vantage-download-minsize-label = 多线程最小文件尺寸：
+vantage-download-tmpdir-label = 分片缓存目录：
+vantage-download-tmpdir-browse = 浏览…
+vantage-download-tmpdir-hint = 留空使用系统临时目录。大文件下载请选择剩余空间充足的位置。
+vantage-download-tmpdir-picker-title = 选择分片缓存目录
+
 librewolf-tabs-heading = 标签页行为
 librewolf-tabs-scroll-checkbox =
     .label = 滚轮切换标签页
@@ -88,6 +105,8 @@ librewolf-tabs-search-checkbox =
     .label = 搜索在新标签页打开
 librewolf-tabs-ctrlTab-checkbox =
     .label = Ctrl+Tab 按最近使用排序
+librewolf-tabs-unload-checkbox =
+    .label = 内存不足时休眠不活跃标签页
 
 librewolf-styling-description = 开启后：可通过 userChrome.css 文件自定义浏览器外观（如修改工具栏、标签页样式等）。适合喜欢高度自定义的用户。
 librewolf-styling-warning1 = 关闭后：使用默认浏览器外观。建议只加载信任来源的 CSS 主题，恶意样式可能窃取输入内容。
@@ -143,3 +162,9 @@ vantage-backup-import-done = 配置已恢复，浏览器即将重启。
 
 vantage-backup-export-confirm-title = 导出配置备份
 vantage-backup-export-confirm = 备份将包含敏感数据：Cookie（网站登录状态）、浏览历史、表单记录和网站数据。登录密码已排除，以保障安全。请妥善保管备份文件，切勿分享给他人。继续吗？
+
+vantage-download-resume-checkbox =
+    .label = 断点续传
+vantage-download-resume-description = 启用后：下载中断时（例如浏览器被关闭），点击“重试”可从断点继续，无需重新下载整个文件。仅在启用多线程下载时生效。
+
+vantage-download-minsize-description = 小于此尺寸的文件使用单线程下载（强行分片只会更慢）；更大的文件才会拆分为多份并行下载，最多不超过上方设置的最大连接数。

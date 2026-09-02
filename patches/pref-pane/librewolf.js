@@ -46,6 +46,12 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "pdfjs.enableScripting", type: "bool" },
   { id: "media.peerconnection.ice.default_address_only", type: "bool" },
   { id: "layout.css.font-visibility.level", type: "int" },
+  { id: "vantage.download.multithread", type: "bool" },
+  { id: "vantage.download.multithread.maxParts", type: "int" },
+  { id: "vantage.download.multithread.minSize", type: "int" },
+  { id: "vantage.download.multithread.tmpDir", type: "string" },
+  { id: "network.trr.mode", type: "int" },
+  { id: "browser.tabs.unloadOnLowMemory", type: "bool" },
 ];
   for (let p of prefsToAdd) {
     try { Preferences.add(p); } catch (e) { /* already registered */ }
@@ -240,6 +246,115 @@ var gLibrewolfPane = {
       "network.http.referer.XOriginPolicy",
       [1, 2],
       [0]
+    );
+
+    // ---- 下载提速 ----
+    setBoolSyncListeners(
+      "vantage-download-mt-checkbox",
+      ["vantage.download.multithread"],
+      [true],
+    );
+
+    // 最大线程数 menulist（int pref + >8 警告联动）
+    const maxPartsList = document.getElementById("vantage-download-maxparts");
+    const maxPartsCollapse = document.getElementById("vantage-download-maxparts-collapse");
+    const updateMaxParts = () => {
+      const v = Services.prefs.getIntPref("vantage.download.multithread.maxParts", 4);
+      if (maxPartsList) {
+        maxPartsList.value = String(v);
+      }
+      // 选 >8 时自动展开警告（用户也可手动点行尾图标展开/收起）
+      if (maxPartsCollapse) {
+        maxPartsCollapse.checked = v > 8;
+      }
+    };
+    if (maxPartsList) {
+      maxPartsList.addEventListener("command", () => {
+        const v = parseInt(maxPartsList.value, 10) || 4;
+        Services.prefs.setIntPref("vantage.download.multithread.maxParts", v);
+        updateMaxParts();
+      });
+      Preferences.get("vantage.download.multithread.maxParts").on("change", updateMaxParts);
+      updateMaxParts();
+    }
+
+    // 最小文件尺寸 menulist（int pref，字节值）
+    const minSizeList = document.getElementById("vantage-download-minsize");
+    const updateMinSize = () => {
+      if (minSizeList) {
+        minSizeList.value = String(
+          Services.prefs.getIntPref("vantage.download.multithread.minSize", 524288)
+        );
+      }
+    };
+    if (minSizeList) {
+      minSizeList.addEventListener("command", () => {
+        const v = parseInt(minSizeList.value, 10) || 524288;
+        Services.prefs.setIntPref("vantage.download.multithread.minSize", v);
+      });
+      Preferences.get("vantage.download.multithread.minSize").on("change", updateMinSize);
+      updateMinSize();
+    }
+
+    // 分片缓存目录（文本框 + 浏览按钮，nsIFilePicker 目录选择）
+    const tmpdirInput = document.getElementById("vantage-download-tmpdir");
+    const tmpdirBrowse = document.getElementById("vantage-download-tmpdir-browse");
+    if (tmpdirInput) {
+      tmpdirInput.value = Services.prefs.getStringPref("vantage.download.multithread.tmpDir", "");
+      tmpdirInput.addEventListener("change", () => {
+        Services.prefs.setStringPref("vantage.download.multithread.tmpDir", tmpdirInput.value.trim());
+      });
+    }
+    if (tmpdirBrowse) {
+      tmpdirBrowse.addEventListener("command", async () => {
+        const fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
+        let win = this._getPaneWindow();
+        let bc =
+          (win && win.browsingContext) ||
+          (win && win.docShell && win.docShell.browsingContext);
+        if (!bc) {
+          return;
+        }
+        fp.init(
+          bc,
+          await this._l10n("vantage-download-tmpdir-picker-title"),
+          Ci.nsIFilePicker.modeGetFolder
+        );
+        const rv = await new Promise(resolve => fp.open(resolve));
+        if (rv === Ci.nsIFilePicker.returnOK && tmpdirInput) {
+          const path = fp.file.path;
+          tmpdirInput.value = path;
+          Services.prefs.setStringPref("vantage.download.multithread.tmpDir", path);
+        }
+      });
+    }
+
+    // 断点续传开关：仅在总开关（多线程）启用时可用，避免“设了不生效”的困惑
+    const mtCheckbox = document.getElementById("vantage-download-mt-checkbox");
+    const resumeCheckbox = document.getElementById("vantage-download-resume-checkbox");
+    const updateResumeEnabled = () => {
+      if (resumeCheckbox && mtCheckbox) {
+        resumeCheckbox.disabled = !mtCheckbox.checked;
+      }
+    };
+    if (mtCheckbox) {
+      mtCheckbox.addEventListener("command", updateResumeEnabled);
+      updateResumeEnabled();
+    }
+
+    // ---- DoH 开关（network.trr.mode 2=开启，0=关闭；AliDNS）----
+    setXOriginPolicySyncListeners(
+      "vantage-doh-checkbox",
+      "network.trr.mode",
+      [2],
+      [0]
+    );
+
+    // ---- 标签休眠（内存不足时卸载不活跃标签）----
+    setBoolSyncListeners(
+      "librewolf-tabs-unload-checkbox",
+      ["browser.tabs.unloadOnLowMemory"],
+      [true],
     );
 
     // Profile backup buttons (CSP forbids inline oncommand handlers)

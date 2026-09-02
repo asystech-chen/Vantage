@@ -38,6 +38,9 @@ librewolf-styling-checkbox =
 librewolf-network-heading = 網路
 librewolf-ipv6-checkbox =
     .label = 啟用 IPv6
+vantage-doh-checkbox =
+    .label = 啟用 DNS over HTTPS（DoH）
+vantage-doh-description = 開啟後：DNS 查詢透過加密的 HTTPS 傳送至阿里 AliDNS 解析。DoH 不可用時自動回退系統 DNS，內網/VPN 存取不受影響。
 librewolf-privacy-heading = 隱私
 librewolf-webrtc-ip-checkbox =
     .label = 限制 WebRTC 本機 IP 暴露
@@ -82,6 +85,8 @@ librewolf-tabs-search-checkbox =
     .label = 搜尋在新分頁開啟
 librewolf-tabs-ctrlTab-checkbox =
     .label = Ctrl+Tab 按最近使用排序
+librewolf-tabs-unload-checkbox =
+    .label = 記憶體不足時休眠不活躍分頁
 
 librewolf-styling-description = 開啟後：可通過 userChrome.css 檔案自定義瀏覽器外觀（如修改工具列、分頁樣式等）。適合喜歡高度自定義的使用者。
 librewolf-styling-warning1 = 關閉後：使用預設瀏覽器外觀。建議只載入信任來源的 CSS 主題，惡意樣式可能竊取輸入內容。
@@ -94,6 +99,19 @@ librewolf-download-tmp-checkbox =
     .label = 下載檔案存入暫存目錄
 librewolf-download-tmp-description = 開啟後：下載的檔案存入系統暫存目錄，關閉瀏覽器後自動清理，避免資料殘留。
 librewolf-download-tmp-warning1 = 關閉後：檔案直接存入下載資料夾，方便管理。注意即使手動刪除，下載檔案仍可能被復原工具找回。
+
+# 下載加速
+vantage-download-speed-heading = 下載加速（實驗功能）
+vantage-download-mt-checkbox =
+    .label = 啟用多執行緒下載
+vantage-download-mt-description = 開啟後：支援分段請求的伺服器會並行下載檔案片段再合併，提升大型檔案下載速度。若某些網站下載失敗，可關閉此選項。
+vantage-download-maxparts-label = 最大連線數：
+vantage-download-maxparts-warning = 超過 8 個連線可能被部分網站限速或封鎖。
+vantage-download-minsize-label = 多執行緒最小檔案大小：
+vantage-download-tmpdir-label = 分片快取目錄：
+vantage-download-tmpdir-browse = 瀏覽…
+vantage-download-tmpdir-hint = 留空使用系統暫存目錄。下載大型檔案請選擇剩餘空間充足的位置。
+vantage-download-tmpdir-picker-title = 選擇分片快取目錄
 librewolf-webgl-description = 開啟後：網頁可以使用 WebGL 渲染 3D 圖形，但可能被用來識別您的裝置（指紋追蹤）。
 librewolf-webgl-warning1 = 關閉後：增強隱私，但使用 WebGL 的網頁（如 3D 地圖、線上遊戲）可能無法正常顯示。
 librewolf-rfp-description = 開啟後：統一隱藏瀏覽器特徵（螢幕解析度、時區、字型、語言等），使您看起來與其他使用者相同，極大增強隱私。
@@ -145,3 +163,9 @@ vantage-backup-import-done = 設定已還原，瀏覽器即將重新啟動。
 
 vantage-backup-export-confirm-title = 匯出設定備份
 vantage-backup-export-confirm = 備份將包含敏感資料：Cookie（網站登入狀態）、瀏覽紀錄、表單紀錄和網站資料。登入密碼已排除，以保障安全。請妥善保管備份檔案，切勿分享給他人。繼續嗎？
+
+vantage-download-resume-checkbox =
+    .label = 斷點續傳
+vantage-download-resume-description = 啟用後：下載中斷時（例如瀏覽器被關閉），按一下「重試」即可從中斷處繼續，不必重新下載整個檔案。僅在啟用多執行緒下載時生效。
+
+vantage-download-minsize-description = 小於此尺寸的檔案會以單一連線下載（硬要分片只會更慢）；更大的檔案才會拆成多份平行下載，最多不超過上方設定的最大連線數。
