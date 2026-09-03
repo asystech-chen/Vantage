@@ -1,8 +1,23 @@
 diff --git a/browser/components/downloads/DownloadsViewUI.sys.mjs b/browser/components/downloads/DownloadsViewUI.sys.mjs
-index 47ee22e..c0e19ed 100644
+index 47ee22e..d109b20 100644
 --- a/browser/components/downloads/DownloadsViewUI.sys.mjs
 +++ b/browser/components/downloads/DownloadsViewUI.sys.mjs
-@@ -861,7 +861,15 @@ DownloadsViewUI.DownloadElementShell.prototype = {
+@@ -211,10 +211,14 @@ export var DownloadsViewUI = {
+       !lazy.safeBrowsingAllowOverride;
+ 
+     // Can only remove finished/failed/canceled/blocked downloads.
++    // Vantage: paused downloads (canceled with retained partial data) can
++    // also be removed — this is how the user abandons a paused multithreaded
++    // download for good (the main button resumes it instead).
+     contextMenu.querySelector(".downloadRemoveFromHistoryMenuItem").hidden = ![
+       DOWNLOAD_FINISHED,
+       DOWNLOAD_FAILED,
+       DOWNLOAD_CANCELED,
++      DOWNLOAD_PAUSED,
+       DOWNLOAD_BLOCKED_PARENTAL,
+       DOWNLOAD_DIRTY,
+       DOWNLOAD_BLOCKED_POLICY,
+@@ -861,7 +865,15 @@ DownloadsViewUI.DownloadElementShell.prototype = {
                transfer
              )
            );
@@ -19,7 +34,7 @@ index 47ee22e..c0e19ed 100644
            progressPaused = true;
          } else {
            // This download was canceled.
-@@ -1159,10 +1167,37 @@ DownloadsViewUI.DownloadElementShell.prototype = {
+@@ -1159,10 +1171,37 @@ DownloadsViewUI.DownloadElementShell.prototype = {
    downloadsCmd_cancel() {
      // This is the correct way to avoid race conditions when cancelling.
      this.download.cancel().catch(() => {});
