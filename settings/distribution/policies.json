@@ -80,6 +80,28 @@
     "SupportMenu": {
       "Title": "Vantage Issue Tracker",
       "URL": "https://asystech.cn"
+    },
+    "3rdparty": {
+      "Extensions": {
+        "uBlock0@raymondhill.net": {
+          "toAdd": {
+            "trustedSiteDirectives": [
+              "youku.com",
+              "tudou.com",
+              "v.qq.com",
+              "film.qq.com",
+              "iqiyi.com",
+              "mgtv.com",
+              "hunantv.com",
+              "tv.sohu.com",
+              "ixigua.com",
+              "douyin.com",
+              "miguvideo.com",
+              "kuaishou.com"
+            ]
+          }
+        }
+      }
     }
   }
 }
