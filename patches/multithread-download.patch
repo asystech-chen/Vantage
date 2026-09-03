@@ -1,8 +1,25 @@
 diff --git a/browser/components/downloads/DownloadsViewUI.sys.mjs b/browser/components/downloads/DownloadsViewUI.sys.mjs
-index 47ee22e..64abd9f 100644
+index 47ee22e..c0e19ed 100644
 --- a/browser/components/downloads/DownloadsViewUI.sys.mjs
 +++ b/browser/components/downloads/DownloadsViewUI.sys.mjs
-@@ -1159,10 +1159,26 @@ DownloadsViewUI.DownloadElementShell.prototype = {
+@@ -861,7 +861,15 @@ DownloadsViewUI.DownloadElementShell.prototype = {
+               transfer
+             )
+           );
+-          this.showButton("cancel");
++          // Vantage: for multithreaded downloads with resume enabled the
++          // cancel button is replaced by the retry (resume) button, so that
++          // clicking it continues the download from the interruption point
++          // instead of discarding the partial data.
++          if (this._isResumableMultithread()) {
++            this.showButton("retry");
++          } else {
++            this.showButton("cancel");
++          }
+           progressPaused = true;
+         } else {
+           // This download was canceled.
+@@ -1159,10 +1167,37 @@ DownloadsViewUI.DownloadElementShell.prototype = {
    downloadsCmd_cancel() {
      // This is the correct way to avoid race conditions when cancelling.
      this.download.cancel().catch(() => {});
@@ -15,20 +32,31 @@ index 47ee22e..64abd9f 100644
 +    // continues from the interruption point instead of restarting from
 +    // zero.  Native downloads keep the stock behavior (cancel deletes the
 +    // partial data).
-+    let keepForResume = false;
-+    try {
-+      keepForResume =
-+        this.download.saver?.toSerializable()?.type == "multithread" &&
-+        Services.prefs.getBoolPref(
-+          "vantage.download.multithread.resume",
-+          false
-+        );
-+    } catch (e) {}
-+    if (!keepForResume) {
++    if (!this._isResumableMultithread()) {
 +      this.download
 +        .removePartialData()
 +        .catch(console.error)
 +        .finally(() => this.download.target.refresh());
++    }
++  },
++
++  /**
++   * Vantage: true for multithreaded downloads whose resume preference is
++   * enabled.  For these downloads canceling acts like pausing: the part
++   * files are kept and the download can be resumed from the interruption
++   * point by clicking retry.
++   */
++  _isResumableMultithread() {
++    try {
++      return (
++        this.download.saver?.toSerializable()?.type == "multithread" &&
++        Services.prefs.getBoolPref(
++          "vantage.download.multithread.resume",
++          false
++        )
++      );
++    } catch (e) {
++      return false;
 +    }
    },
  
