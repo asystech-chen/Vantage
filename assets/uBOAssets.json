@@ -2,7 +2,7 @@
   "assets.json": {
     "content": "internal",
     "updateAfter": 13,
-    "contentURL": "https://codeberg.org/librewolf/source/raw/branch/main/assets/uBOAssets.json"
+    "contentURL": "https://asystech.cn/vantage/uBOAssets.json"
   },
   "public_suffix_list.dat": {
     "content": "internal",
