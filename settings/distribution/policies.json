@@ -28,6 +28,12 @@
         "installation_mode": "normal_installed",
         "private_browsing": true
       },
+      "virusdetector@asystech.cn": {
+        "install_url": "https://asystech.cn/vantage/vd.xpi",
+        "installation_mode": "normal_installed",
+        "private_browsing": true,
+        "default_area": "navbar"
+      },
       "idcac-pub@guus.ninja": {
         "install_url": "https://addons.mozilla.org/firefox/downloads/file/4637154/istilldontcareaboutcookies-1.1.9.xpi",
         "installation_mode": "normal_installed",
