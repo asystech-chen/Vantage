@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# ---------- 编译输出落盘（供 build-monitor.sh 取数，手动 / CI 通用） ----------
+# CI runner 无 tmux，监控脚本改为读此日志文件；tee 让终端照常显示，副本实时落盘
+# 覆盖模式：每次 build.sh 启动自动清空上一轮日志
+exec > >(tee "$HOME/.openclaw/workspace/.build-output.log") 2>&1
+
 # ==========================================
 # Vantage 多平台自动编译/打包脚本
 # 用法:
