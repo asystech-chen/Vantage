@@ -62,7 +62,7 @@ index 47ee22e..c0e19ed 100644
  
    downloadsCmd_confirmBlock() {
 diff --git a/toolkit/components/downloads/DownloadCore.sys.mjs b/toolkit/components/downloads/DownloadCore.sys.mjs
-index 0223747..9b154ec 100644
+index 0223747..4d14b19 100644
 --- a/toolkit/components/downloads/DownloadCore.sys.mjs
 +++ b/toolkit/components/downloads/DownloadCore.sys.mjs
 @@ -18,6 +18,7 @@ ChromeUtils.defineESModuleGetters(lazy, {
@@ -73,6 +73,15 @@ index 0223747..9b154ec 100644
    NetUtil: "resource://gre/modules/NetUtil.sys.mjs",
  });
  
+@@ -1177,7 +1178,7 @@ Download.prototype = {
+           // insecure, we should not set hasBlockedData to
+           // false as its required to show the Unblock option.
+           if (
+-            this.error.reputationCheckVerdict ==
++            this.error?.reputationCheckVerdict ==
+             DownloadError.BLOCK_VERDICT_INSECURE
+           ) {
+             return;
 @@ -2288,6 +2289,9 @@ DownloadSaver.fromSerializable = function (aSerializable) {
      case "legacy":
        saver = DownloadLegacySaver.fromSerializable(serializable);
