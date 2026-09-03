@@ -12,6 +12,7 @@ import json
 import optparse
 import time
 import glob as _g
+import subprocess
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -52,18 +53,57 @@ def exec(cmd, exit_on_fail = True, do_print = True):
 
 PATCH_BIN = shutil.which("gpatch") or "patch"
 
+
+def check_rejects(patchfile):
+    """Fails the build when rejected hunks (.rej) are left in the source
+    tree.  GNU patch exits 1 both for "already applied" (--forward, safe to
+    skip) and for partially failed hunks that were saved as .rej files.
+    Only the latter must abort: the build would otherwise "succeed" with
+    code silently missing from the final product."""
+    cmd = "find . -name '*.rej' -type f 2>/dev/null"
+    out = os.popen(cmd).read().strip()
+    if out:
+        print(
+            "fatal error: patch '{}' did not apply cleanly -- rejected".format(patchfile)
+            + " hunks (.rej) left in the source tree:\n{}".format(out)
+        )
+        print(
+            "The affected code is missing from the build output. Rebase the"
+            + " patch on the new source before building."
+        )
+        sys.stdout.flush()
+        script_exit(1)
+
+
 def patch(patchfile):
     cmd = "{} --forward --binary -p1 -i {}".format(PATCH_BIN, patchfile)
     print("\n*** -> {}".format(cmd))
     sys.stdout.flush()
     if not options.no_execute:
-        retval = os.system(cmd)
-        actual_rc = retval >> 8 if retval > 255 else retval
-        # --forward returns 1 when patch already applied (safe to skip)
+        proc = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+        if proc.stdout:
+            print(proc.stdout, end="")
+        if proc.stderr:
+            print(proc.stderr, end="")
+        actual_rc = proc.returncode
         if actual_rc > 1:
             print("fatal error: patch '{}' failed".format(patchfile))
             sys.stdout.flush()
             script_exit(1)
+        if actual_rc == 1:
+            output = ((proc.stdout or "") + (proc.stderr or "")).lower()
+            if "failed" in output:
+                # Some hunks did not apply and were saved as .rej files: the
+                # build would "succeed" with code missing from the product.
+                check_rejects(patchfile)
+            else:
+                # --forward detected the patch as already applied
+                # ("previously applied ... Skipping").  GNU patch still
+                # writes .rej files for the skipped hunks; remove those
+                # harmless leftovers so later scans stay clean.
+                os.system(
+                    "find . -name '*.rej' -type f -delete 2>/dev/null"
+                )
 
 def enter_srcdir(_dir = None):
     if _dir == None:
