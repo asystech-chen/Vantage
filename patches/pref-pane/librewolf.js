@@ -48,6 +48,7 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "layout.css.font-visibility.level", type: "int" },
   { id: "vantage.download.multithread", type: "bool" },
   { id: "vantage.download.multithread.resume", type: "bool" },
+  { id: "vantage.download.multithread.cancelKeepData", type: "bool" },
   { id: "vantage.download.multithread.maxParts", type: "int" },
   { id: "vantage.download.multithread.minSize", type: "int" },
   { id: "vantage.download.multithread.tmpDir", type: "string" },
@@ -337,10 +338,18 @@ var gLibrewolfPane = {
       [true],
     );
 
+    // 取消时保留数据（暂停/恢复）：checkbox ↔ pref 同步 + 依赖断点续传开关
+    setBoolSyncListeners(
+      "vantage-download-cancelkeep-checkbox",
+      ["vantage.download.multithread.cancelKeepData"],
+      [true],
+    );
+
     // 断点续传开关：仅在总开关（多线程）启用时可用，避免“设了不生效”的困惑。
     // 直接读 pref 而不是 checkbox.checked：XUL checkbox 的 pref 同步可能要到
     // 页面加载后期才完成，早期读 checked 会拿到无效值，导致这里永远置灰。
     const resumeCheckbox = document.getElementById("vantage-download-resume-checkbox");
+    const cancelKeepCheckbox = document.getElementById("vantage-download-cancelkeep-checkbox");
     const updateResumeEnabled = () => {
       if (!resumeCheckbox) {
         return;
@@ -350,18 +359,33 @@ var gLibrewolfPane = {
         false
       );
       resumeCheckbox.disabled = !mtEnabled;
+      // 取消保留依赖断点续传：断点续传关 → 置灰（保留没有意义）
+      if (cancelKeepCheckbox) {
+        const resumeEnabled =
+          mtEnabled &&
+          Services.prefs.getBoolPref(
+            "vantage.download.multithread.resume",
+            false
+          );
+        cancelKeepCheckbox.disabled = !resumeEnabled;
+      }
     };
     const mtCheckbox = document.getElementById("vantage-download-mt-checkbox");
     if (mtCheckbox) {
       mtCheckbox.addEventListener("command", updateResumeEnabled);
     }
+    if (resumeCheckbox) {
+      resumeCheckbox.addEventListener("command", updateResumeEnabled);
+    }
     // pref 变化（页面内勾选总开关或外部改动）都重新评估
-    try {
-      Preferences.get("vantage.download.multithread").on(
-        "change",
-        updateResumeEnabled
-      );
-    } catch (e) {}
+    for (let p of [
+      "vantage.download.multithread",
+      "vantage.download.multithread.resume",
+    ]) {
+      try {
+        Preferences.get(p).on("change", updateResumeEnabled);
+      } catch (e) {}
+    }
     updateResumeEnabled();
     // 页面完全加载后再兜底评估一次（XUL binding 就绪，双保险）
     window.addEventListener("load", updateResumeEnabled, { once: true });

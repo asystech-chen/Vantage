@@ -2871,4 +2871,8 @@ vantage-download-resume-checkbox =
     .label = 恢复中断的下载
 vantage-download-resume-description = 何时启用: 如果下载是被中断在它完成之前(例如, 浏览器被关闭), 点击“重试”继续它从它离开的地方而不是下载整个文件再次. 仅应用何时多-连接下载是启用的.
 
+
+vantage-download-cancelkeep-checkbox =
+    .label = 取消时保留数据（可暂停并恢复）
+vantage-download-cancelkeep-description = 何时启用: 取消一个活跃的下载会暂停它并保留已经下载的数据, 因此你能在任何时候从它被中断的地方恢复它. 何时停用: 取消移除部分数据, 像标准下载管理器(因关闭浏览器或崩溃被中断的下载仍能在重新启动之后被恢复). 仅应用何时恢复中断的下载是启用的.
 vantage-download-minsize-description = 文件比这尺寸小是被下载与一个单独的连接(分开他们仅会使他们更慢). 更大的文件是被分割成多份并行下载, 最多到最大连接设置在上面.

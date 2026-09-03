@@ -168,4 +168,8 @@ vantage-download-resume-checkbox =
     .label = 斷點續傳
 vantage-download-resume-description = 啟用後：下載中斷時（例如瀏覽器被關閉），按一下「重試」即可從中斷處繼續，不必重新下載整個檔案。僅在啟用多執行緒下載時生效。
 
+
+vantage-download-cancelkeep-checkbox =
+    .label = 取消時保留資料（可暫停並恢復）
+vantage-download-cancelkeep-description = 啟用後，取消進行中的下載會將其暫停並保留已下載的資料，可隨時從中斷處繼續。停用後，取消會清除已下載的資料（與標準下載管理員一致；因關閉瀏覽器或當機而中斷的下載仍可在重新啟動後恢復）。僅在啟用斷點續傳時生效。
 vantage-download-minsize-description = 小於此尺寸的檔案會以單一連線下載（硬要分片只會更慢）；更大的檔案才會拆成多份平行下載，最多不超過上方設定的最大連線數。

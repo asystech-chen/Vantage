@@ -272,6 +272,18 @@
         <label data-l10n-id="vantage-download-resume-description" />
       </vbox>
     </vbox>
+
+    <!-- 取消时保留数据（暂停/恢复 vs 取消即删）：说明折叠 -->
+    <hbox align="center">
+      <checkbox id="vantage-download-cancelkeep-checkbox" data-l10n-id="vantage-download-cancelkeep-checkbox" preference="vantage.download.multithread.cancelKeepData" flex="1" />
+      <html:label for="vantage-download-cancelkeep-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
+    </hbox>
+    <vbox class="librewolf-collapse indent">
+      <html:input type="checkbox" id="vantage-download-cancelkeep-collapse" />
+      <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
+        <label data-l10n-id="vantage-download-cancelkeep-description" />
+      </vbox>
+    </vbox>
   </vbox>
 
 </groupbox>

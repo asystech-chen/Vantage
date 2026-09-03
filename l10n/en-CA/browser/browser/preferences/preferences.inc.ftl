@@ -190,4 +190,8 @@ vantage-download-resume-checkbox =
     .label = Resume interrupted downloads
 vantage-download-resume-description = When enabled: if a download is interrupted before it finishes (for example, the browser is closed), clicking “Retry” continues it from where it left off instead of downloading the whole file again. Only applies when multi-connection download is enabled.
 
+
+vantage-download-cancelkeep-checkbox =
+    .label = Keep data when canceling (pause/resume)
+vantage-download-cancelkeep-description = When enabled, canceling an active download pauses it and keeps the data already downloaded, so you can resume it from the interruption point at any time. When disabled, canceling removes the partial data, like the standard download manager (downloads interrupted by closing the browser or a crash can still be resumed after restarting). Only applies when resuming interrupted downloads is enabled.
 vantage-download-minsize-description = Files smaller than this size are downloaded with a single connection (splitting them would only make them slower). Larger files are split into multiple parts, up to the maximum connections set above.

@@ -1,5 +1,5 @@
 diff --git a/browser/components/downloads/DownloadsViewUI.sys.mjs b/browser/components/downloads/DownloadsViewUI.sys.mjs
-index 47ee22e..d109b20 100644
+index 47ee22e..5af54da 100644
 --- a/browser/components/downloads/DownloadsViewUI.sys.mjs
 +++ b/browser/components/downloads/DownloadsViewUI.sys.mjs
 @@ -211,10 +211,14 @@ export var DownloadsViewUI = {
@@ -56,17 +56,17 @@ index 47ee22e..d109b20 100644
 +  },
 +
 +  /**
-+   * Vantage: true for multithreaded downloads whose resume preference is
-+   * enabled.  For these downloads canceling acts like pausing: the part
-+   * files are kept and the download can be resumed from the interruption
-+   * point by clicking retry.
++   * Vantage: true for multithreaded downloads whose cancelKeepData
++   * preference is enabled.  For these downloads canceling acts like
++   * pausing: the part files are kept and the download can be resumed from
++   * the interruption point by clicking retry.
 +   */
 +  _isResumableMultithread() {
 +    try {
 +      return (
 +        this.download.saver?.toSerializable()?.type == "multithread" &&
 +        Services.prefs.getBoolPref(
-+          "vantage.download.multithread.resume",
++          "vantage.download.multithread.cancelKeepData",
 +          false
 +        )
 +      );
@@ -238,10 +238,10 @@ index 2eb8ead..a126e3f 100644
  
 diff --git a/toolkit/components/downloads/MultiThreadSaver.sys.mjs b/toolkit/components/downloads/MultiThreadSaver.sys.mjs
 new file mode 100644
-index 0000000..0036e5c
+index 0000000..6649601
 --- /dev/null
 +++ b/toolkit/components/downloads/MultiThreadSaver.sys.mjs
-@@ -0,0 +1,1184 @@
+@@ -0,0 +1,1194 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -411,6 +411,15 @@ index 0000000..0036e5c
 +        .trim();
 +      this._resume = Services.prefs.getBoolPref(
 +        "vantage.download.multithread.resume",
++        false
++      );
++      // Whether canceling (or a failed attempt) keeps the part files on
++      // disk so the download can be resumed later ("pause" behavior), or
++      // deletes them like the native download manager does.  Independent
++      // from _resume: restarting the browser resumes interrupted downloads
++      // even when this is false (the files were not removed on shutdown).
++      this._keepOnCancel = Services.prefs.getBoolPref(
++        "vantage.download.multithread.cancelKeepData",
 +        false
 +      );
 +    } catch (ex) {}
@@ -995,10 +1004,10 @@ index 0000000..0036e5c
 +          initialBytes += parts[i].existing;
 +        }
 +        // Let the UI start from the bytes already on disk.  hasPartialData
-+        // is reported when resume is enabled, so that an interruption keeps
-+        // the part files for a later attempt.
++        // is reported when canceled downloads keep their data, so that an
++        // interruption keeps the part files for a later attempt.
 +        if (initialBytes > 0) {
-+          aSetProgressBytesFn(initialBytes, aTotalBytes, this._resume);
++          aSetProgressBytesFn(initialBytes, aTotalBytes, this._keepOnCancel);
 +        }
 +      }
 +    }
@@ -1016,7 +1025,7 @@ index 0000000..0036e5c
 +      // download reports hasPartialData (third argument) and the Download
 +      // framework will not delete them when the attempt fails or is
 +      // canceled.  A later retry then resumes from the bytes on disk.
-+      aSetProgressBytesFn(progress.completed, aTotalBytes, this._resume);
++      aSetProgressBytesFn(progress.completed, aTotalBytes, this._keepOnCancel);
 +    };
 +    const activeParts = parts.filter(part => !part.skip).map(part => {
 +      part.reported = 0;
@@ -1123,14 +1132,15 @@ index 0000000..0036e5c
 +          // Continue writing at the end of the existing part file.
 +          backgroundFileSaver.enableAppend();
 +        }
-+        // Keep the part file when the download fails unless resume is
-+        // disabled: a half-written part is still valid (its bytes belong at
-+        // the start of the part range), so keeping it lets a later retry
-+        // continue from the interruption point.  When resume is disabled the
-+        // part is deleted on failure, mirroring a fresh download.
++        // Keep the part file when the download fails unless canceled
++        // downloads discard their data: a half-written part is still valid
++        // (its bytes belong at the start of the part range), so keeping it
++        // lets a later retry continue from the interruption point.  When
++        // cancelKeepData is disabled the part is deleted on failure,
++        // mirroring a fresh download.
 +        backgroundFileSaver.setTarget(
 +          new lazy.FileUtils.File(aPart.file),
-+          aResumeOffset > 0 || this._resume
++          aResumeOffset > 0 || this._keepOnCancel
 +        );
 +      } catch (ex) {
 +        reject(new DownloadError({ message: ex.message }));
@@ -1208,7 +1218,7 @@ index 0000000..0036e5c
 +            aSetProgressBytesFn(
 +              aProgress.completed,
 +              aTotalBytes,
-+              this._resume
++              this._keepOnCancel
 +            );
 +          }
 +        },
