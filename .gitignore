@@ -39,3 +39,5 @@ scripts/check-firefox-version.sh
 scripts/ms-zh/__pycache__/
 scripts/ms-zh/dict/
 scripts/ms-zh/en-toolkit/
+
+l10n/zh-MS.bak-硬翻/
