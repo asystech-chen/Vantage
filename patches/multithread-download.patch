@@ -62,7 +62,7 @@ index 47ee22e..c0e19ed 100644
  
    downloadsCmd_confirmBlock() {
 diff --git a/toolkit/components/downloads/DownloadCore.sys.mjs b/toolkit/components/downloads/DownloadCore.sys.mjs
-index 0223747..4d14b19 100644
+index 0223747..13edcb2 100644
 --- a/toolkit/components/downloads/DownloadCore.sys.mjs
 +++ b/toolkit/components/downloads/DownloadCore.sys.mjs
 @@ -18,6 +18,7 @@ ChromeUtils.defineESModuleGetters(lazy, {
@@ -73,7 +73,31 @@ index 0223747..4d14b19 100644
    NetUtil: "resource://gre/modules/NetUtil.sys.mjs",
  });
  
-@@ -1177,7 +1178,7 @@ Download.prototype = {
+@@ -1173,11 +1174,31 @@ Download.prototype = {
+           if (!this.stopped || this._finalized) {
+             return;
+           }
++          // Vantage: the multithreaded saver keeps partial data in "part
++          // files" named after the ".part" file (e.g. ".part.mt0"), so the
++          // missing ".part" file does not mean there is no data on disk.
++          // Ask the saver for the bytes it can resume before giving up.
++          let saverPartialBytes = 0;
++          try {
++            saverPartialBytes = await this.saver?.getPartialBytes?.() || 0;
++          } catch (e) {
++            saverPartialBytes = 0;
++          }
++          if (saverPartialBytes > 0 && !this.error) {
++            this.currentBytes = saverPartialBytes;
++            if (this.totalBytes > 0) {
++              this.hasProgress = true;
++              this.progress = Math.floor(
++                (this.currentBytes / this.totalBytes) * 100
++              );
++            }
++            return;
++          }
+           // In case we've blocked the Download becasue its
            // insecure, we should not set hasBlockedData to
            // false as its required to show the Unblock option.
            if (
@@ -82,7 +106,7 @@ index 0223747..4d14b19 100644
              DownloadError.BLOCK_VERDICT_INSECURE
            ) {
              return;
-@@ -2288,6 +2289,9 @@ DownloadSaver.fromSerializable = function (aSerializable) {
+@@ -2288,6 +2309,9 @@ DownloadSaver.fromSerializable = function (aSerializable) {
      case "legacy":
        saver = DownloadLegacySaver.fromSerializable(serializable);
        break;
@@ -199,10 +223,10 @@ index 2eb8ead..a126e3f 100644
  
 diff --git a/toolkit/components/downloads/MultiThreadSaver.sys.mjs b/toolkit/components/downloads/MultiThreadSaver.sys.mjs
 new file mode 100644
-index 0000000..c6c0443
+index 0000000..0036e5c
 --- /dev/null
 +++ b/toolkit/components/downloads/MultiThreadSaver.sys.mjs
-@@ -0,0 +1,1143 @@
+@@ -0,0 +1,1184 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -472,6 +496,47 @@ index 0000000..c6c0443
 +      this.download.target.exists = false;
 +      this.download.target.size = 0;
 +    }
++  },
++
++  /**
++   * Vantage: returns the total size in bytes of the partial data currently
++   * on disk for this download (the sum of the part file sizes).
++   *
++   * The native Download.refresh() recovers the transferred bytes from the
++   * ".part" file after a restart; the multithreaded saver keeps the data in
++   * part files ("&lt;complete&gt;.mtN") instead, so refresh() asks the saver
++   * when the ".part" file is missing.  This also runs before execute() has
++   * been called again, therefore the part file naming is rebuilt from the
++   * target path and the preferences instead of using cached state.
++   *
++   * @returns {Promise<number>} Bytes already written to disk, or zero.
++   */
++  async getPartialBytes() {
++    let target = this.download?.target;
++    if (!target?.path) {
++      return 0;
++    }
++    let base = target.partFilePath || target.path + ".part";
++    let tmpDir = "";
++    try {
++      tmpDir = Services.prefs
++        .getStringPref("vantage.download.multithread.tmpDir", "")
++        .trim();
++    } catch (e) {}
++    let total = 0;
++    // Part counts are clamped to 32; scanning a few extra slots is enough to
++    // cover leftovers from older attempts with different part counts.
++    for (let i = 0; i < 64; i++) {
++      let path = tmpDir
++        ? PathUtils.join(tmpDir, PathUtils.filename(base) + ".mt" + i)
++        : base + ".mt" + i;
++      try {
++        total += (await IOUtils.stat(path)).size;
++      } catch (ex) {
++        break;
++      }
++    }
++    return total;
 +  },
 +
 +  /**
