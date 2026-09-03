@@ -47,6 +47,7 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "media.peerconnection.ice.default_address_only", type: "bool" },
   { id: "layout.css.font-visibility.level", type: "int" },
   { id: "vantage.download.multithread", type: "bool" },
+  { id: "vantage.download.multithread.resume", type: "bool" },
   { id: "vantage.download.multithread.maxParts", type: "int" },
   { id: "vantage.download.multithread.minSize", type: "int" },
   { id: "vantage.download.multithread.tmpDir", type: "string" },
@@ -329,18 +330,41 @@ var gLibrewolfPane = {
       });
     }
 
-    // 断点续传开关：仅在总开关（多线程）启用时可用，避免“设了不生效”的困惑
-    const mtCheckbox = document.getElementById("vantage-download-mt-checkbox");
+    // 断点续传开关：checkbox ↔ pref 同步（此前漏注册，勾选从不生效）
+    setBoolSyncListeners(
+      "vantage-download-resume-checkbox",
+      ["vantage.download.multithread.resume"],
+      [true],
+    );
+
+    // 断点续传开关：仅在总开关（多线程）启用时可用，避免“设了不生效”的困惑。
+    // 直接读 pref 而不是 checkbox.checked：XUL checkbox 的 pref 同步可能要到
+    // 页面加载后期才完成，早期读 checked 会拿到无效值，导致这里永远置灰。
     const resumeCheckbox = document.getElementById("vantage-download-resume-checkbox");
     const updateResumeEnabled = () => {
-      if (resumeCheckbox && mtCheckbox) {
-        resumeCheckbox.disabled = !mtCheckbox.checked;
+      if (!resumeCheckbox) {
+        return;
       }
+      const mtEnabled = Services.prefs.getBoolPref(
+        "vantage.download.multithread",
+        false
+      );
+      resumeCheckbox.disabled = !mtEnabled;
     };
+    const mtCheckbox = document.getElementById("vantage-download-mt-checkbox");
     if (mtCheckbox) {
       mtCheckbox.addEventListener("command", updateResumeEnabled);
-      updateResumeEnabled();
     }
+    // pref 变化（页面内勾选总开关或外部改动）都重新评估
+    try {
+      Preferences.get("vantage.download.multithread").on(
+        "change",
+        updateResumeEnabled
+      );
+    } catch (e) {}
+    updateResumeEnabled();
+    // 页面完全加载后再兜底评估一次（XUL binding 就绪，双保险）
+    window.addEventListener("load", updateResumeEnabled, { once: true });
 
     // ---- DoH 开关（network.trr.mode 2=开启，0=关闭；AliDNS）----
     setXOriginPolicySyncListeners(

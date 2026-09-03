@@ -1,3 +1,38 @@
+diff --git a/browser/components/downloads/DownloadsViewUI.sys.mjs b/browser/components/downloads/DownloadsViewUI.sys.mjs
+index 47ee22e..64abd9f 100644
+--- a/browser/components/downloads/DownloadsViewUI.sys.mjs
++++ b/browser/components/downloads/DownloadsViewUI.sys.mjs
+@@ -1159,10 +1159,26 @@ DownloadsViewUI.DownloadElementShell.prototype = {
+   downloadsCmd_cancel() {
+     // This is the correct way to avoid race conditions when cancelling.
+     this.download.cancel().catch(() => {});
+-    this.download
+-      .removePartialData()
+-      .catch(console.error)
+-      .finally(() => this.download.target.refresh());
++    // Vantage: keep the partial data of multithreaded downloads when the
++    // resume preference is enabled, so that clicking retry afterwards
++    // continues from the interruption point instead of restarting from
++    // zero.  Native downloads keep the stock behavior (cancel deletes the
++    // partial data).
++    let keepForResume = false;
++    try {
++      keepForResume =
++        this.download.saver?.toSerializable()?.type == "multithread" &&
++        Services.prefs.getBoolPref(
++          "vantage.download.multithread.resume",
++          false
++        );
++    } catch (e) {}
++    if (!keepForResume) {
++      this.download
++        .removePartialData()
++        .catch(console.error)
++        .finally(() => this.download.target.refresh());
++    }
+   },
+ 
+   downloadsCmd_confirmBlock() {
 diff --git a/toolkit/components/downloads/DownloadCore.sys.mjs b/toolkit/components/downloads/DownloadCore.sys.mjs
 index 0223747..9b154ec 100644
 --- a/toolkit/components/downloads/DownloadCore.sys.mjs
@@ -127,10 +162,10 @@ index 2eb8ead..a126e3f 100644
  
 diff --git a/toolkit/components/downloads/MultiThreadSaver.sys.mjs b/toolkit/components/downloads/MultiThreadSaver.sys.mjs
 new file mode 100644
-index 0000000..26ee941
+index 0000000..c6c0443
 --- /dev/null
 +++ b/toolkit/components/downloads/MultiThreadSaver.sys.mjs
-@@ -0,0 +1,1023 @@
+@@ -0,0 +1,1143 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -150,6 +185,12 @@ index 0000000..26ee941
 + */
 +
 +import { DownloadError, DownloadSaver } from "resource://gre/modules/DownloadCore.sys.mjs";
++
++// Firefox modules have no global setTimeout/clearTimeout (those belong to
++// window); the Timer module provides nsITimer-backed equivalents.
++const { setTimeout, clearTimeout } = ChromeUtils.importESModule(
++  "resource://gre/modules/Timer.sys.mjs"
++);
 +
 +const lazy = {};
 +
@@ -176,6 +217,11 @@ index 0000000..26ee941
 +
 +// Chunk size used when merging part files (controls peak memory usage).
 +const kMergeChunkSize = 4 * 1024 * 1024;
++
++// Timeout for the Range-support probe requests.  A server that accepts the
++// connection but never responds to HEAD/range probes would otherwise leave
++// the download stuck at 0 bytes forever, unable to be canceled.
++const kProbeTimeoutMs = 15000;
 +
 +/**
 + * Returns true if the file at the given path exists and is empty.  Used to
@@ -301,7 +347,6 @@ index 0000000..26ee941
 +      kMinSizeThreshold
 +    );
 +    if (probe && probe.supported && probe.totalBytes >= minSize) {
-+      // Segmented download: parts are merged into a "complete" part file.
 +      this._completePath = partFilePath || targetPath + ".part";
 +      if (probe.contentType) {
 +        aSetPropertiesFn({ contentType: probe.contentType });
@@ -515,17 +560,42 @@ index 0000000..26ee941
 +        resolve(null);
 +        return;
 +      }
++      // Register the probe channel so that cancel() can interrupt it: a
++      // download canceled during probing would otherwise stay stuck forever.
++      this._channels.push(channel);
 +      let done = false;
-+      let finish = value => {
++      let timer = null;
++      // Completes the probe without canceling the channel: the probe
++      // response is tiny (empty HEAD body / one-byte range) and letting it
++      // finish naturally keeps the connection clean for the part requests
++      // that follow immediately.  Canceling here races with connection
++      // reuse and can abort the first parts (NS_ERROR_NOT_AVAILABLE when
++      // reading responseStatus on a half-closed channel).
++      let complete = value => {
 +        if (done) {
 +          return;
 +        }
 +        done = true;
++        if (timer) {
++          clearTimeout(timer);
++        }
++        let index = this._channels.indexOf(channel);
++        if (index != -1) {
++          this._channels.splice(index, 1);
++        }
++        resolve(value);
++      };
++      // Probe requests must not hang forever: a server that accepts the
++      // connection but never answers (some sites treat HEAD oddly) would
++      // otherwise leave the download stuck at 0 bytes with no way to cancel
++      // it.  On timeout the channel is canceled and the download falls back
++      // to the single-channel path.
++      timer = setTimeout(() => {
 +        try {
 +          channel.cancel(Cr.NS_BINDING_ABORTED);
 +        } catch (e) {}
-+        resolve(value);
-+      };
++        complete(null);
++      }, kProbeTimeoutMs);
 +
 +      let listener = {
 +        onStartRequest(aRequest) {
@@ -543,41 +613,46 @@ index 0000000..26ee941
 +                headers["accept-ranges"] &&
 +                headers["accept-ranges"].toLowerCase().includes("bytes")
 +              ) {
-+                finish({
++                complete({
 +                  supported: true,
 +                  totalBytes: contentLength,
 +                  contentType,
 +                });
 +              } else if (contentLength < kMinSizeThreshold) {
 +                // Too small to segment; no need for a further probe.
-+                finish({
++                complete({
 +                  supported: false,
 +                  totalBytes: contentLength,
 +                  contentType,
 +                });
 +              } else {
-+                finish({ needsVerify: true, contentType });
++                complete({ needsVerify: true, contentType });
 +              }
 +            } else {
 +              // HEAD rejected or empty body: verify with a Range GET.
-+              finish({ needsVerify: true, contentType });
++              complete({ needsVerify: true, contentType });
 +            }
 +          } catch (e) {
-+            finish(null);
++            complete(null);
 +          }
 +        },
 +        onDataAvailable() {},
-+        onStopRequest() {
-+          finish(null);
++        onStopRequest(aRequest, aStatusCode) {
++          complete(null);
 +        },
 +      };
 +
-+      let http = channel.QueryInterface(Ci.nsIHttpChannel);
-+      http.requestMethod = "HEAD";
++      try {
++        let http = channel.QueryInterface(Ci.nsIHttpChannel);
++        http.requestMethod = "HEAD";
++      } catch (e) {
++        complete(null);
++        return;
++      }
 +      try {
 +        channel.asyncOpen(listener);
 +      } catch (e) {
-+        finish(null);
++        complete(null);
 +      }
 +    });
 +
@@ -594,17 +669,34 @@ index 0000000..26ee941
 +  _verifyRange() {
 +    return new Promise(resolve => {
 +      let channel = this._createChannel("bytes=0-0");
++      // Register the probe channel so that cancel() can interrupt it (see
++      // _probeRange).
++      this._channels.push(channel);
 +      let done = false;
-+      let finish = value => {
++      let timer = null;
++      // Completes the probe without canceling the channel (see _probeRange):
++      // the one-byte response is allowed to finish naturally so the
++      // connection returns to the pool cleanly for the part requests.
++      let complete = value => {
 +        if (done) {
 +          return;
 +        }
 +        done = true;
++        if (timer) {
++          clearTimeout(timer);
++        }
++        let index = this._channels.indexOf(channel);
++        if (index != -1) {
++          this._channels.splice(index, 1);
++        }
++        resolve(value);
++      };
++      timer = setTimeout(() => {
 +        try {
 +          channel.cancel(Cr.NS_BINDING_ABORTED);
 +        } catch (e) {}
-+        resolve(value);
-+      };
++        complete(null);
++      }, kProbeTimeoutMs);
 +
 +      let listener = {
 +        onStartRequest(aRequest) {
@@ -623,32 +715,32 @@ index 0000000..26ee941
 +              // Expected format: "bytes 0-0/TOTAL".
 +              let match = /bytes\s+0-0\/(\d+)/i.exec(contentRange);
 +              if (match) {
-+                finish({
++                complete({
 +                  supported: true,
 +                  totalBytes: parseInt(match[1], 10),
 +                  contentType,
 +                });
 +              } else {
-+                finish(null);
++                complete(null);
 +              }
 +            } else {
 +              // The server ignored the Range header (or rejected it).
-+              finish(null);
++              complete(null);
 +            }
 +          } catch (e) {
-+            finish(null);
++            complete(null);
 +          }
 +        },
 +        onDataAvailable() {},
-+        onStopRequest() {
-+          finish(null);
++        onStopRequest(aRequest, aStatusCode) {
++          complete(null);
 +        },
 +      };
 +
 +      try {
 +        channel.asyncOpen(listener);
 +      } catch (e) {
-+        finish(null);
++        complete(null);
 +      }
 +    });
 +  },
@@ -688,9 +780,15 @@ index 0000000..26ee941
 +    let sawExtra = false;
 +    for (let i = aParts.length; ; i++) {
 +      try {
-+        await IOUtils.remove(this._partFilePath(i));
++        // IOUtils.remove ignores missing files by default (ignoreAbsent
++        // defaults to true), so the loop would never terminate if the
++        // option were omitted: every removal of a nonexistent part file
++        // would "succeed" and the counter would grow forever, leaving the
++        // download stuck at 0 bytes with no way to cancel it.
++        await IOUtils.remove(this._partFilePath(i), { ignoreAbsent: false });
 +        sawExtra = true;
 +      } catch (ex) {
++        // NotFoundError: no more leftover part files.
 +        break;
 +      }
 +    }
@@ -751,7 +849,6 @@ index 0000000..26ee941
 +   * merges the part files into this._completePath.
 +   */
 +  async _downloadSegmented(aTotalBytes, aSetProgressBytesFn) {
-+    // Compute part boundaries.
 +    let partCount = this._partCount || kPartCount;
 +    let partSize = Math.ceil(aTotalBytes / partCount);
 +    let parts = [];
@@ -780,48 +877,66 @@ index 0000000..26ee941
 +          parts[i].skip = parts[i].existing >= len;
 +          initialBytes += parts[i].existing;
 +        }
-+        // Let the UI start from the bytes already on disk.
++        // Let the UI start from the bytes already on disk.  hasPartialData
++        // is reported when resume is enabled, so that an interruption keeps
++        // the part files for a later attempt.
 +        if (initialBytes > 0) {
-+          aSetProgressBytesFn(initialBytes, aTotalBytes, false);
++          aSetProgressBytesFn(initialBytes, aTotalBytes, this._resume);
 +        }
 +      }
 +    }
 +
-+    // Download all parts in parallel.  Progress is reported continuously:
-+    // each part reports its own network progress on top of the bytes already
-+    // completed by the other parts, so the UI never freezes on slow links.
++    // Download all parts in parallel.  Progress is reported continuously.
++    // Each part keeps a monotonic count of the bytes it has already reported
++    // (aPart.reported); on every network progress event only the delta since
++    // the previous event is added to the shared counter.  This keeps the
++    // total progress monotonic even when events of parallel parts
++    // interleave, so the UI shows a smooth aggregated speed instead of a
++    // jump when a part completes.
 +    let progress = { completed: initialBytes };
-+    try {
-+      await Promise.all(
-+        parts
-+          .filter(part => !part.skip)
-+          .map(part =>
-+            this._downloadPart(
-+              part,
-+              progress,
-+              aTotalBytes,
-+              aSetProgressBytesFn,
-+              () => {
-+                // Count only the bytes fetched in this run: bytes resumed
-+                // from disk already contribute to progress.completed.
-+                progress.completed +=
-+                  part.end - part.start + 1 - (part.existing || 0);
-+                aSetProgressBytesFn(progress.completed, aTotalBytes, false);
-+              },
-+              part.existing || 0
-+            )
-+          )
++    const reportProgress = () => {
++      // With resume enabled the part files are kept on interruption, so the
++      // download reports hasPartialData (third argument) and the Download
++      // framework will not delete them when the attempt fails or is
++      // canceled.  A later retry then resumes from the bytes on disk.
++      aSetProgressBytesFn(progress.completed, aTotalBytes, this._resume);
++    };
++    const activeParts = parts.filter(part => !part.skip).map(part => {
++      part.reported = 0;
++      return this._downloadPart(
++        part,
++        progress,
++        aTotalBytes,
++        aSetProgressBytesFn,
++        () => {
++          let len = part.end - part.start + 1;
++          let remaining = len - (part.existing || 0) - part.reported;
++          if (remaining > 0) {
++            progress.completed += remaining;
++            part.reported += remaining;
++          }
++          reportProgress();
++        },
++        part.existing || 0
 +      );
++    });
++    try {
++      await Promise.all(activeParts);
 +    } catch (ex) {
 +      // A part failed: cancel the remaining channels so that no other part
-+      // keeps downloading in the background.  The Download framework calls
-+      // removeData() to clean up the part files.
++      // keeps downloading in the background.
 +      for (let channel of this._channels) {
 +        try {
 +          channel.cancel(Cr.NS_BINDING_ABORTED);
 +        } catch (e) {}
 +      }
 +      this._channels = [];
++      // Wait until every part saver has finished writing/cleaning its file:
++      // cancellation is asynchronous, and when resume is enabled the part
++      // files are kept for a later attempt.  A retry may inspect those files
++      // immediately after this promise settles, so they must be stable on
++      // disk first (background file savers flush on a worker thread).
++      await Promise.allSettled(activeParts);
 +      throw ex;
 +    }
 +
@@ -837,12 +952,20 @@ index 0000000..26ee941
 +   * When aResumeOffset is greater than zero, the part file already exists
 +   * with that many bytes written and the request continues from there,
 +   * appending to the existing file (interrupted download resume).
++   *
++   * aPart.reported tracks the cumulative bytes of this part that have
++   * already been added to aProgress.completed, so that the part completion
++   * callback can add only the remaining bytes (see _downloadSegmented).
 +   */
 +  _downloadPart(aPart, aProgress, aTotalBytes, aSetProgressBytesFn, aOnPartComplete, aResumeOffset = 0) {
 +    return new Promise((resolve, reject) => {
 +      if (this._canceled) {
 +        reject(new DownloadError({ message: "Saver canceled." }));
 +        return;
++      }
++
++      if (aPart.reported === undefined) {
++        aPart.reported = 0;
 +      }
 +
 +      let start = aPart.start + aResumeOffset;
@@ -861,7 +984,14 @@ index 0000000..26ee941
 +            this._channels.splice(index, 1);
 +          }
 +          if (Components.isSuccessCode(aStatus)) {
-+            aOnPartComplete();
++            // The part file is complete on disk.  Make sure the promise
++            // always settles: an exception in the completion callback (e.g.
++            // in the progress reporting) must not leave the download stuck
++            // forever with no way to cancel it.
++            try {
++              aOnPartComplete();
++            } catch (ex) {
++            }
 +            resolve();
 +          } else {
 +            reject(
@@ -876,12 +1006,14 @@ index 0000000..26ee941
 +          // Continue writing at the end of the existing part file.
 +          backgroundFileSaver.enableAppend();
 +        }
-+        // Parts are never kept on failure (keepPartialData = false), except
-+        // when resuming, where the partial file must survive a failure so
-+        // that a later attempt can continue from it again.
++        // Keep the part file when the download fails unless resume is
++        // disabled: a half-written part is still valid (its bytes belong at
++        // the start of the part range), so keeping it lets a later retry
++        // continue from the interruption point.  When resume is disabled the
++        // part is deleted on failure, mirroring a fresh download.
 +        backgroundFileSaver.setTarget(
 +          new lazy.FileUtils.File(aPart.file),
-+          aResumeOffset > 0
++          aResumeOffset > 0 || this._resume
 +        );
 +      } catch (ex) {
 +        reject(new DownloadError({ message: ex.message }));
@@ -892,17 +1024,28 @@ index 0000000..26ee941
 +        onStartRequest: aRequest => {
 +          // The probe confirmed Range support; if a part still receives a
 +          // non-206 response (e.g. the server changed behavior), abort.
-+          if (aRequest instanceof Ci.nsIHttpChannel) {
-+            let http = aRequest.QueryInterface(Ci.nsIHttpChannel);
-+            if (http.responseStatus != 206) {
-+              aRequest.cancel(Cr.NS_BINDING_ABORTED);
-+              reject(
-+                new DownloadError({
-+                  message: "Server did not honor the Range request.",
-+                })
-+              );
-+              return;
++          try {
++            if (aRequest instanceof Ci.nsIHttpChannel) {
++              let http = aRequest.QueryInterface(Ci.nsIHttpChannel);
++              let status = http.responseStatus;
++              if (status != 206) {
++                aRequest.cancel(Cr.NS_BINDING_ABORTED);
++                reject(
++                  new DownloadError({
++                    message: "Server did not honor the Range request.",
++                  })
++                );
++                return;
++              }
 +            }
++          } catch (ex) {
++            // No response headers available (e.g. the channel failed or was
++            // aborted before answering): treat it as a failed part.
++            try {
++              aRequest.cancel(Cr.NS_BINDING_ABORTED);
++            } catch (e) {}
++            reject(new DownloadError({ result: ex.result, inferCause: true }));
++            return;
 +          }
 +          backgroundFileSaver.onStartRequest(aRequest);
 +        },
@@ -936,13 +1079,21 @@ index 0000000..26ee941
 +        QueryInterface: ChromeUtils.generateQI(["nsIInterfaceRequestor"]),
 +        getInterface: ChromeUtils.generateQI(["nsIProgressEventSink"]),
 +        onProgress: (aRequest, aProgressBytes, aProgressMax) => {
-+          // Report this part's bytes on top of the parts already completed,
-+          // so the total progress stays smooth.
-+          aSetProgressBytesFn(
-+            aProgress.completed + aProgressBytes,
-+            aTotalBytes,
-+            false
-+          );
++          // aProgressBytes is the cumulative byte count of this part
++          // request (it starts at zero even when the part is resumed from
++          // disk).  Add only the delta since the last event of this part to
++          // the shared counter: interleaved events from parallel parts then
++          // never make the total progress go backwards or jump.
++          let delta = aProgressBytes - aPart.reported;
++          if (delta > 0) {
++            aPart.reported = aProgressBytes;
++            aProgress.completed += delta;
++            aSetProgressBytesFn(
++              aProgress.completed,
++              aTotalBytes,
++              this._resume
++            );
++          }
 +        },
 +        onStatus() {},
 +      };
@@ -1025,8 +1176,12 @@ index 0000000..26ee941
 +          }
 +          if (Components.isSuccessCode(aStatus)) {
 +            // The hash and signature info are only available on success.
-+            this._sha256Hash = aSaver.sha256Hash;
-+            this._signatureInfo = aSaver.signatureInfo;
++            // Guard the property reads so the promise always settles.
++            try {
++              this._sha256Hash = aSaver.sha256Hash;
++              this._signatureInfo = aSaver.signatureInfo;
++            } catch (ex) {
++            }
 +            resolve();
 +          } else {
 +            reject(
