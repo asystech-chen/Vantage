@@ -33,7 +33,7 @@ jobs:
           echo "已成功拉取最新安装包至 pool 目录："
           ls -lh repo-root/pool/
 
-      - - name: 5. 运行仓库签名和生成脚本
+      - name: 5. 运行仓库签名和生成脚本
         run: |
           # 1. 基础配置：强制允许后台静默模式
           mkdir -p ~/.gnupg
