@@ -33,8 +33,23 @@ jobs:
           echo "已成功拉取最新安装包至 pool 目录："
           ls -lh repo-root/pool/
 
-      - name: 5. 运行仓库签名和生成脚本
+      - - name: 5. 运行仓库签名和生成脚本
         run: |
+          # 1. 基础配置：强制允许后台静默模式
+          mkdir -p ~/.gnupg
+          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          
+          # 2. 核心魔法：创建一个 GPG 替身，自动代填那一个“空格”密码
+          mkdir -p /tmp/gpg-wrap
+          echo '#!/bin/bash' > /tmp/gpg-wrap/gpg
+          echo '/usr/bin/gpg --pinentry-mode loopback --passphrase " " "$@"' >> /tmp/gpg-wrap/gpg
+          chmod +x /tmp/gpg-wrap/gpg
+          
+          # 3. 把替身放到系统命令的最前面，拦截脚本里的 GPG 调用
+          export PATH="/tmp/gpg-wrap:$PATH"
+          
+          # 4. 执行你的原始生成脚本
           chmod +x ./scripts/signing/sign-repo.sh
           export GPG_KEY=$GPG_KEY_ID
           ./scripts/signing/sign-repo.sh $(pwd)/repo-root
