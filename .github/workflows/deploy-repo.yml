@@ -13,7 +13,7 @@ jobs:
       - name: 2. 安装打包和签名必备工具
         run: |
           sudo apt-get update
-          sudo apt-get install -y dpkg-dev apt-utils createrepo-c gnupg awscli
+          sudo apt-get install -y dpkg-dev apt-utils createrepo-c gnupg
 
       - name: 3. 导入 GPG 私钥并配置静默模式
         run: |
