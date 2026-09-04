@@ -1,0 +1,54 @@
+name: 自动发布 APT/RPM 软件源
+
+on:
+  workflow_dispatch: 
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 1. 拉取仓库代码
+        uses: actions/checkout@v3
+
+      - name: 2. 安装打包和签名必备工具
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y dpkg-dev apt-utils createrepo-c gnupg awscli
+
+      - name: 3. 导入 GPG 私钥并配置静默模式
+        run: |
+          echo "${{ secrets.LCX_GPG_PRIVATE_KEY }}" > private.key
+          gpg --batch --import private.key
+          rm private.key
+          KEY_ID=$(gpg --list-secret-keys --with-colons | awk -F: '/^sec:/ {print $5}')
+          echo "GPG_KEY_ID=$KEY_ID" >> $GITHUB_ENV
+
+      - name: 4. 自动拉取最新 Release 的包
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p repo-root/pool
+          # 只下载 deb 和 rpm，不碰 exe
+          gh release download --pattern "*.deb" --pattern "*.rpm" --dir repo-root/pool/
+          echo "已成功拉取最新安装包至 pool 目录："
+          ls -lh repo-root/pool/
+
+      - name: 5. 运行仓库签名和生成脚本
+        run: |
+          chmod +x ./scripts/signing/sign-repo.sh
+          export GPG_KEY=$GPG_KEY_ID
+          ./scripts/signing/sign-repo.sh $(pwd)/repo-root
+
+      - name: 6. 同步推送至 Cloudflare R2 (Dryrun 演习模式)
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+        run: |
+          aws s3 sync ./repo-root s3://vantage/vantage-release/ \
+            --endpoint-url ${{ secrets.R2_ENDPOINT }} \
+            --delete \
+            --exclude "keys/*" \
+            --exclude "install.sh" \
+            --exclude "*.exe" \
+            --dryrun
