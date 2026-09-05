@@ -81,3 +81,14 @@ jobs:
             --exclude "keys/*" \
             --exclude "install.sh" \
             --exclude "*.exe"
+      - name: 7. 自动刷新 Cloudflare CDN 全局缓存
+        env:
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: |
+          echo "开始请求 Cloudflare 强制清除节点缓存..."
+          curl -s -X POST "https://api.cloudflare.com/client/v4/zones/$CF_ZONE_ID/purge_cache" \
+            -H "Authorization: Bearer $CF_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"purge_everything":true}'
+          echo -e "\n缓存清理指令已发送！"
