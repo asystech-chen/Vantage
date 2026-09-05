@@ -65,5 +65,4 @@ jobs:
             --delete \
             --exclude "keys/*" \
             --exclude "install.sh" \
-            --exclude "*.exe" \
-            --dryrun
+            --exclude "*.exe"
