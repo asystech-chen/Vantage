@@ -53,7 +53,8 @@ jobs:
           # 3. 治本之策：配置 RPM 本地签名宏，指定用你的私钥
           echo "%_signature gpg" > ~/.rpmmacros
           echo "%_gpg_name $GPG_KEY_ID" >> ~/.rpmmacros
-          
+          # 补上下面这一行！强制 rpm 调用我们造的无密码替身
+          echo "%__gpg /tmp/gpg-wrap/gpg" >> ~/.rpmmacros
           # 4. 赶在生成源索引前，把下载的所有 rpm 包本体逐个盖上钢印
           find ./repo-root/pool -name "*.rpm" -exec rpm --addsign {} \;
           
