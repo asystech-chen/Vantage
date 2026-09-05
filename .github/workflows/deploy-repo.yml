@@ -54,12 +54,19 @@ jobs:
           export GPG_KEY=$GPG_KEY_ID
           ./scripts/signing/sign-repo.sh $(pwd)/repo-root
 
-      - name: 6. 同步推送至 Cloudflare R2 (Dryrun 演习模式)
+      - name: 6. 同步推送至 Cloudflare R2 (双步无缝同步)
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: auto
         run: |
+          # 阶段一：【安全覆盖】只增不减。先稳稳地把新版 deb/rpm 和全新的 repomd.xml/Packages 索引推上去。
+          # 这一步保证了用户在更新软件时，绝对不会遇到 404 断档。
+          aws s3 sync ./repo-root s3://vantage/vantage-release/ \
+            --endpoint-url ${{ secrets.R2_ENDPOINT }}
+          
+          # 阶段二：【精准清理】此时新索引和新包已经绝对安全地躺在 R2 里了。
+          # 再次执行同步并带上 --delete，专心去把那些已经不在索引里、也不在本地的旧版本包清理掉。
           aws s3 sync ./repo-root s3://vantage/vantage-release/ \
             --endpoint-url ${{ secrets.R2_ENDPOINT }} \
             --delete \
