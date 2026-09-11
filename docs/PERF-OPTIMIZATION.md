@@ -7,7 +7,7 @@
 | 项 | 文件 | 作用 |
 |---|---|---|
 | LTO（thin，**非 cross**） | `assets/mozconfig.new`、`mozconfig.linux-arm64`、`mozconfig.win-cross`、`mozconfig.win-cross.arm64` | 提速 + 缩 `libxul`/`xul.dll` |
-| PGO（复用 Mozilla 官方 profile） | `assets/mozconfig.new`、`mozconfig.win-cross`、`mozconfig.win-cross.arm64`、`mozconfig.osx-cross`、`mozconfig.osx-cross-arm64` | 启动提速 + 缩体积（最大杠杆） |
+| PGO（复用 Mozilla 官方 profile） | `assets/mozconfig.new`、`mozconfig.win-cross`、`mozconfig.win-cross.arm64` | 启动提速 + 缩体积（最大杠杆） |
 | PGO profile 拉取脚本 | `scripts/fetch-pgo-profile.sh`（新增） | 从 Taskcluster 拉 `merged.profdata` |
 | PGO 拉取钩子 | `build.sh`（`build_target` 内、`make build` 前） | 构建前自动拉取；失败则跳过 PGO |
 | 语言包裁剪 | `Makefile`（`package` 目标） | 只打包 6 个语言包，≈-10MB |
@@ -18,8 +18,9 @@
 - **PGO**：`scripts/fetch-pgo-profile.sh <目标>` 把官方 `profdata.tar.xz` 解开成
   `~/.cache/vantage-pgo/<平台>/merged.profdata`（`$HOME` 下，不在仓库/workspace 内）；mozconfig 里**检测到该文件才**追加
   `--enable-profile-use=cross --with-pgo-profile-path=...`。文件缺失 → 自动跳过，构建不受影响。
-  平台映射：linux-x64→linux64、windows-x64→win64、windows-arm64→win64-aarch64、
-  macos-x64→macosx64、macos-arm64→macosx64-aarch64。linux-arm64 / loong64 官方无 profile（跳过）。
+  平台映射：linux-x64→linux64、windows-x64→win64、windows-arm64→win64-aarch64。
+  linux-arm64 / loong64 官方无 profile（跳过）。
+  ⚠️ **macOS 已放弃（近期不维护）**：不对 mac mozconfig 做任何 LTO/PGO 改动（脚本里保留 mac 映射仅为将来备用）。
 - **语言包**：`make package` 直接调用 `mach package-multi-locale --locales en-US en-GB en-CA zh-CN zh-MS zh-TW`。
 
 ## 回退（随时可退）
@@ -52,6 +53,11 @@ rm -rf ~/Vantage/librewolf-153.2.0-1/obj-x86_64-pc-linux-gnu/x86_64-unknown-linu
 - 若 PGO profile 与源码/工具链不匹配，编译期可能告警；源码已带 `-Wno-error=backend-plugin` 容错，
   真失败就删 `~/.cache/vantage-pgo/` 回退到纯 LTO。
 - 实际提速由桶哥实测（我看不到界面）。
+
+## 平台范围
+
+- **在维护**：Linux x64/arm64/loong64、Windows x64/arm64（CI tag 发布就编这 5 个）
+- **macOS 已放弃**（至少近期不碰）：本机 osx-cross 工具链也已不在
 
 ## CI（self-hosted runner）
 
