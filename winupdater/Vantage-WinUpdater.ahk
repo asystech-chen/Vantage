@@ -215,7 +215,7 @@ CheckPaths() {
 	If (!FileExist(Path)) {
 		; 计划任务模式：静默失败并记日志，绝不弹窗（半夜弹窗很要命）
 		If (Scheduled) {
-			Die(_GetPathError, False, True)
+			Die(_GetPathError, False)
 			Return
 		}
 		; 交互模式：让用户手动选择，并记住选择（避免下次再弹）
@@ -395,8 +395,6 @@ Install() {
 	BrowserWaitClose()
 	PreventRunningWhileUpdating()
 	Progress(_Installing)
-	If (Scheduled)
-		Notify(_Installing, CurrentVersion " " _To " v" NewVersion, 3000)
 	SetupParams := StrReplace(SetupParams, "{}", Folder)
 
 	; Silent install
@@ -408,6 +406,9 @@ Install() {
 		Progress(_IsUpdated, True)
 		Notify(_IsUpdated, CurrentVersion " " _To " v" NewVersion, Scheduled And !ShutdownBlocked ? 60000 : 0)
 		Done := True
+	} Else If (Scheduled) {
+		; 计划任务模式：静默失败（仅记日志），不弹任何对话框，避免半夜打扰用户
+		Die(_SilentUpdateError)
 	} Else {
 		MsgBox, 52, %_Updater%, %_SilentUpdateError%
 		IfMsgBox, No
@@ -435,7 +436,8 @@ BrowserWaitClose() {
 	For Proc in ComObjGet("winmgmts:").ExecQuery("Select ProcessId from Win32_Process where ExecutablePath=""" StrReplace(Path, "\", "\\") """") {
 		If (!Notified) {
 			Progress(_NewVersionFound)
-			Notify(_NewVersionFound)
+			If (!Scheduled)
+				Notify(_NewVersionFound)
 			Notified := True
 		}
 		ProcessWaitClose(Proc.ProcessId)
@@ -604,8 +606,6 @@ Progress(Msg, Error := False) {
 		Random, Pct, 10, 90
 		GuiControl,, ProgField, %Pct%
 	}
-	If (Scheduled)
-		Notify(_Updater, Msg, 3000)
 }
 
 Log(Key, Value := "", Clear := False) {
@@ -685,11 +685,11 @@ AdminExit() {
 	IniDelete, %IniFile%, Log, RunningAsAdmin
 }
 
-Die(Msg, ShowHelp := True, ShowOnScheduled := True) {
+Die(Msg, ShowHelp := True, ShowOnScheduled := False) {
 	Died := Msg
 	Log("LastResult", Msg)
-	Notify(_Updater, Msg, Scheduled And ShowOnScheduled ? 20000 : 0)
 	If (!Scheduled Or ShowOnScheduled) {
+		Notify(_Updater, Msg, Scheduled ? 20000 : 0)
 		Progress(Msg, True)
 		If (ShowHelp)
 			MsgBox, 48, %_Updater%, %Msg%
