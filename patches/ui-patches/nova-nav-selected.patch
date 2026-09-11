@@ -1,0 +1,22 @@
+--- a/toolkit/content/widgets/moz-page-nav/moz-page-nav-button.css
++++ b/toolkit/content/widgets/moz-page-nav/moz-page-nav-button.css
+@@ -148,3 +148,19 @@
+     }
+   }
+ }
++
++/* ===== Vantage：设置页左栏选中态 Nova 圆角药丸 =====
++   上游 FF154/155 在 moz-page-nav.tokens.css 的 tokens-foundation-nova 里做了同样的修正；
++   153 组件自带的是旧的「浅底 + 左侧 4px 方角指示条」，此处对齐上游 Nova 语义：
++   选中项 = 实心强调色圆角药丸，指示条宽度置 0。 */
++@media -moz-pref("browser.nova.enabled") {
++  :host {
++    --page-nav-button-background-color-hover: var(--button-background-color-hover);
++    --page-nav-button-background-color-active: var(--button-background-color-active);
++    --page-nav-button-background-color-selected: var(--color-accent-primary);
++    --page-nav-button-border-radius: var(--border-radius-circle);
++    --page-nav-button-indicator-width: 0;
++    --page-nav-button-indicator-color: var(--button-text-color-primary);
++    --page-nav-button-padding: var(--space-medium);
++  }
++}
