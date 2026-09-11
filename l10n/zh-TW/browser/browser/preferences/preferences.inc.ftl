@@ -20,8 +20,11 @@ vantage-update-description = 啟動時自動檢查 Vantage 是否有新版本。
 
 vantage-ai-heading = AI 側邊欄
 vantage-ai-checkbox =
-    .label = 在側邊欄啟用 AI（實驗功能）
+    .label = 啟用側欄的 AI 聊天
 vantage-ai-description = 啟用後，您可以在瀏覽器側邊欄中使用 AI 聊天助手。此功能將在側邊欄面板中載入第三方 AI 服務。
+vantage-ai-sidebar-checkbox =
+    .label = 顯示側欄
+vantage-ai-sidebar-description = 啟用後：可快速使用書籤、手機上的分頁、AI 聊天機器人等內容，無需分心於其他介面。停用後：新側欄不再顯示；勾選「啟用側欄的 AI 聊天」時會自動重新顯示。
 
 librewolf-header = Vantage 首選項
 librewolf-warning-title = 注意！

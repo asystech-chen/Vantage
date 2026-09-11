@@ -2707,8 +2707,11 @@ vantage-update-description = 复选为了新的版本的优势在启动. 你将�
 
 vantage-ai-heading = AI 其他选项
 vantage-ai-checkbox =
-    .label = 启用 AI 其他选项
+    .label = 启用侧栏的 AI 聊天
 vantage-ai-description = 打开 AI chatbots 在那其他选项. 支持 DeepSeek, Qwen, Doubao, ChatGPT, 双胎, 和克劳德（男子名）. 你的会话去直接的到那提供器—优势做不收集或进程任何的论据.
+vantage-ai-sidebar-checkbox =
+    .label = 显示侧栏
+vantage-ai-sidebar-description = 开启后：快捷使用书签、手机上的标签页、AI 聊天机器人等内容，无需分心于其他界面。关闭后：新侧栏不再显示；勾选「启用侧栏的 AI 聊天」时会自动重新显示。
 
 librewolf-header = 优势首选项
 librewolf-warning-title = 头抬起!

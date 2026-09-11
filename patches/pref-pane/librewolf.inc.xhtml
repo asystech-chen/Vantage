@@ -44,6 +44,7 @@
 <groupbox hidden="true" data-category="paneVantage">
   <html:h2 data-l10n-id="vantage-ai-heading" />
 
+  <!-- 主开关：启用侧栏的 AI 聊天（AI 聊天引擎；勾选时自动显示新侧栏） -->
   <hbox>
     <checkbox id="vantage-ai-checkbox" data-l10n-id="vantage-ai-checkbox" preference="browser.ml.chat.enabled" flex="1" />
     <html:label for="vantage-ai-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
@@ -52,7 +53,18 @@
     <html:input type="checkbox" id="vantage-ai-collapse" />
     <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
       <label data-l10n-id="vantage-ai-description" />
-      <checkbox preference="browser.ml.chat.enabled" label="browser.ml.chat.enabled" />
+    </vbox>
+  </vbox>
+
+  <!-- 子开关：显示侧栏（与设置-常规「显示侧栏」同 pref sidebar.revamp，用户可随时独立决定） -->
+  <hbox>
+    <checkbox id="vantage-ai-sidebar-checkbox" data-l10n-id="vantage-ai-sidebar-checkbox" preference="sidebar.revamp" flex="1" />
+    <html:label for="vantage-ai-sidebar-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
+  </hbox>
+  <vbox class="librewolf-collapse indent">
+    <html:input type="checkbox" id="vantage-ai-sidebar-collapse" />
+    <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
+      <label data-l10n-id="vantage-ai-sidebar-description" />
     </vbox>
   </vbox>
 

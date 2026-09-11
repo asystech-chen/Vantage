@@ -17,7 +17,6 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   const prefsToAdd = [
   { id: "vantage.updateCheck.enabled", type: "bool" },
   { id: "browser.ml.chat.enabled", type: "bool" },
-  { id: "browser.ai.control.sidebarChatbot", type: "string" },
   { id: "network.dns.disableIPv6", type: "bool" },
   { id: "identity.fxaccounts.enabled", type: "bool" },
   { id: "webgl.disabled", type: "bool" },
@@ -70,24 +69,26 @@ var gLibrewolfPane = {
     this.initAboutVantage();
 
     // Set all event listeners on checkboxes
-    // AI Sidebar: sync browser.ml.chat.enabled + browser.ai.control.sidebarChatbot
-    setSyncFromPrefListener("vantage-ai-checkbox", () =>
-      Services.prefs.getBoolPref("browser.ml.chat.enabled", false)
-    );
-    setSyncToPrefListener("vantage-ai-checkbox", () => {
-      let checked = document.getElementById("vantage-ai-checkbox").checked;
-      Services.prefs.setBoolPref("browser.ml.chat.enabled", checked);
-      Services.prefs.setCharPref(
-        "browser.ai.control.sidebarChatbot",
-        checked ? "available" : "blocked"
-      );
-      return checked;
+    // AI Chat（主开关，browser.ml.chat.enabled）：勾选时若新侧栏未显示（sidebar.revamp=false）
+    // 则自动启用——与设置-常规「显示侧栏」同 pref、同 enabledViaSettings 副作用；
+    // 同时直接打开 AI 聊天面板（viewGenaiChatSidebar），无需再到侧栏设置里手动添加 AI 机器人。
+    // 取消勾选不影响侧栏显示；侧栏由子开关（vantage-ai-sidebar-checkbox）独立控制。
+    document.getElementById("vantage-ai-checkbox").addEventListener("command", () => {
+      if (!document.getElementById("vantage-ai-checkbox").checked) {
+        return;
+      }
+      const win =
+        window.browsingContext?.topChromeWindow ||
+        Services.wm.getMostRecentWindow("navigator:browser");
+      if (!Services.prefs.getBoolPref("sidebar.revamp", true)) {
+        Services.prefs.setBoolPref("sidebar.revamp", true);
+        win?.SidebarController?.enabledViaSettings?.(true);
+      }
+      // 等一帧让 revamp/AI pref 的观察者先跑完，再打开 AI 聊天面板
+      setTimeout(() => {
+        win?.SidebarController?.show("viewGenaiChatSidebar")?.catch?.(() => {});
+      }, 0);
     });
-    Preferences.get("browser.ml.chat.enabled").on("change", () =>
-      makeMasterCheckboxesReactive("vantage-ai-checkbox", () =>
-        Services.prefs.getBoolPref("browser.ml.chat.enabled", false)
-      )
-    );
     setBoolSyncListeners(
       "vantage-update-checkbox",
       ["vantage.updateCheck.enabled"],

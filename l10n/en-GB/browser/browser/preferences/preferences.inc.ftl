@@ -26,8 +26,11 @@ vantage-update-description = Check for new versions of Vantage on startup. You w
 
 vantage-ai-heading = AI Sidebar
 vantage-ai-checkbox =
-    .label = Enable AI Sidebar
+    .label = Enable AI chat in the sidebar
 vantage-ai-description = Open AI chatbots in the sidebar. Supports DeepSeek, Qwen, Doubao, ChatGPT, Gemini, and Claude. Your conversations go directly to the provider — Vantage does not collect or process any data.
+vantage-ai-sidebar-checkbox =
+    .label = Show sidebar
+vantage-ai-sidebar-description = When enabled: quickly access bookmarks, tabs from your phone, AI chatbots and more, without getting distracted from your current view. When disabled: the new sidebar is hidden; enabling AI chat in the sidebar will show it again.
 
 librewolf-header = Vantage Preferences
 librewolf-warning-title = Heads up!

@@ -26,8 +26,11 @@ vantage-update-description = 在启动时检查 Vantage 新版本。发现新版
 
 vantage-ai-heading = AI 侧边栏
 vantage-ai-checkbox =
-    .label = 启用 AI 侧边栏
+    .label = 启用侧栏的 AI 聊天
 vantage-ai-description = 在侧边栏中打开 AI 聊天机器人。支持 DeepSeek、Qwen、豆包、ChatGPT、Gemini 和 Claude。您的对话直接发送给供应商——Vantage 不会收集或处理任何数据。
+vantage-ai-sidebar-checkbox =
+    .label = 显示侧栏
+vantage-ai-sidebar-description = 开启后：快捷使用书签、手机上的标签页、AI 聊天机器人等内容，无需分心于其他界面。关闭后：新侧栏不再显示；勾选「启用侧栏的 AI 聊天」时会自动重新显示。
 
 librewolf-general-heading = 浏览器行为
 librewolf-extension-update-checkbox =
