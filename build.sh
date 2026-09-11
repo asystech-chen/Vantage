@@ -236,6 +236,21 @@ build_target() {
     "$REPO_ROOT/scripts/fetch-pgo-profile.sh" "$key" || yellow "⚠️  PGO profile 拉取失败：本次不使用 PGO"
   fi
 
+  # rust：确保 1.94.1 + 交叉 target（mozconfig 里已 export RUSTUP_TOOLCHAIN=1.94.1；缺失才装）
+  # 1.94.1 的 LLVM 与 bootstrap clang 一致 → 跨语言 LTO / PGO 匹配；可用 RUSTUP_DIST_SERVER 指定镜像
+  if command -v rustup >/dev/null 2>&1; then
+    if ! rustup toolchain list 2>/dev/null | grep -q '^1\.94\.1-'; then
+      yellow ">>> 安装 rust 1.94.1（跨语言 LTO 需要）..."
+      rustup toolchain install 1.94.1 --profile minimal || { red "❌ rust 1.94.1 安装失败"; return 1; }
+    fi
+    for _t in aarch64-unknown-linux-gnu x86_64-pc-windows-msvc aarch64-pc-windows-msvc; do
+      rustup target list --installed --toolchain 1.94.1 2>/dev/null | grep -qx "$_t" \
+        || rustup target add --toolchain 1.94.1 "$_t" || red "⚠️  rust target $_t 安装失败（该目标可能构建失败）"
+    done
+  else
+    yellow "⚠️  未找到 rustup，跳过 rust 1.94.1 检查（构建可能失败）"
+  fi
+
   # Step 2: 编译
   green ">>> [2/3] 编译 (make build)..."
   make build || { red "❌ $label 编译失败"; return 1; }

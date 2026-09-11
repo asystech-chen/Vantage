@@ -50,8 +50,10 @@ mk_add_options MOZ_TELEMETRY_REPORTING=0
 # ---- ccache（如果可用） ----
 # ---- 编译加速 ----
 mk_add_options MOZ_PARALLEL_BUILD=16
-# LTO（thin）。不用 cross 跨语言：本地 rustc LLVM22 ≠ bootstrap clang LLVM21
-ac_add_options --enable-lto=thin
+# rust 固定 1.94.1（LLVM 与 clang 一致）→ 跨语言 LTO
+export RUSTUP_TOOLCHAIN=1.94.1
+# LTO：full + 跨语言（Rust <-> C++）
+ac_add_options --enable-lto=cross,full
 # PGO：复用 Mozilla 官方 profile（缺失则自动跳过，便于随时回退）
 # 先跑 scripts/fetch-pgo-profile.sh windows-x64 生成 ~/.cache/vantage-pgo/win64/merged.profdata
 VANTAGE_PGO_PROFILE="$HOME/.cache/vantage-pgo/win64/merged.profdata"
