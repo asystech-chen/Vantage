@@ -77,6 +77,15 @@ var gLibrewolfPane = {
       if (!document.getElementById("vantage-ai-checkbox").checked) {
         return;
       }
+      // 确保侧栏工具列表里有 "aichat"，否则侧栏设置里 AI 聊天机器人不会被勾上
+      // （等价于 SidebarManager.updateToolsPref("aichat", true)）
+      const SIDEBAR_TOOLS = "sidebar.main.tools";
+      let tools = Services.prefs.getStringPref(SIDEBAR_TOOLS, "");
+      let list = tools ? tools.split(",") : [];
+      if (!list.includes("aichat")) {
+        list.push("aichat");
+        Services.prefs.setStringPref(SIDEBAR_TOOLS, list.join());
+      }
       const win =
         window.browsingContext?.topChromeWindow ||
         Services.wm.getMostRecentWindow("navigator:browser");
