@@ -16,7 +16,7 @@
 
 - **LTO**：无条件启用。build.sh 用 `MOZCONFIG=assets/mozconfig.<target>` 交给 mach；mach 检测到 mozconfig 变化会重新 configure 并全量重编。
 - **PGO**：`scripts/fetch-pgo-profile.sh <目标>` 把官方 `profdata.tar.xz` 解开成
-  `.cache/pgo/<平台>/merged.profdata`；mozconfig 里**检测到该文件才**追加
+  `~/.cache/vantage-pgo/<平台>/merged.profdata`（`$HOME` 下，不在仓库/workspace 内）；mozconfig 里**检测到该文件才**追加
   `--enable-profile-use=cross --with-pgo-profile-path=...`。文件缺失 → 自动跳过，构建不受影响。
   平台映射：linux-x64→linux64、windows-x64→win64、windows-arm64→win64-aarch64、
   macos-x64→macosx64、macos-arm64→macosx64-aarch64。linux-arm64 / loong64 官方无 profile（跳过）。
@@ -26,7 +26,7 @@
 
 1. **整体回退**：`git checkout -- Makefile build.sh assets/mozconfig.*` 并删除 `scripts/fetch-pgo-profile.sh`。
    （回退点：`218d7bb`；改动前快照另存于 `~/.openclaw/workspace/backup/perf-20260911/`）
-2. **只关 PGO**：删掉 `.cache/pgo/` 目录（mozconfig 自动跳过），或注释各 mozconfig 内的 `VANTAGE_PGO_PROFILE` 块。
+2. **只关 PGO**：删掉 `~/.cache/vantage-pgo/` 目录（mozconfig 自动跳过；也可设 `VANTAGE_PGO_CACHE` 指向空目录），或注释各 mozconfig 内的 `VANTAGE_PGO_PROFILE` 块。
 3. **只关 LTO**：注释各 mozconfig 内的 `ac_add_options --enable-lto=thin`。
 4. **恢复全部语言包**：把 `Makefile` 里 `package` 目标那行换回注释中的原行为
    `cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales`。
@@ -50,5 +50,14 @@ rm -rf ~/Vantage/librewolf-153.2.0-1/obj-x86_64-pc-linux-gnu/x86_64-unknown-linu
 
 - 改 mozconfig / Makefile / build.sh 都会触发**全量重编**（LTO 改了编译 flags）。
 - 若 PGO profile 与源码/工具链不匹配，编译期可能告警；源码已带 `-Wno-error=backend-plugin` 容错，
-  真失败就删 `.cache/pgo/` 回退到纯 LTO。
+  真失败就删 `~/.cache/vantage-pgo/` 回退到纯 LTO。
 - 实际提速由桶哥实测（我看不到界面）。
+
+## CI（self-hosted runner）
+
+- CI 跑 `./build.sh` → 自动拉 profile，**无需改 workflows**
+- runner 已具备：`aria2c` / `jq` / `curl` / `tar` / `xz`；Taskcluster 可达
+- 缓存放 `$HOME/.cache/vantage-pgo/`（**在 workspace 之外**）——CI 每次会
+  `rm -rf "$GITHUB_WORKSPACE"/*`，放外面的缓存**跨构建保留**，不重复下载
+- PGO 拉取失败/网络抖动 → 自动跳过 PGO，CI 不会因此失败
+- ⚠️ 首次启用后 CI 会**全量重编**（LTO 改了 flags，ccache 命中率低），属正常

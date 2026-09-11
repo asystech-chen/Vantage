@@ -10,19 +10,21 @@
 #   ./scripts/fetch-pgo-profile.sh <目标>     # 目标名同 build.sh: linux-x64 / windows-x64 ...
 #   ./scripts/fetch-pgo-profile.sh win64      # 也可直接给平台名
 #
-# 产物: .cache/pgo/<平台>/merged.profdata
-#   mozconfig 以 $PWD/../.cache/pgo/<平台>/merged.profdata 引用；
+# 产物: ~/.cache/vantage-pgo/<平台>/merged.profdata
+#   mozconfig 以 $HOME/.cache/vantage-pgo/<平台>/merged.profdata 引用；
 #   ⚠️ 文件缺失时 mozconfig 会自动跳过 PGO（便于随时回退，构建不受影响）。
+# 说明: 缓存在 $HOME 下（不在仓库/workspace 内），CI 每次清空 workspace 也不会重下。
 #
 # 环境变量:
 #   VANTAGE_PGO_BRANCH   上游分支（默认 mozilla-esr153）
+#   VANTAGE_PGO_CACHE    缓存目录（默认 $HOME/.cache/vantage-pgo）
 #   VANTAGE_PGO_FORCE=1  已存在也强制重新拉取
 # ==========================================
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 ESR_BRANCH="${VANTAGE_PGO_BRANCH:-mozilla-esr153}"
-CACHE_DIR="$REPO_ROOT/.cache/pgo"
+CACHE_DIR="${VANTAGE_PGO_CACHE:-$HOME/.cache/vantage-pgo}"
 TC_INDEX="https://firefox-ci-tc.services.mozilla.com/api/index/v1/task"
 TC_QUEUE="https://firefox-ci-tc.services.mozilla.com/api/queue/v1/task"
 

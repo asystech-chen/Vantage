@@ -52,8 +52,8 @@ mk_add_options MOZ_PARALLEL_BUILD=16
 # LTO（thin）。不用 cross 跨语言：本地 rustc LLVM22 ≠ bootstrap clang LLVM21
 ac_add_options --enable-lto=thin
 # PGO：复用 Mozilla 官方 profile（缺失则自动跳过，便于随时回退）
-# 先跑 scripts/fetch-pgo-profile.sh windows-arm64 生成 .cache/pgo/win64-aarch64/merged.profdata
-VANTAGE_PGO_PROFILE="$PWD/../.cache/pgo/win64-aarch64/merged.profdata"
+# 先跑 scripts/fetch-pgo-profile.sh windows-arm64 生成 ~/.cache/vantage-pgo/win64-aarch64/merged.profdata
+VANTAGE_PGO_PROFILE="$HOME/.cache/vantage-pgo/win64-aarch64/merged.profdata"
 if [ -f "$VANTAGE_PGO_PROFILE" ]; then
     ac_add_options --enable-profile-use=cross
     ac_add_options --with-pgo-profile-path="$VANTAGE_PGO_PROFILE"
