@@ -42,8 +42,7 @@ Vantage 已迁移至 **Firefox ESR（Extended Support Release）** 通道，当�
 
 | 优先级 | 功能 | 实现方式 | 状态 |
 |:---:|---|------|:---:|
-| 🛠 | 复制为 Markdown 链接 | 右键菜单扩展 | 计划中 |
-| 🛠 | 右键关闭标签页 | CSS 注入 | 计划中 |
+| 🛠 | 复制为 Markdown 链接 | autoconfig 注入（页面 / 链接 / 标签页右键菜单） | 已实现（待验证） |
 | 💭 | 下载完成提示音 | autoconfig observer | 评估中 |
 
 ---
