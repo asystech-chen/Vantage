@@ -67,6 +67,13 @@ export SDKROOT="$CCTOOLS/SDK/MacOSX26.1.sdk"
 # ccache (if available)
 # ---- 编译加速 ----
 mk_add_options MOZ_PARALLEL_BUILD=24
+# PGO：复用 Mozilla 官方 profile（缺失则自动跳过，便于随时回退）
+# 先跑 scripts/fetch-pgo-profile.sh macos-arm64 生成 .cache/pgo/macosx64-aarch64/merged.profdata
+VANTAGE_PGO_PROFILE="$PWD/../.cache/pgo/macosx64-aarch64/merged.profdata"
+if [ -f "$VANTAGE_PGO_PROFILE" ]; then
+    ac_add_options --enable-profile-use=cross
+    ac_add_options --with-pgo-profile-path="$VANTAGE_PGO_PROFILE"
+fi
 
 if command -v ccache >/dev/null 2>&1; then
     ac_add_options --with-ccache

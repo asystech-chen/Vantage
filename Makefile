@@ -259,7 +259,9 @@ package :
 	    echo "    Cleaned winupdater entries from $$MF"; \
 	  fi; \
 	fi
-	(cd $(lw_source_dir) && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales)
+	# Vantage 体积优化：仅打包我们维护的 6 个语言包（回退：恢复下一行注释即可）
+	# 原行为: (cd $(lw_source_dir) && cat browser/locales/shipped-locales | xargs ./mach package-multi-locale --locales)
+	(cd $(lw_source_dir) && ./mach package-multi-locale --locales en-US en-GB en-CA zh-CN zh-MS zh-TW)
 	@if [ -n "$(WIN_VARIANT)" ]; then \
 	  OBJDIR=$$(ls -td $(lw_source_dir)/obj-*pc-windows* 2>/dev/null | head -1); \
 	else \

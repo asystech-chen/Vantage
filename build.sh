@@ -231,6 +231,11 @@ build_target() {
     ./scripts/setup-7zsfx.sh || red "⚠️ setup-7zsfx.sh 失败（非致命，安装器可能带 Firefox stub）"
   fi
 
+  # PGO：按平台拉取 Mozilla 官方 profile（拉取失败/缺失时，mozconfig 会自动跳过 PGO，构建不受影响）
+  if [ -x "$REPO_ROOT/scripts/fetch-pgo-profile.sh" ]; then
+    "$REPO_ROOT/scripts/fetch-pgo-profile.sh" "$key" || yellow "⚠️  PGO profile 拉取失败：本次不使用 PGO"
+  fi
+
   # Step 2: 编译
   green ">>> [2/3] 编译 (make build)..."
   make build || { red "❌ $label 编译失败"; return 1; }

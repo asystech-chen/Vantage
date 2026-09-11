@@ -46,6 +46,8 @@ export CXXFLAGS="-ftrivial-auto-var-init=zero -fwrapv"
 # ---- 编译加速 ----
 mk_add_options MOZ_PARALLEL_BUILD=24
 ac_add_options --enable-linker=lld
+# LTO（thin）。不用 cross 跨语言：本地 rustc LLVM22 ≠ bootstrap clang LLVM21
+ac_add_options --enable-lto=thin
 
 if command -v ccache >/dev/null 2>&1; then
     ac_add_options --with-ccache
