@@ -399,7 +399,7 @@ export const GenAI = {
    */
   async addAskChatItems(browser, extraContext, itemAdder, entry, cleanup) {
     // Prepare context used for both targeting and handling prompts
-    const window = browser.ownerGlobal;
+    const window = browser.documentGlobal;
     const tab = window?.gBrowser?.getTabForBrowser(browser);
     const uri = browser.currentURI;
     const context = {
@@ -528,7 +528,7 @@ export const GenAI = {
         return button;
       };
 
-      const browser = document.ownerGlobal.gBrowser.selectedBrowser;
+      const browser = document.documentGlobal.gBrowser.selectedBrowser;
       const context = await this.addAskChatItems(
         browser,
         aiActionButton.data,
@@ -657,13 +657,13 @@ export const GenAI = {
       !browser ||
       this.ignoredInputs.has(data.inputType) ||
       !lazy.chatShortcuts ||
-      lazy.AIWindow.isAIWindowActive(browser.ownerGlobal) ||
+      lazy.AIWindow.isAIWindowActive(browser.documentGlobal) ||
       !this.canShowChatEntrypoint
     ) {
       return;
     }
 
-    const window = browser.ownerGlobal;
+    const window = browser.documentGlobal;
     const { document, devicePixelRatio } = window;
     const aiActionButton = document.getElementById("ai-action-button");
     this.initializeAIShortcut(aiActionButton);
@@ -760,8 +760,8 @@ export const GenAI = {
     if (
       uri?.startsWith("moz-extension:") ||
       lazy.AIWindow.isAIWindowActive(
-        browser.ownerGlobal?.browsingContext?.topChromeWindow ??
-          browser.ownerGlobal
+        browser.documentGlobal?.browsingContext?.topChromeWindow ??
+          browser.documentGlobal
       )
     ) {
       showItem(menu, false);
@@ -770,7 +770,7 @@ export const GenAI = {
 
     // Popups don't have a sidebar, so don't show the menu.
     // Also, it's not useful for most Document Picture-in-Picture API use-cases.
-    const isPopup = !browser.ownerGlobal.toolbar.visible;
+    const isPopup = browser.documentGlobal.toolbar?.visible === false;
     if (browser.browsingContext?.isDocumentPiP || isPopup) {
       showItem(menu, false);
       return;
@@ -878,7 +878,7 @@ export const GenAI = {
         );
       }
       openItem.addEventListener("command", () => {
-        const window = browser.ownerGlobal;
+        const window = browser.documentGlobal;
         window.SidebarController.show("viewGenaiChatSidebar");
         Glean.genaiChatbot.contextmenuChoose.record({
           provider: this.getProviderId(),
