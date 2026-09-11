@@ -86,6 +86,13 @@ var gLibrewolfPane = {
         list.push("aichat");
         Services.prefs.setStringPref(SIDEBAR_TOOLS, list.join());
       }
+      // 同步 Firefox 官方「AI 控件」状态：上游语义下开启聊天机器人会把
+      // browser.ai.control.sidebarChatbot 置 available，否则官方 AI 设置页
+      // （about:preferences#ai）会把它显示成“已阻止”，与这里不一致。
+      Services.prefs.setStringPref(
+        "browser.ai.control.sidebarChatbot",
+        "available"
+      );
       const win =
         window.browsingContext?.topChromeWindow ||
         Services.wm.getMostRecentWindow("navigator:browser");
