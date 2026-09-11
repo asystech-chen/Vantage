@@ -240,14 +240,14 @@ def librewolf_patches():
     exec('cp ../patches/pref-pane/librewolf.js browser/components/preferences/librewolf.js')
     
     #
-    # Vantage AI sidebar: copy brand icons for new providers
+    # Vantage AI sidebar: brand icons for new providers (new files, no patch)
+    # 注意：GenAI.sys.mjs / chat.js / genai.ftl 的供应商定制已改为
+    # patches/vantage-ai-sidebar.patch（随 assets/patches.txt 应用），
+    # 不再整文件覆盖，以免与上游漂移。
     #
     exec('cp -v ../patches/ai-svg/deepseek-color.svg browser/components/genai/assets/brands/deepseek.svg')
     exec('cp -v ../patches/ai-svg/qwen-color.svg browser/components/genai/assets/brands/qwen.svg')
     exec('cp -v ../patches/ai-svg/doubao-color.svg browser/components/genai/assets/brands/doubao.svg')
-    exec("cp -v ../browser/components/genai/chat.js browser/components/genai/chat.js")
-    exec("cp -v ../browser/components/genai/GenAI.sys.mjs browser/components/genai/GenAI.sys.mjs")
-    exec("cp -v ../browser/components/genai/genai.ftl browser/locales/en-US/browser/genai.ftl")
 
     # provide a script that fetches and bootstraps Nightly and some mozconfigs
     exec('cp -v ../scripts/mozfetch.sh lw/')

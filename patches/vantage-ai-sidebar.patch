@@ -1,6 +1,8 @@
---- a/browser/components/genai/GenAI.sys.mjs	2026-06-11 16:29:47.364357447 +0800
-+++ b/browser/components/genai/GenAI.sys.mjs	2026-06-11 16:30:13.149653064 +0800
-@@ -82,7 +82,7 @@
+diff --git a/browser/components/genai/GenAI.sys.mjs b/browser/components/genai/GenAI.sys.mjs
+index 1f2d982..670aea4 100644
+--- a/browser/components/genai/GenAI.sys.mjs
++++ b/browser/components/genai/GenAI.sys.mjs
+@@ -85,7 +85,7 @@ XPCOMUtils.defineLazyPreferenceGetter(
    lazy,
    "chatProviders",
    "browser.ml.chat.providers",
@@ -9,8 +11,7 @@
    reorderChatProviders
  );
  XPCOMUtils.defineLazyPreferenceGetter(
-@@ -144,8 +144,49 @@
-   // Any chat provider can be used and those that match the URLs in this object
+@@ -145,6 +145,44 @@ export const GenAI = {
    // will allow for additional UI shown such as populating dropdown with a name,
    // showing links, and other special behaviors needed for individual providers.
    chatProviders: new Map([
@@ -22,7 +23,6 @@
 +        id: "deepseek",
 +        link1: "https://chat.deepseek.com/downloads/deepseek-terms",
 +        link2: "https://chat.deepseek.com/downloads/deepseek-privacy",
-+        linksId: "genai-settings-chat-deepseek-links",
 +        maxLength: 8192,
 +        name: "DeepSeek",
 +        tooltipId: "genai-onboarding-deepseek-tooltip",
@@ -35,7 +35,6 @@
 +        id: "qwen",
 +        link1: "https://chat.qwen.ai/terms-of-service",
 +        link2: "https://chat.qwen.ai/privacy-policy",
-+        linksId: "genai-settings-chat-qwen-links",
 +        maxLength: 8192,
 +        name: "Qwen",
 +        tooltipId: "genai-onboarding-qwen-tooltip",
@@ -48,7 +47,6 @@
 +        id: "doubao",
 +        link1: "https://www.doubao.com/legal/terms",
 +        link2: "https://www.doubao.com/legal/privacy",
-+        linksId: "genai-settings-chat-doubao-links",
 +        maxLength: 8192,
 +        name: "豆包",
 +        tooltipId: "genai-onboarding-doubao-tooltip",
@@ -58,11 +56,11 @@
      [
        "https://claude.ai/new",
        {
-         iconUrl: "chrome://browser/content/genai/assets/brands/claude.svg",
-@@ -170,19 +211,6 @@
+@@ -177,19 +215,6 @@ export const GenAI = {
+         tooltipId: "genai-onboarding-chatgpt-tooltip",
        },
      ],
-     [
+-    [
 -      "https://copilot.microsoft.com/?form=MOZCMC",
 -      {
 -        iconUrl: "chrome://browser/content/genai/assets/brands/copilot.svg",
@@ -75,24 +73,41 @@
 -        tooltipId: "genai-onboarding-copilot-tooltip",
 -      },
 -    ],
--    [
+     [
        "https://gemini.google.com",
        {
-         header: "X-Firefox-Gemini",
-
---- a/browser/locales/en-US/browser/genai.ftl	2026-06-11 16:28:21.388017189 +0800
-+++ b/browser/locales/en-US/browser/genai.ftl	2026-06-11 16:31:04.476224544 +0800
-@@ -5,6 +5,9 @@
- ## Generative AI (GenAI) Settings section
- 
- genai-settings-chat-chatgpt-links = By choosing ChatGPT, you agree to the OpenAI <a data-l10n-name="link1">Terms of Use</a> and <a data-l10n-name="link2">Privacy Policy</a>.
-+genai-settings-chat-deepseek-links = By choosing DeepSeek, you agree to the DeepSeek <a data-l10n-name="link1">Terms of Service</a> and <a data-l10n-name="link2">Privacy Policy</a>.
-+genai-settings-chat-qwen-links = By choosing Qwen, you agree to the Qwen <a data-l10n-name="link1">Terms of Service</a> and <a data-l10n-name="link2">Privacy Policy</a>.
-+genai-settings-chat-doubao-links = By choosing 豆包, you agree to the Doubao <a data-l10n-name="link1">Terms of Service</a> and <a data-l10n-name="link2">Privacy Policy</a>.
- genai-settings-chat-claude-links = By choosing Anthropic Claude, you agree to the Anthropic <a data-l10n-name="link1">Consumer Terms of Service</a>, <a data-l10n-name="link2">Usage Policy</a>, and <a data-l10n-name="link3">Privacy Policy</a>.
- genai-settings-chat-copilot-links = By choosing Copilot, you agree to the <a data-l10n-name="link1">Copilot AI Experiences Terms</a> and <a data-l10n-name="link2">Microsoft Privacy Statement</a>.
- genai-settings-chat-gemini-links = By choosing Google Gemini, you agree to the <a data-l10n-name="link1">Google Terms of Service</a>, <a data-l10n-name="link2">Generative AI Prohibited Use Policy</a>, and <a data-l10n-name="link3">Gemini Apps Privacy Notice</a>.
-@@ -157,6 +160,12 @@
+diff --git a/browser/components/genai/chat.js b/browser/components/genai/chat.js
+index 60380a9..ad8e505 100644
+--- a/browser/components/genai/chat.js
++++ b/browser/components/genai/chat.js
+@@ -323,6 +323,14 @@ var browserPromise = new Promise((resolve, reject) => {
+           provider: lazy.GenAI.getProviderId(),
+         });
+       });
++      const provider = lazy.GenAI.chatProviders.get(lazy.providerPref);
++      const summarizeContainer = document.getElementById("summarize-btn-container");
++      if (provider?.supportAutoSubmit) {
++        summarizeContainer.hidden = false;
++      } else {
++        summarizeContainer.hidden = true;
++      }
++
+       document
+         .getElementById("summarize-button")
+         .addEventListener("click", async () => {
+@@ -406,6 +414,7 @@ function showOnboarding(length) {
+           action: { type: ACTIONS.CHATBOT_SELECT, config },
+           id: config.id,
+           label: config.name,
++          icon: { background: "url(" + config.iconUrl + ") no-repeat center/contain", width: "32px", height: "32px" },
+           tooltip: { string_id: config.tooltipId },
+         })),
+         // Default to nothing selected
+diff --git a/browser/locales/en-US/browser/genai.ftl b/browser/locales/en-US/browser/genai.ftl
+index d70cbff..e46eda0 100644
+--- a/browser/locales/en-US/browser/genai.ftl
++++ b/browser/locales/en-US/browser/genai.ftl
+@@ -162,6 +162,12 @@ genai-onboarding-choose-header = Choose an AI chatbot to use in the { -brand-sho
  genai-onboarding-choose-description = Switch anytime. For help choosing, <a data-l10n-name="learn-more">learn more about each chatbot</a>.
  genai-onboarding-primary = Continue
  genai-onboarding-secondary = Close
@@ -105,5 +120,3 @@
  genai-onboarding-claude-tooltip =
      .title = Anthropic Claude
  genai-onboarding-chatgpt-tooltip =
-
---- a/browser/components/genai/chat.js
