@@ -596,6 +596,7 @@ package-rpm : clean-packaging
 		--rpm-os linux \
 		--rpm-compression xzmt \
 		--architecture $(RPM_ARCH) \
+		--rpm-autoreqprov \
 		--description "$(APP_DISPLAY_NAME) Web Browser" \
 		--maintainer "Vantage Build" \
 		--url "https://vantage.local" \
