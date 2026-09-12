@@ -178,7 +178,7 @@ ccache -s              # 看命中率
 | `make build` | `mach build`（并行度由 mozconfig 或 `VANTAGE_JOBS` 决定） |
 | `make package` | 基础打包（tar / NSIS / dmg） |
 | `make package-all` | Linux：deb + rpm + AppImage + portable.tar.gz（+ 签名） |
-| `make package-msix` | Windows：msix 预打包 |
+| `make package-msix` | Windows：msix 成品（本地生成暂存目录 → home-nas 远程 makeappx 封包 → 拉回，详见 `docs/MSIX-PACKAGING.md`） |
 | `make checksum` | 生成 `SHA256SUMS` |
 | `make bootstrap` | mach bootstrap 初始化 |
 | `make clean` / `veryclean` / `distclean` | 见 §9 |
@@ -302,8 +302,8 @@ rustup target add --toolchain 1.94.1 x86_64-pc-windows-msvc aarch64-pc-windows-m
 - 走 `--target=*-pc-windows-msvc` + `--enable-bootstrap`（clang-cl / MSVC headers / Windows SDK 自动下载）
 - 宿主需要 **wine**（MSVC 工具链是 Windows 程序）
 - `MOZ_PARALLEL_BUILD=16`（Windows 目标别开 24，内存扛不住）
-- 流程额外包含：WinUpdater 打包 + `make package-msix`
-- 产物：`*-installer.exe`、`*.win-<arch>.portable.zip`、`*.msix-prepackage.zip`（预打包，不发布）
+- 流程额外包含：WinUpdater 打包 + `make package-msix`（本地暂存 → home-nas 封包 → 拉回，详见 `docs/MSIX-PACKAGING.md`）
+- 产物：`*-installer.exe`、`*.win-<arch>.portable.zip`、`*.msix`（**会随 release 发布**）、`*.msix-prepackage.zip`（中间产物，不发布）
 
 ### 6.5 macOS（已放弃）
 
@@ -317,7 +317,7 @@ rustup target add --toolchain 1.94.1 x86_64-pc-windows-msvc aarch64-pc-windows-m
 |------|------|------|
 | `make package` | 基础包（tar / NSIS / dmg） | 全平台 |
 | `make package-all` | deb / rpm / AppImage / portable.tar.gz + GPG 签名 | Linux |
-| `make package-msix` | msix 预打包（上传 release 时排除） | Windows |
+| `make package-msix` | msix 成品（本地暂存 + home-nas 封包），`*.msix-prepackage.zip` 中间产物不发布 | Windows |
 | `make checksum` | `SHA256SUMS` | 全平台 |
 
 - GPG 私钥：`$HOME/vantage-repo-private-key.asc`，Key ID `907587D2812D7F8C`；产物 `SHA256SUMS.asc`
@@ -394,7 +394,7 @@ rustup toolchain uninstall 1.94.1
 - **触发**：push tag `v*` → 自动构建 **5 平台**（linux-x64/arm64/loong64、windows-x64/arm64）；`workflow_dispatch` 可手动选
 - **Runner**：self-hosted `vantage-builder`（标签 `vantage-builder`），先增量同步本地 mirror `/home/chen/git/vantage.git` 再 checkout，失败回退直连 GitHub
 - **授权**：仅 `asystech-chen` / `Liangchenxu` 可触发
-- **发布**：以构建生成的 `SHA256SUMS` 为权威清单 `gh release upload`，4 并发；跳过 `*.msix*` 预打包产物；release notes 由 `CHANGELOG.md` 按版本提取
+- **发布**：以构建生成的 `SHA256SUMS` 为权威清单 `gh release upload`，4 并发；跳过 `*.msix-prepackage.zip` 中间产物（成品 `*.msix` 正常发布）；release notes 由 `CHANGELOG.md` 按版本提取
 - **CI 侧注意**：
   - `build.sh` 会**自动**拉 PGO profile、检查 rust（runner 已预装 rust 1.94.1 + 交叉 target）
   - PGO 缓存在 `$HOME/.cache/vantage-pgo`（CI 会 `rm -rf $GITHUB_WORKSPACE/*`，放 `$HOME` 下可跨构建保留）

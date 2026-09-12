@@ -325,21 +325,52 @@ MSIX_PUBLISHER ?= CN=Vantage, O=Vantage, L=Beijing, C=CN
 MSIX_PUBLISHER_DISPLAY ?= Vantage Browser
 MSIX_IDENTITY ?= Vantage.VantageBrowser
 
+# 预打包后是否自动走远程封包（home-nas）。0 = 只留 *.msix-prepackage.zip
+MSIX_REMOTE ?= 1
+MSIX_REMOTE_HOST ?= home-nas
+MSIX_REMOTE_DIR ?= D:/vantage-msix
+
+# MSIX 目标架构：优先命令行 MSIX_ARCH=x86_64|aarch64；
+# 否则从 MOZCONFIG 的 --target= 推导（build.sh 会导出 MOZCONFIG）；
+# 都没有时回退到"最新修改的 Windows objdir"。
+MSIX_ARCH ?= $(shell \
+  mozcfg="$(MOZCONFIG)"; \
+  [ -z "$$mozcfg" ] && mozcfg="$(lw_source_dir)/.mozconfig"; \
+  if [ -f "$$mozcfg" ]; then \
+    grep -oE 'target=[^[:space:]]*' "$$mozcfg" 2>/dev/null | grep -oE '(x86_64|aarch64)' | head -1; \
+  fi)
+
+# mach 的 MSIX 暂存槽位写死为 msix-temp-<channel>，不区分架构；
+# 双架构编译时后完成的会留下残留污染 → 每次打包前先清空该槽位。
+MSIX_STAGE_DIR := $$HOME/.mozbuild/cache/mach-msix/msix-temp-unofficial
+
 package-msix :
-	@OBJDIR=$$(ls -td $(lw_source_dir)/obj-*pc-windows* 2>/dev/null | head -1); \
+	@ARCH_T="$(MSIX_ARCH)"; \
+	if [ -z "$$ARCH_T" ]; then \
+	  OBJDIR=$$(ls -td $(lw_source_dir)/obj-*pc-windows* 2>/dev/null | head -1); \
+	  ARCH_T="$$(basename "$$OBJDIR" | grep -oE 'x86_64|aarch64' | head -1)"; \
+	  echo ">>> [MSIX] 未指定 MSIX_ARCH，按最新 objdir 推断: $$ARCH_T"; \
+	else \
+	  OBJDIR="$(lw_source_dir)/obj-$$ARCH_T-pc-windows-msvc"; \
+	fi; \
+	case "$$ARCH_T" in x86_64|aarch64) ;; *) echo "错误: 无法确定架构 ($$ARCH_T)，请传 MSIX_ARCH=x86_64|aarch64"; exit 1 ;; esac; \
+	if [ ! -d "$$OBJDIR" ]; then echo "错误: 找不到 objdir: $$OBJDIR（请先编译该架构）"; exit 1; fi; \
 	WIN_ZIP=$$(ls -t $$OBJDIR/dist/*.zip 2>/dev/null | grep -v xpt_artifacts | head -1); \
 	if [ -z "$$WIN_ZIP" ]; then \
-	  echo "错误: 找不到 Windows dist .zip，请先运行 'make package'"; \
+	  echo "错误: 找不到 $$ARCH_T 的 Windows dist .zip，请先运行 'make package'"; \
 	  exit 1; \
 	fi; \
-	ARCH="$$(echo $$OBJDIR | grep -oE 'x86_64|aarch64' | head -1)"; \
+	ARCH="$$ARCH_T"; \
 	ABS_ZIP="$$(realpath "$$WIN_ZIP")"; \
 	ABS_OUT="$$(realpath .)/$(APP_NAME)-$(version)-$(release).$$ARCH.msix"; \
 	PREPKG_ZIP="$$(realpath .)/$(APP_NAME)-$(version)-$(release).$$ARCH.msix-prepackage.zip"; \
-	echo ">>> [MSIX] 输入: $$ABS_ZIP ($$ARCH)"; \
+	echo ">>> [MSIX] 架构: $$ARCH"; \
+	echo "    输入: $$ABS_ZIP"; \
 	echo "    Publisher: $(MSIX_PUBLISHER)"; \
 	echo "    Identity:  $(MSIX_IDENTITY)"; \
-	MKX="$$(realpath scripts/wine-makeappx)"; \
+	MKX="$$(realpath $(CURDIR)/scripts/msix-stage-shim)"; \
+	echo ">>> [MSIX] 清空 mach 暂存槽位（避免上一架构残留混入）..."; \
+	rm -rf "$(MSIX_STAGE_DIR)" "$(MSIX_STAGE_DIR)".prev* ; \
 	cd $(lw_source_dir) && ./mach repackage msix \
 	    --input "$$ABS_ZIP" \
 	    --channel unofficial \
@@ -350,24 +381,33 @@ package-msix :
 	    --arch $$ARCH \
 	    --unsigned \
 	    --makeappx "$$MKX" \
-	    --output "$$ABS_OUT" 2>&1 || true; \
-	MSIX_DIR=$$(ls -td $$HOME/.mozbuild/cache/mach-msix/msix-temp-* 2>/dev/null | head -1); \
+	    --output "$$ABS_OUT"; \
+	MSIX_DIR="$$(ls -td $(MSIX_STAGE_DIR) 2>/dev/null | head -1)"; \
 	if [ -z "$$MSIX_DIR" ]; then \
-	  echo ">>> [MSIX] 预打包目录未生成"; exit 1; \
+	  echo "错误: mach 预打包目录未生成"; exit 1; \
 	fi; \
 	cd "$$(dirname "$$MSIX_DIR")" && zip -0qr "$$PREPKG_ZIP" "$$(basename "$$MSIX_DIR")" && cd - >/dev/null; \
 	ls -lh "$$PREPKG_ZIP"; \
 	if [ -f "$$ABS_OUT" ]; then \
 	  echo ">>> [MSIX] ✅ MSIX 包已生成: $$ABS_OUT"; \
-	else \
+	elif [ "$(MSIX_REMOTE)" = "0" ]; then \
 	  echo ""; \
 	  echo "================================================"; \
-	  echo "  📦 MSIX 预打包: $$PREPKG_ZIP"; \
-	  echo "  ▶ 在 Windows 上完成最终打包:"; \
-	  echo "    1. 解压此 zip"; \
-	  echo "    2. makeappx pack /d <解压目录> /p vantage.msix /overwrite"; \
+	  echo "  📦 MSIX 预打包完成: $$PREPKG_ZIP"; \
+	  echo "  ▶ Linux 无法封包（wine 的 ntdll 缺 makeappx 依赖的 AVL API）"; \
+	  echo "    Windows 上: makeappx pack /d <解压>/msix-temp-unofficial /p x.msix /overwrite"; \
+	  echo "    或: scripts/msix-remote.sh（自动传到 home-nas 封包并拉回）"; \
 	  echo "================================================"; \
+	else \
+	  $(CURDIR)/scripts/msix-remote.sh --host "$(MSIX_REMOTE_HOST)" --dir "$(MSIX_REMOTE_DIR)" "$$PREPKG_ZIP"; \
 	fi
+
+# 把仓库根最新的 *.msix-prepackage.zip 送去打包机封包并拉回（也可单独调用）
+package-msix-remote :
+	@@PREPKG=$$(ls -t $(APP_NAME)-$(version)-$(release).*.msix-prepackage.zip 2>/dev/null | head -1); \
+	if [ -z "$$PREPKG" ]; then echo "错误: 仓库根找不到 *.msix-prepackage.zip，先跑 'make package-msix'"; exit 1; fi; \
+	$(CURDIR)/scripts/msix-remote.sh --host "$(MSIX_REMOTE_HOST)" --dir "$(MSIX_REMOTE_DIR)" "$$PREPKG"
+
 checksum :
 	@echo ">>> [CHECKSUM] Generating SHA256SUMS..."
 	@rm -f SHA256SUMS SHA256SUMS.asc

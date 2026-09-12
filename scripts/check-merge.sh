@@ -68,7 +68,7 @@ VANTAGE_PATCHES=(
     "patches/vantage-ai-sidebar.patch"
     "patches/vantage-privacy-dashboard.patch"
     "patches/vantage-infobar-accent.patch"
-    "patches/dmg-fix-permissions.patch"
+    # "patches/dmg-fix-permissions.patch"  # macOS 已停止发布 → 已移入 patches/removed-patches/（需要时拉回并恢复本行）
     "patches/hide-passwordmgr.patch"
     "patches/fix-7zsfx-branding.patch"
     "patches/installer-winupdater.patch"

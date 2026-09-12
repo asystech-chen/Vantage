@@ -22,6 +22,9 @@ deb_build/
 
 # Downloaded XPI files for Windows installer
 settings/distribution/optional-extensions/*.xpi
+
+# Windows 打包产物：msix 成品 + 预打包中间产物
+*.msix
 *.msix-prepackage.zip
 *.exe
 !winupdater/Vantage-WinUpdater.exe

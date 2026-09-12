@@ -1,0 +1,20 @@
+#!/bin/sh
+# msix-stage-shim — `mach repackage msix --makeappx` 的空实现
+#
+# 为什么需要它：
+#   mach 的 repackage msix 流程分两步——
+#     ① 按模板生成 MSIX 暂存目录（AppxManifest.xml + Assets + VFS/...）
+#     ② 调用 makeappx/makemsix 把暂存目录封成 .msix
+#   Linux 上第 ② 步做不了：
+#     - 没有 makeappx（Windows SDK 工具）
+#     - wine 跑 makeappx 也不行：wine 的 ntdll 把 makeappx 依赖的
+#       RtlInitializeGenericTableAvl / RtlInsertElementGenericTableAvl 等
+#       AVL 通用表 API 实现成了空 stub → makeappx 静默 exit 1
+#       （10.0.26100 / 10.0.28000 两个版本都一样）
+#
+#   所以本仓库的做法是：Linux 只做第 ① 步（该 shim 让 mach 正常返回，
+#   不再需要 `|| true` 吞异常），第 ② 步交给 home-nas（真 Windows）执行：
+#       make package-msix-remote        # 自动传过去 → makeappx pack → 拉回来
+#
+# 该 shim 不做任何事，也不生成输出文件；封装由 scripts/msix-pack.ps1 完成。
+exit 0

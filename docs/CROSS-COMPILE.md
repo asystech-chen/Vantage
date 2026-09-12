@@ -69,7 +69,7 @@ make dir          # 准备源码树
 make build        # 编译
 make package      # 基础打包
 # Linux 额外:  make package-all   → deb/rpm/AppImage/tar.gz + GPG 签名
-# Windows 额外: make package-msix → msix 预打包产物
+# Windows 额外: make package-msix → msix 成品（本地暂存 + home-nas 远程 makeappx 封包）
 ```
 
 ---
@@ -323,13 +323,16 @@ rustup target add x86_64-pc-windows-msvc aarch64-pc-windows-msvc
 
 流程自动包含：`make package`（NSIS 安装器 + portable zip + **WinUpdater 自动打包**）→ `make package-msix`。
 
+`make package-msix` 在 Linux 上只能生成 MSIX 暂存目录（`makeappx` 在 Linux/wine 下不可用），真正的封包会**自动**通过 home-nas 上的 HTTP 服务完成，详见 `docs/MSIX-PACKAGING.md`；打包机不可达时只留 `*.msix-prepackage.zip`，不阻塞构建。
+
 ### 7.5 产物
 
 ```
 vantage-<ver>-<rel>.x86_64-installer.exe      # NSIS 安装器（多语言：自动匹配系统语言 英/简/繁）
-vantage-<ver>-<rel>.x86_64.msix-prepackage.zip # msix 预打包（CI 上传时排除）
+vantage-<ver>-<rel>.x86_64.msix               # MSIX 成品（会随 release 发布）
+vantage-<ver>-<rel>.x86_64.msix-prepackage.zip # MSIX 预打包中间产物（不发布）
 vantage-<ver>-<rel>.win-x86_64.portable.zip   # 便携版
-# arm64 同理：aarch64-installer.exe / win-aarch64.portable.zip / aarch64.msix-prepackage.zip
+# arm64 同理：aarch64-installer.exe / aarch64.msix / win-aarch64.portable.zip
 ```
 
 ### 7.6 Windows 踩坑速查
@@ -341,7 +344,7 @@ vantage-<ver>-<rel>.win-x86_64.portable.zip   # 便携版
 | WinUpdater 下载更新超时 | 默认超时太短（大版本更新） | 放宽至 1 小时（curl `--max-time 3600`） |
 | 安装器中文乱码 | locale overlay 误用 write 模式 | l10n 文件名必须用 `.inc.properties`（append 模式） |
 | NSIS helper.exe 构建失败 | 多语言预处理参数问题 | `--preprocess-multilocale` 方式生成 |
-| msix 产物上传 release | 预打包文件不该发布 | CI 上传时显式跳过 `*.msix*` |
+| msix 产物上传 release | 只该排除预打包中间产物 | CI 只跳过 `*.msix-prepackage.zip`，成品 `*.msix` 正常发布 |
 
 > 安装器相关补丁：`installer-zhcn.patch`（强制 AB_CD=zh-CN）、`installer-locale.patch`（PPL_LOCALE_ARGS 优先 zh-CN）、`installer-publisher.patch`（注册表 Publisher → Vantage）、`installer-multilang.patch`（系统语言自动匹配）、`uninstaller-cleanup.patch`（移除卸载问卷）。
 
@@ -451,7 +454,7 @@ cd ~/osx-cross/hfsplus-tools && make
 |------|------|------|
 | `make package` | 基础打包（NSIS 安装器 / dmg / tar） | 全平台 |
 | `make package-all` | deb + rpm + AppImage + portable.tar.gz，并自动 GPG 签名 | Linux |
-| `make package-msix` | msix 预打包（CI 上传时排除） | Windows |
+| `make package-msix` | msix 成品（本地暂存 + 远程封包） | Windows |
 | `make checksum` | 生成 SHA256SUMS（build.sh 自动执行） | 全平台 |
 
 ### 9.2 GPG 签名
@@ -474,7 +477,7 @@ cd ~/osx-cross/hfsplus-tools && make
 - **触发**：push tag `v*` → 自动构建 **5 平台**（linux-x64 / linux-arm64 / linux-loong64 / windows-x64 / windows-arm64）；`workflow_dispatch` 可手动勾选全部 **7 平台**
 - **Runner**：self-hosted `vantage-builder`（本机），先同步本地 mirror（`/home/chen/git/vantage.git` 增量 fetch）再 checkout，mirror 失败回退直连 GitHub
 - **授权**：仅 `asystech-chen` / `Liangchenxu` 可触发
-- **发布**：以构建生成的 SHA256SUMS 为权威清单上传 release 资产（`gh release` 显式指定 `GH_REPO`，避免本地 mirror remote 导致创建失败），4 并发上传；跳过 `*.msix*` 预打包产物；release notes 从 CHANGELOG.md 按版本提取
+- **发布**：以构建生成的 SHA256SUMS 为权威清单上传 release 资产（`gh release` 显式指定 `GH_REPO`，避免本地 mirror remote 导致创建失败），4 并发上传；只跳过 `*.msix-prepackage.zip` 中间产物（成品 `*.msix` 正常发布）；release notes 从 CHANGELOG.md 按版本提取
 - 辅助：`winget.yml`（Windows 上架 winget）、`release.yml`
 
 ---

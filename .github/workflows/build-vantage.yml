@@ -88,6 +88,11 @@ jobs:
 
       - name: Build
         timeout-minutes: 1440
+        env:
+          # MSIX 封包走 home-nas 上的 HTTP 服务（scripts/msix-remote.sh）
+          # MSIX_TOKEN 在仓库 Settings → Secrets 里配置；未配置时该步会跳过封包（不阻塞构建）
+          MSIX_TOKEN: ${{ secrets.MSIX_TOKEN }}
+          MSIX_URL: ${{ vars.MSIX_URL }}
         run: |
           if [ "${{ github.event_name }}" = "push" ]; then
             TARGETS="linux-x64 linux-arm64 linux-loong64 windows-x64 windows-arm64"
@@ -115,7 +120,7 @@ jobs:
           fi
 
           # 收集构建产物：以构建生成的 SHA256SUMS 为权威清单（自动匹配当前版本），
-          # 只上传正式发布资产，排除 msix 预打包产物
+          # 只排除 msix 预打包中间产物（*.msix-prepackage.zip），成品 *.msix 正常发布
           VERSION="${TAG#v}"
           shopt -s nullglob
           RELEASE_ASSETS=()
@@ -125,8 +130,8 @@ jobs:
             while read -r _ f; do
               [ -n "$f" ] || continue
               case "$f" in
-                *.msix|*.msix-prepackage.zip)
-                  echo "⏭️ 跳过 msix 预打包产物: $f"
+                *.msix-prepackage.zip)
+                  echo "⏭️ 跳过 msix 预打包中间产物: $f"
                   continue
                   ;;
               esac

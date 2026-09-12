@@ -43,7 +43,7 @@ jobs:
           fi
 
           # 收集构建产物：以构建生成的 SHA256SUMS 为权威清单（自动匹配当前版本），
-          # 只上传正式发布资产，排除 msix 预打包产物
+          # 只排除 msix 预打包中间产物（*.msix-prepackage.zip），成品 *.msix 正常发布
           shopt -s nullglob
           RELEASE_ASSETS=()
           FOUND=0
@@ -52,8 +52,8 @@ jobs:
             while read -r _ f; do
               [ -n "$f" ] || continue
               case "$f" in
-                *.msix|*.msix-prepackage.zip)
-                  echo "⏭️ 跳过 msix 预打包产物: $f"
+                *.msix-prepackage.zip)
+                  echo "⏭️ 跳过 msix 预打包中间产物: $f"
                   continue
                   ;;
               esac
