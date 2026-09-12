@@ -528,7 +528,7 @@ APP_DISPLAY_NAME := Vantage
 
 # 通用清理
 clean-packaging :
-	@rm -rf deb_build rpm_build AppDir
+	@rm -rf deb_build rpm_build AppDir .rpm-post-install.sh .rpm-post-remove.sh
 
 # 打包为 .deb (Debian/Ubuntu/Mint)
 package-deb : clean-packaging
@@ -536,6 +536,7 @@ package-deb : clean-packaging
 	@echo ">>> [DEB] Creating package from $(BINARY_TARBALL)..."
 	@mkdir -p deb_build/opt/$(APP_NAME)
 	@mkdir -p deb_build/DEBIAN
+	@mkdir -p deb_build/usr/bin
 	@mkdir -p deb_build/usr/share/icons/hicolor/128x128/apps
 	@mkdir -p deb_build/usr/share/applications
 	@tar -xf $(BINARY_TARBALL) -C deb_build/opt/$(APP_NAME) --strip-components=1
@@ -550,6 +551,7 @@ package-deb : clean-packaging
 	@echo '#!/bin/sh' > deb_build/opt/$(APP_NAME)/$(APP_NAME).sh
 	@echo 'exec /opt/$(APP_NAME)/$(APP_NAME) "$$@"' >> deb_build/opt/$(APP_NAME)/$(APP_NAME).sh
 	@chmod +x deb_build/opt/$(APP_NAME)/$(APP_NAME).sh
+	@ln -sf /opt/$(APP_NAME)/$(APP_NAME) deb_build/usr/bin/$(APP_NAME)
 	@if [ -f "$(LW_ICON)" ]; then cp "$(LW_ICON)" deb_build/usr/share/icons/hicolor/128x128/apps/$(APP_NAME).png; fi
 	@echo '[Desktop Entry]' > deb_build/usr/share/applications/$(APP_NAME).desktop
 	@echo 'Name=$(APP_DISPLAY_NAME)' >> deb_build/usr/share/applications/$(APP_NAME).desktop
@@ -571,7 +573,25 @@ package-rpm : clean-packaging
 		exit 1; \
 	fi
 	@mkdir -p rpm_build/opt/$(APP_NAME)
+	@mkdir -p rpm_build/usr/share/icons/hicolor/128x128/apps
+	@mkdir -p rpm_build/usr/share/applications
 	@tar -xf $(BINARY_TARBALL) -C rpm_build/opt/$(APP_NAME) --strip-components=1
+	@echo '#!/bin/sh' > rpm_build/opt/$(APP_NAME)/$(APP_NAME).sh
+	@echo 'exec /opt/$(APP_NAME)/$(APP_NAME) "$$@"' >> rpm_build/opt/$(APP_NAME)/$(APP_NAME).sh
+	@chmod +x rpm_build/opt/$(APP_NAME)/$(APP_NAME).sh
+	@if [ -f "$(LW_ICON)" ]; then cp "$(LW_ICON)" rpm_build/usr/share/icons/hicolor/128x128/apps/$(APP_NAME).png; fi
+	@echo '[Desktop Entry]' > rpm_build/usr/share/applications/$(APP_NAME).desktop
+	@echo 'Name=$(APP_DISPLAY_NAME)' >> rpm_build/usr/share/applications/$(APP_NAME).desktop
+	@echo 'Exec=/opt/$(APP_NAME)/$(APP_NAME).sh' >> rpm_build/usr/share/applications/$(APP_NAME).desktop
+	@echo 'Icon=$(APP_NAME)' >> rpm_build/usr/share/applications/$(APP_NAME).desktop
+	@echo 'Type=Application' >> rpm_build/usr/share/applications/$(APP_NAME).desktop
+	@echo 'Categories=Network;WebBrowser;' >> rpm_build/usr/share/applications/$(APP_NAME).desktop
+	@printf '#!/bin/sh\n' > .rpm-post-install.sh
+	@printf 'ln -sf /opt/$(APP_NAME)/$(APP_NAME) /usr/bin/$(APP_NAME)\n' >> .rpm-post-install.sh
+	@printf 'command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database /usr/share/applications >/dev/null 2>&1 || true\n' >> .rpm-post-install.sh
+	@printf 'command -v gtk-update-icon-cache >/dev/null 2>&1 && gtk-update-icon-cache -qtf /usr/share/icons/hicolor >/dev/null 2>&1 || true\n' >> .rpm-post-install.sh
+	@printf '#!/bin/sh\n' > .rpm-post-remove.sh
+	@printf 'rm -f /usr/bin/$(APP_NAME)\n' >> .rpm-post-remove.sh
 	@fpm --force -s dir -t rpm -n $(APP_NAME) -v $(version) --iteration $(release) \
 		--rpm-os linux \
 		--rpm-compression xzmt \
@@ -579,9 +599,12 @@ package-rpm : clean-packaging
 		--description "$(APP_DISPLAY_NAME) Web Browser" \
 		--maintainer "Vantage Build" \
 		--url "https://vantage.local" \
+		--after-install .rpm-post-install.sh \
+		--after-remove .rpm-post-remove.sh \
 		-p $(APP_NAME)-$(version)-$(release).$(RPM_ARCH).rpm \
 		-C rpm_build \
-		opt/$(APP_NAME)
+		opt/$(APP_NAME) usr/share/applications usr/share/icons
+	@rm -f .rpm-post-install.sh .rpm-post-remove.sh
 	@echo ">>> [RPM] Done: $(APP_NAME)-$(version)-$(release).$(RPM_ARCH).rpm"
 	@rm -rf rpm_build
 
