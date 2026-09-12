@@ -166,15 +166,16 @@ jobs:
           ' CHANGELOG.md > /tmp/release-notes.md
 
           # 先建 release（不带资产），再并行上传各文件（规避单连接限速）
+          # 新建发布一律标记为 pre-release，待验证通过后手动转正（GitHub 页面取消勾选 / gh release edit --prerelease=false）
           if [ -s /tmp/release-notes.md ]; then
             echo "使用 CHANGELOG.md 作为发布说明"
-            gh release create "$TAG" --title "Vantage $TAG" --notes-file /tmp/release-notes.md || {
+            gh release create "$TAG" --title "Vantage $TAG" --notes-file /tmp/release-notes.md --prerelease || {
               gh release view "$TAG" >/dev/null 2>&1 || { echo "❌ release 创建失败"; exit 1; }
               echo "⚠️ release 已存在，直接上传资产"
             }
           else
             echo "CHANGELOG 中未找到 $VERSION，使用自动生成"
-            gh release create "$TAG" --title "Vantage $TAG" --generate-notes || {
+            gh release create "$TAG" --title "Vantage $TAG" --generate-notes --prerelease || {
               gh release view "$TAG" >/dev/null 2>&1 || { echo "❌ release 创建失败"; exit 1; }
               echo "⚠️ release 已存在，直接上传资产"
             }
