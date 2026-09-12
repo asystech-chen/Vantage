@@ -2866,7 +2866,11 @@ vantage-download-tmpdir-hint = 许可空到使用那系统临时目录. 选取�
 vantage-download-tmpdir-picker-title = 选取部分高速缓冲存储器目录
 vantage-doh-checkbox =
     .label = 启用 DNS 结束 HTTPS (卫生部)
-vantage-doh-description = 何时启用: DNS 查询是加密和下定决心的穿越 AliDNS. 落下回到系统 DNS 何时卫生部是得不到的, 如此内联网和 VPN 访问保持工作.
+vantage-doh-description = 何时启用: DNS 查询是加密和下定决心的穿越那 DNS 提供者选择下面 (默认: AliDNS). 落下回到系统 DNS 何时卫生部是得不到的, 如此内联网和 VPN 访问保持工作.
+vantage-doh-provider-label = DNS 提供者:
+vantage-doh-provider-custom =
+    .label = 自定义…
+vantage-doh-custom-label = 自定义 DoH URL:
 librewolf-tabs-unload-checkbox =
     .label = 睡眠非活动的标签页在...之下存储器压
 

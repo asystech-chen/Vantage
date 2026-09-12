@@ -52,7 +52,11 @@ librewolf-ipv6-checkbox =
     .label = Enable IPv6
 vantage-doh-checkbox =
     .label = Enable DNS over HTTPS (DoH)
-vantage-doh-description = When enabled: DNS queries are encrypted and resolved through AliDNS. Falls back to system DNS when DoH is unavailable, so intranet and VPN access keeps working.
+vantage-doh-description = When enabled: DNS queries are encrypted and resolved through the DNS provider selected below (default: AliDNS). Falls back to system DNS when DoH is unavailable, so intranet and VPN access keeps working.
+vantage-doh-provider-label = DNS provider:
+vantage-doh-provider-custom =
+    .label = Custom…
+vantage-doh-custom-label = Custom DoH URL:
 
 librewolf-privacy-heading = Privacy
 librewolf-webrtc-ip-checkbox =

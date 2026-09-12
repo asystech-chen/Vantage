@@ -52,6 +52,7 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "vantage.download.multithread.minSize", type: "int" },
   { id: "vantage.download.multithread.tmpDir", type: "string" },
   { id: "network.trr.mode", type: "int" },
+  { id: "network.trr.uri", type: "string" },
   { id: "browser.tabs.unloadOnLowMemory", type: "bool" },
 ];
   for (let p of prefsToAdd) {
@@ -167,20 +168,22 @@ var gLibrewolfPane = {
       [true],
     );
 
-    // font-visibility uses int pref (0=all, 1=base, 2=lang), sync manually
-    setSyncFromPrefListener("librewolf-font-vis-checkbox", () => {
-      return Services.prefs.getIntPref("layout.css.font-visibility.level", 0) >= 1;
-    });
-    setSyncToPrefListener("librewolf-font-vis-checkbox", () => {
-      let checked = document.getElementById("librewolf-font-vis-checkbox").checked;
-      Services.prefs.setIntPref("layout.css.font-visibility.level", checked ? 1 : 0);
-      return checked;
-    });
-    Preferences.get("layout.css.font-visibility.level").on("change", () => {
-      makeMasterCheckboxesReactive("librewolf-font-vis-checkbox", () =>
-        Services.prefs.getIntPref("layout.css.font-visibility.level", 0) >= 1
-      );
-    });
+    // ---- 字体可见性（int pref：0=all / 1=base / 2=lang；勾选=启用限制）----
+    // 该 checkbox 没有 preference 属性，靠手动同步（含初始化）。
+    // 旧实现只监听 change、初值不回填 → 开关不显示当前状态，此处一并修复。
+    const fontVisBox = document.getElementById("librewolf-font-vis-checkbox");
+    if (fontVisBox) {
+      const FONT_VIS_PREF = "layout.css.font-visibility.level";
+      const syncFontVis = () => {
+        fontVisBox.checked = Services.prefs.getIntPref(FONT_VIS_PREF, 0) >= 1;
+      };
+      fontVisBox.addEventListener("command", () => {
+        Services.prefs.setIntPref(FONT_VIS_PREF, fontVisBox.checked ? 1 : 0);
+      });
+      Preferences.get(FONT_VIS_PREF).on("change", syncFontVis);
+      window.addEventListener("load", syncFontVis, { once: true });
+      syncFontVis();
+    }
 
     setBoolSyncListeners(
       "vantage-theme-checkbox",
@@ -407,11 +410,119 @@ var gLibrewolfPane = {
     // 页面完全加载后再兜底评估一次（XUL binding 就绪，双保险）
     window.addEventListener("load", updateResumeEnabled, { once: true });
 
-    // ---- DoH 开关（network.trr.mode 2=开启，0=关闭；AliDNS）----
+    // ---- DoH 开关 + DNS 供应商选择 ----
+    // 开关复用 network.trr.mode（2/3=开启，0=关闭），供应商复用 network.trr.uri；
+    // 不新增自定义 pref。开关本体走通用 helper（下面单独挂）。
+    const dohCheckbox = document.getElementById("vantage-doh-checkbox");
+    const dohProviderRow = document.getElementById("vantage-doh-provider-row");
+    const dohProvider = document.getElementById("vantage-doh-provider");
+    const dohProviderPopup = document.getElementById("vantage-doh-provider-popup");
+    const dohCustomRow = document.getElementById("vantage-doh-custom-row");
+    const dohCustomInput = document.getElementById("vantage-doh-custom-uri");
+
+    if (dohCheckbox && dohProvider && dohProviderPopup) {
+      const DOH_DEFAULT_URI = "https://dns.alidns.com/dns-query";
+      const DOH_CUSTOM = "__custom__";
+
+      // 供应商清单：复用 cfg 的 doh-rollout.provider-list，另补 Cloudflare。
+      let dohProviders = [];
+      try {
+        dohProviders = JSON.parse(
+          Services.prefs.getStringPref("doh-rollout.provider-list", "[]")
+        )
+          .filter(p => p && p.uri)
+          .map(p => ({ name: p.UIName || p.uri, uri: p.uri }));
+      } catch (e) {
+        dohProviders = [];
+      }
+      if (!dohProviders.some(p => p.uri == "https://cloudflare-dns.com/dns-query")) {
+        dohProviders.push({
+          name: "Cloudflare (No Filtering)",
+          uri: "https://cloudflare-dns.com/dns-query",
+        });
+      }
+
+      // 填充下拉
+      while (dohProviderPopup.firstChild) {
+        dohProviderPopup.removeChild(dohProviderPopup.firstChild);
+      }
+      for (let p of dohProviders) {
+        let item = document.createXULElement("menuitem");
+        item.setAttribute("value", p.uri);
+        item.setAttribute("label", p.name);
+        dohProviderPopup.appendChild(item);
+      }
+      let dohCustomItem = document.createXULElement("menuitem");
+      dohCustomItem.setAttribute("value", DOH_CUSTOM);
+      dohProviderPopup.appendChild(dohCustomItem);
+      document.l10n.setAttributes(dohCustomItem, "vantage-doh-provider-custom");
+
+      const dohUri = () => Services.prefs.getStringPref("network.trr.uri", "");
+
+      // 依据开关状态 + 当前 uri，刷新下拉选中项 / 自定义框可见性
+      const updateDohUi = () => {
+        // 直接读 pref，避免依赖 checkbox 回填时机（observer 执行顺序不确定）
+        const enabled = [2, 3].includes(
+          Services.prefs.getIntPref("network.trr.mode", 0)
+        );
+        const uri = dohUri();
+        const matched = dohProviders.find(p => p.uri == uri);
+        dohProvider.value = matched ? matched.uri : uri ? DOH_CUSTOM : "";
+        const isCustom = dohProvider.value == DOH_CUSTOM;
+        if (dohProviderRow) {
+          dohProviderRow.hidden = !enabled;
+        }
+        if (dohCustomRow) {
+          dohCustomRow.hidden = !(enabled && isCustom);
+        }
+        if (dohCustomInput && isCustom && dohCustomInput.value != uri) {
+          dohCustomInput.value = uri;
+        }
+      };
+
+      dohProvider.addEventListener("command", () => {
+        if (dohProvider.value == DOH_CUSTOM) {
+          // 选"自定义"：不动当前 uri，仅展开输入框
+          if (dohCustomRow) {
+            dohCustomRow.hidden = !dohCheckbox.checked;
+          }
+          if (dohCustomInput) {
+            dohCustomInput.value = dohUri();
+            dohCustomInput.focus();
+          }
+        } else {
+          Services.prefs.setStringPref("network.trr.uri", dohProvider.value);
+        }
+        updateDohUi();
+      });
+
+      if (dohCustomInput) {
+        dohCustomInput.addEventListener("change", () => {
+          Services.prefs.setStringPref(
+            "network.trr.uri",
+            dohCustomInput.value.trim()
+          );
+        });
+      }
+
+      // 勾选开启但地址为空时，落回默认（阿里）
+      dohCheckbox.addEventListener("command", () => {
+        if (dohCheckbox.checked && !dohUri()) {
+          Services.prefs.setStringPref("network.trr.uri", DOH_DEFAULT_URI);
+        }
+      });
+
+      Preferences.get("network.trr.uri").on("change", updateDohUi);
+      Preferences.get("network.trr.mode").on("change", updateDohUi);
+      window.addEventListener("load", updateDohUi, { once: true });
+      updateDohUi();
+    }
+
+    // 开关：读 network.trr.mode（2/3=开，0/5=关），写 开=2 / 关=0
     setXOriginPolicySyncListeners(
       "vantage-doh-checkbox",
       "network.trr.mode",
-      [2],
+      [2, 3],
       [0]
     );
 
