@@ -320,6 +320,15 @@
     <checkbox id="vantage-doh-checkbox" data-l10n-id="vantage-doh-checkbox" preference="network.trr.mode" flex="1" />
     <html:label for="vantage-doh-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
   </hbox>
+  <hbox align="center" id="vantage-doh-mode-row">
+    <label data-l10n-id="vantage-doh-mode-label" flex="1" />
+    <menulist id="vantage-doh-mode">
+      <menupopup>
+        <menuitem data-l10n-id="vantage-doh-mode-fallback" value="2" />
+        <menuitem data-l10n-id="vantage-doh-mode-only" value="3" />
+      </menupopup>
+    </menulist>
+  </hbox>
   <hbox align="center" id="vantage-doh-provider-row">
     <label data-l10n-id="vantage-doh-provider-label" flex="1" />
     <menulist id="vantage-doh-provider">

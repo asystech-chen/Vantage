@@ -419,6 +419,8 @@ var gLibrewolfPane = {
     const dohProviderPopup = document.getElementById("vantage-doh-provider-popup");
     const dohCustomRow = document.getElementById("vantage-doh-custom-row");
     const dohCustomInput = document.getElementById("vantage-doh-custom-uri");
+    const dohModeRow = document.getElementById("vantage-doh-mode-row");
+    const dohModeList = document.getElementById("vantage-doh-mode");
 
     if (dohCheckbox && dohProvider && dohProviderPopup) {
       const DOH_DEFAULT_URI = "https://dns.alidns.com/dns-query";
@@ -458,6 +460,8 @@ var gLibrewolfPane = {
       document.l10n.setAttributes(dohCustomItem, "vantage-doh-provider-custom");
 
       const dohUri = () => Services.prefs.getStringPref("network.trr.uri", "");
+      // 用户是否停留在「自定义」选择态：选到自定义项后不被 pref 反推重置
+      let dohCustomMode = false;
 
       // 依据开关状态 + 当前 uri，刷新下拉选中项 / 自定义框可见性
       const updateDohUi = () => {
@@ -466,8 +470,13 @@ var gLibrewolfPane = {
           Services.prefs.getIntPref("network.trr.mode", 0)
         );
         const uri = dohUri();
-        const matched = dohProviders.find(p => p.uri == uri);
-        dohProvider.value = matched ? matched.uri : uri ? DOH_CUSTOM : "";
+        // 停留在自定义态时强制选中自定义项；否则按当前 uri 反推
+        if (dohCustomMode && enabled) {
+          dohProvider.value = DOH_CUSTOM;
+        } else {
+          const matched = dohProviders.find(p => p.uri == uri);
+          dohProvider.value = matched ? matched.uri : uri ? DOH_CUSTOM : "";
+        }
         const isCustom = dohProvider.value == DOH_CUSTOM;
         if (dohProviderRow) {
           dohProviderRow.hidden = !enabled;
@@ -478,11 +487,20 @@ var gLibrewolfPane = {
         if (dohCustomInput && isCustom && dohCustomInput.value != uri) {
           dohCustomInput.value = uri;
         }
+        // DoH 模式（network.trr.mode）：开启时显示，2=优先回退 / 3=仅 DoH
+        if (dohModeRow) {
+          dohModeRow.hidden = !enabled;
+        }
+        if (dohModeList && enabled) {
+          const mode = Services.prefs.getIntPref("network.trr.mode", 0);
+          dohModeList.value = String([2, 3].includes(mode) ? mode : 2);
+        }
       };
 
       dohProvider.addEventListener("command", () => {
         if (dohProvider.value == DOH_CUSTOM) {
-          // 选"自定义"：不动当前 uri，仅展开输入框
+          // 选"自定义"：记住自定义态，不动当前 uri，仅展开输入框
+          dohCustomMode = true;
           if (dohCustomRow) {
             dohCustomRow.hidden = !dohCheckbox.checked;
           }
@@ -491,10 +509,20 @@ var gLibrewolfPane = {
             dohCustomInput.focus();
           }
         } else {
+          dohCustomMode = false;
           Services.prefs.setStringPref("network.trr.uri", dohProvider.value);
         }
         updateDohUi();
       });
+
+      if (dohModeList) {
+        dohModeList.addEventListener("command", () => {
+          const v = parseInt(dohModeList.value, 10);
+          if (v === 2 || v === 3) {
+            Services.prefs.setIntPref("network.trr.mode", v);
+          }
+        });
+      }
 
       if (dohCustomInput) {
         dohCustomInput.addEventListener("change", () => {
