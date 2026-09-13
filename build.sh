@@ -26,6 +26,11 @@ exec > >(tee "$HOME/.openclaw/workspace/.build-output.log") 2>&1
 #   macos-x64    macos-arm64
 #   也可用简写: lx la ll wx wa mx ma / all
 #
+# 功能验证（DEV）快速目标: 无 LTO / 无 PGO / cargo 增量，独立 objdir
+#   linux-x64-dev    (简写 lxd)  —— 本机日常功能验证
+#   windows-x64-dev  (简写 wxd)  —— Windows 交叉验证
+#   ⚠️ DEV 产物仅用于功能/UI/逻辑验证，不代表发布性能；出正式包请用发布目标
+#
 # 编译/打包完成后自动执行 make checksum 生成校验和
 # ==========================================
 
@@ -41,6 +46,10 @@ declare -A TARGETS=(
   ["windows-arm64"]="Windows arm64|assets/mozconfig.win-cross.arm64|windows"
   ["macos-x64"]="macOS x64|assets/mozconfig.osx-cross|macos"
   ["macos-arm64"]="macOS arm64|assets/mozconfig.osx-cross-arm64|macos"
+  # ---- 功能验证（DEV）快速构建：无 LTO / 无 PGO / cargo 增量，独立 objdir ----
+  # 第 4 字段 "dev" = 标记为开发验证目标（跳过 PGO 拉取与 package-all/msix）
+  ["linux-x64-dev"]="Linux x64 (DEV 快速)|assets/mozconfig.linux-x64-dev|linux|dev"
+  ["windows-x64-dev"]="Windows x64 (DEV 快速)|assets/mozconfig.win-cross-dev|windows|dev"
 )
 
 # 简写映射
@@ -52,10 +61,15 @@ declare -A ALIASES=(
   ["wa"]="windows-arm64"
   ["mx"]="macos-x64"
   ["ma"]="macos-arm64"
+  ["lxd"]="linux-x64-dev"
+  ["wxd"]="windows-x64-dev"
 )
 
-# 全局目标顺序（供菜单和 'all' 共用）
+# 发布平台顺序（供 'all' 使用；不含 DEV 目标）
 KEY_ORDER=(linux-x64 linux-arm64 linux-loong64 windows-x64 windows-arm64 macos-x64 macos-arm64)
+
+# 交互菜单顺序（含 DEV 目标；'all' 仍只用 KEY_ORDER）
+MENU_ORDER=("${KEY_ORDER[@]}" linux-x64-dev windows-x64-dev)
 
 # ---------- 工具函数 ----------
 red()    { echo -e "\033[31m$*\033[0m"; }
@@ -115,8 +129,8 @@ show_menu() {
   echo ""
 
   local i=1
-  for key in "${KEY_ORDER[@]}"; do
-    IFS='|' read -r label cfg os <<< "${TARGETS[$key]}"
+  for key in "${MENU_ORDER[@]}"; do
+    IFS='|' read -r label cfg os _dev <<< "${TARGETS[$key]}"
     printf "  %2d) %s\n" "$i" "$label"
     ((i++))
   done
@@ -136,7 +150,7 @@ resolve_args() {
     elif [[ -n "${TARGETS[$arg]:-}" ]]; then
       keys+=("$arg")
     else
-      die "未知目标: '$arg'。可用: linux-x64, linux-arm64, linux-loong64, windows-x64, windows-arm64, macos-x64, macos-arm64 (或简写: lx la ll wx wa mx ma / all)"
+      die "未知目标: '$arg'。可用: linux-x64, linux-arm64, linux-loong64, windows-x64, windows-arm64, macos-x64, macos-arm64, linux-x64-dev, windows-x64-dev (或简写: lx la ll wx wa mx ma lxd wxd / all)"
     fi
   done
   # 去重并保持顺序
@@ -151,8 +165,8 @@ show_targets() {
   bold "═══════════════════════════════════════" >&2
   echo "" >&2
   local i=1
-  for key in "${KEY_ORDER[@]}"; do
-    IFS='|' read -r label cfg os <<< "${TARGETS[$key]}"
+  for key in "${MENU_ORDER[@]}"; do
+    IFS='|' read -r label cfg os _dev <<< "${TARGETS[$key]}"
     printf "  %2d) %s\n" "$i" "$label" >&2
     ((i++))
   done
@@ -188,11 +202,11 @@ interactive_select() {
     choices=()
     local ok=true
     for c in "${raw_choices[@]}"; do
-      if [[ "$c" =~ ^[1-7]$ ]] && [[ "$c" -le "${#KEY_ORDER[@]}" ]]; then
+      if [[ "$c" =~ ^[0-9]+$ ]] && [[ "$c" -ge 1 ]] && [[ "$c" -le "${#MENU_ORDER[@]}" ]]; then
         idx=$((c - 1))
-        choices+=("${KEY_ORDER[$idx]}")
+        choices+=("${MENU_ORDER[$idx]}")
       else
-        red "  无效选择：$c（请输入 1-7、'all' 或 'q'）" >&2
+        red "  无效选择：$c（请输入 1-${#MENU_ORDER[@]}、'all' 或 'q'）" >&2
         ok=false
         break
       fi
@@ -211,7 +225,7 @@ interactive_select() {
 # ---------- 单目标编译 ----------
 build_target() {
   local key="$1"
-  IFS='|' read -r label mozconfig os_type <<< "${TARGETS[$key]}"
+  IFS='|' read -r label mozconfig os_type dev_flag <<< "${TARGETS[$key]}"
 
   echo ""
   bold "───────────────────────────────────────────"
@@ -231,8 +245,8 @@ build_target() {
     ./scripts/setup-7zsfx.sh || red "⚠️ setup-7zsfx.sh 失败（非致命，安装器可能带 Firefox stub）"
   fi
 
-  # PGO：按平台拉取 Mozilla 官方 profile（拉取失败/缺失时，mozconfig 会自动跳过 PGO，构建不受影响）
-  if [ -x "$REPO_ROOT/scripts/fetch-pgo-profile.sh" ]; then
+  # PGO：DEV 目标不用 PGO，直接跳过拉取；发布目标按平台拉取（失败/mozconfig 会自动跳过，不影响构建）
+  if [[ "$dev_flag" != "dev" ]] && [ -x "$REPO_ROOT/scripts/fetch-pgo-profile.sh" ]; then
     "$REPO_ROOT/scripts/fetch-pgo-profile.sh" "$key" || yellow "⚠️  PGO profile 拉取失败：本次不使用 PGO"
   fi
 
@@ -259,15 +273,17 @@ build_target() {
   green ">>> [3/3] 打包 (make package)..."
   make package || { red "❌ $label 打包失败"; return 1; }
 
-  # 对 Linux 目标额外执行 package-all (deb/rpm/AppImage/tar.gz + 自动签名)
-  if [[ "$os_type" == "linux" ]]; then
+  # DEV 目标：make package 已产出本地化可验证包（含多语言），跳过发布专用的额外打包
+  if [[ "$dev_flag" == "dev" ]]; then
+    echo ""
+    yellow ">>> DEV 目标：已由 make package 产出本地化包，跳过 package-all / msix（如需可手动执行）"
+  elif [[ "$os_type" == "linux" ]]; then
+    # 对 Linux 目标额外执行 package-all (deb/rpm/AppImage/tar.gz + 自动签名)
     echo ""
     green ">>> Linux 目标：执行 make package-all (生成+签名)..."
     make package-all || red "⚠️  $label package-all 失败（非致命）"
-  fi
-
-  # 对 Windows 目标额外执行 package-msix
-  if [[ "$os_type" == "windows" ]]; then
+  elif [[ "$os_type" == "windows" ]]; then
+    # 对 Windows 目标额外执行 package-msix
     echo ""
     green ">>> Windows 目标：WinUpdater 自动随 make package 打包"
     green ">>> Windows 目标：执行 make package-msix..."
@@ -285,7 +301,7 @@ build_target() {
 # ---------- 单独打包目标（跳过编译，直接 package-all） ----------
 package_target() {
   local key="$1"
-  IFS='|' read -r label mozconfig os_type <<< "${TARGETS[$key]}"
+  IFS='|' read -r label mozconfig os_type _dev <<< "${TARGETS[$key]}"
 
   echo ""
   bold "───────────────────────────────────────────"
@@ -338,7 +354,7 @@ package_main() {
   bold "═══════════════════════════════════════"
   echo ""
   for key in "${selected[@]}"; do
-    IFS='|' read -r label cfg os <<< "${TARGETS[$key]}"
+    IFS='|' read -r label cfg os _dev <<< "${TARGETS[$key]}"
     case "$os" in
       linux)   echo "    • $label  →  deb / rpm / AppImage / tar.gz" ;;
       windows) echo "    • $label  →  exe installer / zip / msix" ;;
@@ -379,7 +395,7 @@ package_main() {
     set -e
 
     if [[ $rc -ne 0 ]]; then
-      IFS='|' read -r label cfg os <<< "${TARGETS[$key]}"
+      IFS='|' read -r label cfg os _dev <<< "${TARGETS[$key]}"
       red "❌ $label 打包失败"
       failed+=("$label")
     fi
@@ -439,7 +455,7 @@ ensure_gpg_key() {
 
 sign_target() {
   local key="$1"
-  IFS='|' read -r label mozconfig os_type <<< "${TARGETS[$key]}"
+  IFS='|' read -r label mozconfig os_type _dev <<< "${TARGETS[$key]}"
 
   if [[ "$os_type" != "linux" ]]; then
     yellow "⚠️  $label 不是 Linux 目标，跳过签名"
@@ -523,7 +539,7 @@ sign_main() {
   bold "═══════════════════════════════════════"
   echo ""
   for key in "${selected[@]}"; do
-    IFS='|' read -r label cfg os <<< "${TARGETS[$key]}"
+    IFS='|' read -r label cfg os _dev <<< "${TARGETS[$key]}"
     if [[ "$os" == "linux" ]]; then
       echo "    • $label  →  debsigs (.deb) + rpmsign (.rpm) + GPG (.AppImage/.tar.gz)"
     else
@@ -564,7 +580,7 @@ sign_main() {
     set -e
 
     if [[ $rc -ne 0 ]]; then
-      IFS='|' read -r label cfg os <<< "${TARGETS[$key]}"
+      IFS='|' read -r label cfg os _dev <<< "${TARGETS[$key]}"
       red "❌ $label 签名失败"
     fi
   done
@@ -611,7 +627,7 @@ main() {
   bold "═══════════════════════════════════════"
   echo ""
   for key in "${selected[@]}"; do
-    IFS='|' read -r label cfg os <<< "${TARGETS[$key]}"
+    IFS='|' read -r label cfg os _dev <<< "${TARGETS[$key]}"
     echo "    • $label"
   done
   echo ""
@@ -653,7 +669,7 @@ main() {
     set -e
 
     if [[ $rc -ne 0 ]]; then
-      IFS='|' read -r label cfg os <<< "${TARGETS[$key]}"
+      IFS='|' read -r label cfg os _dev <<< "${TARGETS[$key]}"
       red "❌ $label 编译失败"
       failed+=("$label")
     fi

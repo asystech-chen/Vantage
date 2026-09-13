@@ -1,0 +1,75 @@
+# ==========================================
+# Vantage Browser - Windows x64 交叉编译「功能验证」快速配置 (DEV)
+# 用途：本机偶尔验证 Windows 构建，追求编译速度
+# 基于 assets/mozconfig.win-cross，去掉费时的 LTO / PGO
+# ⚠️ 产物 ≠ 发布产物：不代表 LTO/PGO 后的性能与行为；发布构建请用 mozconfig.win-cross
+# ==========================================
+
+# ---- 目标平台：MSVC 路线 ----
+ac_add_options --target=x86_64-pc-windows-msvc
+
+# ---- 启用 mach bootstrap 自动管理 clang-cl / MSVC / Windows SDK ----
+ac_add_options --enable-bootstrap
+
+# ---- 应用/品牌 ----
+ac_add_options --enable-application=browser
+ac_add_options --with-app-name=vantage
+ac_add_options --with-branding=browser/branding/vantage
+
+# ---- 构建优化（对齐发布配置，但不含 LTO/PGO） ----
+ac_add_options --enable-release
+ac_add_options --disable-debug
+ac_add_options --disable-tests
+ac_add_options --enable-optimize
+ac_add_options --enable-rust-simd
+# 保留 cargo 增量编译（dev 迭代快；发布配置里是 --disable-cargo-incremental）
+ac_add_options --enable-hardening
+
+# ---- Vantage 隐私定制 ----
+ac_add_options --allow-addon-sideload
+ac_add_options --disable-crashreporter
+ac_add_options --disable-default-browser-agent
+ac_add_options --disable-updater
+ac_add_options --with-unsigned-addon-scopes=app,system
+
+# ---- Windows 专属：简化构建 ----
+ac_add_options --disable-maintenance-service  # Windows 服务，不需要
+
+# ---- 语言包 ----
+ac_add_options --with-l10n-base=$PWD/lw/l10n
+
+# ---- clang-cl 插件（Firefox 官方推荐） ----
+export ENABLE_CLANG_PLUGIN=1
+
+# ---- 禁用 Mozilla 遥测 ----
+export MOZ_REQUIRE_SIGNING=
+mk_add_options MOZ_CRASHREPORTER=0
+mk_add_options MOZ_DATA_REPORTING=0
+mk_add_options MOZ_SERVICES_HEALTHREPORT=0
+mk_add_options MOZ_TELEMETRY_REPORTING=0
+
+# ---- 独立 objdir：与发布构建隔离，互不干扰 ----
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-x86_64-pc-windows-msvc-dev
+
+# ---- 编译加速（无 LTO / 无 PGO） ----
+mk_add_options MOZ_PARALLEL_BUILD=16
+export RUSTUP_TOOLCHAIN=1.94.1
+
+# ❌ 不启用 LTO（--enable-lto）：省去单线程、吃 20-40G 内存的全量链接
+# ❌ 不启用 PGO（--enable-profile-use）：省去 profile 引导优化
+
+if command -v ccache >/dev/null 2>&1; then
+    ac_add_options --with-ccache
+fi
+
+# ⚠️ 注意：MSVC 路线下 clang-cl / MSVC headers / Windows SDK 由 --enable-bootstrap 自动管理
+#   - 不需要 --with-toolchain-prefix
+#   - 不需要 -include _mingw.h / -fms-extensions
+
+# ---- MSVC Redistributable（与发布配置一致，避免打包时缺 vcruntime/msvcp DLL）----
+REDIST_DIR="$(ls -d "$HOME/.mozbuild/vs/VC/Redist/MSVC"/*/x64/Microsoft.VC*.CRT 2>/dev/null | sort -V | tail -1)"
+if [ -n "$REDIST_DIR" ]; then
+    ac_add_options --with-redist="$REDIST_DIR"
+else
+    echo "⚠️ 未找到 MSVC Redist CRT 目录（$HOME/.mozbuild/vs/VC/Redist/MSVC/*/x64/Microsoft.VC*.CRT），--with-redist 跳过"
+fi
