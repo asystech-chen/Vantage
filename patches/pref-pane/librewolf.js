@@ -26,6 +26,9 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "middlemouse.paste", type: "bool" },
   { id: "network.http.referer.XOriginPolicy", type: "int" },
   { id: "privacy.resistFingerprinting.letterboxing", type: "bool" },
+  { id: "privacy.fingerprintingProtection", type: "bool" },
+  { id: "privacy.fingerprintingProtection.pbmode", type: "bool" },
+  { id: "privacy.fingerprintingProtection.overrides", type: "string" },
   { id: "browser.safebrowsing.blockedURIs.enabled", type: "bool" },
   { id: "browser.safebrowsing.provider.google4.gethashURL", type: "string" },
   { id: "browser.safebrowsing.provider.google4.updateURL", type: "string" },
@@ -221,6 +224,154 @@ var gLibrewolfPane = {
       ["privacy.resistFingerprinting.letterboxing"],
       [true                                       ],
     );
+
+    // ---- 指纹随机化（FPP）：主开关 + 预设 + 细项 ----
+    // 复用标准 pref：主开关=privacy.fingerprintingProtection，
+    // 细项=privacy.fingerprintingProtection.overrides（"+Target,-Target" 逗号串），
+    // 隐私窗口=privacy.fingerprintingProtection.pbmode。
+    // 默认全部保持现状（关）；启用「抵抗指纹（RFP）」时以其为准。
+    const fppCheckbox = document.getElementById("vantage-fpp-checkbox");
+    const fppPreset = document.getElementById("vantage-fpp-preset");
+    const fppPresetRow = document.getElementById("vantage-fpp-preset-row");
+    if (fppCheckbox && fppPreset) {
+      const FPP_PREF = "privacy.fingerprintingProtection";
+      const FPP_PBMODE_PREF = "privacy.fingerprintingProtection.pbmode";
+      const FPP_OVERRIDES_PREF = "privacy.fingerprintingProtection.overrides";
+
+      // 细项 → overrides 目标（顺序固定，便于回显与断言）
+      const FPP_FEATURES = {
+        canvas: ["CanvasRandomization", "EfficientCanvasRandomization"],
+        webgl: ["WebGLRandomization", "WebGLVendorRandomize"],
+        audio: ["AudioContext", "AudioSampleRate"],
+        font: ["FontVisibilityBaseSystem", "FontVisibilityLangPack"],
+        screen: ["ScreenRect", "ScreenAvailRect", "WindowOuterSize"],
+        tz: ["JSDateTimeUTC", "JSLocale"],
+      };
+      const FPP_KEYS = Object.keys(FPP_FEATURES);
+      const fppBoxes = FPP_KEYS.map(k =>
+        document.getElementById("vantage-fpp-" + k)
+      );
+      const FPP_ALL_TOKENS = FPP_KEYS.reduce(
+        (acc, k) => acc.concat(FPP_FEATURES[k]),
+        []
+      );
+
+      const readFppEnabled = () =>
+        Services.prefs.getBoolPref(FPP_PREF, false);
+      const readFppOverrides = () =>
+        Services.prefs.getStringPref(FPP_OVERRIDES_PREF, "");
+      const featureOn = (key, tokens) =>
+        FPP_FEATURES[key].every(t => tokens.includes("+" + t));
+
+      // 细项勾选 → overrides 串
+      const buildOverrides = () => {
+        let tokens = [];
+        FPP_KEYS.forEach((key, i) => {
+          const box = fppBoxes[i];
+          if (box && box.checked) {
+            tokens = tokens.concat(FPP_FEATURES[key].map(t => "+" + t));
+          }
+        });
+        return tokens.join(",");
+      };
+
+      // 当前 overrides 命中哪个预设
+      const detectPreset = tokens => {
+        if (tokens.length === 0) {
+          return "basic";
+        }
+        const allOn = FPP_KEYS.every(k => featureOn(k, tokens));
+        const onlyAdditive = tokens.every(t => t.startsWith("+"));
+        if (allOn && onlyAdditive && tokens.length === FPP_ALL_TOKENS.length) {
+          return "enhanced";
+        }
+        return "custom";
+      };
+
+      // 把 UI 同步为 pref 当前状态
+      const syncFpp = () => {
+        const enabled = readFppEnabled();
+        fppCheckbox.checked = enabled;
+        if (fppPresetRow) {
+          fppPresetRow.hidden = !enabled;
+        }
+        if (!enabled) {
+          fppPreset.value = "off";
+          return;
+        }
+        const pbmodeBox = document.getElementById(
+          "vantage-fpp-pbmode-checkbox"
+        );
+        if (pbmodeBox) {
+          pbmodeBox.checked = Services.prefs.getBoolPref(FPP_PBMODE_PREF, true);
+        }
+        const tokens = readFppOverrides().split(",").filter(Boolean);
+        FPP_KEYS.forEach((key, i) => {
+          if (fppBoxes[i]) {
+            fppBoxes[i].checked = featureOn(key, tokens);
+          }
+        });
+        fppPreset.value = detectPreset(tokens);
+      };
+
+      // 应用预设（写 pref + overrides）
+      const applyPreset = preset => {
+        if (preset === "off") {
+          Services.prefs.setBoolPref(FPP_PREF, false);
+          return;
+        }
+        Services.prefs.setBoolPref(FPP_PREF, true);
+        if (preset === "basic") {
+          Services.prefs.setStringPref(FPP_OVERRIDES_PREF, "");
+        } else if (preset === "enhanced") {
+          Services.prefs.setStringPref(
+            FPP_OVERRIDES_PREF,
+            FPP_ALL_TOKENS.map(t => "+" + t).join(",")
+          );
+        }
+        // custom：不改 overrides，交给细项
+      };
+
+      fppCheckbox.addEventListener("command", () => {
+        Services.prefs.setBoolPref(FPP_PREF, fppCheckbox.checked);
+        syncFpp();
+      });
+
+      fppPreset.addEventListener("command", () => {
+        if (fppPreset.value === "custom") {
+          // 选「自定义」时展开细项区，方便逐项勾选
+          const collapse = document.getElementById("vantage-fpp-collapse");
+          if (collapse) {
+            collapse.checked = true;
+          }
+        }
+        applyPreset(fppPreset.value);
+        syncFpp();
+      });
+
+      fppBoxes.forEach(box => {
+        if (!box) {
+          return;
+        }
+        box.addEventListener("command", () => {
+          Services.prefs.setStringPref(FPP_OVERRIDES_PREF, buildOverrides());
+          syncFpp();
+        });
+      });
+
+      const fppPbBox = document.getElementById("vantage-fpp-pbmode-checkbox");
+      if (fppPbBox) {
+        fppPbBox.addEventListener("command", () => {
+          Services.prefs.setBoolPref(FPP_PBMODE_PREF, fppPbBox.checked);
+        });
+      }
+
+      Preferences.get(FPP_PREF).on("change", syncFpp);
+      Preferences.get(FPP_OVERRIDES_PREF).on("change", syncFpp);
+      Preferences.get(FPP_PBMODE_PREF).on("change", syncFpp);
+      window.addEventListener("load", syncFpp, { once: true });
+      syncFpp();
+    }
 
     setBoolSyncListeners(
       "librewolf-signatures-checkbox",
