@@ -46,6 +46,9 @@ genai-prompts-proofread =
 
 ## Chatbot menu shortcuts
 
+genai-menu-ask-smart-window =
+    .label = 询问…
+    .accesskey = z
 genai-menu-no-provider-2 =
     .label = 询问一个 AI Chatbot
     .accesskey = z
@@ -77,6 +80,8 @@ genai-shortcut-button =
 genai-menu-new-badge = 新的
 genai-menu-summarize-page = 概述页
 
+genai-input-ask-smart-window =
+    .placeholder = 询问…
 genai-input-ask-generic =
     .placeholder = 询问 AI chatbot…
 # $provider (string) - name of the provider

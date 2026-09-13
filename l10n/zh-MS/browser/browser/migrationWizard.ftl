@@ -214,11 +214,22 @@ migration-wizard-progress-icon-completed =
   .aria-label = 完整的
 
 migration-safari-password-import-header = 引入密码从旅行
+migration-safari-password-import-post-sequoia-step1 = 打开那 <a data-l10n-name="macos-passwords-app">密码应用</a> 在你的宏
+migration-safari-password-import-post-sequoia-step2 = 从那菜单棒形图在那 TOP协议的那筛选, 选取文件 > 导出所有的密码到文件…
+migration-safari-password-import-post-sequoia-step3 = 保存那文件
+migration-safari-password-import-post-sequoia-step4 = 选择那文件你保存
+
+## These instructions only appear and are applicable on versions of macOS before
+## Sequoia (macOS 15). They can be removed once importing on pre-Sequoia macOS
+## is no longer supported.
+
 migration-safari-password-import-steps-header = 到引入旅行密码:
 migration-safari-password-import-step1 = 在旅行, 打开“旅行”菜单和去到首选项 > 密码
 migration-safari-password-import-step2 = 选择那 <img data-l10n-name="safari-icon-3dots"/> 按钮和选取“导出所有的密码”
 migration-safari-password-import-step3 = 保存那密码文件
 migration-safari-password-import-step4 = 使用“选择文件”在下面到选取那密码文件你保存
+
+##
 
 migration-chrome-windows-password-import-header = 如何到引入密码从铬
 migration-chrome-windows-password-import-steps-header = 在铬:
@@ -228,6 +239,7 @@ migration-chrome-windows-password-import-step3 = 选取“下载文件”和保�
 migration-chrome-windows-password-import-step4 = Return 这里和“选择文件”到完成引入.
 
 migration-manual-password-import-skip-button = 跳过
+migration-manual-password-import-cancel-button = 取消
 migration-manual-password-import-select-button = 选择文件
 
 # Shown in the migration wizard after importing bookmarks from another

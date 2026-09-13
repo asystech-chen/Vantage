@@ -23,9 +23,23 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-EN_DIR = Path(
-    "/home/chen/Vantage/librewolf-153.0-6/obj-x86_64-pc-linux-gnu/dist/bin/browser/localization/en-US"
-)
+def _detect_en_dir():
+    """自动探测最新的 Linux 构建树的 en-US 本地化目录（flat 结构）。
+
+    旧版写死路径（153.0-6）已失效；改探测，避免构建树变更后再断。
+    """
+    base = Path("/home/chen/Vantage")
+    cands = [
+        p
+        for p in base.glob("librewolf-*/obj-*-linux-*/dist/bin/browser/localization/en-US")
+        if p.is_dir()
+    ]
+    if not cands:
+        return None
+    return max(cands, key=lambda p: p.stat().st_mtime)
+
+
+EN_DIR = _detect_en_dir()
 # toolkit/crashreporter/services 的 en-US 源（从顶层 omni.ja 提取）
 TOOLKIT_EN_DIR = Path(__file__).resolve().parent / "en-toolkit" / "localization" / "en-US"
 OUT_DIR = Path("/home/chen/Vantage/l10n/zh-MS")
@@ -169,6 +183,9 @@ def main():
         return
 
     en_dir = TOOLKIT_EN_DIR if args.toolkit else EN_DIR
+    if en_dir is None or not Path(en_dir).is_dir():
+        print("❌ 未找到 en-US 本地化目录（需先构建 Linux 树）；可改用 --toolkit 走快照源。")
+        sys.exit(1)
     rel_map = map_toolkit_rel if args.toolkit else map_rel
     files = sorted(en_dir.rglob("*.ftl"))
     files = [f for f in files if f.name not in SKIP_FILES]

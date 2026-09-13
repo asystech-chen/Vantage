@@ -874,10 +874,14 @@ urlbar-searchmode-no-keyword2 =
 
 urlbar-searchmode-dropmarker2 =
     .title = 拾取一个搜索引擎
-urlbar-searchmode-bookmarks2 = 书签
-urlbar-searchmode-tabs2 = 标签页
-urlbar-searchmode-history2 = 历史记录
-urlbar-searchmode-actions2 = 操作
+urlbar-searchmode-bookmarks3 = 书签
+    .accesskey = B
+urlbar-searchmode-tabs3 = 标签页
+    .accesskey = T
+urlbar-searchmode-history3 = 历史记录
+    .accesskey = H
+urlbar-searchmode-actions3 = 操作
+    .accesskey = A
 urlbar-searchmode-exit-button2 =
     .title = 关闭
 urlbar-searchmode-default2 =
@@ -895,8 +899,10 @@ urlbar-searchmode-popup-one-off-header = 这时间搜索与:
 # Label shown on the top of Searchmode Switcher popup when the search engine won't automatically
 # reset after submitting.
 urlbar-searchmode-popup-header = 搜索与:
-urlbar-searchmode-popup-search-settings-panelitem = 搜索设置
-urlbar-searchmode-popup-settings-panelitem = 设置
+urlbar-searchmode-popup-search-settings = 搜索设置
+    .accesskey = S
+urlbar-searchmode-popup-settings = 设置
+    .accesskey = S
 
 # Label prompting user to search with a particular search engine.
 #  $engine (String): the name of a search engine that searches a specific site
@@ -1283,6 +1289,10 @@ navbar-print =
 navbar-home =
     .label = 主页
     .tooltiptext = { -brand-short-name } 主页页
+
+toolbar-undo-close-button =
+    .label = 撤消关闭 Tab 或窗口
+    .tooltiptext = 回复那最多最近关闭标签页或窗口
 
 navbar-library =
     .label = 库
@@ -1679,6 +1689,3 @@ urlbar-webgl-notification-anchor =
     .tooltiptext = 管理 WebGL 上下文创造许可
 urlbar-webgl-blocked =
     .tooltiptext = 你有阻止 WebGL 上下文创造为了这网站（全球资讯网的主机站）.
-toolbar-undo-close-button =
-    .label = 撤消关闭标签页或窗口
-    .tooltiptext = 恢复最近关闭的标签页或窗口

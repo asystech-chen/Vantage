@@ -2707,11 +2707,11 @@ vantage-update-description = 复选为了新的版本的优势在启动. 你将�
 
 vantage-ai-heading = AI 其他选项
 vantage-ai-checkbox =
-    .label = 启用侧栏的 AI 聊天
+    .label = 启用 AI 闲谈在那其他选项
 vantage-ai-description = 打开 AI chatbots 在那其他选项. 支持 DeepSeek, Qwen, Doubao, ChatGPT, 双胎, 和克劳德（男子名）. 你的会话去直接的到那提供器—优势做不收集或进程任何的论据.
 vantage-ai-sidebar-checkbox =
-    .label = 显示侧栏
-vantage-ai-sidebar-description = 开启后：快捷使用书签、手机上的标签页、AI 聊天机器人等内容，无需分心于其他界面。关闭后：新侧栏不再显示；勾选「启用侧栏的 AI 聊天」时会自动重新显示。
+    .label = 显示其他选项
+vantage-ai-sidebar-description = 何时启用: 很快地访问书签, 标签页从你的电话, AI chatbots 和更多, 没有采煤心烦意乱的从你的当前的查看. 何时禁用: 那新的其他选项是隐藏的; 有可能 AI 闲谈在那其他选项将显示它再一次.
 
 librewolf-header = 优势首选项
 librewolf-warning-title = 头抬起!
@@ -2731,6 +2731,18 @@ librewolf-styling-checkbox =
 librewolf-network-heading = 连网
 librewolf-ipv6-checkbox =
     .label = 启用改造的6
+vantage-doh-checkbox =
+    .label = 启用 DNS 结束 HTTPS (卫生部)
+vantage-doh-mode-label = 卫生部模式:
+vantage-doh-mode-fallback =
+    .label = 宁可卫生部 (落下回到系统 DNS 何时得不到的)
+vantage-doh-mode-only =
+    .label = 卫生部仅 (无撤退)
+vantage-doh-description = 何时启用: DNS 查询是加密和下定决心的穿越那 DNS 提供器被选的在下面 (默认: AliDNS). 落下回到系统 DNS 何时卫生部是得不到的, 如此内联网和 VPN 访问保持工作.
+vantage-doh-provider-label = DNS 提供器:
+vantage-doh-provider-custom =
+    .label = 定制…
+vantage-doh-custom-label = 定制卫生部 URL:
 
 librewolf-privacy-heading = 隐私
 librewolf-webrtc-ip-checkbox =
@@ -2773,6 +2785,19 @@ librewolf-download-tmp-checkbox =
 librewolf-download-tmp-description = 何时启用: 将（程序文件是保存到那系统临时目录和自动地（使）清洁向上的何时那浏览器关闭, 预防论据痕迹.
 librewolf-download-tmp-warning1 = 何时禁用: 文件是保存直接的到你的下载文件夹为了更简单访问. 笔记那将（程序文件可以离开可回复的痕迹偶数在...之后删除.
 
+# Download speedup
+vantage-download-speed-heading = 下载加速 (实验的)
+vantage-download-mt-checkbox =
+    .label = 启用多-threaded 下载
+vantage-download-mt-description = 何时启用: 文件从服务器那支持量程请求是将（程序在并联段和合并, 超速行驶向上的大的下载. 禁用如果下载失败在确定的网站（全球资讯网的主机站）.
+vantage-download-maxparts-label = 最大值连接:
+vantage-download-maxparts-warning = 更多比 8 连接可以是比率-limited 或阻止由一些网站（全球资讯网的主机站）.
+vantage-download-minsize-label = 最小值文件大小为了多-穿线:
+vantage-download-tmpdir-label = 部分高速缓冲存储器目录:
+vantage-download-tmpdir-browse = 浏览…
+vantage-download-tmpdir-hint = 许可空到使用那系统临时目录. 选取一个位置与充足自由的空白为了大的下载.
+vantage-download-tmpdir-picker-title = 选取部分高速缓冲存储器目录
+
 librewolf-tabs-heading = Tab 行为
 librewolf-tabs-scroll-checkbox =
     .label = 滚动到开关标签页
@@ -2786,6 +2811,8 @@ librewolf-tabs-search-checkbox =
     .label = 打开搜索在新的标签页
 librewolf-tabs-ctrlTab-checkbox =
     .label = Ctrl+Tab by recent use
+librewolf-tabs-unload-checkbox =
+    .label = 睡眠非活动的标签页在...之下存储器压
 
 librewolf-styling-description = 何时启用: 定制那浏览器外观 (工具栏, 标签页, 及其他.) 经由一个 userChrome.css 文件. 理想为了在前的用户谁想要一个个人化的一看.
 librewolf-styling-warning1 = 何时禁用: 使用那默认浏览器外观. 仅加载 CSS 主题从可信的来源—怀恶意的样式表能够截获命令你的输入.
@@ -2852,39 +2879,12 @@ vantage-backup-import-done = 提问档精力充沛的. 那浏览器将重启现�
 vantage-backup-export-confirm-title = 导出提问档倒车
 vantage-backup-export-confirm = 那倒车将包含敏感的论据: 饼干 (网站（全球资讯网的主机站）注册(程序) 会话), 浏览历史, 保存表单论据和网站（全球资讯网的主机站）论据. 注册(程序) 密码是排除为了你的安全. 请存储器操作那倒车文件安全地和从不部分它. 继续?
 
-
-vantage-download-speed-heading = 下载加速（实验功能）
-vantage-download-mt-checkbox =
-    .label = 启用多-threaded 下载
-vantage-download-mt-description = 何时启用: 文件从服务器那支持量程请求是将（程序在并联段和合并, 超速行驶向上的大的下载. 禁用如果下载失败在确定的网站（全球资讯网的主机站）.
-vantage-download-maxparts-label = 最大值连接:
-vantage-download-maxparts-warning = 更多比 8 连接可以是比率-limited 或阻止由一些网站（全球资讯网的主机站）.
-vantage-download-minsize-label = 最小值文件大小为了多-穿线:
-vantage-download-tmpdir-label = 部分高速缓冲存储器目录:
-vantage-download-tmpdir-browse = 浏览…
-vantage-download-tmpdir-hint = 许可空到使用那系统临时目录. 选取一个位置与充足自由的空白为了大的下载.
-vantage-download-tmpdir-picker-title = 选取部分高速缓冲存储器目录
-vantage-doh-checkbox =
-    .label = 启用 DNS 结束 HTTPS (卫生部)
-vantage-doh-mode-label = DoH 方式:
-vantage-doh-mode-fallback =
-    .label = 优选 DoH (落下回到系统 DNS 当得不到的)
-vantage-doh-mode-only =
-    .label = 仅 DoH (没有落下)
-vantage-doh-description = 何时启用: DNS 查询是加密和下定决心的穿越那 DNS 提供者选择下面 (默认: AliDNS). 落下回到系统 DNS 何时卫生部是得不到的, 如此内联网和 VPN 访问保持工作.
-vantage-doh-provider-label = DNS 提供者:
-vantage-doh-provider-custom =
-    .label = 自定义…
-vantage-doh-custom-label = 自定义 DoH URL:
-librewolf-tabs-unload-checkbox =
-    .label = 睡眠非活动的标签页在...之下存储器压
-
 vantage-download-resume-checkbox =
-    .label = 恢复中断的下载
-vantage-download-resume-description = 何时启用: 如果下载是被中断在它完成之前(例如, 浏览器被关闭), 点击“重试”继续它从它离开的地方而不是下载整个文件再次. 仅应用何时多-连接下载是启用的.
+    .label = 继续执行断续的下载
+vantage-download-resume-description = 何时启用: 如果一个下载是断续的在...之前它完成 (为了例子, 那浏览器是关闭), 微小静电干扰声“重发”继续它从哪里它离开关闭作为替代的下装那全部文件再一次. 仅应用何时多-connection 下载是启用.
 
 
 vantage-download-cancelkeep-checkbox =
-    .label = 取消时保留数据（可暂停并恢复）
-vantage-download-cancelkeep-description = 何时启用: 取消一个活跃的下载会暂停它并保留已经下载的数据, 因此你能在任何时候从它被中断的地方恢复它. 何时停用: 取消移除部分数据, 像标准下载管理器(因关闭浏览器或崩溃被中断的下载仍能在重新启动之后被恢复). 仅应用何时恢复中断的下载是启用的.
-vantage-download-minsize-description = 文件比这尺寸小是被下载与一个单独的连接(分开他们仅会使他们更慢). 更大的文件是被分割成多份并行下载, 最多到最大连接设置在上面.
+    .label = 保持论据何时取消 (暂停/继续执行)
+vantage-download-cancelkeep-description = 何时启用, 取消一个主动语态下载暂停它和保持那论据已经将（程序, 如此你能继续执行它从那打扰点在任何的时间. 何时禁用, 取消移除那分音论据, 相似的那标准下载管理器 (下载断续的由关闭那浏览器或一个崩溃能仍然是重新开始在...之后重新启动). 仅应用何时重新开始断续的下载是启用.
+vantage-download-minsize-description = 文件较小比这大小是将（程序与一个单精度型连接 (爆裂似的他们会仅使他们减慢). 大的文件是拆分进入...之内倍数部分, 向上的到那最大值连接日落在上方.

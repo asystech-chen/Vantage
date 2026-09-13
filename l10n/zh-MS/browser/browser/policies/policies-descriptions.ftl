@@ -60,6 +60,8 @@ policy-DisableAccounts = 禁用帐户-based 服务, 包含同步的.
 
 policy-DisabledCiphers = 禁用零.
 
+policy-DefaultBrowserSettingEnabled = Control 是否那用户能放 { -brand-short-name } 作为那默认浏览器.
+
 policy-DefaultDownloadDirectory = 日落那默认下载目录.
 
 policy-DefaultSerialGuardSetting = Control 使用的那连续的 API.

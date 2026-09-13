@@ -1354,3 +1354,8 @@ home-prefs-support-firefox-header-srd =
     .label = 支持 { -brand-product-name }
 
 home-prefs-mission-message-learn-more-link-srd = 发现外面的如何
+
+
+# Vantage l10n overlay for newtab
+# Keep Firefox wallpaper category honest — these are Firefox-branded wallpapers
+newtab-wallpaper-category-title-firefox = 火狐
