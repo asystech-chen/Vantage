@@ -7,8 +7,8 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: '选择 tag（如 v153.0.2）'
-        required: true
+        description: '发布用 tag（如 v153.0.2）；留空 = 只编译、不发布（全量 5 平台）'
+        required: false
         type: string
       linux-x64:
         description: '🐧 Linux x64'
@@ -96,6 +96,10 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "push" ]; then
             TARGETS="linux-x64 linux-arm64 linux-loong64 windows-x64 windows-arm64"
+          elif [ -z "${{ github.event.inputs.tag }}" ]; then
+            # build-only：无 tag 手动触发 = 只编译（全量 5 平台），不建 tag/release
+            echo ">>> build-only 模式：无 tag，全量编译全部平台"
+            TARGETS="linux-x64 linux-arm64 linux-loong64 windows-x64 windows-arm64"
           else
             TARGETS=""
             [ "${{ github.event.inputs['linux-x64'] }}" = "true" ] && TARGETS="$TARGETS linux-x64"
@@ -110,6 +114,8 @@ jobs:
           ./build.sh $TARGETS
 
       - name: Create Release & Upload
+        # build-only：无 tag 手动触发时跳过发布（不建 tag、不建 release）
+        if: github.event_name == 'push' || github.event.inputs.tag != ''
         run: |
           export GITHUB_TOKEN="${{ secrets.GITHUB_TOKEN }}"
           export GH_REPO="asystech-chen/Vantage"
