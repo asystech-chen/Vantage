@@ -1,0 +1,25 @@
+[extend]
+useDefault = true
+
+# ── allowlist 1：凭据「引用」/ 占位符 / 语言包 ──
+[[allowlists]]
+description = "Known non-secrets: env refs, doc placeholders, l10n"
+regexes = [
+  '''https://\$\{[^}]+\}:\$\{[^}]+\}@''',
+  '''\$\{\{[^}]*\b(secrets|vars)\.[^}]*\}\}''',
+  '''sk-xxx''',
+]
+paths = [
+  '''^l10n/''',
+  '''^patches/rust-unaligned-access-backport\.patch$''',
+  '''^patches/encoding_rs\.patch$''',
+]
+
+# ── allowlist 2（预防性）：vendored crate 的「文件名:sha256」校验表 ──
+# .cargo-checksum.json 式内容会被 generic-api-key 误报；按 match 内容白名单
+[[allowlists]]
+description = "vendored crate checksum maps (filename:sha256) — generic-api-key false positives"
+regexTarget = "match"
+regexes = [
+  '''[\w./+@-]+\.(?:rs|h|hpp|cpp|toml|lock|json|md|txt|py|js|mjs)":"[0-9a-f]{32,}"''',
+]

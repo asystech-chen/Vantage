@@ -1,0 +1,28 @@
+name: Secret Scan (gitleaks)
+
+# 密钥/密码泄露扫描：push 与 PR 都跑，全历史扫描（fetch-depth: 0）
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout（全历史）
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_UPLOAD_ARTIFACT: "false"
+          GITLEAKS_ENABLE_SUMMARY: "true"
+          # 自动使用仓库根的 .gitleaks.toml（allowlist 见该文件）
+          GITLEAKS_CONFIG: .gitleaks.toml
