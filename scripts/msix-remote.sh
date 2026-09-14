@@ -93,8 +93,12 @@ if [ "$TRANSPORT" = "http" ]; then
   fi
   AUTH="Authorization: Bearer $TOKEN"
 
+  # ⚠️ 以下所有发往打包机的请求都显式 --noproxy：CI runner 的环境里常带
+  #    http_proxy（例: http://127.0.0.1:7890），而 no_proxy 通常只含 localhost，
+  #    会把 home-nas.local 也交给代理 → mihomo/代理解析不了 .local（mDNS）→ 探测失败。
+  #    （2026-09-14 CI 踩坑：远程封包被静默跳过，release 里没有 msix）
   # 可达性 + 鉴权探测（3 秒，失败不阻塞）
-  HEALTH="$(curl -sS --max-time 3 -H "$AUTH" "$URL/v1/health" 2>/dev/null || true)"
+  HEALTH="$(curl -sS --noproxy '*' --max-time 3 -H "$AUTH" "$URL/v1/health" 2>/dev/null || true)"
   case "$HEALTH" in
     *'"ok":true'*)
       echo "    服务: $URL  ($(printf '%s' "$HEALTH" | sed 's/^{//; s/}$//'))"
@@ -108,7 +112,7 @@ if [ "$TRANSPORT" = "http" ]; then
 
   echo ">>> [MSIX-REMOTE] 上传并封包（服务端约 50-60 秒）..."
   T0=$(date +%s)
-  RES="$(curl -sS --max-time 900 -X POST \
+  RES="$(curl -sS --noproxy '*' --max-time 900 -X POST \
       -H "$AUTH" -H 'Content-Type: application/octet-stream' \
       --data-binary "@$ZIP" "$URL/v1/pack?arch=$ARCH" 2>&1)"
   RC=$?
@@ -132,7 +136,7 @@ if [ "$TRANSPORT" = "http" ]; then
   echo "    服务端耗时: $((T1 - T0))s"
 
   echo ">>> [MSIX-REMOTE] 下载产物（服务端名 $OUT_REMOTE）..."
-  curl -sS --max-time 900 -H "$AUTH" -o "./$OUT_NAME" "$URL/v1/artifact/$OUT_REMOTE" || {
+  curl -sS --noproxy '*' --max-time 900 -H "$AUTH" -o "./$OUT_NAME" "$URL/v1/artifact/$OUT_REMOTE" || {
     echo "❌ 下载失败" >&2; exit 1; }
 
   SHA_LOCAL="$(sha256sum "./$OUT_NAME" | cut -d' ' -f1)"
@@ -142,7 +146,7 @@ if [ "$TRANSPORT" = "http" ]; then
   fi
 
   if [ "$CLEAN" = "1" ] && [ -n "$JOB" ]; then
-    curl -sS --max-time 30 -X DELETE -H "$AUTH" "$URL/v1/jobs/$JOB" >/dev/null && \
+    curl -sS --noproxy '*' --max-time 30 -X DELETE -H "$AUTH" "$URL/v1/jobs/$JOB" >/dev/null && \
       echo ">>> [MSIX-REMOTE] 已清理服务端任务 $JOB"
   fi
 
