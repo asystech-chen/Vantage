@@ -1,0 +1,27 @@
+diff --git a/browser/themes/shared/tabbrowser/content-area.css b/browser/themes/shared/tabbrowser/content-area.css
+--- a/browser/themes/shared/tabbrowser/content-area.css
++++ b/browser/themes/shared/tabbrowser/content-area.css
+@@ -34,6 +34,23 @@
+     gap: var(--chrome-window-gap);
+   }
+ 
++  /* Vantage: DOM 全屏下清零 Nova 的窗口外缘留白 —— 清除 #browser 的 4px padding/gap、
++     内容容器的圆角与 1px 边框、工具栏外缘 margin，使视频铺满整屏。
++     仅 [inDOMFullscreen] 生效，不影响 F11。（上游同类 Bug 2039415 / 2038764） */
++  :root[inDOMFullscreen] #navigator-toolbox {
++    margin: 0;
++  }
++
++  :root[inDOMFullscreen] #browser {
++    padding: 0;
++    gap: 0;
++  }
++
++  :root[inDOMFullscreen] #tabbrowser-tabpanels > :not(.split-view-panel) .browserContainer {
++    border-radius: 0;
++    border: none;
++  }
++
+   #tabbrowser-tabbox {
+     flex: 1;
+     box-sizing: border-box;

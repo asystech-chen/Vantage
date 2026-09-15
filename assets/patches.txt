@@ -64,3 +64,4 @@ patches/gfx-zhms-font.patch
 patches/ui-patches/restore-session-button.patch
 patches/multithread-download.patch
 patches/ui-patches/nova-nav-selected.patch
+patches/ui-patches/nova-dom-fullscreen-gap.patch
