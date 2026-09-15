@@ -1,6 +1,6 @@
 # Vantage 合并上游 LibreWolf 代码指南
 
-> 最后更新: 2026-07-23（补充 152→153 合并经验）
+> 最后更新: 2026-09-15（新增 settings/librewolf.cfg 分离与合并规范）
 
 合并 LibreWolf 上游代码时，以下文件**不能直接替换**，必须手动合并或跳过。
 
@@ -50,7 +50,7 @@
 
 | 文件 | 说明 |
 |------|------|
-| `settings/librewolf.cfg` | **大量定制**：overrides 路径改为 .vantage、app.support.baseURL 指向 Mozilla、checkDefaultBrowser=false、新增整段更新检查代码（约 100 行）。合并时**逐段对比**，不能整体替换 |
+| `settings/librewolf.cfg` | **大量定制**：overrides 路径改为 .vantage、app.support.baseURL/网址、DoH、隐私放宽、Vantage 专属 prefs + 三段 JS。合并时**逐段对比**，不能整体替换。**详见下方「settings/librewolf.cfg 分离与合并规范」** |
 | `settings/distribution/policies.json` | uBlock xpi 地址指向 asystech.cn。上游指向 LibreWolf 的地址 |
 | `settings/defaults/pref/local-settings.js` | 当前未改（仍引用 librewolf.cfg），但如果上游改了需注意 |
 
@@ -199,6 +199,51 @@ Vantage 独有新增：WinUpdater `package-manifest.in` 注入（`@RESPATH@/winu
 
 ---
 
+## 🧩 settings/librewolf.cfg 分离与合并规范（Vantage vs 上游）
+
+> 上游原版参考：本地克隆 `/home/chen/librewolf/settings`（Codeberg `librewolf/settings`），取用 `git show <ref>:librewolf.cfg`。
+> 我们的 `settings/librewolf.cfg` 与上游同名文件 diff 目前约 **29 个 hunk**（命令：`diff -u <上游>/librewolf.cfg settings/librewolf.cfg`）。
+
+### 一、我们的差异改了些什么（逐段对比的锚点）
+
+| 类别 | 代表项 | 处理 |
+|------|--------|------|
+| 品牌 / 网址 | `app.support.baseURL`、`app.feedback.*`、`app.update.url.*`、`startup.homepage*`、新标签页 | 保留我方 |
+| DoH | `network.trr.mode=2`、`network.trr.uri`（AliDNS） | 保留我方 |
+| 隐私放宽 | RFP 关闭、安全浏览开启、磁盘缓存开启、密码保存开启、WebGPU 开启、系统定位开启；解锁 `browser.ai.control.sidebarChatbot` | 保留我方 |
+| 跟进的上游加固 | QWAC 禁用、LNA 局域网防护、Cookie 分区、WebSerial 禁用、TLS 0-RTT 关闭、query stripping | 跟进上游 |
+| Vantage 专属 | `vantage.*` prefs + 三段 JS（主题注入 / 更新检查 / 复制 Markdown 链接）+ overrides 路径 `.vantage` | 整段保留 |
+
+### 二、必须「就地改」的三类（尾部 `defaultPref` 覆盖不了，最易冲突）
+
+1. **删除上游行**（如 cookiebanner 相关项）；
+2. **解锁上游 `lockPref`**（如 `browser.ai.control.sidebarChatbot`）；
+3. **改上游用 `pref()` 设的项**（后置 `defaultPref` 压不过用户值）。
+
+其余大多只是「换个 `defaultPref` 值」，当前仍就地改；合并时按下节顺序处理。
+
+### 三、上游「高频变动区」（churn 高，合并时重点比对）
+
+据上游 310 次提交统计，最常变动的键：`network.trr.mode/uri`(14/13)、`webgl.disabled`(9)、`security.OCSP.*`(9)、`network.cookie.cookieBehavior/lifetimePolicy`(9)、safebrowsing 各 provider URL(7–8)、`dom.security.https_only_mode`(7)、`geo.provider.network.url`(7)、`doh-rollout.provider-list`(7)。
+→ 这些区域里**与我们改动重叠**的（DoH、WebGL/WebGPU、Cookie/HTTPS-Only、区域语言、Safebrowsing、新标签页）每次合并都要重点比；**我们没碰的**（OCSP、cookieBehavior 等）直接采纳上游。
+
+### 四、合并操作顺序
+
+1. 备份：`cp settings/librewolf.cfg /tmp/ours.cfg`；
+2. 取上游新版 `librewolf.cfg`，`diff -u` 出上游「旧→新」的改动；
+3. 把我们相对上游旧版的差异（第一节清单）逐段保持；
+4. 上游新改动里属于「我们没碰的区」→ 直接采纳；
+5. 重叠区（第三节）→ 逐行判断：放宽类保留我方、加固类跟进上游；
+6. 校验：`./scripts/check-merge.sh` + Linux dev `cp` 重启实测。
+
+### 五、红线
+
+- 首行必须 `null;`；文件内**不得有 `console.*`**；
+- 沙箱限制见上文「autoconfig 沙箱限制」；
+- **不得整体替换**本文件。
+
+---
+
 ## 🟡 合并时需要注意（可能有上游更新）
 
 | 文件 | 注意事项 |
@@ -337,3 +382,5 @@ rm /tmp/vantage-patches-before.txt
 - [ ] `librewolf.cfg` 中 `NetUtil.sys.mjs` + `ChromeUtils.importESModule`（FF151+）
 - [ ] `settings/distribution/policies.json` 中 uBlock 地址指向 asystech.cn
 - [ ] `l10n/` 中 Vantage 品牌文本完整
+- [ ] `settings/librewolf.cfg` 与上游 diff 已逐段核对（品牌网址 / DoH / 隐私放宽 / Vantage 三段 JS 均在，见「分离与合并规范」）
+- [ ] `settings/librewolf.cfg` 首行是 `null;` 且**无 `console.*`**
