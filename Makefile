@@ -1,7 +1,7 @@
 docker_targets=docker-build-image docker-run-build-job docker-remove-image
 woodpecker_targets=fetch-upstream-woodpecker check-patchfail-woodpecker
 testing_targets=full-test test test-linux test-macos test-windows
-.PHONY : help moztree check all clean veryclean distclean patches dir bootstrap fetch build package package-all package-deb package-rpm package-appimage package-tar package-msix checksum run update setup-wasi check-patchfail check-fuzz fixfuzz $(docker_targets) $(woodpecker_targets) $(testing_targets)
+.PHONY : help moztree check all clean veryclean distclean patches dir bootstrap fetch build package package-all package-deb package-rpm package-appimage package-tar package-pe-sfx package-msix checksum run update setup-wasi check-patchfail check-fuzz fixfuzz $(docker_targets) $(woodpecker_targets) $(testing_targets)
 
 # Include ~/.local/bin for tools like appimagetool
 export PATH := $(HOME)/.local/bin:$(PATH)
@@ -311,11 +311,27 @@ package :
 	echo ""
 
 # 计算所有打包产物的 SHA256 校验和，写入单个 sha256sums 文件
-# PE-SFX: 已禁用（注释掉），不再打包自解压 exe
-#
-# package-pe-sfx :
-# 	... (disabled)
-#
+# PE-SFX: 单文件自解压 exe（WinPE 用；仅 x86_64）。不 portable（不加 -profile）。
+# 依赖: 先 'make package' 出 win-x86_64 portable.zip；本目标从中裁剪+压制+组装。
+package-pe-sfx :
+	@echo ">>> [PE-SFX] 制作 PE 自解压包 (x86_64)..."; \
+	PORTABLE_ZIP=$$(ls -t $(APP_NAME)*.win-x86_64.portable.zip 2>/dev/null | head -1); \
+	if [ -z "$$PORTABLE_ZIP" ]; then echo "错误: 找不到 win-x86_64 portable.zip，请先 'make package'"; exit 1; fi; \
+	echo "    源包: $$PORTABLE_ZIP"; \
+	TMPDIR=$$(mktemp -d /tmp/vantage-pe-build.XXXXXX); \
+	trap "rm -rf $$TMPDIR" EXIT; \
+	unzip -q "$$PORTABLE_ZIP" -d "$$TMPDIR"; \
+	echo ">>> [PE-SFX] 裁剪无用文件..."; \
+	./scripts/strip-for-pe.sh "$$TMPDIR/$(APP_NAME)-portable"; \
+	echo ">>> [PE-SFX] 7z 压缩 (BCJ2+LZMA，同 Firefox 安装器配方)..."; \
+	( cd "$$TMPDIR/$(APP_NAME)-portable/$(APP_NAME)" && 7z a -t7z -mx -m0=BCJ2 -m1=LZMA:d25 -m2=LZMA:d19 -m3=LZMA:d19 -mb0:1 -mb0s1:2 -mb0s2:3 "$$TMPDIR/$(APP_NAME)-pe.7z" . >/dev/null ); \
+	SFX_STUB="assets/7zsfx/7zSD.x64.sfx"; \
+	SFX_CFG="assets/7zsfx/sfx-config-pe.txt"; \
+	OUT_EXE="$(APP_NAME)-$(version)-$(release).win-x86_64.pe-sfx.exe"; \
+	if [ ! -f "$$SFX_STUB" ]; then echo "错误: 缺少 SFX stub: $$SFX_STUB"; exit 1; fi; \
+	cat "$$SFX_STUB" "$$SFX_CFG" "$$TMPDIR/$(APP_NAME)-pe.7z" > "$$OUT_EXE"; \
+	ls -lh "$$OUT_EXE"; \
+	echo ">>> [PE-SFX] ✅ 完成: $$OUT_EXE"
 
 # MSIX: 将 Windows 包重新打包为 MSIX (Microsoft Store 格式)
 # 依赖: package 必须先完成

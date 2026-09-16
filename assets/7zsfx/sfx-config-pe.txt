@@ -1,0 +1,4 @@
+;!@Install@!UTF-8!
+Title="Vantage"
+RunProgram="vantage.exe -no-remote"
+;!@InstallEnd@!
