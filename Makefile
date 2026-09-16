@@ -296,7 +296,7 @@ package :
 	    printf 'set "HERE=%%~dp0"\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
 	    printf 'if not exist "%%HERE%%Data\\profile" mkdir "%%HERE%%Data\\profile"\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
 	    printf 'start "" "%%HERE%%$(APP_NAME)\\$(APP_NAME).exe" -profile "%%HERE%%Data\\profile" -no-remote %%*\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
-	    zip -qr $(APP_NAME)-$(version)-$(release).win-$$ARCH.portable.zip $(APP_NAME)-portable; \
+	    rm -f $(APP_NAME)-$(version)-$(release).win-$$ARCH.portable.zip; zip -qr $(APP_NAME)-$(version)-$(release).win-$$ARCH.portable.zip $(APP_NAME)-portable; \
 	    rm -rf $(APP_NAME)-portable; \
 	    echo ">>> [WIN-PORTABLE] $(APP_NAME)-$(version)-$(release).win-$$ARCH.portable.zip"; \
 	  fi; \
@@ -385,7 +385,7 @@ package-msix :
 	if [ -z "$$MSIX_DIR" ]; then \
 	  echo "错误: mach 预打包目录未生成"; exit 1; \
 	fi; \
-	cd "$$(dirname "$$MSIX_DIR")" && zip -0qr "$$PREPKG_ZIP" "$$(basename "$$MSIX_DIR")" && cd - >/dev/null; \
+	rm -f "$$PREPKG_ZIP"; cd "$$(dirname "$$MSIX_DIR")" && zip -0qr "$$PREPKG_ZIP" "$$(basename "$$MSIX_DIR")" && cd - >/dev/null; \
 	ls -lh "$$PREPKG_ZIP"; \
 	if [ -f "$$ABS_OUT" ]; then \
 	  echo ">>> [MSIX] ✅ MSIX 包已生成: $$ABS_OUT"; \
