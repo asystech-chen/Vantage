@@ -276,7 +276,7 @@ package :
 	  done; \
 	  WIN_ZIP=$$(ls -t $$OBJDIR/dist/*.zip 2>/dev/null | head -1); \
 	  if [ -n "$$WIN_ZIP" ]; then \
-	    mkdir -p $(APP_NAME)-portable/$(APP_NAME) $(APP_NAME)-portable/Data; \
+	    rm -rf $(APP_NAME)-portable; mkdir -p $(APP_NAME)-portable/$(APP_NAME) $(APP_NAME)-portable/Data; \
 	    unzip -q "$$WIN_ZIP" -d $(APP_NAME)-portable; \
 	    echo ">>> Bundling VC++ runtime DLLs..."; \
 	    ./scripts/bundle-vcrt.sh $(APP_NAME)-portable/$(APP_NAME)/ 2>&1 || true; \
@@ -700,6 +700,7 @@ endif
 package-tar : clean-packaging
 	@if [ -z "$(BINARY_TARBALL)" ]; then echo "Error: No binary tarball found."; exit 1; fi
 	@echo ">>> [TAR] Creating portable tar.gz..."
+	@rm -rf $(APP_NAME)-portable
 	@mkdir -p $(APP_NAME)-portable/$(APP_NAME)
 	@mkdir -p $(APP_NAME)-portable/Data
 	@tar -xf $(BINARY_TARBALL) -C $(APP_NAME)-portable/$(APP_NAME) --strip-components=1
