@@ -276,27 +276,26 @@ package :
 	  done; \
 	  WIN_ZIP=$$(ls -t $$OBJDIR/dist/*.zip 2>/dev/null | head -1); \
 	  if [ -n "$$WIN_ZIP" ]; then \
-	    mkdir -p $(APP_NAME)-portable/bin $(APP_NAME)-portable/Data; \
-	    unzip -q "$$WIN_ZIP" -d $(APP_NAME)-portable/bin; \
+	    mkdir -p $(APP_NAME)-portable/$(APP_NAME) $(APP_NAME)-portable/Data; \
+	    unzip -q "$$WIN_ZIP" -d $(APP_NAME)-portable; \
 	    echo ">>> Bundling VC++ runtime DLLs..."; \
-	    ./scripts/bundle-vcrt.sh $(APP_NAME)-portable/bin/$(APP_NAME)/ 2>&1 || true; \
+	    ./scripts/bundle-vcrt.sh $(APP_NAME)-portable/$(APP_NAME)/ 2>&1 || true; \
 	    echo ">>> Bundling WinUpdater..."; \
 	    if [ -f winupdater/Vantage-WinUpdater.exe ]; then \
-	      mkdir -p $(APP_NAME)-portable/bin/$(APP_NAME)/winupdater; \
-	      cp winupdater/Vantage-WinUpdater.exe $(APP_NAME)-portable/bin/$(APP_NAME)/winupdater/; \
-	      cp winupdater/Vantage-WinUpdater.ico $(APP_NAME)-portable/bin/$(APP_NAME)/winupdater/; \
-	      cp winupdater/ScheduledTask-Create.ps1 $(APP_NAME)-portable/bin/$(APP_NAME)/winupdater/; \
-	      cp winupdater/ScheduledTask-Remove.ps1 $(APP_NAME)-portable/bin/$(APP_NAME)/winupdater/; \
-	      cp winupdater/Uninstall.ps1 $(APP_NAME)-portable/bin/$(APP_NAME)/winupdater/; \
+	      mkdir -p $(APP_NAME)-portable/$(APP_NAME)/winupdater; \
+	      cp winupdater/Vantage-WinUpdater.exe $(APP_NAME)-portable/$(APP_NAME)/winupdater/; \
+	      cp winupdater/Vantage-WinUpdater.ico $(APP_NAME)-portable/$(APP_NAME)/winupdater/; \
+	      cp winupdater/ScheduledTask-Create.ps1 $(APP_NAME)-portable/$(APP_NAME)/winupdater/; \
+	      cp winupdater/ScheduledTask-Remove.ps1 $(APP_NAME)-portable/$(APP_NAME)/winupdater/; \
+	      cp winupdater/Uninstall.ps1 $(APP_NAME)-portable/$(APP_NAME)/winupdater/; \
 	      echo "    WinUpdater files bundled in portable package."; \
 	    else \
 	      echo "    (WinUpdater .exe not found, skipping)"; \
 	    fi; \
 	    printf '@echo off\r\n' > $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
-	    printf 'set "APPDATA=%%~dp0Data"\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
-	    printf 'set "LOCALAPPDATA=%%~dp0Data"\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
-	    printf 'if not exist "%%~dp0Data" mkdir "%%~dp0Data"\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
-	    printf 'start "" "%%~dp0bin\\$(APP_NAME)\\$(APP_NAME).exe" %%*\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
+	    printf 'set "HERE=%%~dp0"\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
+	    printf 'if not exist "%%HERE%%Data\\profile" mkdir "%%HERE%%Data\\profile"\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
+	    printf 'start "" "%%HERE%%$(APP_NAME)\\$(APP_NAME).exe" -profile "%%HERE%%Data\\profile" -no-remote %%*\r\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable.bat; \
 	    zip -qr $(APP_NAME)-$(version)-$(release).win-$$ARCH.portable.zip $(APP_NAME)-portable; \
 	    rm -rf $(APP_NAME)-portable; \
 	    echo ">>> [WIN-PORTABLE] $(APP_NAME)-$(version)-$(release).win-$$ARCH.portable.zip"; \
@@ -701,14 +700,18 @@ endif
 package-tar : clean-packaging
 	@if [ -z "$(BINARY_TARBALL)" ]; then echo "Error: No binary tarball found."; exit 1; fi
 	@echo ">>> [TAR] Creating portable tar.gz..."
-	@mkdir -p $(APP_NAME)-portable/bin
+	@mkdir -p $(APP_NAME)-portable/$(APP_NAME)
 	@mkdir -p $(APP_NAME)-portable/Data
-	@tar -xf $(BINARY_TARBALL) -C $(APP_NAME)-portable/bin --strip-components=1
+	@tar -xf $(BINARY_TARBALL) -C $(APP_NAME)-portable/$(APP_NAME) --strip-components=1
 	@printf '#!/bin/sh\n' > $(APP_NAME)-portable/$(APP_NAME)-portable
 	@printf 'HERE="$$(cd "$$(dirname "$$0")" && pwd)"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
 	@printf 'export HOME="$$HERE/Data"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
-	@printf 'mkdir -p "$$HOME"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
-	@printf 'exec "$$HERE/bin/$(APP_NAME)" "$$@"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
+	@printf 'export XDG_CONFIG_HOME="$$HERE/Data/config"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
+	@printf 'export XDG_CACHE_HOME="$$HERE/Data/cache"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
+	@printf 'export XDG_DATA_HOME="$$HERE/Data/share"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
+	@printf 'export XDG_STATE_HOME="$$HERE/Data/state"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
+	@printf 'mkdir -p "$$HOME" "$$XDG_CONFIG_HOME" "$$XDG_CACHE_HOME" "$$XDG_DATA_HOME" "$$XDG_STATE_HOME"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
+	@printf 'exec "$$HERE/$(APP_NAME)/$(APP_NAME)" "$$@"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
 	@chmod +x $(APP_NAME)-portable/$(APP_NAME)-portable
 	@tar -czf $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).portable.tar.gz $(APP_NAME)-portable
 	@echo ">>> [TAR] Done: $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).portable.tar.gz"
