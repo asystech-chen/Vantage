@@ -108,16 +108,91 @@ jobs:
             }
           fi
 
-          echo "🔄 并行上传 ${#RELEASE_ASSETS[@]} 个文件（4 并发）..."
-          printf '%s\n' "${RELEASE_ASSETS[@]}" | xargs -P 4 -I{} bash -c '
-            tag="$1"; f="$2"
-            echo "⬆️ 开始: $(basename "$f") ($(du -h "$f" | cut -f1))"
-            t0=$(date +%s)
-            gh release upload "$tag" "$f" --clobber 2>&1 | sed "s/^/    /"
-            if [ ${PIPESTATUS[0]} -ne 0 ]; then
-              echo "❌ 失败: $(basename "$f")"
-              exit 1
+          # ── 上传（抗断版，2026-09-17）────────────────────────────────
+          # 背景：经代理上传 100M+ 资产偶发 EOF，旧版 4 并发全量重传，任一文件失败就整步退出、
+          #       发布缺资产，只能重跑 6~7 小时构建。
+          # 策略（幂等，可反复跑，每次都只补差的）：
+          #   1) 先拉线上资产，size 一致（有 digest 再对 sha256）→ 直接跳过，不重复推 1.6GB
+          #   2) 其余文件 2 并发上传，单文件最多重试 3 次（15s / 30s 退避）
+          #   3) 上传后再拉一次清单逐项核对 size + sha256，不符才判失败
+          # 注：GitHub 资产上传不支持断点续传，所以「抗断」= 只传缺失 + 自动重试 + 上传后校验。
+          CONC=2
+          ATTEMPTS=3
+          FAILED_LIST=/tmp/release-upload-failed.txt
+          ASSETS_BEFORE=/tmp/release-assets-before.tsv
+          ASSETS_AFTER=/tmp/release-assets-after.tsv
+          rm -f "$FAILED_LIST"
+
+          list_assets() {
+            gh api "repos/$GH_REPO/releases/tags/$TAG" \
+              --jq '.assets[] | "\(.name)\t\(.size)\t\(.digest // "-")"' > "$1" 2>/dev/null || : > "$1"
+          }
+
+          echo "📋 对账线上已有资产..."
+          list_assets "$ASSETS_BEFORE"
+
+          TO_UPLOAD=()
+          SKIPPED=0
+          for f in "${RELEASE_ASSETS[@]}"; do
+            base=$(basename "$f"); size=$(stat -c%s "$f")
+            line=$(awk -F'\t' -v n="$base" '$1==n{print; exit}' "$ASSETS_BEFORE")
+            if [ -n "$line" ]; then
+              rsize=$(printf '%s' "$line" | cut -f2)
+              rdig=$(printf '%s' "$line" | cut -f3)
+              if [ "$rsize" = "$size" ] && { [ "$rdig" = "-" ] || [ -z "$rdig" ] || [ "$rdig" = "sha256:$(sha256sum "$f" | cut -d' ' -f1)" ]; }; then
+                echo "⏭️ 跳过（已存在且一致）: $base"
+                SKIPPED=$((SKIPPED + 1))
+                continue
+              fi
+              echo "♻️ 需重传（线上不一致）: $base"
             fi
-            echo "✅ 完成: $(basename "$f") ($(($(date +%s)-t0))s)"
-          ' _ "$TAG" {}
-          echo "✅ 全部上传完成"
+            TO_UPLOAD+=("$f")
+          done
+          echo "📦 待上传 ${#TO_UPLOAD[@]} 个，跳过 ${SKIPPED} 个（共 ${#RELEASE_ASSETS[@]} 个）"
+
+          if [ ${#TO_UPLOAD[@]} -gt 0 ]; then
+            printf '%s\n' "${TO_UPLOAD[@]}" | xargs -P "$CONC" -I{} bash -c '
+              tag="$1"; f="$2"; attempts="$3"; failed_list="$4"; i=1
+              while [ "$i" -le "$attempts" ]; do
+                echo "⬆️ 开始: $(basename "$f") ($(du -h "$f" | cut -f1)) [第 $i/$attempts 次]"
+                t0=$(date +%s)
+                gh release upload "$tag" "$f" --clobber 2>&1 | sed "s/^/    /"
+                if [ "${PIPESTATUS[0]}" -eq 0 ]; then
+                  echo "✅ 完成: $(basename "$f") ($(($(date +%s)-t0))s)"
+                  exit 0
+                fi
+                echo "⚠️ 第 $i 次失败: $(basename "$f")"
+                i=$((i + 1))
+                if [ "$i" -le "$attempts" ]; then
+                  if [ "$i" -eq 2 ]; then d=15; else d=30; fi
+                  echo "⏳ ${d}s 后重试: $(basename "$f")"
+                  sleep "$d"
+                fi
+              done
+              echo "❌ 重试 $attempts 次仍失败: $(basename "$f")"
+              echo "$f" >> "$failed_list"
+              exit 1
+            ' _ "$TAG" {} "$ATTEMPTS" "$FAILED_LIST" || true
+          fi
+
+          echo "🔍 上传后逐项校验（size + sha256）..."
+          list_assets "$ASSETS_AFTER"
+          BAD=0
+          for f in "${RELEASE_ASSETS[@]}"; do
+            base=$(basename "$f"); size=$(stat -c%s "$f")
+            line=$(awk -F'\t' -v n="$base" '$1==n{print; exit}' "$ASSETS_AFTER")
+            if [ -z "$line" ]; then echo "❌ 线上缺失: $base"; BAD=$((BAD + 1)); continue; fi
+            rsize=$(printf '%s' "$line" | cut -f2)
+            rdig=$(printf '%s' "$line" | cut -f3)
+            if [ "$rsize" != "$size" ]; then echo "❌ size 不符: $base（线上 $rsize ≠ 本地 $size）"; BAD=$((BAD + 1)); continue; fi
+            if [ "$rdig" != "-" ] && [ -n "$rdig" ] && [ "$rdig" != "sha256:$(sha256sum "$f" | cut -d' ' -f1)" ]; then
+              echo "❌ sha256 不符: $base"; BAD=$((BAD + 1)); continue
+            fi
+            echo "✅ 校验通过: $base"
+          done
+
+          if [ "$BAD" -gt 0 ] || [ -s "$FAILED_LIST" ]; then
+            echo "❌ 仍有 $BAD 项缺失/不一致。本步骤幂等，再跑一次 Release Only 只补这些差额即可。"
+            exit 1
+          fi
+          echo "✅ 全部 ${#RELEASE_ASSETS[@]} 个资产上传完成并校验通过"
