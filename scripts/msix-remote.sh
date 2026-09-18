@@ -93,12 +93,28 @@ if [ "$TRANSPORT" = "http" ]; then
   fi
   AUTH="Authorization: Bearer $TOKEN"
 
+  # 网络重试：到打包机的链路偶尔抖一下（2026-09-17 实例：x86_64 的封包请求根本没到
+  # 服务端，被静默跳过，release 里少了 msix）。瞬时失败不该等于跳过。
+  # 用法: retry_curl <次数> <间隔秒> <curl 参数...>（输出与退出码透传最后一次）
+  retry_curl() {
+    local _n="$1" _d="$2"; shift 2
+    local _i=1 _rc=0
+    while :; do
+      "$@" && return 0
+      _rc=$?
+      [ "$_i" -ge "$_n" ] && return "$_rc"
+      echo "    ⚠️  第 $_i/$_n 次失败（curl exit=$_rc），${_d}s 后重试..." >&2
+      sleep "$_d"
+      _i=$((_i + 1))
+    done
+  }
+
   # ⚠️ 以下所有发往打包机的请求都显式 --noproxy：CI runner 的环境里常带
   #    http_proxy（例: http://127.0.0.1:7890），而 no_proxy 通常只含 localhost，
   #    会把 home-nas.local 也交给代理 → mihomo/代理解析不了 .local（mDNS）→ 探测失败。
   #    （2026-09-14 CI 踩坑：远程封包被静默跳过，release 里没有 msix）
-  # 可达性 + 鉴权探测（3 秒，失败不阻塞）
-  HEALTH="$(curl -sS --noproxy '*' --max-time 3 -H "$AUTH" "$URL/v1/health" 2>/dev/null || true)"
+  # 可达性 + 鉴权探测（3 次重试 × 10 秒；全部失败才跳过，不阻塞构建）
+  HEALTH="$(retry_curl 3 5 curl -sS --noproxy '*' --max-time 10 -H "$AUTH" "$URL/v1/health" || true)"
   case "$HEALTH" in
     *'"ok":true'*)
       echo "    服务: $URL  ($(printf '%s' "$HEALTH" | sed 's/^{//; s/}$//'))"
@@ -112,7 +128,7 @@ if [ "$TRANSPORT" = "http" ]; then
 
   echo ">>> [MSIX-REMOTE] 上传并封包（服务端约 50-60 秒）..."
   T0=$(date +%s)
-  RES="$(curl -sS --noproxy '*' --max-time 900 -X POST \
+  RES="$(retry_curl 2 10 curl -sS --noproxy '*' --max-time 900 -X POST \
       -H "$AUTH" -H 'Content-Type: application/octet-stream' \
       --data-binary "@$ZIP" "$URL/v1/pack?arch=$ARCH" 2>&1)"
   RC=$?
@@ -136,7 +152,7 @@ if [ "$TRANSPORT" = "http" ]; then
   echo "    服务端耗时: $((T1 - T0))s"
 
   echo ">>> [MSIX-REMOTE] 下载产物（服务端名 $OUT_REMOTE）..."
-  curl -sS --noproxy '*' --max-time 900 -H "$AUTH" -o "./$OUT_NAME" "$URL/v1/artifact/$OUT_REMOTE" || {
+  retry_curl 2 10 curl -sS --noproxy '*' --max-time 900 -H "$AUTH" -o "./$OUT_NAME" "$URL/v1/artifact/$OUT_REMOTE" || {
     echo "❌ 下载失败" >&2; exit 1; }
 
   SHA_LOCAL="$(sha256sum "./$OUT_NAME" | cut -d' ' -f1)"
