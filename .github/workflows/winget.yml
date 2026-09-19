@@ -21,7 +21,7 @@ jobs:
         
       - name: 2. 自动同步 winget-pkgs 分叉仓库
         env:
-          GITHUB_TOKEN: ${{ secrets.WINGET }}
+          GH_TOKEN: ${{ secrets.WINGET }}
         continue-on-error: true
         run: gh repo sync Liangchenxu/winget-pkgs --force
 
