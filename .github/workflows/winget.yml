@@ -19,10 +19,16 @@ jobs:
       - name: 1. 下载微软官方 Winget 发版工具
         run: Invoke-WebRequest -Uri https://aka.ms/wingetcreate/latest -OutFile wingetcreate.exe
         
-      - name: 2. 自动下载包、计算哈希并提交 PR
+      - name: 2. 自动同步 winget-pkgs 分叉仓库
+        env:
+          GITHUB_TOKEN: ${{ secrets.WINGET }}
+        continue-on-error: true
+        run: gh repo sync Liangchenxu/winget-pkgs --force
+
+      - name: 3. 自动下载包、计算哈希并提交 PR
         run: |
           .\wingetcreate.exe update ASYS.Vantage `
             --version ${{ github.event.inputs.version }} `
-            --urls ${{ github.event.inputs.url_amd64 }} ${{ github.event.inputs.url_arm }} `
+            --urls ${{ github.event.inputs.url_amd64 }}${{ github.event.inputs.url_arm }} `
             --submit `
-            --token ${{ secrets.WINGET_TOKEN }}
+            --token ${{ secrets.WINGET }}
