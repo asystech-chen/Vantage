@@ -21,7 +21,7 @@ jobs:
         
       - name: 2. 自动下载包、计算哈希并提交 PR
         env:
-          GITHUB_TOKEN: ${{ secrets.WINGET }}
+          WINGET_CREATE_GITHUB_TOKEN: ${{ secrets.WINGET }}
         run: |
           .\wingetcreate.exe update ASYS.Vantage `
             --version ${{ github.event.inputs.version }} `
