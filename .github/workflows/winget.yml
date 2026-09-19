@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: '请输入新版本号 (例如: 153.0.2)'
+        description: '请输入新版本号 (例如: 153.3.0-1)'
         required: true
       url_amd64:
         description: '请输入 AMD64 (x64) 版本的 R2 下载直链'
@@ -14,18 +14,12 @@ on:
 
 jobs:
   publish-to-winget:
-    runs-on: windows-latest  # 关键修改：白嫖 GitHub 的 Windows 机器，不给师傅的服务器添乱
+    runs-on: windows-latest
     steps:
       - name: 1. 下载微软官方 Winget 发版工具
         run: Invoke-WebRequest -Uri https://aka.ms/wingetcreate/latest -OutFile wingetcreate.exe
         
-      - name: 2. 自动同步 winget-pkgs 分叉仓库
-        env:
-          GH_TOKEN: ${{ secrets.WINGET }}
-        continue-on-error: true
-        run: gh repo sync Liangchenxu/winget-pkgs --force
-
-      - name: 3. 自动下载包、计算哈希并提交 PR
+      - name: 2. 自动下载包、计算哈希并提交 PR
         run: |
           .\wingetcreate.exe update ASYS.Vantage `
             --version ${{ github.event.inputs.version }} `
