@@ -18,12 +18,23 @@ jobs:
     steps:
       - name: 1. 下载微软官方 Winget 发版工具
         run: Invoke-WebRequest -Uri https://aka.ms/wingetcreate/latest -OutFile wingetcreate.exe
-        
-      - name: 2. 自动下载包、计算哈希并提交 PR
+
+      - name: 2. 自动同步 winget-pkgs 分叉仓库
         env:
-          WINGET_CREATE_GITHUB_TOKEN: ${{ secrets.WINGET }}
+          # 自动兼容 WINGET_TOKEN 或 WINGET 两种命名，传给 GitHub CLI
+          GH_TOKEN: ${{ secrets.WINGET_TOKEN || secrets.WINGET }}
+        continue-on-error: true
+        run: gh repo sync Liangchenxu/winget-pkgs --force
+
+      - name: 3. 自动下载包、计算哈希并提交 PR
+        env:
+          AUTH_TOKEN: ${{ secrets.WINGET_TOKEN || secrets.WINGET }}
         run: |
-          .\wingetcreate.exe update ASYS.Vantage `
-            --version ${{ github.event.inputs.version }} `
-            --urls ${{ github.event.inputs.url_amd64 }} ${{ github.event.inputs.url_arm }} `
-            --submit
+          # 1. 前置熔断拦截：如果仓库保险库里没配 Token，1 秒内报错退出，防止卡在设备登录
+          if (-not $env:AUTH_TOKEN) {
+            Write-Error "【致命错误】未读取到 Token！请检查当前仓库 Settings -> Secrets and variables -> Actions 中是否已添加 WINGET_TOKEN 或 WINGET！"
+            exit 1
+          }
+
+          # 2. 单行执行，绝不使用易被截断的反引号换行
+          .\wingetcreate.exe update ASYS.Vantage --version "${{ github.event.inputs.version }}" --urls "${{ github.event.inputs.url_amd64 }}" "${{ github.event.inputs.url_arm }}" --token "$env:AUTH_TOKEN" --submit
