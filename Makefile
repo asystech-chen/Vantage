@@ -336,9 +336,9 @@ package-pe-sfx :
 # MSIX: 将 Windows 包重新打包为 MSIX (Microsoft Store 格式)
 # 依赖: package 必须先完成
 # 签发给 Store 前，修改 PUBLISHER 为 Partner Center 注册的 CN
-MSIX_PUBLISHER ?= CN=Vantage, O=Vantage, L=Beijing, C=CN
-MSIX_PUBLISHER_DISPLAY ?= Vantage Browser
-MSIX_IDENTITY ?= Vantage.VantageBrowser
+MSIX_PUBLISHER ?= CN=3A6B897B-1873-49F2-A0F3-AF6DFDA36245
+MSIX_PUBLISHER_DISPLAY ?= ASYS Technology
+MSIX_IDENTITY ?= ASYSTechnology.VantageBrowser
 
 # 预打包后是否自动走远程封包（home-nas）。0 = 只留 *.msix-prepackage.zip
 MSIX_REMOTE ?= 1
