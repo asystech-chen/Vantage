@@ -2786,7 +2786,7 @@ librewolf-download-tmp-description = 何时启用: 将（程序文件是保存�
 librewolf-download-tmp-warning1 = 何时禁用: 文件是保存直接的到你的下载文件夹为了更简单访问. 笔记那将（程序文件可以离开可回复的痕迹偶数在...之后删除.
 
 # Download speedup
-vantage-download-speed-heading = 下载加速 (实验的)
+vantage-download-speed-heading = 下载加速
 vantage-download-mt-checkbox =
     .label = 启用多-threaded 下载
 vantage-download-mt-description = 何时启用: 文件从服务器那支持量程请求是将（程序在并联段和合并, 超速行驶向上的大的下载. 禁用如果下载失败在确定的网站（全球资讯网的主机站）.

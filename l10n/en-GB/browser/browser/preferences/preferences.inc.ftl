@@ -105,7 +105,7 @@ librewolf-download-tmp-description = When enabled: Downloaded files are saved to
 librewolf-download-tmp-warning1 = When disabled: Files are saved directly to your download folder for easier access. Note that downloaded files may leave recoverable traces even after deletion.
 
 # Download speedup
-vantage-download-speed-heading = Download Speedup (Experimental)
+vantage-download-speed-heading = Download Speedup
 vantage-download-mt-checkbox =
     .label = Enable multi-threaded downloads
 vantage-download-mt-description = When enabled: Files from servers that support range requests are downloaded in parallel segments and merged, speeding up large downloads. Disable if downloads fail on certain websites.

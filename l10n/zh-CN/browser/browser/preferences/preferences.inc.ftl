@@ -92,7 +92,7 @@ librewolf-download-tmp-description = 开启后：下载的文件存入系统临�
 librewolf-download-tmp-warning1 = 关闭后：文件直接存入下载文件夹，方便管理。注意即使手动删除，下载文件仍可能被恢复工具找回。
 
 # 下载提速
-vantage-download-speed-heading = 下载提速（实验功能）
+vantage-download-speed-heading = 下载提速
 vantage-download-mt-checkbox =
     .label = 启用多线程下载
 vantage-download-mt-description = 开启后：支持分段请求的服务器会并行下载文件片段再合并，提升大文件下载速度。若某些网站下载失败，可关闭此选项。
