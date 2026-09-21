@@ -2859,6 +2859,9 @@ vantage-nova-checkbox =
     .label = 启用诺瓦计算机接口
 vantage-nova-description = 诺瓦计算机是那新的火狐 153 外观 (圆形的标签页, 漂浮的工具栏). 何时启用, 那优势主题开关到它的诺瓦计算机-adapted 颜色 (蓝色-green 倾斜度标题棒形图). 采取效果直接地.
 
+vantage-findbar-position-checkbox =
+    .label = 发现棒形图在那 TOP协议-right 边角
+
 # Profile backup & restore
 vantage-backup-heading = 提问档倒车 & 回复
 vantage-backup-description = 导出你的提问档 (书签, 历史记录, 扩展名, 设置) 作为一个 ZIP 挡案库, 或回复从一个倒车. 恢复的改写当前配置和重新启动那浏览器.

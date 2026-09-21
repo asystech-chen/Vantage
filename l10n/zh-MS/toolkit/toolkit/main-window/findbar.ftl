@@ -63,3 +63,6 @@ findbar-found-matches-count-limit =
             [one] 更多比 { $limit } 比较
            *[other] 更多比 { $limit } 比较
         }
+
+vantage-findbar-options-button =
+    .tooltiptext = 更多发现选项

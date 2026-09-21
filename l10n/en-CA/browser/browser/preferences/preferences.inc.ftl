@@ -178,6 +178,9 @@ vantage-nova-checkbox =
     .label = Enable Nova interface
 vantage-nova-description = Nova is the new Firefox 153 appearance (rounded tabs, floating toolbar). When enabled, the Vantage theme switches to its Nova-adapted colours (blue-green gradient title bar). Takes effect immediately.
 
+vantage-findbar-position-checkbox =
+    .label = Find bar in the top-right corner
+
 # Profile backup & restore
 vantage-backup-heading = Profile Backup & Restore
 vantage-backup-description = Export your profile (bookmarks, history, extensions, settings) as a ZIP archive, or restore from a backup. Restoring overwrites the current configuration and restarts the browser.

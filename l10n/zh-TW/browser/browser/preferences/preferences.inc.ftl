@@ -156,6 +156,9 @@ vantage-nova-checkbox =
     .label = 啟用 Nova 新介面
 vantage-nova-description = Nova 是 Firefox 153 引入的新外觀（圓潤分頁、浮動工具列）。開啟後 Vantage 主題會自動切換為 Nova 適配配色（藍綠漸變標題欄）。切換即時生效。
 
+vantage-findbar-position-checkbox =
+    .label = 搜尋列顯示在右上角
+
 # 設定備份與還原
 vantage-backup-heading = 設定備份與還原
 vantage-backup-description = 將瀏覽器設定（書籤、歷史紀錄、擴充元件、設定）匯出為壓縮檔，或從備份還原。還原會覆蓋目前設定並重新啟動瀏覽器。

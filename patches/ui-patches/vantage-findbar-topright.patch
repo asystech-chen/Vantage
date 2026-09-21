@@ -1,0 +1,136 @@
+diff --git a/browser/themes/shared/browser-shared.css b/browser/themes/shared/browser-shared.css
+index 12d5982..4a20eaa 100644
+--- a/browser/themes/shared/browser-shared.css
++++ b/browser/themes/shared/browser-shared.css
+@@ -1726,3 +1726,131 @@ popupnotificationcontent {
+ #bookmarksToolbarFolderMenu {
+   --menuitem-icon: url("chrome://browser/skin/places/bookmarksToolbar.svg");
+ }
++
++/* ===== Vantage：查找栏位置（右上角悬浮，Chromium 风格）=====
++   仅在 pref vantage.findbar.topright=true 时生效；默认关闭，保持 Firefox 原生底部
++   查找栏。只改位置、外观与状态呈现，不改变查找逻辑。
++
++   布局用 grid 而非 flex-wrap：换行 flex 容器的 max-content 会把所有子项按
++   "不换行"求和，展开选项行时面板宽度会爆掉；grid 里跨列项的 max-content
++   取各列最大值，面板宽度保持与第一行一致。 */
++@media -moz-pref("vantage.findbar.topright") {
++  :is(.browserContainer, .browserStack) > findbar {
++    position: absolute;
++    inset-block-start: 8px;
++    inset-inline-end: 8px;
++    /* 覆盖 toolkit/content/xul.css 的 contain: inline-size（否则 max-content 会算成 0） */
++    contain: none;
++    display: grid;
++    /* 第一行：输入区 | ⋮ | ✕ */
++    grid-template-columns: auto auto auto;
++    align-items: center;
++    width: max-content;
++    max-width: calc(100% - 16px);
++    margin: 0;
++    border: 1px solid var(--chrome-content-separator-color);
++    border-radius: 8px;
++    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
++    z-index: 1;
++    background-color: var(--toolbar-background-color);
++    color: var(--toolbar-text-color);
++    color-scheme: var(--toolbar-color-scheme);
++    transition: none;
++
++    :root[lwtheme] & {
++      background-color: var(--lwt-accent-color);
++      background-image: none;
++    }
++
++    & > .findbar-container {
++      grid-row: 1;
++      grid-column: 1;
++    }
++
++    & > .findbar-closebutton {
++      grid-row: 1;
++      grid-column: 3;
++    }
++  }
++
++  /* 「⋮」按钮：切换选项行的展开/收起
++     （复选框由 JS 搬进 .vantage-findbar-options-row，见 settings/librewolf.cfg） */
++  .findbar-options-button {
++    grid-row: 1;
++    grid-column: 2;
++    appearance: none;
++    list-style-image: url("chrome://global/skin/icons/more.svg");
++    -moz-context-properties: fill;
++    fill: var(--toolbarbutton-icon-fill, currentColor);
++    border-radius: var(--border-radius-small);
++    padding: 4px;
++    margin-inline: 4px 2px;
++  }
++
++  .findbar-options-button:hover {
++    background-color: var(--toolbarbutton-background-color-hover, rgba(190, 190, 190, 0.2));
++  }
++
++  .findbar-options-button[aria-expanded="true"],
++  .findbar-options-button[options-active] {
++    background-color: var(--toolbarbutton-background-color-active, rgba(190, 190, 190, 0.4));
++  }
++
++  /* 搜索选项（区分大小写 / 变音符 / 全词）开启时高亮「⋮」按钮 */
++  .findbar-options-button[options-active] {
++    fill: AccentColor;
++  }
++
++  /* 折叠的选项行：默认隐藏，点「⋮」展开为第二行（两列，宽度不超过第一行） */
++  .vantage-findbar-options-row {
++    grid-row: 2;
++    grid-column: 1 / -1;
++    display: grid;
++    grid-template-columns: repeat(2, max-content);
++    justify-content: start;
++    align-items: center;
++    column-gap: 16px;
++    row-gap: 4px;
++    margin-inline: 8px;
++    padding-block: 4px;
++    border-top: 1px solid var(--chrome-content-separator-color);
++  }
++
++  .vantage-findbar-options-row[hidden] {
++    display: none;
++  }
++
++  /* ---- Chromium 式紧凑状态：输入框旁的「x/y」---- */
++
++  /* 原生长句（第 x 项，共 y 项 / (区分大小写) / (全词匹配) …）不再占位 */
++  .findbar-label {
++    display: none;
++  }
++
++  /* 「未找到」「到达页尾」等状态文本：仅对视力隐藏，保留读屏可见性 */
++  .findbar-find-status {
++    display: block;
++    position: absolute;
++    width: 1px;
++    height: 1px;
++    overflow: hidden;
++    clip-path: inset(50%);
++    white-space: nowrap;
++    margin: 0;
++  }
++
++  .vantage-findbar-counter {
++    align-self: center;
++    margin-inline: 4px 2px;
++    color: var(--toolbar-text-color);
++    opacity: 0.75;
++    font-size: 0.9em;
++    font-variant-numeric: tabular-nums;
++  }
++
++  .vantage-findbar-counter[notfound] {
++    color: #e22850;
++    opacity: 1;
++    font-weight: var(--font-weight-bold);
++  }
++}
