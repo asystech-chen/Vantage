@@ -241,7 +241,7 @@ new file mode 100644
 index 0000000..6649601
 --- /dev/null
 +++ b/toolkit/components/downloads/MultiThreadSaver.sys.mjs
-@@ -0,0 +1,1260 @@
+@@ -0,0 +1,1303 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -501,8 +501,14 @@ index 0000000..6649601
 +   * Implements "DownloadSaver.removeData".
 +   */
 +  async removeData(canRemoveFinalTarget = false) {
-+    // Remove any part files left over from a segmented download.
-+    for (let path of this._partFiles) {
++    // Remove any part files left over from a segmented download.  When the
++    // saver was rebuilt after a restart (fromSerializable) the in-memory list
++    // is empty while the files may still be on disk, so rebuild the paths
++    // from the download target and the preferences in that case.
++    let partPaths = this._partFiles.length
++      ? this._partFiles
++      : this._partFilePathsForCurrentTarget();
++    for (let path of partPaths) {
 +      await this._tryToRemoveFile(path);
 +    }
 +    this._partFiles = [];
@@ -536,32 +542,16 @@ index 0000000..6649601
 +   *
 +   * The native Download.refresh() recovers the transferred bytes from the
 +   * ".part" file after a restart; the multithreaded saver keeps the data in
-+   * part files ("&lt;complete&gt;.mtN") instead, so refresh() asks the saver
-+   * when the ".part" file is missing.  This also runs before execute() has
-+   * been called again, therefore the part file naming is rebuilt from the
-+   * target path and the preferences instead of using cached state.
++   * part files instead, so refresh() asks the saver when the ".part" file is
++   * missing.  This also runs before execute() has been called again,
++   * therefore the part file naming is rebuilt from the target path and the
++   * preferences instead of using cached state.
 +   *
 +   * @returns {Promise<number>} Bytes already written to disk, or zero.
 +   */
 +  async getPartialBytes() {
-+    let target = this.download?.target;
-+    if (!target?.path) {
-+      return 0;
-+    }
-+    let base = target.partFilePath || target.path + ".part";
-+    let tmpDir = "";
-+    try {
-+      tmpDir = this._resolveTmpDir(
-+        Services.prefs.getStringPref("vantage.download.multithread.tmpDir", "")
-+      );
-+    } catch (e) {}
 +    let total = 0;
-+    // Part counts are clamped to 32; scanning a few extra slots is enough to
-+    // cover leftovers from older attempts with different part counts.
-+    for (let i = 0; i < 64; i++) {
-+      let path = tmpDir
-+        ? PathUtils.join(tmpDir, PathUtils.filename(base) + ".mt" + i)
-+        : base + ".mt" + i;
++    for (let path of this._partFilePathsForCurrentTarget()) {
 +      try {
 +        total += (await IOUtils.stat(path)).size;
 +      } catch (ex) {
@@ -940,18 +930,71 @@ index 0000000..6649601
 +  /**
 +   * Returns the path of the part file with the given index.  Part files are
 +   * written into the resolved part cache directory (see _resolveTmpDir);
-+   * when no directory is available they go next to the complete file.  They
-+   * are named after the complete file so that concurrent downloads of
-+   * different files do not collide.
++   * when no directory is available they go next to the complete file.
 +   */
 +  _partFilePath(aIndex) {
-+    if (this._tmpDir) {
-+      return PathUtils.join(
-+        this._tmpDir,
-+        PathUtils.filename(this._completePath) + ".mt" + aIndex
-+      );
++    return this._partFilePathFor(this._completePath, this._tmpDir, aIndex);
++  },
++
++  /**
++   * Deterministic short hash (FNV-1a, 32 bit) of a path, used to disambiguate
++   * the part file names of downloads that share a file name but are saved to
++   * different directories: all part files live in one shared cache directory.
++   */
++  _pathHash(aPath) {
++    let hash = 0x811c9dc5;
++    for (let i = 0; i < aPath.length; i++) {
++      hash ^= aPath.charCodeAt(i);
++      hash = Math.imul(hash, 0x01000193);
 +    }
-+    return this._completePath + ".mt" + aIndex;
++    return (hash >>> 0).toString(16).padStart(8, "0");
++  },
++
++  /**
++   * Returns the full path of the part file with the given index for the given
++   * complete file path, resolved against aTmpDir (may be empty, in which case
++   * the parts are stored next to the complete file).  Called both while
++   * downloading (with the cached state) and when rebuilding the paths after a
++   * restart, so the naming must stay in one place.
++   */
++  _partFilePathFor(aCompletePath, aTmpDir, aIndex) {
++    if (aTmpDir) {
++      let name =
++        PathUtils.filename(aCompletePath) +
++        "." +
++        this._pathHash(aCompletePath) +
++        ".mt" +
++        aIndex;
++      return PathUtils.join(aTmpDir, name);
++    }
++    return aCompletePath + ".mt" + aIndex;
++  },
++
++  /**
++   * Rebuilds the list of part file paths for the current download target from
++   * the preferences.  Used by getPartialBytes() and removeData() when the
++   * naming has to be recovered without the state kept by execute() (after a
++   * restart, or before a download has been retried).
++   */
++  _partFilePathsForCurrentTarget() {
++    let target = this.download?.target;
++    if (!target?.path) {
++      return [];
++    }
++    let base = target.partFilePath || target.path + ".part";
++    let tmpDir = "";
++    try {
++      tmpDir = this._resolveTmpDir(
++        Services.prefs.getStringPref("vantage.download.multithread.tmpDir", "")
++      );
++    } catch (e) {}
++    let paths = [];
++    // Part counts are clamped to 32; scanning a few extra slots is enough to
++    // cover leftovers from older attempts with different part counts.
++    for (let i = 0; i < 64; i++) {
++      paths.push(this._partFilePathFor(base, tmpDir, i));
++    }
++    return paths;
 +  },
 +
 +  /**
