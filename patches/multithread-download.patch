@@ -241,7 +241,7 @@ new file mode 100644
 index 0000000..6649601
 --- /dev/null
 +++ b/toolkit/components/downloads/MultiThreadSaver.sys.mjs
-@@ -0,0 +1,1194 @@
+@@ -0,0 +1,1260 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -285,6 +285,14 @@ index 0000000..6649601
 +// Default number of parallel parts.  Users can configure this through the
 +// "vantage.download.multithread.maxParts" preference (clamped in execute()).
 +const kPartCount = 4;
++
++// Sub-path, inside the user cache directory, where the part files are stored
++// when the "vantage.download.multithread.tmpDir" preference is empty (e.g.
++// "~/.cache/Vantage/downloads" on Linux).  The user cache directory is used
++// instead of the system temporary directory on purpose: the latter is a RAM
++// disk (tmpfs) on many Linux distributions and is cleared on reboot, which
++// would waste memory for large downloads and break resume.
++const kDefaultTmpDirSubPath = ["Vantage", "downloads"];
 +
 +// Files smaller than this are downloaded with a single channel.
 +// 500 KB: small enough that parallel parts would not help, while still
@@ -406,9 +414,9 @@ index 0000000..6649601
 +        // never useful and usually triggers rate limiting.
 +        this._partCount = Math.min(prefParts, 32);
 +      }
-+      this._tmpDir = Services.prefs
-+        .getStringPref("vantage.download.multithread.tmpDir", "")
-+        .trim();
++      this._tmpDir = this._resolveTmpDir(
++        Services.prefs.getStringPref("vantage.download.multithread.tmpDir", "")
++      );
 +      this._resume = Services.prefs.getBoolPref(
 +        "vantage.download.multithread.resume",
 +        false
@@ -543,9 +551,9 @@ index 0000000..6649601
 +    let base = target.partFilePath || target.path + ".part";
 +    let tmpDir = "";
 +    try {
-+      tmpDir = Services.prefs
-+        .getStringPref("vantage.download.multithread.tmpDir", "")
-+        .trim();
++      tmpDir = this._resolveTmpDir(
++        Services.prefs.getStringPref("vantage.download.multithread.tmpDir", "")
++      );
 +    } catch (e) {}
 +    let total = 0;
 +    // Part counts are clamped to 32; scanning a few extra slots is enough to
@@ -872,11 +880,69 @@ index 0000000..6649601
 +  },
 +
 +  /**
++   * Returns the base directory of the user cache, following the platform
++   * conventions, or an empty string when it cannot be determined.
++   */
++  _cacheDirBase() {
++    let os = "";
++    try {
++      os = Services.appinfo.OS;
++    } catch (e) {}
++    try {
++      if (os == "WINNT") {
++        return Services.dirsvc.get("LocalAppData", Ci.nsIFile).path;
++      }
++      if (os == "Darwin") {
++        return PathUtils.join(
++          Services.dirsvc.get("ULibDir", Ci.nsIFile).path,
++          "Caches"
++        );
++      }
++    } catch (e) {}
++    // Linux and the other Unix platforms: honour XDG_CACHE_HOME and fall back
++    // to "~/.cache".
++    try {
++      let xdg = Services.env.get("XDG_CACHE_HOME");
++      if (xdg) {
++        return xdg;
++      }
++    } catch (e) {}
++    try {
++      let home = Services.dirsvc.get("Home", Ci.nsIFile).path;
++      return PathUtils.join(home, ".cache");
++    } catch (e) {
++      return "";
++    }
++  },
++
++  /**
++   * Resolves the directory that holds the part files.  A value entered by the
++   * user wins; otherwise a sub-directory of the user cache directory is used
++   * (see kDefaultTmpDirSubPath).  Returns an empty string when no directory
++   * can be determined, in which case the parts are written next to the
++   * complete file.
++   *
++   * NOTE: getPartialBytes() rebuilds the same paths after a restart, so both
++   * callers must use this method to stay in sync.
++   */
++  _resolveTmpDir(aPrefValue) {
++    let value = (aPrefValue || "").trim();
++    if (value) {
++      return value;
++    }
++    let base = this._cacheDirBase();
++    if (!base) {
++      return "";
++    }
++    return PathUtils.join(base, ...kDefaultTmpDirSubPath);
++  },
++
++  /**
 +   * Returns the path of the part file with the given index.  Part files are
-+   * written next to the complete file by default; when the
-+   * "vantage.download.multithread.tmpDir" preference is set, they are
-+   * written into that directory instead (named after the complete file so
-+   * that concurrent downloads of different files do not collide).
++   * written into the resolved part cache directory (see _resolveTmpDir);
++   * when no directory is available they go next to the complete file.  They
++   * are named after the complete file so that concurrent downloads of
++   * different files do not collide.
 +   */
 +  _partFilePath(aIndex) {
 +    if (this._tmpDir) {

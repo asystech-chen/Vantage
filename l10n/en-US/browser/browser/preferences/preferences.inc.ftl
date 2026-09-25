@@ -112,9 +112,10 @@ vantage-download-mt-description = When enabled: Files from servers that support 
 vantage-download-maxparts-label = Maximum connections:
 vantage-download-maxparts-warning = More than 8 connections may be rate-limited or blocked by some websites.
 vantage-download-minsize-label = Minimum file size for multi-threading:
+vantage-download-minsize-unit = MB
 vantage-download-tmpdir-label = Part cache directory:
 vantage-download-tmpdir-browse = Browse…
-vantage-download-tmpdir-hint = Leave empty to use the system temporary directory. Choose a location with enough free space for large downloads.
+vantage-download-tmpdir-hint = Leave empty to use the user cache directory. Choose a location with enough free space for large downloads.
 vantage-download-tmpdir-picker-title = Choose part cache directory
 
 librewolf-tabs-heading = Tab Behavior

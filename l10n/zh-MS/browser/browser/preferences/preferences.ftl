@@ -2793,9 +2793,10 @@ vantage-download-mt-description = 何时启用: 文件从服务器那支持量�
 vantage-download-maxparts-label = 最大值连接:
 vantage-download-maxparts-warning = 更多比 8 连接可以是比率-limited 或阻止由一些网站（全球资讯网的主机站）.
 vantage-download-minsize-label = 最小值文件大小为了多-穿线:
+vantage-download-minsize-unit = MB
 vantage-download-tmpdir-label = 部分高速缓冲存储器目录:
 vantage-download-tmpdir-browse = 浏览…
-vantage-download-tmpdir-hint = 许可空到使用那系统临时目录. 选取一个位置与充足自由的空白为了大的下载.
+vantage-download-tmpdir-hint = 许可空到使用那用户高速缓冲存储器目录. 选取一个位置与充足自由的空白为了大的下载.
 vantage-download-tmpdir-picker-title = 选取部分高速缓冲存储器目录
 
 librewolf-tabs-heading = Tab 行为

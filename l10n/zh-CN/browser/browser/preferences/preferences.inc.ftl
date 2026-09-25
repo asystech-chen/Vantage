@@ -99,9 +99,10 @@ vantage-download-mt-description = 开启后：支持分段请求的服务器会�
 vantage-download-maxparts-label = 最大连接数：
 vantage-download-maxparts-warning = 超过 8 个连接可能被部分网站限速或封禁。
 vantage-download-minsize-label = 多线程最小文件尺寸：
+vantage-download-minsize-unit = MB
 vantage-download-tmpdir-label = 分片缓存目录：
 vantage-download-tmpdir-browse = 浏览…
-vantage-download-tmpdir-hint = 留空使用系统临时目录。大文件下载请选择剩余空间充足的位置。
+vantage-download-tmpdir-hint = 留空使用用户缓存目录。大文件下载请选择剩余空间充足的位置。
 vantage-download-tmpdir-picker-title = 选择分片缓存目录
 
 librewolf-tabs-heading = 标签页行为

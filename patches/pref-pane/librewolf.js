@@ -452,20 +452,37 @@ var gLibrewolfPane = {
       updateMaxParts();
     }
 
-    // 最小文件尺寸 menulist（int pref，字节值）
-    const minSizeList = document.getElementById("vantage-download-minsize");
+    // 最小文件尺寸（文本框，单位 MB，允许小数；存 int 字节 pref）
+    const minSizeInput = document.getElementById("vantage-download-minsize");
+    const kMinSizeMinMB = 0.1;
+    const kMinSizeMaxMB = 10240;
+    const kBytesPerMB = 1048576;
+    const formatMinSizeMB = bytes => {
+      // 最多两位小数，去掉末尾多余的 0
+      return String(parseFloat((bytes / kBytesPerMB).toFixed(2)));
+    };
     const updateMinSize = () => {
-      if (minSizeList) {
-        minSizeList.value = String(
+      if (minSizeInput) {
+        minSizeInput.value = formatMinSizeMB(
           Services.prefs.getIntPref("vantage.download.multithread.minSize", 524288)
         );
       }
     };
-    if (minSizeList) {
-      minSizeList.addEventListener("command", () => {
-        const v = parseInt(minSizeList.value, 10) || 524288;
-        Services.prefs.setIntPref("vantage.download.multithread.minSize", v);
-      });
+    if (minSizeInput) {
+      const commitMinSize = () => {
+        const v = parseFloat(minSizeInput.value);
+        // 非法输入（空、非数字、超出 0.1–10240 MB）回退上次的值
+        if (!Number.isFinite(v) || v < kMinSizeMinMB || v > kMinSizeMaxMB) {
+          updateMinSize();
+          return;
+        }
+        Services.prefs.setIntPref(
+          "vantage.download.multithread.minSize",
+          Math.round(v * kBytesPerMB)
+        );
+        updateMinSize();
+      };
+      minSizeInput.addEventListener("change", commitMinSize);
       Preferences.get("vantage.download.multithread.minSize").on("change", updateMinSize);
       updateMinSize();
     }

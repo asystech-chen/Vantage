@@ -14,6 +14,14 @@
 	display: inline;
 	font-size: 0.8em;
 }
+#vantage-download-minsize {
+	width: 5em;
+	text-align: end;
+}
+.librewolf-unit {
+	margin-inline-start: 6px;
+	opacity: 0.85;
+}
 .librewolf-button-icon {
 	width: 16px;
 	height: 16px;
