@@ -96,7 +96,7 @@ Vantage 已迁移至 **Firefox ESR（Extended Support Release）** 通道，当�
 - **x86_64**：大多数主流发行版（Debian / Ubuntu / Fedora / Arch 等）
 - **aarch64**：ARM64 设备（树莓派、部分国产 ARM 平台等）
 - **LoongArch64**：龙芯 3A6000+ 及兼容处理器，支持 Debian Ports / Arch Linux
-- **依赖库**：安装包已包含常见依赖
+- **依赖库**：安装包已包含常见依赖；播放哔哩哔哩等网站的 H.264/AAC 视频还需要系统 FFmpeg（deb 包会自动安装，rpm 包以 Recommends 方式建议安装；AppImage/便携版用户请手动安装，参见常见问题）
 
 ---
 
@@ -259,6 +259,23 @@ A: ✅ 完全兼容 Firefox 扩展商店（addons.mozilla.org）中的扩展，�
 
 **Q: 同步功能会泄露隐私吗？**  
 A: 同步功能默认关闭。如启用，数据将通过 Mozilla 服务器加密传输，我们不会额外收集同步内容。
+
+**Q: Linux 下打不开哔哩哔哩 / 视频网站提示浏览器不支持播放？**  
+A: 这通常是系统缺少 FFmpeg（H.264/AAC 解码库）导致的——Linux 上的 Firefox 系浏览器依赖系统 FFmpeg 解码 H.264/AAC（Windows 版使用内置解码组件，不受影响）。Fedora、openSUSE 官方源默认不带 FFmpeg，最小化安装或使用 AppImage/便携版时也容易缺失。Vantage 启动时会自动检测，缺失时在窗口顶部弹出安装指引通知。手动安装：
+
+```bash
+# Debian / Ubuntu（官网 deb 包已声明此依赖，一般无需手动安装）
+sudo apt install ffmpeg
+# Arch / Manjaro
+sudo pacman -S ffmpeg
+# Fedora（需先启用 RPM Fusion 源）
+sudo dnf install ffmpeg
+# openSUSE（需先启用 Packman 源）
+sudo zypper install ffmpeg
+```
+
+安装后重启浏览器即可正常播放。
+
 
 **Q: 如何反馈问题？**  
 A: 请通过 [GitHub Issues](https://github.com/asystech-chen/Vantage/issues) 提交，或访问官网联系客服。

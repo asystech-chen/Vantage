@@ -2,11 +2,12 @@ diff --git a/browser/components/preferences/jar.mn b/browser/components/preferen
 index 118709048e..51aeb42a23 100644
 --- a/browser/components/preferences/jar.mn
 +++ b/browser/components/preferences/jar.mn
-@@ -12,6 +12,7 @@ browser.jar:
+@@ -12,6 +12,8 @@ browser.jar:
     content/browser/preferences/home.js
     content/browser/preferences/search.js
     content/browser/preferences/privacy.js
 +   content/browser/preferences/librewolf.js
++   content/browser/preferences/vantage-msa-sync.js
     content/browser/preferences/sync.js
     content/browser/preferences/moreFromMozilla.js
     content/browser/preferences/fxaPairDevice.xhtml
@@ -38,8 +39,7 @@ index 1b8c381..cd0ac75 100644
  
  <head>
    <!-- @CSP: We should remove 'unsafe-inline' from style-src, see Bug 1579160 -->
--  <meta http-equiv="Content-Security-Policy" content="default-src chrome:; img-src chrome: moz-icon: moz-remote-image: https: blob: data:; style-src chrome: data: 'unsafe-inline'; object-src 'none'" />
-+  <meta http-equiv="Content-Security-Policy" content="default-src chrome:; connect-src https://asystech.cn; img-src chrome: moz-icon: moz-remote-image: https: blob: data:; style-src chrome: data: 'unsafe-inline'; object-src 'none'" />
+   +  <meta http-equiv="Content-Security-Policy" content="default-src chrome:; connect-src https://asystech.cn https://login.microsoftonline.com https://graph.microsoft.com; img-src chrome: moz-icon: moz-remote-image: https: blob: data:; style-src chrome: data: 'unsafe-inline'; object-src 'none'" />
  
    <title data-l10n-id="settings-page-title"></title>
  

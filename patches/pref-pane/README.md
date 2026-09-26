@@ -21,6 +21,22 @@ the `identity.fxaccounts.enabled` setting, so no JavaScript needed.
 Other code called by the UI elements.
 
 ---
+`vantage-msa-sync.js`:
+
+Microsoft account sync core protocol module (OAuth 2.0 device code flow +
+Microsoft Graph / OneDrive approot backup & restore). Pure logic with
+injected `fetch`/`sleep`/clock/credential-store so it is unit-testable in
+Node (see `tests/`). Packaged as a classic script exposing the global
+`VantageMSASync`; loaded by `librewolf.inc.xhtml` before `librewolf.js`.
+
+Requires a user-supplied Azure/Entra app registration with "Allow public
+client flows" enabled and delegated permissions `User.Read`,
+`Files.ReadWrite.AppFolder`, `offline_access`. The Application (client) ID
+is stored in the pref `vantage.msaSync.clientId` (tenant defaults to
+`consumers` via `vantage.msaSync.tenant`).
+
+---
+
 
 `preferences.ftl`:
 
@@ -35,7 +51,8 @@ New files, these contain all the logic for the `pref-pane`:
 - `librewolf.css` -> `browser/themes/shared/preferences/librewolf.css`
 - `librewolf.inc.xhtml` -> `browser/components/preferences/librewolf.inc.xhtml`
 - `librewolf.js` -> `browser/components/preferences/librewolf.js`
-
+- `vantage-msa-sync.js` -> `browser/components/preferences/vantage-msa-sync.js`
+- 
 ---
 
 Appending these string values to the original `preferences.ftl`:
