@@ -96,7 +96,7 @@ Vantage 已迁移至 **Firefox ESR（Extended Support Release）** 通道，当�
 - **x86_64**：大多数主流发行版（Debian / Ubuntu / Fedora / Arch 等）
 - **aarch64**：ARM64 设备（树莓派、部分国产 ARM 平台等）
 - **LoongArch64**：龙芯 3A6000+ 及兼容处理器，支持 Debian Ports / Arch Linux
-- **依赖库**：安装包已包含常见依赖
+- **依赖库**：安装包已包含常见依赖；播放哔哩哔哩等网站的 H.264/AAC 视频还需要系统 FFmpeg（deb 包会自动安装，rpm 包以 Recommends 方式建议安装；AppImage/便携版用户请手动安装，参见常见问题）
 
 ---
 
