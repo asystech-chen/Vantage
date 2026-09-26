@@ -5,3 +5,7 @@ urlbar-eme-blocked =
 toolbar-undo-close-button =
     .label = 恢復最近關閉
     .tooltiptext = 恢復最近關閉的分頁或視窗
+
+vantage-multithread-download-button =
+    .label = 多執行緒下載
+    .tooltiptext = 開啟或關閉多執行緒下載

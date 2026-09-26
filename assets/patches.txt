@@ -66,3 +66,4 @@ patches/multithread-download.patch
 patches/ui-patches/nova-nav-selected.patch
 patches/ui-patches/nova-dom-fullscreen-gap.patch
 patches/ui-patches/vantage-findbar-topright.patch
+patches/ui-patches/vantage-multithread-download-button.patch

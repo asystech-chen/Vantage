@@ -6,3 +6,7 @@ urlbar-webgl-blocked =
 toolbar-undo-close-button =
     .label = 恢复最近关闭
     .tooltiptext = 恢复最近关闭的标签页或窗口
+
+vantage-multithread-download-button =
+    .label = 多线程下载
+    .tooltiptext = 开启或关闭多线程下载

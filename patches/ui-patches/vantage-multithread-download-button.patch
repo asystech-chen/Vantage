@@ -1,0 +1,133 @@
+diff --git a/browser/components/customizableui/CustomizableWidgets.sys.mjs b/browser/components/customizableui/CustomizableWidgets.sys.mjs
+index 5c82bff..c0dd6ce 100644
+--- a/browser/components/customizableui/CustomizableWidgets.sys.mjs
++++ b/browser/components/customizableui/CustomizableWidgets.sys.mjs
+@@ -24,6 +24,11 @@ ChromeUtils.defineESModuleGetters(lazy, {
+ 
+ const kPrefCustomizationDebug = "browser.uiCustomization.debug";
+ 
++// Vantage: keeps one preference observer per window for the multi-threaded
++// download toolbar button.  The observer is registered in the widget's
++// onCreated() and removed in onDestroyed().
++const gVantageMultithreadObservers = new Map();
++
+ ChromeUtils.defineLazyGetter(lazy, "log", () => {
+   let { ConsoleAPI } = ChromeUtils.importESModule(
+     "resource://gre/modules/Console.sys.mjs"
+@@ -270,6 +275,57 @@ export const CustomizableWidgets = [
+       win.SessionWindowUI.restoreLastClosedTabOrWindowOrSession(win);
+     },
+   },
++  {
++    // Vantage: toggles the multi-threaded download saver
++    // (vantage.download.multithread).  Shown only in the Customize toolbar
++    // palette, so it is placed on a toolbar by the user.
++    id: "vantage-multithread-download-button",
++    l10nId: "vantage-multithread-download-button",
++    _introducedInVersion: 0,
++    onCreated(aNode) {
++      const kPref = "vantage.download.multithread";
++      aNode.setAttribute("type", "checkbox");
++      const updateChecked = () => {
++        let enabled = false;
++        try {
++          enabled = Services.prefs.getBoolPref(kPref, false);
++        } catch (e) {}
++        aNode.toggleAttribute("checked", enabled);
++      };
++      updateChecked();
++      // Keep the button state in sync when the preference is changed
++      // elsewhere, for example from the Vantage preferences page.
++      const observer = {
++        observe(aSubject, aTopic, aData) {
++          if (aData == kPref) {
++            updateChecked();
++          }
++        },
++      };
++      Services.prefs.addObserver(kPref, observer);
++      gVantageMultithreadObservers.set(aNode.ownerDocument, observer);
++    },
++    onCommand(aEvent) {
++      const kPref = "vantage.download.multithread";
++      let enabled = false;
++      try {
++        enabled = Services.prefs.getBoolPref(kPref, false);
++      } catch (e) {}
++      Services.prefs.setBoolPref(kPref, !enabled);
++    },
++    onDestroyed(aDocument) {
++      // CustomizableUI passes the window's document here; drop the observer
++      // that onCreated() registered for it.
++      let observer = gVantageMultithreadObservers.get(aDocument);
++      if (observer) {
++        Services.prefs.removeObserver(
++          "vantage.download.multithread",
++          observer
++        );
++        gVantageMultithreadObservers.delete(aDocument);
++      }
++    },
++  },
+   {
+     id: "print-button",
+     l10nId: "navbar-print",
+diff --git a/browser/locales/en-US/browser/browser.ftl b/browser/locales/en-US/browser/browser.ftl
+index f991fe0..1dbc155 100644
+--- a/browser/locales/en-US/browser/browser.ftl
++++ b/browser/locales/en-US/browser/browser.ftl
+@@ -1294,6 +1294,10 @@ toolbar-undo-close-button =
+     .label = Undo Close Tab or Window
+     .tooltiptext = Restore the most recently closed tab or window
+ 
++vantage-multithread-download-button =
++    .label = Multi-threaded Downloads
++    .tooltiptext = Turn multi-threaded downloads on or off
++
+ navbar-library =
+     .label = Library
+     .tooltiptext = View history, saved bookmarks, and more
+diff --git a/browser/themes/shared/icons/vantage-multithread-download.svg b/browser/themes/shared/icons/vantage-multithread-download.svg
+new file mode 100644
+index 0000000..e93b008
+--- /dev/null
++++ b/browser/themes/shared/icons/vantage-multithread-download.svg
+@@ -0,0 +1,11 @@
++<!-- This Source Code Form is subject to the terms of the Mozilla Public
++   - License, v. 2.0. If a copy of the MPL was not distributed with this
++   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
++<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="context-fill" fill-opacity="context-fill-opacity">
++  <g transform="translate(2.825 2.2) scale(0.8)">
++    <path d="M8.25.625a.625.625 0 0 0-1.25 0l0 8.323-3.308-3.309a.626.626 0 0 0-.885.885L7.285 11l.681 0 4.477-4.476a.626.626 0 0 0-.885-.885L8.25 8.947l0-8.322z"/>
++  </g>
++  <path d="M12.25 15a2 2 0 0 0 2-2l0-1.375a.625.625 0 0 0-1.25 0l0 1.525-.6.6-9.55 0-.6-.6 0-1.525a.625.625 0 0 0-1.25 0L1 13a2 2 0 0 0 2 2l9.25 0z"/>
++  <rect x="1.1" y="3.0" width="3.4" height="1.3" rx="0.65"/>
++  <rect x="1.1" y="6.2" width="2.3" height="1.3" rx="0.65"/>
++</svg>
+diff --git a/browser/themes/shared/jar.inc.mn b/browser/themes/shared/jar.inc.mn
+index 1fff396..012f4e8 100644
+--- a/browser/themes/shared/jar.inc.mn
++++ b/browser/themes/shared/jar.inc.mn
+@@ -250,6 +250,7 @@
+   skin/classic/browser/taskbar-tabs-move-tab.svg      (../shared/icons/taskbar-tabs-move-tab.svg)
+   skin/classic/browser/reload-to-stop.svg             (../shared/icons/reload-to-stop.svg)
+   skin/classic/browser/save.svg                       (../shared/icons/save.svg)
++  skin/classic/browser/vantage-multithread-download.svg   (../shared/icons/vantage-multithread-download.svg)
+   skin/classic/browser/screenshot.svg                 (../shared/icons/screenshot.svg)
+   skin/classic/browser/share.svg                      (../shared/icons/share.svg)
+   skin/classic/browser/sidebar-collapsed.svg          (../shared/icons/sidebar-collapsed.svg)
+diff --git a/browser/themes/shared/toolbarbutton-icons.css b/browser/themes/shared/toolbarbutton-icons.css
+index 37b921b..cd616e1 100644
+--- a/browser/themes/shared/toolbarbutton-icons.css
++++ b/browser/themes/shared/toolbarbutton-icons.css
+@@ -107,6 +107,10 @@
+   list-style-image: url("chrome://global/skin/icons/undo.svg");
+ }
+ 
++#vantage-multithread-download-button {
++  list-style-image: url("chrome://browser/skin/vantage-multithread-download.svg");
++}
++
+ #print-button {
+   list-style-image: url("chrome://global/skin/icons/print.svg");
+ }

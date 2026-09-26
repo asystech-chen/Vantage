@@ -1689,3 +1689,7 @@ urlbar-webgl-notification-anchor =
     .tooltiptext = 管理 WebGL 上下文创造许可
 urlbar-webgl-blocked =
     .tooltiptext = 你有阻止 WebGL 上下文创造为了这网站（全球资讯网的主机站）.
+
+vantage-multithread-download-button =
+    .label = 多-threaded 下载
+    .tooltiptext = 打开或关闭多-threaded 下载
