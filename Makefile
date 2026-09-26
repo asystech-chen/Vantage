@@ -602,7 +602,7 @@ package-deb : clean-packaging
 	@echo "Architecture: $(DEB_ARCH)" >> deb_build/DEBIAN/control
 	@echo "Maintainer: Vantage Build" >> deb_build/DEBIAN/control
 	@echo "Description: $(APP_DISPLAY_NAME) Browser" >> deb_build/DEBIAN/control
-	@echo "Depends: libgtk-3-0, libdbus-glib-1-2, libxtst6, libxss1, libasound2" >> deb_build/DEBIAN/control
+	@echo "Depends: libgtk-3-0, libdbus-glib-1-2, libxtst6, libxss1, libasound2, ffmpeg" >> deb_build/DEBIAN/control
 	@echo '#!/bin/sh' > deb_build/opt/$(APP_NAME)/$(APP_NAME).sh
 	@echo 'exec /opt/$(APP_NAME)/$(APP_NAME) "$$@"' >> deb_build/opt/$(APP_NAME)/$(APP_NAME).sh
 	@chmod +x deb_build/opt/$(APP_NAME)/$(APP_NAME).sh
@@ -652,6 +652,7 @@ package-rpm : clean-packaging
 		--rpm-compression xzmt \
 		--architecture $(RPM_ARCH) \
 		--rpm-autoreqprov \
+        --rpm-tag "Recommends: ffmpeg" \
 		--description "$(APP_DISPLAY_NAME) Web Browser" \
 		--maintainer "Vantage Build" \
 		--url "https://vantage.local" \
