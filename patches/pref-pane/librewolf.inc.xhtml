@@ -2,6 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+
+<script src="chrome://browser/content/preferences/vantage-msa-sync.js"/>
 <script src="chrome://browser/content/preferences/librewolf.js"/>
 
 <html:template id="template-paneVantage">
@@ -551,6 +553,55 @@
       <button id="vantage-backup-export-button" data-l10n-id="vantage-backup-export-button" />
       <button id="vantage-backup-import-button" data-l10n-id="vantage-backup-import-button" />
     </hbox>
+  </vbox>
+</groupbox>
+
+<groupbox id="vantage-msa-group" hidden="true" data-category="paneVantage">
+  <html:h2 data-l10n-id="vantage-msa-heading" />
+
+  <vbox class="indent">
+    <label data-l10n-id="vantage-msa-description" />
+
+    <!-- 应用(客户端) ID：设备码流登录必需（Azure/Entra 应用注册，说明见折叠帮助） -->
+    <hbox align="center" id="vantage-msa-clientid-row">
+      <label data-l10n-id="vantage-msa-clientid-label" />
+      <html:input type="text" id="vantage-msa-clientid" flex="1" />
+      <html:label for="vantage-msa-clientid-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
+    </hbox>
+    <vbox class="librewolf-collapse indent">
+      <html:input type="checkbox" id="vantage-msa-clientid-collapse" />
+      <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
+        <label data-l10n-id="vantage-msa-clientid-hint" />
+      </vbox>
+    </vbox>
+
+    <!-- 未登录：登录入口 -->
+    <hbox id="vantage-msa-signedout-row" align="center">
+      <button id="vantage-msa-signin-button" data-l10n-id="vantage-msa-signin-button" />
+    </hbox>
+
+    <!-- 设备码登录中：展示用户码 + 重新打开登录页 + 取消 -->
+    <vbox id="vantage-msa-pending-row" hidden="true">
+      <label data-l10n-id="vantage-msa-pending-instructions" />
+      <label id="vantage-msa-usercode" class="vantage-msa-code" />
+      <hbox>
+        <button id="vantage-msa-verify-button" data-l10n-id="vantage-msa-open-verify-button" />
+        <button id="vantage-msa-cancel-button" data-l10n-id="vantage-msa-cancel-button" />
+      </hbox>
+    </vbox>
+
+    <!-- 已登录：账户信息 + 上次备份时间 + 备份/恢复/退出 -->
+    <vbox id="vantage-msa-account-row" hidden="true">
+      <label id="vantage-msa-account-label" />
+      <label id="vantage-msa-lastsync-label" />
+      <hbox>
+        <button id="vantage-msa-upload-button" data-l10n-id="vantage-msa-upload-button" />
+        <button id="vantage-msa-restore-button" data-l10n-id="vantage-msa-restore-button" />
+        <button id="vantage-msa-signout-button" data-l10n-id="vantage-msa-signout-button" />
+      </hbox>
+    </vbox>
+
+    <label id="vantage-msa-status" />
   </vbox>
 </groupbox>
 
