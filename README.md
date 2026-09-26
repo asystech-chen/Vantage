@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/badge/许可证-MPL--2.0-green?style=for-the-badge)](LICENSE)
 [![GitHub](https://img.shields.io/badge/GitHub-源码-181717?style=for-the-badge&logo=github)](https://github.com/asystech-chen/Vantage)
 
-# 软件截图
+## 软件截图
 ![10LTSC-2026-03-14-14-34-51.png](./_resources/10LTSC-2026-03-14-14-34-51.png)
 
 
@@ -15,10 +15,12 @@
 ## 📋 目录
 
 - [什么是 Vantage？](#-什么是-vantage)
-- [🗺️ 路线图](#-路线图)
+- [⭐ Vantage 独有优势](#-vantage-独有优势)
+- [🗺️ 路线图](#️-路线图)
 - [核心特性](#核心特性)
 - [🖥️ 系统要求](#️-系统要求)
 - [📦 安装指南](#-安装指南)
+- [🔨 构建指南](#-构建指南)
 - [⚙️ 配置与使用](#️-配置与使用)
 - [🤝 贡献指南](#-贡献指南)
 - [❓ 常见问题](#-常见问题)
@@ -34,22 +36,22 @@
 Vantage 已迁移至 **Firefox ESR（Extended Support Release）** 通道，当前基线为 ESR 153：
 
 - **更稳定**：ESR 每年仅发布一个大版本，期间只合入安全修复
-- **更低维护成本**：上游变更少，补丁适配工作量大幅降低
+- **更低维护成本**：上游变更少，补丁适配工作量降低
 - **API 稳定**：autoconfig、扩展及系统集成接口不会频繁变动
 - **后续路线**：跟随 ESR 153 维护版（153.0.xesr）持续更新；下一个 ESR 大版本约 2027 年
 
-### ✨ 新功能计划
+### ✨ 功能进展
 
-| 优先级 | 功能 | 实现方式 | 状态 |
-|:---:|---|------|:---:|
-| 🛠 | 复制为 Markdown 链接 | autoconfig 注入（页面 / 链接 / 标签页右键菜单） | 已实现（待验证） |
-| 💭 | 下载完成提示音 | autoconfig observer | 评估中 |
+| 状态 | 功能 |
+|:---:|---|
+| ✅ 已实现 | 工具栏「多线程下载」开关、「查找栏右上角悬浮」、右键「复制为 Markdown 链接」/「在 IE 中打开」、工具栏「恢复最近关闭」、标签自动休眠、AI 侧栏、DoH 本地优化、Nova 外观 |
+| 🧪 计划中 | Windows PE 单文件自解压包、Chromium 系外链处理、更多右键增强 |
 
 ---
 
 ## 🔍 什么是 Vantage？
 
-**Vantage** 是一款由 **ASYS 科技** 深度定制的 Firefox 浏览器，基于 LibreWolf 代码实现，专注于**隐私 · 快速 · 易用**。
+**Vantage** 是一款由 **ASYS 科技** 深度定制的浏览器，以 **Firefox ESR** 为内核基线，专注于**隐私 · 快速 · 易用**。
 
 > ⚠️ Vantage 与 LibreWolf 或 Mozilla 官方无任何隶属关系或商业合作。
 
@@ -57,15 +59,37 @@ Vantage 已迁移至 **Firefox ESR（Extended Support Release）** 通道，当�
 
 ---
 
+## ⭐ Vantage 独有优势
+
+> 在 Firefox ESR 基础上，面向中文用户与本地网络环境做的深度定制。
+
+| 优势 | 说明 |
+|---|---|
+| 🎯 **ESR 稳定内核** | 基于 Firefox ESR 通道，内核长期稳定；Vantage 功能持续加入，版本会不断更新 |
+| 🌏 **本地网络优化** | 默认开启 DoH（阿里 / 腾讯，故障自动回退系统 DNS），可切换供应商，内网 / VPN 不断网 |
+| 🤖 **AI 侧栏开箱即用** | 内置 DeepSeek / 通义千问 / 豆包，侧栏即开即用 |
+| 🧊 **Nova 新外观** | 内置 Nova 界面 + Vantage 蓝绿主题，设置面板一键切换 |
+| ⚡ **多线程下载** | 内置多线程下载，工具栏按钮一键开关 |
+| 🔍 **查找栏右上角悬浮** | 可选把查找栏移到右上角，Chromium 式紧凑 `x/y` 计数 |
+| 🀄 **中文深度适配** | 中文安装器与界面，默认区域 CN，并附额外中文语言包 |
+| 🧷 **右键增强** | 「复制为 Markdown 链接」、「在 IE 中打开」（Windows） |
+| 🛌 **标签自动休眠** | 内存紧张时自动休眠不活跃标签页，释放内存 |
+| 🚫 **默认无遥测** | 完全禁用遥测、实验功能与广告推送 |
+| 🧩 **预装 uBlock Origin** | 预装内容拦截扩展，可选安装更多隐私增强扩展 |
+| 🖥️ **全平台多渠道** | Windows（x64/arm64）、Linux（x86_64/aarch64/LoongArch64）；winget / MSIX / deb / rpm / AppImage / 便携版 |
+| 📦 **LTO / PGO 构建** | 采用 LTO / PGO 编译并裁剪语言包，提升运行性能、精简包体积 |
+
+---
+
 ## 核心特性
 
 **性能与体验**
 
-- 多架构原生支持：x86_64、aarch64、LoongArch64，覆盖 Windows / Linux / 龙芯平台
+- 多架构原生支持：Windows x64 / arm64、Linux x86_64 / aarch64 / LoongArch64
 - AI 侧栏：内置 DeepSeek、通义千问、豆包，侧栏即开即用
-- 恢复最近关闭按钮、标签页滚轮切换、双击关闭等便捷交互
-- 内存不足时自动休眠不活跃标签页（Linux）
-- 多渠道安装：winget / deb / rpm / AppImage / 便携版
+- 工具栏「恢复最近关闭」「多线程下载」等按钮，标签页滚轮切换、双击关闭
+- 内存紧张时自动休眠不活跃标签页
+- 多渠道安装：winget / MSIX / deb / rpm / AppImage / 便携版
 
 **隐私与安全**
 
@@ -77,7 +101,7 @@ Vantage 已迁移至 **Firefox ESR（Extended Support Release）** 通道，当�
 **易用与定制**
 
 - `about:preferences#vantage` 专属设置面板，集中管理更新检查、AI、隐私策略
-- 灵活搜索引擎：默认 Bing，一键切换百度、谷歌、DuckDuckGo 等
+- 灵活搜索引擎：内置多引擎（含百度等国内选择），可切换谷歌、DuckDuckGo 等
 - 可选启用 Mozilla 账号同步书签与扩展
 - 开源透明：MPL-2.0 许可证，源码公开可审计
 
@@ -96,7 +120,7 @@ Vantage 已迁移至 **Firefox ESR（Extended Support Release）** 通道，当�
 - **x86_64**：大多数主流发行版（Debian / Ubuntu / Fedora / Arch 等）
 - **aarch64**：ARM64 设备（树莓派、部分国产 ARM 平台等）
 - **LoongArch64**：龙芯 3A6000+ 及兼容处理器，支持 Debian Ports / Arch Linux
-- **依赖库**：安装包已包含常见依赖
+- **依赖库**：安装包已包含常见依赖；播放哔哩哔哩等网站的 H.264/AAC 视频还需要系统 FFmpeg（libavcodec）。deb/rpm 包均为此声明了推荐依赖（apt/dnf/zypper 默认会安装），Fedora、openSUSE 官方源即可满足，RHEL/Rocky/Alma 需先启用 RPM Fusion；AppImage/便携版请手动安装，参见常见问题
 
 ---
 
@@ -110,38 +134,31 @@ Vantage 已迁移至 **Firefox ESR（Extended Support Release）** 通道，当�
 
 ### Linux 用户
 
-Debian、Ubuntu等使用APT包管理器的Linux发行版
+从[官网](https://asystech.cn/vantage)或 [Releases](https://github.com/asystech-chen/Vantage/releases/latest) 下载对应安装包（文件名格式：`vantage_<版本>_<架构>.deb`、`vantage-<版本>.<架构>.rpm`、`vantage-<版本>.<架构>.AppImage`）。
+
+**Debian / Ubuntu（deb）**
 ```bash
 cd ~
-wget https://asystech.cn/vantage/vantage-latest.deb #通过官网下载（推荐）
-wget https://github.com/asystech-chen/Vantage/releases/latest/download/vantage_latest_amd64.deb #通过GitHub下载
-
 sudo apt update
-sudo apt install -y ./vantage_latest_amd64.deb
-
+sudo apt install -y ./vantage_*_amd64.deb
 ```
 
-Rocky等RHEL发行版
+**Fedora / RHEL / Rocky（rpm）**
 ```bash
 cd ~
-wget https://github.com/asystech-chen/Vantage/releases/latest/download/vantage_latest.x86_64.rpm #通过GitHub下载
+sudo dnf install -y ./vantage-*.x86_64.rpm
+```
+> openSUSE 用 `sudo zypper install`；RHEL / Rocky / Alma 安装后如需播放 H.264 视频，请启用 RPM Fusion（见常见问题）。
 
-sudo dnf install -y ./vantage_latest.x86_64.rpm
-
+**其他发行版（AppImage）**
+```bash
+chmod +x vantage-*.x86_64.AppImage
+./vantage-*.x86_64.AppImage
 ```
 
-其他发行版：使用AppImage包
+**压缩包手动安装（tar.xz / tar.gz）**
 ```bash
-cd ~
-wget https://github.com/asystech-chen/Vantage/releases/latest/download/vantage_latest.x86_64.AppImage
-chmod +x vantage_latest.x86_64.AppImage
-./vantage_latest.x86_64.AppImage
-```
-
-
-# 方式二：使用压缩包手动安装
-```bash
-tar -xjf Vantage-linux-x86_64.tar.bz2 -C /opt/
+tar -xf vantage-<版本>.linux-x86_64.tar.xz -C /opt/
 ln -s /opt/vantage/vantage /usr/local/bin/vantage
 ```
 
@@ -159,30 +176,32 @@ ln -s /opt/vantage/vantage /usr/local/bin/vantage
 
 # 指定目标编译
 ./build.sh linux-x64 linux-arm64 linux-loong64
-./build.sh windows-x64 macos-arm64
+./build.sh windows-x64 windows-arm64
 
 # 简写
 ./build.sh lx      # linux-x64
+./build.sh la      # linux-arm64
 ./build.sh ll      # linux-loong64
 ./build.sh wx      # windows-x64
-./build.sh mx      # macos-x64
+./build.sh wa      # windows-arm64
 
 # 仅打包（跳过编译）
 ./build.sh package linux-x64
 
-# 仅签名已生成产物（跳过编译和打包）
+# 仅签名已生成产物（跳过编译和打包，仅 Linux）
 ./build.sh sign linux-x64
 ```
 
-编译流程自动包含：**编译 → 打包 → 签名**（Linux 目标生成 deb/rpm/AppImage/tar.gz 四格式并内嵌/附加 GPG 签名）。
+编译流程自动包含：**编译 → 打包 → 签名**（Linux 目标生成 deb / rpm / AppImage / tar.gz 四格式并附带 GPG 签名）。
 
 ### 手动编译
 
 ```bash
-MOZCONFIG=$(pwd)/assets/mozconfig.linux-x86_64 make build   # Linux x86_64
+MOZCONFIG=$(pwd)/assets/mozconfig.new make build            # Linux x86_64
+MOZCONFIG=$(pwd)/assets/mozconfig.linux-arm64 make build    # Linux arm64
 MOZCONFIG=$(pwd)/assets/mozconfig.linux-loong64 make build  # Linux LoongArch64
-MOZCONFIG=$(pwd)/assets/mozconfig.windows-x86_64 make build # Windows
-MOZCONFIG=$(pwd)/assets/mozconfig.macos-arm64 make build    # macOS ARM
+MOZCONFIG=$(pwd)/assets/mozconfig.win-cross make build      # Windows x64（交叉编译）
+MOZCONFIG=$(pwd)/assets/mozconfig.win-cross.arm64 make build # Windows arm64（交叉编译）
 ```
 
 ### LoongArch64 交叉编译
@@ -214,17 +233,6 @@ network.trr.uri = "https://dns.alidns.com/dns-query"    # 阿里 DNS
 # network.trr.uri = "https://doh.pub/dns-query"         # 腾讯 DNSPod
 ```
 
-### 快捷键速查
-| 快捷键 | 功能 |
-|--------|------|
-| `Ctrl+Shift+I` | 打开 AI 侧栏（DeepSeek / Qwen / 豆包） |
-| `Ctrl+Shift+P` | 打开隐私浏览窗口 |
-| `Ctrl+Shift+Delete` | 快速清除浏览数据 |
-| `Ctrl+L` | 聚焦地址栏 |
-| `F11` | 全屏模式 |
-
-
-
 ---
 
 ## 🤝 贡献指南
@@ -252,13 +260,29 @@ network.trr.uri = "https://dns.alidns.com/dns-query"    # 阿里 DNS
 ## ❓ 常见问题
 
 **Q: Vantage 和 Firefox / LibreWolf 有什么区别？**  
-A: Vantage 基于 LibreWolf 代码基线，由 ASYS 科技针对中文用户习惯与隐私需求进行二次定制，预置更适合本地使用的搜索与拦截策略。
+A: Vantage 以 **Firefox ESR** 为内核基线（早期基于 LibreWolf 代码实现），由 ASYS 科技针对中文用户习惯与隐私需求进行二次定制，预置更适合本地使用的搜索与拦截策略。
 
 **Q: 扩展兼容吗？**  
 A: ✅ 完全兼容 Firefox 扩展商店（addons.mozilla.org）中的扩展，可直接安装使用。
 
 **Q: 同步功能会泄露隐私吗？**  
 A: 同步功能默认关闭。如启用，数据将通过 Mozilla 服务器加密传输，我们不会额外收集同步内容。
+
+**Q: Linux 下打不开哔哩哔哩 / 视频网站提示浏览器不支持播放？**  
+A: Linux 上的 Firefox 系浏览器依赖**系统 FFmpeg（libavcodec）**解码 H.264/AAC；缺少这个库时，视频站会判定浏览器不支持播放。Windows 版使用系统内置解码组件，不受影响。安装方法：
+
+```bash
+# Debian / Ubuntu（deb 包已声明推荐依赖，一般无需手动安装）
+sudo apt install ffmpeg
+# Fedora（官方源）
+sudo dnf install ffmpeg-free openh264
+# openSUSE（官方源）
+sudo zypper install ffmpeg-7
+# RHEL / Rocky / Alma（需先启用 RPM Fusion）
+sudo dnf install ffmpeg
+```
+
+安装后重启浏览器即可。
 
 **Q: 如何反馈问题？**  
 A: 请通过 [GitHub Issues](https://github.com/asystech-chen/Vantage/issues) 提交，或访问官网联系客服。
@@ -277,7 +301,7 @@ Vantage 浏览器主体代码遵循 **Mozilla Public License 2.0** 开源。
 ## 🔗 相关链接
 
 - 🌐 官网：[https://asystech.cn/vantage](https://asystech.cn/vantage)
-- 💻 源码：[GitHub - ASYS-Tech/Vantage](https://github.com/asystech-chen/Vantage)
+- 💻 源码：[GitHub - asystech-chen/Vantage](https://github.com/asystech-chen/Vantage)
 - 🐛 问题反馈：[Issues](https://github.com/asystech-chen/Vantage/issues)
 - 📚 Firefox 文档：[MDN Web Docs](https://developer.mozilla.org/)
 
