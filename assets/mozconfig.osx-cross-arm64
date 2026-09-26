@@ -53,9 +53,6 @@ export CFLAGS="-ftrivial-auto-var-init=zero -fwrapv"
 export CXXFLAGS="-ftrivial-auto-var-init=zero -fwrapv"
 
 # DMG packaging tools
-export MKFSHFS="$CROSS/hfsplus-tools/newfs_hfs"
-export DMG_TOOL="$CROSS/dmg/dmg"
-export HFS_TOOL="$CROSS/dmg/hfsplus"
 
 # WASM compiler (osx-cross clang doesn't have wasm target)
 export WASM_CC="$HOME/.mozbuild/clang/bin/clang"
