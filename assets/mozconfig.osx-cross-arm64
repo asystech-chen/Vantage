@@ -49,8 +49,11 @@ mk_add_options MOZ_TELEMETRY_REPORTING=0
 export MOZ_REQUIRE_SIGNING=
 
 # Hardening
-export CFLAGS="-ftrivial-auto-var-init=zero -fwrapv"
-export CXXFLAGS="-ftrivial-auto-var-init=zero -fwrapv"
+export CFLAGS="-ftrivial-auto-var-init=zero -fwrapv -resource-dir=$CROSS/clang-rt"
+export CXXFLAGS="-ftrivial-auto-var-init=zero -fwrapv -resource-dir=$CROSS/clang-rt"
+# macOS compiler-rt：提供 __isPlatformVersionAtLeast（26.x SDK 的 libSystem 不含此符号）
+# 取自 ~/.mozbuild/clang/lib/clang/21/lib/darwin/libclang_rt.osx.a（fat: x86_64+arm64）
+export LDFLAGS="-resource-dir=$CROSS/clang-rt"
 
 # DMG packaging tools
 
