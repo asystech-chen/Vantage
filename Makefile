@@ -613,9 +613,12 @@ package-deb : clean-packaging
 	@echo 'Name=$(APP_DISPLAY_NAME)' >> deb_build/usr/share/applications/$(APP_NAME).desktop
 	@echo 'Exec=/opt/$(APP_NAME)/$(APP_NAME).sh' >> deb_build/usr/share/applications/$(APP_NAME).desktop
 	@echo 'Icon=$(APP_NAME)' >> deb_build/usr/share/applications/$(APP_NAME).desktop
-	@echo 'Type=Application' >> deb_build/usr/share/applications/$(APP_NAME).desktop
+	@echo 'Terminal=false' >> deb_build/usr/share/applications/$(APP_NAME).desktop
+    @echo 'Type=Application' >> deb_build/usr/share/applications/$(APP_NAME).desktop
 	@echo 'Categories=Network;WebBrowser;' >> deb_build/usr/share/applications/$(APP_NAME).desktop
-	@echo ">>> [DEB] Building .deb file..."
+	@echo 'StartupNotify=true' >> deb_build/usr/share/applications/$(APP_NAME).desktop
+	@echo 'StartupWMClass=$(APP_NAME)' >> deb_build/usr/share/applications/$(APP_NAME).desktop
+    @echo ">>> [DEB] Building .deb file..."
 	@dpkg-deb --build deb_build $(APP_NAME)_$(version)-$(release)_$(DEB_ARCH).deb
 	@echo ">>> [DEB] Done: $(APP_NAME)_$(version)-$(release)_$(DEB_ARCH).deb"
 	@rm -rf deb_build
