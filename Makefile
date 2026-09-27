@@ -300,6 +300,11 @@ package :
 	    rm -rf $(APP_NAME)-portable; \
 	    echo ">>> [WIN-PORTABLE] $(APP_NAME)-$(version)-$(release).win-$$ARCH.portable.zip"; \
 	  fi; \
+	elif [ -n "$$(ls $$OBJDIR/dist/*.dmg 2>/dev/null)" ]; then \
+	  echo ">>> macOS: copying .dmg..."; \
+	  for f in $$OBJDIR/dist/*.dmg; do \
+	    cp -v "$$f" "./$(APP_NAME)-$(version)-$(release).$$ARCH.mac.dmg"; \
+	  done; \
 	else \
 	  echo ">>> Linux: copying and renaming .tar.xz and .tar.gz..."; \
 	  for f in $$OBJDIR/dist/*.tar.xz; do \
