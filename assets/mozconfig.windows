@@ -46,7 +46,19 @@ mk_add_options MOZ_TELEMETRY_REPORTING=0
 
 
 # ---- 编译加速 ----
-mk_add_options MOZ_PARALLEL_BUILD=24
+# ---- 编译加速：并行度自适应（2026-09-27）----
+# 取「CPU 核数」与「按可用内存估算的任务数」的较小值：实测每个编译任务约 1.1 GiB，
+# 这里按 1.5 GiB 估；另留 6 GiB 给链接峰值 / 面板 / 其他进程。内存紧时自动降并行，避免换页拖慢全机。
+_vt_cpu=$(nproc 2>/dev/null || echo 4)
+_vt_avail=$(awk '/^MemAvailable:/{print int($2/1024)}' /proc/meminfo 2>/dev/null || echo 4096)
+[ -n "$_vt_cpu" ] || _vt_cpu=4
+[ -n "$_vt_avail" ] || _vt_avail=4096
+_vt_mem_jobs=$(( (_vt_avail - 6144) / 1536 )) || :
+[ "$_vt_mem_jobs" -ge 2 ] || _vt_mem_jobs=2
+if [ "$_vt_cpu" -lt "$_vt_mem_jobs" ]; then _vt_jobs=$_vt_cpu || :; else _vt_jobs=$_vt_mem_jobs || :; fi
+[ "$_vt_jobs" -ge 1 ] || _vt_jobs=1
+mk_add_options MOZ_PARALLEL_BUILD=$_vt_jobs
+unset _vt_cpu _vt_avail _vt_mem_jobs _vt_jobs
 if command -v ccache >/dev/null 2>&1; then
     ac_add_options --with-ccache
 fi
