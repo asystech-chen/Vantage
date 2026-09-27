@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 使用问题 / 讨论
+    url: https://asystech.cn/vantage/
+    about: 使用问题先看官网和文档；文档没写到的，欢迎开 issue 请求补全

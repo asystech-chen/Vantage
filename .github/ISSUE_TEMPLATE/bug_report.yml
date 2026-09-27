@@ -1,0 +1,48 @@
+name: Bug 反馈
+description: 报告一个可复现的问题
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: 问题描述
+      description: 发生了什么？
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. 打开…
+        2. 点击…
+        3. 出现…
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Vantage 版本
+      placeholder: 例如 153.3.0-1（about:vantage 可查）
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: 系统 / 桌面环境
+      placeholder: 例如 Debian 13 / KDE；Windows 11
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望行为 vs 实际行为
+    validations:
+      required: false
+  - type: textarea
+    id: extra
+    attributes:
+      label: 补充信息（日志 / 截图）
+    validations:
+      required: false
