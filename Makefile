@@ -614,11 +614,11 @@ package-deb : clean-packaging
 	@echo 'Exec=/opt/$(APP_NAME)/$(APP_NAME).sh' >> deb_build/usr/share/applications/$(APP_NAME).desktop
 	@echo 'Icon=$(APP_NAME)' >> deb_build/usr/share/applications/$(APP_NAME).desktop
 	@echo 'Terminal=false' >> deb_build/usr/share/applications/$(APP_NAME).desktop
-    @echo 'Type=Application' >> deb_build/usr/share/applications/$(APP_NAME).desktop
+	@echo 'Type=Application' >> deb_build/usr/share/applications/$(APP_NAME).desktop
 	@echo 'Categories=Network;WebBrowser;' >> deb_build/usr/share/applications/$(APP_NAME).desktop
 	@echo 'StartupNotify=true' >> deb_build/usr/share/applications/$(APP_NAME).desktop
 	@echo 'StartupWMClass=$(APP_NAME)' >> deb_build/usr/share/applications/$(APP_NAME).desktop
-    @echo ">>> [DEB] Building .deb file..."
+	@echo ">>> [DEB] Building .deb file..."
 	@dpkg-deb --build deb_build $(APP_NAME)_$(version)-$(release)_$(DEB_ARCH).deb
 	@echo ">>> [DEB] Done: $(APP_NAME)_$(version)-$(release)_$(DEB_ARCH).deb"
 	@rm -rf deb_build
@@ -645,6 +645,9 @@ package-rpm : clean-packaging
 	@echo 'Icon=$(APP_NAME)' >> rpm_build/usr/share/applications/$(APP_NAME).desktop
 	@echo 'Type=Application' >> rpm_build/usr/share/applications/$(APP_NAME).desktop
 	@echo 'Categories=Network;WebBrowser;' >> rpm_build/usr/share/applications/$(APP_NAME).desktop
+	@echo 'Terminal=false' >> rpm_build/usr/share/applications/$(APP_NAME).desktop
+	@echo 'StartupNotify=true' >> rpm_build/usr/share/applications/$(APP_NAME).desktop
+	@echo 'StartupWMClass=$(APP_NAME)' >> rpm_build/usr/share/applications/$(APP_NAME).desktop
 	@printf '#!/bin/sh\n' > .rpm-post-install.sh
 	@printf 'ln -sf /opt/$(APP_NAME)/$(APP_NAME) /usr/bin/$(APP_NAME)\n' >> .rpm-post-install.sh
 	@printf 'command -v update-desktop-database >/dev/null 2>&1 && update-desktop-database /usr/share/applications >/dev/null 2>&1 || true\n' >> .rpm-post-install.sh
@@ -703,6 +706,9 @@ else
 	@echo 'Icon=$(APP_NAME)' >> AppDir/$(APP_NAME).desktop
 	@echo 'Type=Application' >> AppDir/$(APP_NAME).desktop
 	@echo 'Categories=Network;WebBrowser;' >> AppDir/$(APP_NAME).desktop
+	@echo 'Terminal=false' >> AppDir/$(APP_NAME).desktop
+	@echo 'StartupNotify=true' >> AppDir/$(APP_NAME).desktop
+	@echo 'StartupWMClass=$(APP_NAME)' >> AppDir/$(APP_NAME).desktop
 	@cp AppDir/$(APP_NAME).desktop AppDir/usr/share/applications/
 	@echo ">>> [APPIMAGE] Running appimagetool..."
 	@runtime_opt=""; \
