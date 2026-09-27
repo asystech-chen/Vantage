@@ -63,3 +63,22 @@
 	font-size: 0.9em;
 	opacity: 0.8;
 }
+
+/* Microsoft account sync (微软账户同步) */
+.vantage-msa-code {
+	font-family: monospace;
+	font-size: 1.4em;
+	font-weight: 600;
+	letter-spacing: 0.15em;
+	margin: 4px 0;
+	user-select: all;
+}
+#vantage-msa-status {
+	margin-top: 6px;
+	font-size: 0.9em;
+	opacity: 0.85;
+}
+#vantage-msa-status.vantage-msa-error {
+	color: var(--error-text-color, #d70022);
+	opacity: 1;
+}

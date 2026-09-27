@@ -4,6 +4,7 @@
 
 /* import-globals-from extensionControlled.js */
 /* import-globals-from preferences.js */
+/* import-globals-from vantage-msa-sync.js */
 
 ChromeUtils.defineLazyGetter(this, "L10n", () => {
   return new Localization([
@@ -72,6 +73,9 @@ var gLibrewolfPane = {
 
     // ---- About Vantage：版本号 + 更新检查 + 链接按钮 ----
     this.initAboutVantage();
+
+    // ---- 微软账户同步：登录 / 云端备份 / 云端恢复 ----
+    this.initMSASync();
 
     // Set all event listeners on checkboxes
     // AI Chat（主开关，browser.ml.chat.enabled）：勾选时若新侧栏未显示（sidebar.revamp=false）
@@ -882,7 +886,6 @@ var gLibrewolfPane = {
         this._showError("No window available");
         return;
       }
-      let profDir = Services.dirsvc.get("ProfD", Ci.nsIFile);
 
       let fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
       let bc = win.browsingContext || (win.docShell && win.docShell.browsingContext);
@@ -905,20 +908,7 @@ var gLibrewolfPane = {
       }
 
       try {
-        if (zipFile.exists()) {
-          zipFile.remove(false);
-        }
-        zipFile.create(Ci.nsIFile.NORMAL_FILE_TYPE, 0o600);
-        let zipWriter = Cc["@mozilla.org/zipwriter;1"].createInstance(Ci.nsIZipWriter);
-        zipWriter.open(zipFile, 0x2A); // PR_CREATE_FILE | PR_TRUNCATE | PR_WRONLY
-        this._backupCount = 0;
-        this._backupErrors = [];
-        this._addDirToZip(zipWriter, profDir, "");
-        zipWriter.close();
-        dump("Vantage backup: exported " + this._backupCount + " files to " + zipFile.path + "\n");
-        if (this._backupCount === 0) {
-          throw new Error("No files were added to the archive. Errors: " + this._backupErrors.join(" | "));
-        }
+        this._packProfileZip(zipFile);
       } catch (e) {
         Services.prompt.alert(
           win,
@@ -935,6 +925,29 @@ var gLibrewolfPane = {
       );
     } catch (e) {
       this._showError("exportProfile: " + e + "\n" + (e && e.stack ? e.stack : ""));
+    }
+  },
+
+  // 把当前配置目录打包为 zip（排除缓存/密钥等，见 _backupExclude*）。
+  // 供本地导出（exportProfile）与微软账户云端备份（msaUpload）共用。
+  _packProfileZip(zipFile) {
+    let profDir = Services.dirsvc.get("ProfD", Ci.nsIFile);
+    if (zipFile.exists()) {
+      zipFile.remove(false);
+    }
+    zipFile.create(Ci.nsIFile.NORMAL_FILE_TYPE, 0o600);
+    let zipWriter = Cc["@mozilla.org/zipwriter;1"].createInstance(Ci.nsIZipWriter);
+    zipWriter.open(zipFile, 0x2A); // PR_CREATE_FILE | PR_TRUNCATE | PR_WRONLY
+    this._backupCount = 0;
+    this._backupErrors = [];
+    try {
+      this._addDirToZip(zipWriter, profDir, "");
+    } finally {
+      zipWriter.close();
+    }
+    dump("Vantage backup: exported " + this._backupCount + " files to " + zipFile.path + "\n");
+    if (this._backupCount === 0) {
+      throw new Error("No files were added to the archive. Errors: " + this._backupErrors.join(" | "));
     }
   },
 
@@ -995,21 +1008,32 @@ var gLibrewolfPane = {
 
   async importProfile() {
     try {
-    let win = this._getPaneWindow();
-    if (!win) {
-      this._showError("No window available");
-      return;
+      let win = this._getPaneWindow();
+      if (!win) {
+        this._showError("No window available");
+        return;
+      }
+
+      let fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
+      let bc = win.browsingContext || (win.docShell && win.docShell.browsingContext);
+      fp.init(bc, await this._l10n("vantage-backup-import-title"), Ci.nsIFilePicker.modeOpen);
+      fp.appendFilter("ZIP (*.zip)", "*.zip");
+      let rv = await new Promise(resolve => fp.open(resolve));
+      if (rv !== Ci.nsIFilePicker.returnOK) return;
+
+      await this._restoreFromZipFile(win, fp.file, {});
+    } catch (e) {
+      this._showError("importProfile: " + e + "\n" + (e && e.stack ? e.stack : ""));
     }
+  },
+
+  // 从 zip 备份文件恢复配置：校验 → 确认（可跳过）→ 本地自动备份 → 解压 → 应用 prefs → 重启。
+  // 供本地恢复（importProfile）与微软账户云端恢复（msaRestore）共用；
+  // opts.skipConfirm=true 表示调用方已展示过带云端信息的确认对话框。
+  async _restoreFromZipFile(win, zipFile, opts) {
+    try {
     let profDir = Services.dirsvc.get("ProfD", Ci.nsIFile);
 
-    let fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
-    let bc = win.browsingContext || (win.docShell && win.docShell.browsingContext);
-    fp.init(bc, await this._l10n("vantage-backup-import-title"), Ci.nsIFilePicker.modeOpen);
-    fp.appendFilter("ZIP (*.zip)", "*.zip");
-    let rv = await new Promise(resolve => fp.open(resolve));
-    if (rv !== Ci.nsIFilePicker.returnOK) return;
-
-    let zipFile = fp.file;
     let zipReader = Cc["@mozilla.org/libjar/zip-reader;1"].createInstance(Ci.nsIZipReader);
     try {
       zipReader.open(zipFile);
@@ -1036,14 +1060,16 @@ var gLibrewolfPane = {
       }
     }
 
-    let confirmed = Services.prompt.confirm(
-      win,
-      await this._l10n("vantage-backup-import-confirm-title"),
-      await this._l10n("vantage-backup-import-confirm")
-    );
-    if (!confirmed) {
-      zipReader.close();
-      return;
+    if (!opts || !opts.skipConfirm) {
+      let confirmed = Services.prompt.confirm(
+        win,
+        await this._l10n("vantage-backup-import-confirm-title"),
+        await this._l10n("vantage-backup-import-confirm")
+      );
+      if (!confirmed) {
+        zipReader.close();
+        return;
+      }
     }
 
     // Auto-backup current profile before restoring (timestamped, never overwritten)
@@ -1159,7 +1185,7 @@ var gLibrewolfPane = {
     );
     Services.startup.quit(Services.startup.eForceQuit | Services.startup.eRestart);
     } catch (e) {
-      this._showError("importProfile: " + e + "\n" + (e && e.stack ? e.stack : ""));
+      this._showError("restoreProfile: " + e + "\n" + (e && e.stack ? e.stack : ""));
     }
   },
 
@@ -1171,6 +1197,495 @@ var gLibrewolfPane = {
     try {
       dir.create(Ci.nsIFile.DIRECTORY_TYPE, 0o700);
     } catch (e) {}
+  },
+
+  // ---- Microsoft account sync (微软账户同步) ----
+  // 用 OAuth 2.0 设备码流登录微软账户，把配置备份到用户自己 OneDrive 的
+  // Vantage 应用私有文件夹并支持恢复。协议逻辑在 vantage-msa-sync.js（纯
+  // 模块、可单测），本节只负责 UI 状态机与 Firefox 集成（Login Manager /
+  // zip 打包 / 临时文件）。
+
+  _MSA_LOGIN_HOST: "chrome://vantage-msa-sync",
+
+  _msaSvc: null,
+  _msaSvcClientId: null,
+  _msaSvcTenant: null,
+  _msaBusy: false,
+  _msaSignInActive: false,
+  _msaPendingInfo: null,
+  _msaLastPct: -1,
+
+  // 令牌状态存 Login Manager（系统密钥保护），不落明文 prefs/文件
+  _msaTokenStore() {
+    const host = this._MSA_LOGIN_HOST;
+    const nsLoginInfo = new Components.Constructor(
+      "@mozilla.org/login-manager/loginInfo;1",
+      Ci.nsILoginInfo,
+      "init"
+    );
+    const find = () => {
+      try {
+        return Services.logins
+          .findLogins(host, "", null)
+          .filter(l => l.username === "msa-token-state");
+      } catch (e) {
+        return [];
+      }
+    };
+    return {
+      load: async () => {
+        const logins = find();
+        if (!logins.length) {
+          return null;
+        }
+        try {
+          return JSON.parse(logins[0].password);
+        } catch (e) {
+          return null;
+        }
+      },
+      save: async state => {
+        try {
+          const login = new nsLoginInfo(
+            host, "", null, "msa-token-state", JSON.stringify(state), "", ""
+          );
+          const old = find();
+          if (old.length) {
+            Services.logins.modifyLogin(old[0], login);
+          } else {
+            Services.logins.addLogin(login);
+          }
+        } catch (e) {
+          dump("Vantage MSA sync: token save failed: " + e + "\n");
+        }
+      },
+      clear: async () => {
+        for (const l of find()) {
+          try {
+            Services.logins.removeLogin(l);
+          } catch (e) {}
+        }
+      },
+    };
+  },
+
+  async _msaGetService() {
+    const clientId = Services.prefs
+      .getStringPref("vantage.msaSync.clientId", "")
+      .trim();
+    const tenant =
+      Services.prefs
+        .getStringPref("vantage.msaSync.tenant", "consumers")
+        .trim() || "consumers";
+    if (
+      !this._msaSvc ||
+      this._msaSvcClientId !== clientId ||
+      this._msaSvcTenant !== tenant
+    ) {
+      this._msaSvc = new VantageMSASync.MSASyncService({
+        clientId,
+        tenant,
+        store: this._msaTokenStore(),
+      });
+      this._msaSvcClientId = clientId;
+      this._msaSvcTenant = tenant;
+      await this._msaSvc.restoreSession();
+    }
+    return this._msaSvc;
+  },
+
+  initMSASync() {
+    const group = document.getElementById("vantage-msa-group");
+    if (typeof VantageMSASync === "undefined") {
+      // 模块未随包分发（jar.mn 未同步）时移除整节，避免展示不可用的 UI
+      if (group) {
+        group.remove();
+      }
+      return;
+    }
+    if (!group) {
+      return;
+    }
+
+    const clientIdInput = document.getElementById("vantage-msa-clientid");
+    if (clientIdInput) {
+      clientIdInput.value = Services.prefs.getStringPref(
+        "vantage.msaSync.clientId",
+        ""
+      );
+      clientIdInput.addEventListener("change", () => {
+        Services.prefs.setStringPref(
+          "vantage.msaSync.clientId",
+          clientIdInput.value.trim()
+        );
+        this._msaSvc = null; // clientId 变了，重建 service
+        this._msaRender();
+      });
+    }
+
+    const bind = (id, fn) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("command", fn);
+      }
+    };
+    bind("vantage-msa-signin-button", () => this.msaSignIn());
+    bind("vantage-msa-verify-button", () => {
+      if (this._msaPendingInfo) {
+        this._msaOpenTab(
+          this._msaPendingInfo.verificationUriComplete ||
+            this._msaPendingInfo.verificationUri
+        );
+      }
+    });
+    bind("vantage-msa-cancel-button", () => this.msaCancelSignIn());
+    bind("vantage-msa-upload-button", () => this.msaUpload());
+    bind("vantage-msa-restore-button", () => this.msaRestore());
+    bind("vantage-msa-signout-button", () => this.msaSignOut());
+
+    this._msaRender();
+  },
+
+  async _msaRender() {
+    const signedOutRow = document.getElementById("vantage-msa-signedout-row");
+    const accountRow = document.getElementById("vantage-msa-account-row");
+    const pendingRow = document.getElementById("vantage-msa-pending-row");
+    if (!signedOutRow || !accountRow) {
+      return;
+    }
+    let svc = null;
+    try {
+      svc = await this._msaGetService();
+    } catch (e) {
+      svc = null;
+    }
+    const pending = this._msaSignInActive && !!(svc && svc.hasPendingSignIn);
+    const signedIn = !!(svc && svc.signedIn);
+    signedOutRow.hidden = pending || signedIn;
+    accountRow.hidden = pending || !signedIn;
+    if (pendingRow) {
+      pendingRow.hidden = !pending;
+    }
+
+    const clientIdSet = !!Services.prefs
+      .getStringPref("vantage.msaSync.clientId", "")
+      .trim();
+    const signInBtn = document.getElementById("vantage-msa-signin-button");
+    if (signInBtn) {
+      signInBtn.disabled = !clientIdSet;
+    }
+    if (!clientIdSet) {
+      await this._msaStatus("vantage-msa-need-clientid", null, true);
+      return;
+    }
+
+    if (signedIn) {
+      const account =
+        (svc.account &&
+          (svc.account.userPrincipalName ||
+            svc.account.mail ||
+            svc.account.displayName)) ||
+        Services.prefs.getStringPref("vantage.msaSync.account", "");
+      const accountEl = document.getElementById("vantage-msa-account-label");
+      if (accountEl) {
+        document.l10n.setAttributes(accountEl, "vantage-msa-account", {
+          account: account || "?",
+        });
+      }
+      const lastEl = document.getElementById("vantage-msa-lastsync-label");
+      if (lastEl) {
+        const last = Services.prefs.getIntPref("vantage.msaSync.lastUpload", 0);
+        if (last > 0) {
+          document.l10n.setAttributes(lastEl, "vantage-msa-lastsync", {
+            time: new Date(last).toLocaleString(),
+          });
+        } else {
+          document.l10n.setAttributes(lastEl, "vantage-msa-neversync");
+        }
+      }
+    }
+  },
+
+  async _msaStatus(id, args, isError) {
+    this._msaStatusText(await this._l10n(id, args), isError);
+  },
+
+  _msaStatusText(text, isError) {
+    const el = document.getElementById("vantage-msa-status");
+    if (!el) {
+      return;
+    }
+    el.textContent = text || "";
+    el.classList.toggle("vantage-msa-error", !!isError);
+  },
+
+  // MSASyncError code → 本地化的用户可读消息
+  async _msaErrorMessage(e) {
+    if (e instanceof VantageMSASync.MSASyncError) {
+      switch (e.code) {
+        case "config":
+          return await this._l10n("vantage-msa-error-config");
+        case "network":
+          return await this._l10n("vantage-msa-error-network");
+        case "cancelled":
+          return await this._l10n("vantage-msa-error-cancelled");
+        case "expired_token":
+          return await this._l10n("vantage-msa-error-expired");
+        case "auth":
+        case "invalid_grant":
+        case "access_denied":
+          return await this._l10n("vantage-msa-error-auth", {
+            error: e.message,
+          });
+        default:
+          break;
+      }
+    }
+    return await this._l10n("vantage-msa-error-generic", {
+      error: String((e && e.message) || e),
+    });
+  },
+
+  _msaSetBusy(busy) {
+    for (const id of [
+      "vantage-msa-signin-button",
+      "vantage-msa-upload-button",
+      "vantage-msa-restore-button",
+      "vantage-msa-signout-button",
+    ]) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.disabled = busy;
+      }
+    }
+  },
+
+  _msaOpenTab(url) {
+    try {
+      window.openWebLinkIn(url, "tab");
+    } catch (e) {
+      window.open(url, "_blank");
+    }
+  },
+
+  _msaDeviceName() {
+    try {
+      return (
+        Cc["@mozilla.org/network/dns-service;1"]
+          .getService(Ci.nsIDNSService)
+          .myHostName || ""
+      );
+    } catch (e) {}
+    try {
+      return Services.sysinfo.getProperty("name") || "";
+    } catch (e) {}
+    return "";
+  },
+
+  async msaSignIn() {
+    if (this._msaBusy) {
+      return;
+    }
+    this._msaBusy = true;
+    this._msaSetBusy(true);
+    try {
+      const svc = await this._msaGetService();
+      const info = await svc.startSignIn();
+      this._msaPendingInfo = info;
+      this._msaSignInActive = true;
+      const codeEl = document.getElementById("vantage-msa-usercode");
+      if (codeEl) {
+        codeEl.textContent = info.userCode;
+      }
+      await this._msaRender();
+      await this._msaStatus("vantage-msa-waiting");
+      // 自动打开微软登录页（优先带预填代码的完整链接）
+      this._msaOpenTab(info.verificationUriComplete || info.verificationUri);
+      const account = await svc.waitSignIn();
+      const acct =
+        (account &&
+          (account.userPrincipalName ||
+            account.mail ||
+            account.displayName)) ||
+        "";
+      Services.prefs.setStringPref("vantage.msaSync.account", acct);
+      await this._msaStatus("vantage-msa-signin-success");
+    } catch (e) {
+      await this._msaStatusText(await this._msaErrorMessage(e), true);
+    } finally {
+      this._msaSignInActive = false;
+      this._msaPendingInfo = null;
+      this._msaBusy = false;
+      this._msaSetBusy(false);
+      await this._msaRender();
+    }
+  },
+
+  msaCancelSignIn() {
+    if (this._msaSvc) {
+      this._msaSvc.cancelSignIn();
+    }
+  },
+
+  async msaSignOut() {
+    if (this._msaBusy) {
+      return;
+    }
+    this._msaBusy = true;
+    this._msaSetBusy(true);
+    try {
+      const svc = await this._msaGetService();
+      await svc.signOut();
+      Services.prefs.setStringPref("vantage.msaSync.account", "");
+      Services.prefs.setIntPref("vantage.msaSync.lastUpload", 0);
+      await this._msaStatus("vantage-msa-signedout");
+    } catch (e) {
+      await this._msaStatusText(await this._msaErrorMessage(e), true);
+    } finally {
+      this._msaBusy = false;
+      this._msaSetBusy(false);
+      await this._msaRender();
+    }
+  },
+
+  async msaUpload() {
+    if (this._msaBusy) {
+      return;
+    }
+    const win = this._getPaneWindow();
+    if (!win) {
+      this._showError("No window available");
+      return;
+    }
+    let svc = null;
+    try {
+      svc = await this._msaGetService();
+    } catch (e) {
+      svc = null;
+    }
+    if (!svc || !svc.signedIn) {
+      await this._msaStatus("vantage-msa-need-signin", null, true);
+      return;
+    }
+    // 与本地导出一致的敏感数据提示（登录密码不在备份内）
+    const proceed = Services.prompt.confirm(
+      win,
+      await this._l10n("vantage-msa-upload-confirm-title"),
+      await this._l10n("vantage-msa-upload-confirm")
+    );
+    if (!proceed) {
+      return;
+    }
+    this._msaBusy = true;
+    this._msaSetBusy(true);
+    this._msaLastPct = -1;
+    let tmp = null;
+    try {
+      await this._msaStatus("vantage-msa-upload-working");
+      tmp = Services.dirsvc.get("TmpD", Ci.nsIFile);
+      tmp.append("vantage-msa-upload-" + Date.now() + ".zip");
+      this._packProfileZip(tmp);
+      const bytes = await IOUtils.read(tmp.path);
+      const meta = {
+        format: "vantage-profile-zip",
+        formatVersion: 1,
+        app: "Vantage",
+        appVersion: AppConstants.MOZ_APP_VERSION_DISPLAY,
+        device: this._msaDeviceName(),
+        profile: Services.dirsvc.get("ProfD", Ci.nsIFile).leafName,
+        uploadedAt: Date.now(),
+        sizeBytes: bytes.length,
+      };
+      await svc.uploadBackup(bytes, meta, (sent, total) => {
+        const pct = total > 0 ? Math.floor((sent * 100) / total) : 100;
+        // 进度每变化 ≥5% 才刷新，避免状态栏频繁闪烁
+        if (pct === 100 || pct - this._msaLastPct >= 5) {
+          this._msaLastPct = pct;
+          this._msaStatus("vantage-msa-upload-progress", { pct });
+        }
+      });
+      Services.prefs.setIntPref("vantage.msaSync.lastUpload", meta.uploadedAt);
+      await this._msaStatus("vantage-msa-upload-success");
+    } catch (e) {
+      await this._msaStatusText(
+        await this._l10n("vantage-msa-upload-fail", {
+          error: await this._msaErrorMessage(e),
+        }),
+        true
+      );
+    } finally {
+      if (tmp) {
+        IOUtils.remove(tmp.path, { ignoreAbsent: true }).catch(() => {});
+      }
+      this._msaBusy = false;
+      this._msaSetBusy(false);
+      await this._msaRender();
+    }
+  },
+
+  async msaRestore() {
+    if (this._msaBusy) {
+      return;
+    }
+    const win = this._getPaneWindow();
+    if (!win) {
+      this._showError("No window available");
+      return;
+    }
+    let svc = null;
+    try {
+      svc = await this._msaGetService();
+    } catch (e) {
+      svc = null;
+    }
+    if (!svc || !svc.signedIn) {
+      await this._msaStatus("vantage-msa-need-signin", null, true);
+      return;
+    }
+    this._msaBusy = true;
+    this._msaSetBusy(true);
+    let tmp = null;
+    try {
+      await this._msaStatus("vantage-msa-restore-working");
+      const backup = await svc.downloadBackup();
+      if (!backup) {
+        await this._msaStatus("vantage-msa-restore-none");
+        return;
+      }
+      const unknown = await this._l10n("vantage-msa-restore-unknown");
+      const meta = backup.meta || {};
+      const time = meta.uploadedAt
+        ? new Date(meta.uploadedAt).toLocaleString()
+        : unknown;
+      const device = meta.device || unknown;
+      const ok = Services.prompt.confirm(
+        win,
+        await this._l10n("vantage-msa-restore-confirm-title"),
+        await this._l10n("vantage-msa-restore-confirm", { time, device })
+      );
+      if (!ok) {
+        this._msaStatusText("");
+        return;
+      }
+      tmp = Services.dirsvc.get("TmpD", Ci.nsIFile);
+      tmp.append("vantage-msa-restore-" + Date.now() + ".zip");
+      await IOUtils.write(tmp.path, backup.bytes);
+      // 确认对话框已在上面展示过；恢复成功后浏览器会自动重启
+      await this._restoreFromZipFile(win, tmp, { skipConfirm: true });
+    } catch (e) {
+      await this._msaStatusText(
+        await this._l10n("vantage-msa-restore-fail", {
+          error: await this._msaErrorMessage(e),
+        }),
+        true
+      );
+    } finally {
+      if (tmp) {
+        IOUtils.remove(tmp.path, { ignoreAbsent: true }).catch(() => {});
+      }
+      this._msaBusy = false;
+      this._msaSetBusy(false);
+    }
   },
 };
 

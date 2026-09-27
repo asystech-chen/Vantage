@@ -238,6 +238,7 @@ def librewolf_patches():
     exec('cp ../patches/pref-pane/librewolf.css browser/themes/shared/preferences/librewolf.css')
     exec('cp ../patches/pref-pane/librewolf.inc.xhtml browser/components/preferences/librewolf.inc.xhtml')
     exec('cp ../patches/pref-pane/librewolf.js browser/components/preferences/librewolf.js')
+    exec('cp ../patches/pref-pane/vantage-msa-sync.js browser/components/preferences/vantage-msa-sync.js')
     
     #
     # Vantage AI sidebar: brand icons for new providers (new files, no patch)
