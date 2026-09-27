@@ -9,7 +9,7 @@ CCTOOLS="$CROSS/osxcross-output"
 ac_add_options --target=x86_64-apple-darwin
 
 # SDK
-export MACOS_SDK_DIR="$CCTOOLS/SDK/MacOSX26.1.sdk"
+export MACOS_SDK_DIR="$CCTOOLS/SDK/MacOSX26.5.sdk"
 
 # Toolchain paths: cctools (ld64, ar, etc) + clang
 mk_add_options "export PATH=$CCTOOLS/bin:$CROSS/clang/bin:$PATH"
@@ -59,7 +59,7 @@ export WASM_CC="$HOME/.mozbuild/clang/bin/clang"
 export WASM_CXX="$HOME/.mozbuild/clang/bin/clang++"
 
 # Help osxcross xcrun / Rust cc crate find the SDK
-export SDKROOT="$CCTOOLS/SDK/MacOSX26.1.sdk"
+export SDKROOT="$CCTOOLS/SDK/MacOSX26.5.sdk"
 
 # ccache (if available)
 # ---- 编译加速 ----
