@@ -359,7 +359,8 @@ var gLibrewolfPane = {
             cancel: "vantage-confirm-fpp-cancel",
           });
         } catch (e) {
-          dump("Vantage confirm dialog failed: " + e + "\n");
+          console.error("Vantage confirm dialog failed", e);
+          confirmed = true; // 弹窗不可用时放行，避免开关"点不动"
         }
         if (confirmed) {
           fppCheckbox.checked = true;
@@ -392,7 +393,8 @@ var gLibrewolfPane = {
             cancel: "vantage-confirm-fpp-cancel",
           });
         } catch (e) {
-          dump("Vantage confirm dialog failed: " + e + "\n");
+          console.error("Vantage confirm dialog failed", e);
+          confirmed = true; // 弹窗不可用时放行，避免开关"点不动"
         }
         if (confirmed) {
           applyPreset("enhanced");
@@ -766,7 +768,8 @@ var gLibrewolfPane = {
               cancel: "vantage-confirm-dohmode-cancel",
             });
           } catch (e) {
-            dump("Vantage confirm dialog failed: " + e + "\n");
+            console.error("Vantage confirm dialog failed", e);
+            confirmed = true; // 弹窗不可用时放行，避免开关"点不动"
           }
           if (confirmed) {
             dohModeList.value = "3";
@@ -1359,12 +1362,22 @@ var gLibrewolfPane = {
 // browser/components/preferences/config/privacy.mjs 的 _confirmBaselineAllowListDisable）。
 // 返回 true = 用户确认继续。
 async function confirmRiskyChange({ title, body, ok, cancel }) {
-  const [t, b, okText, cancelText] = await document.l10n.formatValues([
-    { id: title },
-    { id: body },
-    { id: ok },
-    { id: cancel },
-  ]);
+  let t, b, okText, cancelText;
+  try {
+    [t, b, okText, cancelText] = await document.l10n.formatValues([
+      { id: title },
+      { id: body },
+      { id: ok },
+      { id: cancel },
+    ]);
+  } catch (e) {
+    // 文案缺失（例如语言包未同步）时也要让弹窗出现，否则拦截会变成"点不动"
+    console.error("Vantage: confirm dialog strings missing", title, e);
+    t = "Vantage";
+    b = "This setting can affect browsing or security. Continue?";
+    okText = "Continue";
+    cancelText = "Cancel";
+  }
   const flags =
     Services.prompt.BUTTON_TITLE_IS_STRING * Services.prompt.BUTTON_POS_1 +
     Services.prompt.BUTTON_TITLE_IS_STRING * Services.prompt.BUTTON_POS_0 +
@@ -1407,7 +1420,8 @@ function guardCheckbox(id, riskyChecked, pref, onVal, offVal, messages) {
     try {
       confirmed = await confirmRiskyChange(messages);
     } catch (e) {
-      dump("Vantage confirm dialog failed: " + e + "\n");
+      console.error("Vantage confirm dialog failed", e);
+      confirmed = true; // 弹窗不可用时放行，避免开关"点不动"
     }
     if (confirmed) {
       box.checked = riskyChecked;

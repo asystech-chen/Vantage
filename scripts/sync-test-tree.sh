@@ -12,7 +12,7 @@
 # 同步内容：
 #   - patches/pref-pane/{librewolf.inc.xhtml,librewolf.js} → 树内 browser/components/preferences/
 #   - settings/librewolf.cfg                              → 树内 lw/
-#   - l10n/{en-US,zh-CN,zh-TW,zh-MS} 的 preferences 文案   → 增量（改行 + 追加，幂等）
+#   - l10n/{en-US,en-CA,en-GB,zh-CN,zh-TW,zh-MS} 文案     → 逐条比对 id，只追加缺失项（幂等）
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -38,35 +38,60 @@ def overlay(lang):
 
 targets = {
     "en-US": tree / "browser/locales/en-US/browser/preferences/preferences.ftl",
+    "en-CA": tree / "lw/l10n/en-CA/browser/browser/preferences/preferences.ftl",
+    "en-GB": tree / "lw/l10n/en-GB/browser/browser/preferences/preferences.ftl",
     "zh-CN": tree / "lw/l10n/zh-CN/browser/browser/preferences/preferences.ftl",
     "zh-TW": tree / "lw/l10n/zh-TW/browser/browser/preferences/preferences.ftl",
     "zh-MS": tree / "lw/l10n/zh-MS/browser/browser/preferences/preferences.ftl",
 }
-MARK = "vantage-confirm-ipv6-cancel"
+# 追加块的起点：本 overlay 里第一行"新增"文案
+ANCHOR = "librewolf-webrtc-ip-warning1 = "
+
+def ids(text):
+    return set(re.findall(r"(?m)^([A-Za-z][\w-]*)\s*=", text))
 
 for lang, dst in targets.items():
-    src = overlay(lang)
-    lines = src.read_text(encoding="utf-8").splitlines()
-    xo = next((l for l in lines if l.startswith("librewolf-xorigin-ref-warning1 = ")), None)
-    i = next((n for n, l in enumerate(lines)
-              if l.startswith("librewolf-webrtc-ip-warning1 = ")), None)
-    if xo is None or i is None:
-        print(f"⚠️  {src} 缺少待同步内容，跳过 {lang}")
-        continue
     if not dst.exists():
         print(f"⚠️  目标不存在，跳过: {dst}")
         continue
-    text = dst.read_text(encoding="utf-8")
-    if MARK in text:
-        print(f"=  已同步过，跳过: {dst}")
+    src_lines = overlay(lang).read_text(encoding="utf-8").splitlines()
+    xo = next((l for l in src_lines if l.startswith("librewolf-xorigin-ref-warning1 = ")), None)
+    i = next((n for n, l in enumerate(src_lines) if l.startswith(ANCHOR)), None)
+    if xo is None or i is None:
+        print(f"⚠️  {lang}: overlay 缺少待同步内容，跳过")
         continue
-    text, n = re.subn(r"(?m)^librewolf-xorigin-ref-warning1 = .*$",
-                      xo.replace("\\", "\\\\"), text, count=1)
-    if n != 1:
-        raise SystemExit(f"⚠️  未找到 xorigin 文案行: {dst}")
-    text = text.rstrip("\n") + "\n\n" + "\n".join(lines[i:]) + "\n"
-    dst.write_text(text, encoding="utf-8")
-    print(f"+  已更新: {dst}")
+
+    text = dst.read_text(encoding="utf-8")
+    changed = []
+
+    # 1) 改写单行文案（跨域引用 warning1）
+    if xo not in text.splitlines():
+        text, n = re.subn(r"(?m)^librewolf-xorigin-ref-warning1 = .*$",
+                          lambda m: xo.replace("\\", "\\\\"), text, count=1)
+        if n:
+            changed.append("xorigin-warning1")
+
+    # 2) 逐条比对 id，只追加目标里还没有的 message（幂等；之前用单一总标记会漏掉后加的串）
+    have = ids(text)
+    add = []
+    for l in src_lines[i:]:
+        m = re.match(r"^([A-Za-z][\w-]*)\s*=", l)
+        if not l.strip() or l.lstrip().startswith("#"):
+            continue
+        if m and m.group(1) in have:
+            continue
+        add.append(l)
+        if m:
+            have.add(m.group(1))
+    if add:
+        text = text.rstrip("\n") + "\n\n" + "\n".join(add) + "\n"
+        changed.append(f"+{len(add)} 条")
+
+    if changed:
+        dst.write_text(text, encoding="utf-8")
+        print(f"+  {dst}  [{' / '.join(changed)}]")
+    else:
+        print(f"=  {dst}  已最新")
 PY
 
 echo
