@@ -103,7 +103,7 @@ librewolf-tabs-unload-checkbox =
 librewolf-styling-description = 開啟後：可通過 userChrome.css 檔案自定義瀏覽器外觀（如修改工具列、分頁樣式等）。適合喜歡高度自定義的使用者。
 librewolf-styling-warning1 = 關閉後：使用預設瀏覽器外觀。建議只載入信任來源的 CSS 主題，惡意樣式可能竊取輸入內容。
 librewolf-xorigin-ref-description = 開啟後：只在同一網站內跳轉時才傳送來源資訊，訪問外部網站時不暴露您從哪個頁面而來。
-librewolf-xorigin-ref-warning1 = 關閉後：所有網站都能看到您從哪個頁面跳轉而來。部分需要驗證來源的網站可能無法正常訪問。
+librewolf-xorigin-ref-warning1 = 開啟後：跨站跳轉不再傳送來源資訊，可能使依賴來源驗證的網站（登入跳轉、防盜鏈等）無法正常運作；關閉後，所有網站都能看到您從哪個頁面跳轉而來。
 librewolf-sync-warning1 = Firefox 同步在傳輸到伺服器之前在本地加密資料。
 librewolf-autocopy-description = 選擇一些文字複製，然後用滑鼠中鍵貼上。
 
@@ -219,3 +219,49 @@ vantage-fpp-pbmode-checkbox =
     .label = 隱私視窗也啟用
 vantage-fpp-description = 對可被指紋化的表面（Canvas、WebGL、音訊、字型、螢幕、時區）加入隨機雜訊，降低跨站追蹤。「基礎」使用 Firefox 內建預設項，「增強」開啟全部隨機化項，「自訂」可逐項勾選。注意：啟用「抵抗指紋」（上方）時以其為準。
 vantage-fpp-warning1 = 隨機化可能影響少數網站（地圖、繪圖、部分媒體）。如遇問題可關閉。
+
+librewolf-webrtc-ip-warning1 = 關閉後：WebRTC 可能向網頁暴露您的內網 IP 位址。
+
+librewolf-tabs-unload-description = 開啟後：記憶體緊張時瀏覽器會自動休眠不活躍的分頁以釋放記憶體。
+librewolf-tabs-unload-warning1 = 開啟後：被休眠的頁面再次開啟時會重新載入，未提交的表單內容、捲動位置或播放進度可能遺失。
+
+# 風險操作確認彈窗（pref-pane）
+vantage-confirm-xorigin-title = 開啟「限制跨域參照」？
+vantage-confirm-xorigin-body = 跨站跳轉時不再傳送來源資訊，可能導致大量依賴來源驗證的網站（登入跳轉、防盜鏈、付款回跳等）無法正常運作。確定開啟嗎？
+vantage-confirm-xorigin-ok = 仍然開啟
+vantage-confirm-xorigin-cancel = 取消
+
+vantage-confirm-dohmode-title = 選擇「僅 DoH（不回退）」？
+vantage-confirm-dohmode-body = 若 DoH 伺服器不可達或被網路阻斷，將無法解析域名、所有網頁都打不開。除非您確定網路允許，建議保留「優先（回退系統 DNS）」。確定切換嗎？
+vantage-confirm-dohmode-ok = 仍然切換
+vantage-confirm-dohmode-cancel = 取消
+
+vantage-confirm-rfp-title = 開啟「防指紋追蹤」？
+vantage-confirm-rfp-body = 瀏覽器將向所有網站呈現統一的特徵，可能導致很多網站顯示異常或功能失效。確定開啟嗎？
+vantage-confirm-rfp-ok = 仍然開啟
+vantage-confirm-rfp-cancel = 取消
+
+vantage-confirm-fpp-title = 開啟指紋隨機化？
+vantage-confirm-fpp-body = 會對 Canvas、WebGL、音訊、字型、螢幕、時區加入隨機雜訊，地圖、繪圖工具和部分媒體可能渲染異常。確定開啟嗎？
+vantage-confirm-fpp-ok = 仍然開啟
+vantage-confirm-fpp-cancel = 取消
+
+vantage-confirm-webgl-title = 關閉 WebGL？
+vantage-confirm-webgl-body = 網頁將無法渲染 WebGL 內容，3D 地圖、線上遊戲和部分影片效果可能無法顯示。確定關閉嗎？
+vantage-confirm-webgl-ok = 仍然關閉
+vantage-confirm-webgl-cancel = 取消
+
+vantage-confirm-ipv6-title = 關閉 IPv6？
+vantage-confirm-ipv6-body = 僅支援 IPv6 的網路或網站可能無法存取。確定關閉嗎？
+vantage-confirm-ipv6-ok = 仍然關閉
+vantage-confirm-ipv6-cancel = 取消
+
+vantage-confirm-signatures-title = 關閉「要求擴充套件簽章」？
+vantage-confirm-signatures-body = 關閉後將允許安裝未簽章的擴充套件，惡意擴充套件可能竊取資料或控制瀏覽器。確定關閉嗎？
+vantage-confirm-signatures-ok = 仍然關閉
+vantage-confirm-signatures-cancel = 取消
+
+vantage-confirm-pdfjs-title = 開啟「允許 PDF 檢視器執行指令碼」？
+vantage-confirm-pdfjs-body = PDF 檔案將可執行 JavaScript，可能被用於攻擊（指令碼注入、資料外洩）。確定開啟嗎？
+vantage-confirm-pdfjs-ok = 仍然開啟
+vantage-confirm-pdfjs-cancel = 取消

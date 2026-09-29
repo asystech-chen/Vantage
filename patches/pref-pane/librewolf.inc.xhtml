@@ -202,7 +202,16 @@
   </hbox>
   <hbox>
     <checkbox id="librewolf-tabs-unload-checkbox" data-l10n-id="librewolf-tabs-unload-checkbox" preference="browser.tabs.unloadOnLowMemory" flex="1" />
+    <html:label for="librewolf-tabs-unload-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
   </hbox>
+  <vbox class="librewolf-collapse indent">
+    <html:input type="checkbox" id="librewolf-tabs-unload-collapse" />
+    <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
+      <label data-l10n-id="librewolf-tabs-unload-description" />
+      <html:div> <image src="chrome://global/skin/icons/warning.svg" /> <label data-l10n-id="librewolf-tabs-unload-warning1" class="librewolf-warning" /> </html:div>
+      <checkbox preference="browser.tabs.unloadOnLowMemory" label="browser.tabs.unloadOnLowMemory" />
+    </vbox>
+  </vbox>
 </groupbox>
 
 <groupbox hidden="true" data-category="paneVantage">
@@ -369,6 +378,7 @@
     <html:input type="checkbox" id="librewolf-webrtc-ip-collapse" />
     <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
       <label data-l10n-id="librewolf-webrtc-ip-description" />
+      <html:div> <image src="chrome://global/skin/icons/warning.svg" /> <label data-l10n-id="librewolf-webrtc-ip-warning1" class="librewolf-warning" /> </html:div>
       <checkbox preference="media.peerconnection.ice.default_address_only" label="media.peerconnection.ice.default_address_only" />
     </vbox>
   </vbox>
@@ -412,6 +422,7 @@
       <html:input type="checkbox" id="librewolf-letterboxing-collapse" />
       <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
         <label data-l10n-id="librewolf-letterboxing-description" />
+        <html:div> <image src="chrome://global/skin/icons/warning.svg" /> <label data-l10n-id="librewolf-letterboxing-warning1" class="librewolf-warning" /> </html:div>
         <checkbox preference="privacy.resistFingerprinting.letterboxing" label="privacy.resistFingerprinting.letterboxing" />
       </vbox>
     </vbox>

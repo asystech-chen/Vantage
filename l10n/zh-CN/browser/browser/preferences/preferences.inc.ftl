@@ -124,7 +124,7 @@ librewolf-tabs-unload-checkbox =
 librewolf-styling-description = 开启后：可通过 userChrome.css 文件自定义浏览器外观（如修改工具栏、标签页样式等）。适合喜欢高度自定义的用户。
 librewolf-styling-warning1 = 关闭后：使用默认浏览器外观。建议只加载信任来源的 CSS 主题，恶意样式可能窃取输入内容。
 librewolf-xorigin-ref-description = 开启后：只在同一网站内跳转时才发送来源信息，访问外部网站时不暴露您从哪个页面而来。
-librewolf-xorigin-ref-warning1 = 关闭后：所有网站都能看到您从哪个页面跳转而来。部分需要验证来源的网站可能无法正常访问。
+librewolf-xorigin-ref-warning1 = 开启后：跨站跳转不再发送来源信息，可能使依赖来源校验的网站（登录跳转、防盗链等）无法正常工作；关闭后，所有网站都能看到您从哪个页面跳转而来。
 librewolf-webgl-description = 开启后：网页可以使用 WebGL 渲染 3D 图形，但可能被用来识别您的设备（指纹追踪）。
 librewolf-webgl-warning1 = 关闭后：增强隐私，但使用 WebGL 的网页（如 3D 地图、在线游戏）可能无法正常显示。
 librewolf-rfp-description = 开启后：统一隐藏浏览器特征（屏幕分辨率、时区、字体、语言等），使您看起来与其他用户相同，极大增强隐私。
@@ -218,3 +218,49 @@ vantage-fpp-pbmode-checkbox =
     .label = 隐私窗口也启用
 vantage-fpp-description = 对可被指纹化的表面（Canvas、WebGL、音频、字体、屏幕、时区）加入随机噪声，降低跨站追踪。“基础”使用 Firefox 自带默认项，“增强”打开全部随机化项，“自定义”可逐项勾选。注意：启用「抵抗指纹」（上方）时以其为准。
 vantage-fpp-warning1 = 随机化可能影响少数网站（地图、绘图、部分媒体）。如遇问题可关闭。
+
+librewolf-webrtc-ip-warning1 = 关闭后：WebRTC 可能向网页暴露您的内网 IP 地址。
+
+librewolf-tabs-unload-description = 开启后：内存紧张时浏览器会自动休眠不活跃的标签页以释放内存。
+librewolf-tabs-unload-warning1 = 开启后：被休眠的页面再次打开时会重新加载，未提交的表单内容、滚动位置或播放进度可能丢失。
+
+# 风险操作确认弹窗（pref-pane）
+vantage-confirm-xorigin-title = 开启「限制跨域引用」？
+vantage-confirm-xorigin-body = 跨站跳转时不再发送来源信息，可能导致大量依赖来源校验的网站（登录跳转、防盗链、支付回跳等）无法正常工作。确定开启吗？
+vantage-confirm-xorigin-ok = 仍然开启
+vantage-confirm-xorigin-cancel = 取消
+
+vantage-confirm-dohmode-title = 选择「仅 DoH（不回退）」？
+vantage-confirm-dohmode-body = 若 DoH 服务器不可达或被网络阻断，将无法解析域名、所有网页都打不开。除非您确定网络允许，建议保留「优先（回退系统 DNS）」。确定切换吗？
+vantage-confirm-dohmode-ok = 仍然切换
+vantage-confirm-dohmode-cancel = 取消
+
+vantage-confirm-rfp-title = 开启「防指纹追踪」？
+vantage-confirm-rfp-body = 浏览器将向所有网站呈现统一的特征，可能导致很多网站显示异常或功能失效。确定开启吗？
+vantage-confirm-rfp-ok = 仍然开启
+vantage-confirm-rfp-cancel = 取消
+
+vantage-confirm-fpp-title = 开启指纹随机化？
+vantage-confirm-fpp-body = 会对 Canvas、WebGL、音频、字体、屏幕、时区加入随机噪声，地图、绘图工具和部分媒体可能渲染异常。确定开启吗？
+vantage-confirm-fpp-ok = 仍然开启
+vantage-confirm-fpp-cancel = 取消
+
+vantage-confirm-webgl-title = 关闭 WebGL？
+vantage-confirm-webgl-body = 网页将无法渲染 WebGL 内容，3D 地图、在线游戏和部分视频效果可能无法显示。确定关闭吗？
+vantage-confirm-webgl-ok = 仍然关闭
+vantage-confirm-webgl-cancel = 取消
+
+vantage-confirm-ipv6-title = 关闭 IPv6？
+vantage-confirm-ipv6-body = 仅支持 IPv6 的网络或网站可能无法访问。确定关闭吗？
+vantage-confirm-ipv6-ok = 仍然关闭
+vantage-confirm-ipv6-cancel = 取消
+
+vantage-confirm-signatures-title = 关闭「要求扩展签名」？
+vantage-confirm-signatures-body = 关闭后将允许安装未签名的扩展，恶意扩展可能窃取数据或控制浏览器。确定关闭吗？
+vantage-confirm-signatures-ok = 仍然关闭
+vantage-confirm-signatures-cancel = 取消
+
+vantage-confirm-pdfjs-title = 开启「允许 PDF 查看器执行脚本」？
+vantage-confirm-pdfjs-body = PDF 文件将可以执行 JavaScript，可能被用于攻击（脚本注入、数据外泄）。确定开启吗？
+vantage-confirm-pdfjs-ok = 仍然开启
+vantage-confirm-pdfjs-cancel = 取消

@@ -138,7 +138,7 @@ librewolf-styling-description = When enabled: Customize the browser appearance (
 librewolf-styling-warning1 = When disabled: Uses the default browser appearance. Only load CSS themes from trusted sources — malicious stylesheets could capture your input.
 
 librewolf-xorigin-ref-description = When enabled: Only sends source page info when navigating within the same website. External sites won't know which page you came from.
-librewolf-xorigin-ref-warning1 = When disabled: All websites can see which page you came from. Some websites that require referrer validation may break when this is enabled.
+librewolf-xorigin-ref-warning1 = When enabled: cross-site navigation no longer sends referrer information, which may break sites that rely on referrer checks (login redirects, hotlink protection). When disabled: every site can see which page you came from.
 
 librewolf-webgl-description = When enabled: Websites can use WebGL for 3D graphics, but it may also be used to identify your device (fingerprinting).
 librewolf-webgl-warning1 = When disabled: Better privacy, but websites using WebGL (3D maps, browser games) may not work correctly.
@@ -241,3 +241,49 @@ vantage-fpp-pbmode-checkbox =
     .label = Also in private windows
 vantage-fpp-description = Adds randomized noise to fingerprintable surfaces (Canvas, WebGL, audio, fonts, screen, time zone), making it harder to track you across sites. “Basic” uses Firefox’s built-in defaults; “Enhanced” turns on every randomization target; “Custom” lets you pick each one. Note: Resist Fingerprinting (above) takes precedence when it is enabled.
 vantage-fpp-warning1 = Randomization can affect a few sites (maps, drawing, some media). Turn it off if you run into trouble.
+
+librewolf-webrtc-ip-warning1 = When disabled: WebRTC may expose your local network IP address to websites.
+
+librewolf-tabs-unload-description = When enabled: the browser unloads inactive tabs to free memory under memory pressure.
+librewolf-tabs-unload-warning1 = When enabled: unloaded pages reload when you open them again; unsaved form input, scroll position or playback progress may be lost.
+
+# Confirm dialogs for risky changes (pref-pane)
+vantage-confirm-xorigin-title = Enable “Restrict cross-origin referrers”?
+vantage-confirm-xorigin-body = Cross-site navigation will no longer send referrer information. Many sites that rely on referrer checks (login redirects, hotlink protection, payment returns) may stop working. Enable anyway?
+vantage-confirm-xorigin-ok = Enable anyway
+vantage-confirm-xorigin-cancel = Cancel
+
+vantage-confirm-dohmode-title = Use “DoH only (no fallback)”?
+vantage-confirm-dohmode-body = If the DNS-over-HTTPS server is unreachable or DoH is blocked by the network, domain names cannot be resolved and pages will not load. Unless you are sure the network allows it, keep “Prefer (fall back to system DNS)”. Switch anyway?
+vantage-confirm-dohmode-ok = Switch anyway
+vantage-confirm-dohmode-cancel = Cancel
+
+vantage-confirm-rfp-title = Enable “Resist fingerprinting”?
+vantage-confirm-rfp-body = The browser will present uniform characteristics to every website. Many sites may display incorrectly or lose features. Enable anyway?
+vantage-confirm-rfp-ok = Enable anyway
+vantage-confirm-rfp-cancel = Cancel
+
+vantage-confirm-fpp-title = Enable fingerprint randomization?
+vantage-confirm-fpp-body = Randomized noise is added to Canvas, WebGL, audio, fonts, screen and time zone. Maps, drawing tools and some media may render incorrectly. Enable anyway?
+vantage-confirm-fpp-ok = Enable anyway
+vantage-confirm-fpp-cancel = Cancel
+
+vantage-confirm-webgl-title = Turn off WebGL?
+vantage-confirm-webgl-body = Web pages will no longer render WebGL content. 3D maps, online games and some video effects may not display. Turn off anyway?
+vantage-confirm-webgl-ok = Turn off anyway
+vantage-confirm-webgl-cancel = Cancel
+
+vantage-confirm-ipv6-title = Turn off IPv6?
+vantage-confirm-ipv6-body = Sites and networks reachable only over IPv6 may become inaccessible. Turn off anyway?
+vantage-confirm-ipv6-ok = Turn off anyway
+vantage-confirm-ipv6-cancel = Cancel
+
+vantage-confirm-signatures-title = Turn off “Require add-on signatures”?
+vantage-confirm-signatures-body = Unsigned extensions will be allowed to install. A malicious add-on could steal data or take control of the browser. Turn off anyway?
+vantage-confirm-signatures-ok = Turn off anyway
+vantage-confirm-signatures-cancel = Cancel
+
+vantage-confirm-pdfjs-title = Allow the PDF viewer to run scripts?
+vantage-confirm-pdfjs-body = PDF files will be able to execute JavaScript, which can be used for attacks (script injection, data exfiltration). Enable anyway?
+vantage-confirm-pdfjs-ok = Enable anyway
+vantage-confirm-pdfjs-cancel = Cancel

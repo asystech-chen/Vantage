@@ -48,7 +48,7 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "browser.download.start_downloads_in_tmp_dir", type: "bool" },
   { id: "pdfjs.enableScripting", type: "bool" },
   { id: "media.peerconnection.ice.default_address_only", type: "bool" },
-  { id: "layout.css.font-visibility.level", type: "int" },
+  { id: "layout.css.font-visibility", type: "int" },
   { id: "vantage.download.multithread", type: "bool" },
   { id: "vantage.download.multithread.resume", type: "bool" },
   { id: "vantage.download.multithread.cancelKeepData", type: "bool" },
@@ -172,17 +172,24 @@ var gLibrewolfPane = {
       [true],
     );
 
-    // ---- 字体可见性（int pref：0=all / 1=base / 2=lang；勾选=启用限制）----
+    // ---- 字体可见性（int pref：1=Base / 2=LangPack / 3=User；勾选=启用限制）----
+    // 真正生效的 pref 是 layout.css.font-visibility（由 FontVisibilityProvider 读取），
+    // 旧实现错写成 layout.css.font-visibility.level（无人读取 → 开关无效）。
     // 该 checkbox 没有 preference 属性，靠手动同步（含初始化）。
-    // 旧实现只监听 change、初值不回填 → 开关不显示当前状态，此处一并修复。
     const fontVisBox = document.getElementById("librewolf-font-vis-checkbox");
     if (fontVisBox) {
-      const FONT_VIS_PREF = "layout.css.font-visibility.level";
+      const FONT_VIS_PREF = "layout.css.font-visibility";
+      const FONT_VIS_ON = 1; // Base：只用系统基础字体（限制最严）
+      const FONT_VIS_OFF = 3; // User：允许用户安装的字体
       const syncFontVis = () => {
-        fontVisBox.checked = Services.prefs.getIntPref(FONT_VIS_PREF, 0) >= 1;
+        fontVisBox.checked =
+          Services.prefs.getIntPref(FONT_VIS_PREF, FONT_VIS_OFF) < FONT_VIS_OFF;
       };
       fontVisBox.addEventListener("command", () => {
-        Services.prefs.setIntPref(FONT_VIS_PREF, fontVisBox.checked ? 1 : 0);
+        Services.prefs.setIntPref(
+          FONT_VIS_PREF,
+          fontVisBox.checked ? FONT_VIS_ON : FONT_VIS_OFF
+        );
       });
       Preferences.get(FONT_VIS_PREF).on("change", syncFontVis);
       window.addEventListener("load", syncFontVis, { once: true });
@@ -333,8 +340,64 @@ var gLibrewolfPane = {
         // custom：不改 overrides，交给细项
       };
 
+      let fppBusy = false;
+
+      // 风险拦截：开启 FPP（指纹随机化）可能影响地图/绘图/媒体渲染，先确认
+      fppCheckbox.addEventListener("command", async event => {
+        if (fppBusy || !fppCheckbox.checked) {
+          return;
+        }
+        event.stopImmediatePropagation();
+        fppBusy = true;
+        fppCheckbox.checked = false;
+        let confirmed = false;
+        try {
+          confirmed = await confirmRiskyChange({
+            title: "vantage-confirm-fpp-title",
+            body: "vantage-confirm-fpp-body",
+            ok: "vantage-confirm-fpp-ok",
+            cancel: "vantage-confirm-fpp-cancel",
+          });
+        } catch (e) {
+          dump("Vantage confirm dialog failed: " + e + "\n");
+        }
+        if (confirmed) {
+          fppCheckbox.checked = true;
+          Services.prefs.setBoolPref(FPP_PREF, true);
+        } else {
+          Services.prefs.setBoolPref(FPP_PREF, false);
+        }
+        fppBusy = false;
+        syncFpp();
+      });
+
       fppCheckbox.addEventListener("command", () => {
         Services.prefs.setBoolPref(FPP_PREF, fppCheckbox.checked);
+        syncFpp();
+      });
+
+      // 风险拦截：切到「增强」预设时确认（同时开启全部随机化项）
+      fppPreset.addEventListener("command", async event => {
+        if (fppBusy || fppPreset.value !== "enhanced") {
+          return;
+        }
+        event.stopImmediatePropagation();
+        fppBusy = true;
+        let confirmed = false;
+        try {
+          confirmed = await confirmRiskyChange({
+            title: "vantage-confirm-fpp-title",
+            body: "vantage-confirm-fpp-body",
+            ok: "vantage-confirm-fpp-ok",
+            cancel: "vantage-confirm-fpp-cancel",
+          });
+        } catch (e) {
+          dump("Vantage confirm dialog failed: " + e + "\n");
+        }
+        if (confirmed) {
+          applyPreset("enhanced");
+        }
+        fppBusy = false;
         syncFpp();
       });
 
@@ -684,7 +747,35 @@ var gLibrewolfPane = {
         updateDohUi();
       });
 
+      let dohModeBusy = false;
       if (dohModeList) {
+        // 风险拦截：切到「仅 DoH（不回退）」（3）可能直接断网，先确认
+        dohModeList.addEventListener("command", async event => {
+          if (dohModeBusy || dohModeList.value !== "3") {
+            return;
+          }
+          event.stopImmediatePropagation();
+          dohModeBusy = true;
+          dohModeList.value = "2";
+          let confirmed = false;
+          try {
+            confirmed = await confirmRiskyChange({
+              title: "vantage-confirm-dohmode-title",
+              body: "vantage-confirm-dohmode-body",
+              ok: "vantage-confirm-dohmode-ok",
+              cancel: "vantage-confirm-dohmode-cancel",
+            });
+          } catch (e) {
+            dump("Vantage confirm dialog failed: " + e + "\n");
+          }
+          if (confirmed) {
+            dohModeList.value = "3";
+            Services.prefs.setIntPref("network.trr.mode", 3);
+          } else {
+            Services.prefs.setIntPref("network.trr.mode", 2);
+          }
+          dohModeBusy = false;
+        });
         dohModeList.addEventListener("command", () => {
           const v = parseInt(dohModeList.value, 10);
           if (v === 2 || v === 3) {
@@ -739,6 +830,95 @@ var gLibrewolfPane = {
     if (importBtn) {
       importBtn.addEventListener("command", () => this.importProfile());
     }
+
+    // ---- 风险操作确认（拦截式弹窗）----
+    // 仅当用户主动切到「风险方向」时弹出；默认即安全态的项才适用。
+    const CONFIRM_XORIGIN = {
+      title: "vantage-confirm-xorigin-title",
+      body: "vantage-confirm-xorigin-body",
+      ok: "vantage-confirm-xorigin-ok",
+      cancel: "vantage-confirm-xorigin-cancel",
+    };
+    const CONFIRM_RFP = {
+      title: "vantage-confirm-rfp-title",
+      body: "vantage-confirm-rfp-body",
+      ok: "vantage-confirm-rfp-ok",
+      cancel: "vantage-confirm-rfp-cancel",
+    };
+    const CONFIRM_WEBGL = {
+      title: "vantage-confirm-webgl-title",
+      body: "vantage-confirm-webgl-body",
+      ok: "vantage-confirm-webgl-ok",
+      cancel: "vantage-confirm-webgl-cancel",
+    };
+    const CONFIRM_IPV6 = {
+      title: "vantage-confirm-ipv6-title",
+      body: "vantage-confirm-ipv6-body",
+      ok: "vantage-confirm-ipv6-ok",
+      cancel: "vantage-confirm-ipv6-cancel",
+    };
+    const CONFIRM_SIGNATURES = {
+      title: "vantage-confirm-signatures-title",
+      body: "vantage-confirm-signatures-body",
+      ok: "vantage-confirm-signatures-ok",
+      cancel: "vantage-confirm-signatures-cancel",
+    };
+    const CONFIRM_PDFJS = {
+      title: "vantage-confirm-pdfjs-title",
+      body: "vantage-confirm-pdfjs-body",
+      ok: "vantage-confirm-pdfjs-ok",
+      cancel: "vantage-confirm-pdfjs-cancel",
+    };
+    guardCheckbox(
+      "librewolf-xorigin-ref-checkbox",
+      true,
+      "network.http.referer.XOriginPolicy",
+      2,
+      0,
+      CONFIRM_XORIGIN
+    );
+    guardCheckbox(
+      "librewolf-rfp-checkbox",
+      true,
+      "privacy.resistFingerprinting",
+      true,
+      false,
+      CONFIRM_RFP
+    );
+    guardCheckbox(
+      "librewolf-webgl-checkbox",
+      false,
+      "webgl.disabled",
+      true,
+      false,
+      CONFIRM_WEBGL
+    );
+    guardCheckbox(
+      "librewolf-ipv6-checkbox",
+      false,
+      "network.dns.disableIPv6",
+      true,
+      false,
+      CONFIRM_IPV6
+    );
+    // 关闭「要求扩展签名」→ 允许安装未签名扩展（安全降级）
+    guardCheckbox(
+      "librewolf-signatures-checkbox",
+      false,
+      "xpinstall.signatures.required",
+      false,
+      true,
+      CONFIRM_SIGNATURES
+    );
+    // 开启「允许 PDF 查看器执行脚本」→ PDF 可执行 JS（安全风险）
+    guardCheckbox(
+      "librewolf-pdfjs-scripting-checkbox",
+      true,
+      "pdfjs.enableScripting",
+      true,
+      false,
+      CONFIRM_PDFJS
+    );
 
     // Notify observers that the UI is now ready
     Services.obs.notifyObservers(window, "librewolf-pane-loaded");
@@ -1173,6 +1353,71 @@ var gLibrewolfPane = {
     } catch (e) {}
   },
 };
+
+// ---- 风险操作确认弹窗（拦截式）----
+// 复用 Firefox 原生 asyncConfirmEx（同 ETP「关闭修复严重网站问题」的实现，详见
+// browser/components/preferences/config/privacy.mjs 的 _confirmBaselineAllowListDisable）。
+// 返回 true = 用户确认继续。
+async function confirmRiskyChange({ title, body, ok, cancel }) {
+  const [t, b, okText, cancelText] = await document.l10n.formatValues([
+    { id: title },
+    { id: body },
+    { id: ok },
+    { id: cancel },
+  ]);
+  const flags =
+    Services.prompt.BUTTON_TITLE_IS_STRING * Services.prompt.BUTTON_POS_1 +
+    Services.prompt.BUTTON_TITLE_IS_STRING * Services.prompt.BUTTON_POS_0 +
+    Services.prompt.BUTTON_POS_0_DEFAULT;
+  const result = await Services.prompt.asyncConfirmEx(
+    window.browsingContext,
+    Services.prompt.MODAL_TYPE_CONTENT,
+    t,
+    b,
+    flags,
+    cancelText,
+    okText,
+    null,
+    null,
+    false,
+    { useTitle: true }
+  );
+  return result.QueryInterface(Ci.nsIPropertyBag2).get("buttonNumClicked") == 1;
+}
+
+// 拦截 checkbox：用户勾选/取消而进入「风险态」时先弹窗确认。
+// 取消 → 回滚 UI 与 pref；同意 → 写入风险值。
+//   riskyChecked：哪个方向算「进入风险态」
+//   onVal/offVal：风险态 / 安全态 对应的 pref 值
+function guardCheckbox(id, riskyChecked, pref, onVal, offVal, messages) {
+  const box = document.getElementById(id);
+  if (!box) {
+    return;
+  }
+  let busy = false;
+  box.addEventListener("command", async event => {
+    if (busy || box.checked !== riskyChecked) {
+      return;
+    }
+    // 阻止 window 级 Preferences 监听写入 pref（否则会先写、再回滚）
+    event.stopImmediatePropagation();
+    busy = true;
+    box.checked = !riskyChecked;
+    let confirmed = false;
+    try {
+      confirmed = await confirmRiskyChange(messages);
+    } catch (e) {
+      dump("Vantage confirm dialog failed: " + e + "\n");
+    }
+    if (confirmed) {
+      box.checked = riskyChecked;
+      Preferences.get(pref).value = onVal;
+    } else {
+      Preferences.get(pref).value = offVal;
+    }
+    busy = false;
+  });
+}
 
 function setXOriginPolicySyncListeners(checkboxid, pref, onVals, offVals) {
   setSyncFromPrefListener(checkboxid, () => onVals.includes(getPref(pref)));
