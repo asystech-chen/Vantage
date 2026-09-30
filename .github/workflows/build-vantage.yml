@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: '发布用 tag（如 v153.0.2）；留空 = 只编译、不发布（全量 5 平台）'
+        description: '发布用 tag（如 v153.0.2）；留空 = 只编译、不发布（全量 7 平台）'
         required: false
         type: string
       linux-x64:
@@ -95,11 +95,11 @@ jobs:
           MSIX_URL: ${{ vars.MSIX_URL }}
         run: |
           if [ "${{ github.event_name }}" = "push" ]; then
-            TARGETS="linux-x64 linux-arm64 linux-loong64 windows-x64 windows-arm64"
+            TARGETS="linux-x64 linux-arm64 linux-loong64 windows-x64 windows-arm64 macos-x64 macos-arm64"
           elif [ -z "${{ github.event.inputs.tag }}" ]; then
-            # build-only：无 tag 手动触发 = 只编译（全量 5 平台），不建 tag/release
+            # build-only：无 tag 手动触发 = 只编译（全量 7 平台），不建 tag/release
             echo ">>> build-only 模式：无 tag，全量编译全部平台"
-            TARGETS="linux-x64 linux-arm64 linux-loong64 windows-x64 windows-arm64"
+            TARGETS="linux-x64 linux-arm64 linux-loong64 windows-x64 windows-arm64 macos-x64 macos-arm64"
           else
             TARGETS=""
             [ "${{ github.event.inputs['linux-x64'] }}" = "true" ] && TARGETS="$TARGETS linux-x64"
