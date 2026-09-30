@@ -263,8 +263,12 @@ def librewolf_patches():
     l10n_cache = Path("..", ".cache", "l10n")
     l10n_cache.mkdir(parents=True, exist_ok=True)
 
-    # Verify cached extraction is complete (key directory must exist with content)
-    cache_ok = (l10n_cache / "firefox-l10n-main" / "browser").is_dir()
+    # Verify cached extraction is complete.
+    # 注：上游 zip 解出来是 firefox-l10n-main/<语言>/…，顶层并没有 browser/，
+    # 旧判据 (…/"firefox-l10n-main"/"browser") 恒为假 ⇒ 每次 make dir 都白白重复解压一遍。
+    # 解压是「临时目录 + mv」的原子操作，故根目录存在且非空即视为完整。
+    _l10n_root = l10n_cache / "firefox-l10n-main"
+    cache_ok = _l10n_root.is_dir() and any(_l10n_root.iterdir())
     if not cache_ok:
         l10n_zip = l10n_cache / "l10n.zip"
         # Verify cached zip integrity with unzip -t
