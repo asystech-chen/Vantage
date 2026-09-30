@@ -24,13 +24,14 @@
 #   L10N_FORCE=1 scripts/fetch-l10n-cache.sh                        # 忽略缓存强制重下
 #
 # 环境变量：
+#   L10N_REPO_ROOT 目标仓库根（默认=脚本所在仓库）；面板用它把缓存填到 CI 工作区
 #   L10N_MIRROR    镜像前缀（拼在原 URL 前面），如 https://gh-proxy.com
 #   L10N_FORCE=1   强制重下
 #   L10N_RETRIES   最多下载轮数（默认 6）
 # ============================================================================
 set -euo pipefail
 
-REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+REPO_ROOT="${L10N_REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 CACHE="$REPO_ROOT/.cache/l10n"
 ZIP="$CACHE/l10n.zip"
 EXTRACTED="$CACHE/firefox-l10n-main"
