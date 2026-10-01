@@ -24,7 +24,7 @@ body:
     id: version
     attributes:
       label: Vantage 版本
-      placeholder: 例如 153.3.0-1（about:vantage 可查）
+      placeholder: 例如 153.3.0-1（菜单栏 → 帮助 → 关于 Vantage 可查）
     validations:
       required: true
   - type: input
