@@ -399,7 +399,6 @@ package-msix :
 	    --publisher "$(MSIX_PUBLISHER)" \
 	    --publisher-display-name "$(MSIX_PUBLISHER_DISPLAY)" \
 	    --arch $$ARCH \
-	    --unsigned \
 	    --makeappx "$$MKX" \
 	    --output "$$ABS_OUT"; \
 	MSIX_DIR="$$(ls -td $(MSIX_STAGE_DIR) 2>/dev/null | head -1)"; \

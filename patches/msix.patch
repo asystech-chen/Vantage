@@ -145,7 +145,7 @@ index 133944f06f..81c9ab2465 100644
 +        [
 +            ver_parts[0],
 +            str(100 * int(ver_parts[1]) + int(ver_parts[2])),
-+            str(int(rel) * 100),
++            str(int(rel)),
 +            "0",
 +        ]
 +    )
