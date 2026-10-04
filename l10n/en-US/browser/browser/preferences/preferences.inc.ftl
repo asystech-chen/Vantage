@@ -287,3 +287,13 @@ vantage-confirm-pdfjs-title = Allow the PDF viewer to run scripts?
 vantage-confirm-pdfjs-body = PDF files will be able to execute JavaScript, which can be used for attacks (script injection, data exfiltration). Enable anyway?
 vantage-confirm-pdfjs-ok = Enable anyway
 vantage-confirm-pdfjs-cancel = Cancel
+
+# Vantage: sidebar auto-open on hover (left edge)
+vantage-sidebar-hover-checkbox =
+    .label = Auto-open the sidebar when the mouse reaches the left edge
+vantage-sidebar-hover-description = Move the mouse to the left edge of the window to pop the sidebar out as a floating panel over the page (it does not push the page aside). Click outside the sidebar or press Esc to close it. When enabled, the sidebar is pinned to the left and can no longer be moved to the right.
+
+vantage-confirm-sidebar-hover-title = Enable “Auto-open the sidebar on hover”?
+vantage-confirm-sidebar-hover-body = The sidebar will appear as a floating panel only when you move the mouse to the left edge, and it will be fixed to the left — it can no longer be moved to the right side. Enable anyway?
+vantage-confirm-sidebar-hover-ok = Enable anyway
+vantage-confirm-sidebar-hover-cancel = Cancel

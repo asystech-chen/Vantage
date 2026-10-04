@@ -2968,3 +2968,12 @@ vantage-confirm-pdfjs-title = 开启「允许 PDF 查看器执行脚本」？
 vantage-confirm-pdfjs-body = PDF 文件将可以执行 JavaScript，可能被用于攻击（脚本注入、数据外泄）。确定开启吗？
 vantage-confirm-pdfjs-ok = 仍然开启
 vantage-confirm-pdfjs-cancel = 取消
+# Vantage: 侧边栏在悬停时自动打开（左边缘）
+vantage-sidebar-hover-checkbox =
+    .label = 当您的鼠标到达左边缘时自动打开侧边栏
+vantage-sidebar-hover-description = 将您的鼠标移动到窗口的左边缘，以便将侧边栏作为浮动面板在页面上弹出（其不会将页面推到一旁）。单击侧边栏外部或按 Esc 键以将其关闭。当启用时，侧边栏被固定到左侧，并且不能再被移动到右侧。
+
+vantage-confirm-sidebar-hover-title = 启用“在悬停时自动打开侧边栏”？
+vantage-confirm-sidebar-hover-body = 侧边栏将仅在您将鼠标移动到左边缘时作为浮动面板出现，并且其将被固定到左侧——其不能再被移动到右侧。仍然启用？
+vantage-confirm-sidebar-hover-ok = 仍然启用
+vantage-confirm-sidebar-hover-cancel = 取消

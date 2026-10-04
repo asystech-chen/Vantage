@@ -265,3 +265,13 @@ vantage-confirm-pdfjs-title = 開啟「允許 PDF 檢視器執行指令碼」？
 vantage-confirm-pdfjs-body = PDF 檔案將可執行 JavaScript，可能被用於攻擊（指令碼注入、資料外洩）。確定開啟嗎？
 vantage-confirm-pdfjs-ok = 仍然開啟
 vantage-confirm-pdfjs-cancel = 取消
+
+# Vantage：側欄懸停自動彈出（左側邊緣）
+vantage-sidebar-hover-checkbox =
+    .label = 滑鼠移到視窗左側自動彈出側欄
+vantage-sidebar-hover-description = 將滑鼠移到視窗最左側，側欄會以浮層彈出、覆蓋在網頁之上（不會推擠頁面）。點擊側欄以外的任意位置或按 Esc 收起。啟用後側欄固定在左側，無法再移動到右側。
+
+vantage-confirm-sidebar-hover-title = 開啟「滑鼠移到視窗左側自動彈出側欄」？
+vantage-confirm-sidebar-hover-body = 側欄將僅在滑鼠移到視窗左側時以浮層彈出，且固定在左側、無法再移動到右側。確定開啟嗎？
+vantage-confirm-sidebar-hover-ok = 仍然開啟
+vantage-confirm-sidebar-hover-cancel = 取消

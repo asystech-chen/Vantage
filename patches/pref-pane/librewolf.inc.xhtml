@@ -68,6 +68,18 @@
     </vbox>
   </vbox>
 
+  <!-- 鼠标移到窗口左侧自动弹出侧栏（左侧边缘悬停，浮层盖在网页上；固定在左侧） -->
+  <hbox>
+    <checkbox id="vantage-sidebar-hover-checkbox" data-l10n-id="vantage-sidebar-hover-checkbox" preference="vantage.sidebar.hover-autohide.enabled" flex="1" />
+    <html:label for="vantage-sidebar-hover-collapse" class="sidebar-footer-link" pack="end"> <image class="sidebar-footer-icon help-icon"/> </html:label>
+  </hbox>
+  <vbox class="librewolf-collapse indent">
+    <html:input type="checkbox" id="vantage-sidebar-hover-collapse" />
+    <vbox class="librewolf-collapsed tracking-protection-ui content-blocking-category">
+      <label data-l10n-id="vantage-sidebar-hover-description" />
+    </vbox>
+  </vbox>
+
 </groupbox>
 
 <groupbox hidden="true" data-category="paneVantage">

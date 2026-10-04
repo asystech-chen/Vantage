@@ -110,6 +110,40 @@ var gLibrewolfPane = {
         win?.SidebarController?.show("viewGenaiChatSidebar")?.catch?.(() => {});
       }, 0);
     });
+
+    // 鼠标移到窗口左侧自动弹出侧栏（悬停浮层）：开启前确认（提示“固定在左侧”副作用）
+    let vantageSidebarHoverBusy = false;
+    const vantageSidebarHoverCb = document.getElementById(
+      "vantage-sidebar-hover-checkbox"
+    );
+    if (vantageSidebarHoverCb) {
+      vantageSidebarHoverCb.addEventListener("command", async event => {
+        if (vantageSidebarHoverBusy || !vantageSidebarHoverCb.checked) {
+          return;
+        }
+        event.stopImmediatePropagation();
+        vantageSidebarHoverBusy = true;
+        vantageSidebarHoverCb.checked = false;
+        let confirmed = false;
+        try {
+          confirmed = await confirmRiskyChange({
+            title: "vantage-confirm-sidebar-hover-title",
+            body: "vantage-confirm-sidebar-hover-body",
+            ok: "vantage-confirm-sidebar-hover-ok",
+            cancel: "vantage-confirm-sidebar-hover-cancel",
+          });
+        } catch (e) {
+          console.error("Vantage confirm dialog failed", e);
+          confirmed = true; // 弹窗不可用时放行，避免开关“点不动”
+        }
+        vantageSidebarHoverCb.checked = confirmed;
+        Services.prefs.setBoolPref(
+          "vantage.sidebar.hover-autohide.enabled",
+          confirmed
+        );
+        vantageSidebarHoverBusy = false;
+      });
+    }
     setBoolSyncListeners(
       "vantage-update-checkbox",
       ["vantage.updateCheck.enabled"],
