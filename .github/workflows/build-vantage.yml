@@ -48,7 +48,8 @@ jobs:
     steps:
       - name: 检查权限
         run: |
-          ALLOWED="asystech-chen Liangchenxu"
+          # 仅仓库所有者可触发；平台层另有 Environment 审批 + Tag 规则双保险
+          ALLOWED="asystech-chen"
           if echo "$ALLOWED" | grep -qw "${{ github.actor }}"; then
             echo "✅ 授权用户: ${{ github.actor }}"
           else
@@ -58,6 +59,7 @@ jobs:
 
   build:
     needs: authorize
+    environment: selfhosted-ci
     runs-on: [self-hosted, vantage-builder]
     timeout-minutes: 1440
     steps:
