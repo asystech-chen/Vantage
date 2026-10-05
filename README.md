@@ -1,5 +1,7 @@
 # Vantage 浏览器
 
+[English](README-en.md)
+
 > **隐私 · 快速 · 易用**
 
 [![Download](https://img.shields.io/badge/下载-最新版-blue?style=for-the-badge)](https://asystech.cn/vantage)
