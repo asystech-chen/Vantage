@@ -44,6 +44,7 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "vantage.theme.enabled", type: "bool" },
   { id: "browser.nova.enabled", type: "bool" },
   { id: "vantage.findbar.topright", type: "bool" },
+  { id: "vantage.sidebar.hover-autohide.enabled", type: "bool" },
   { id: "xpinstall.signatures.required", type: "bool" },
   { id: "browser.download.start_downloads_in_tmp_dir", type: "bool" },
   { id: "pdfjs.enableScripting", type: "bool" },
@@ -110,6 +111,27 @@ var gLibrewolfPane = {
         win?.SidebarController?.show("viewGenaiChatSidebar")?.catch?.(() => {});
       }, 0);
     });
+
+    // 鼠标移到窗口左侧自动弹出侧栏：切换时同步 pref；开启时自动展开下方说明
+    const vantageSidebarHoverCb = document.getElementById(
+      "vantage-sidebar-hover-checkbox"
+    );
+    if (vantageSidebarHoverCb) {
+      vantageSidebarHoverCb.addEventListener("command", () => {
+        Services.prefs.setBoolPref(
+          "vantage.sidebar.hover-autohide.enabled",
+          vantageSidebarHoverCb.checked
+        );
+        if (vantageSidebarHoverCb.checked) {
+          const collapse = document.getElementById(
+            "vantage-sidebar-hover-collapse"
+          );
+          if (collapse) {
+            collapse.checked = true;
+          }
+        }
+      });
+    }
 
     setBoolSyncListeners(
       "vantage-update-checkbox",

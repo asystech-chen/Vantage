@@ -2710,7 +2710,7 @@ vantage-ai-checkbox =
     .label = 启用 AI 闲谈在那其他选项
 vantage-ai-description = 打开 AI chatbots 在那其他选项. 支持 DeepSeek, Qwen, Doubao, ChatGPT, 双胎, 和克劳德（男子名）. 你的会话去直接的到那提供器—优势做不收集或进程任何的论据.
 vantage-ai-sidebar-checkbox =
-    .label = 显示其他选项
+    .label = 显示新版侧边栏
 vantage-ai-sidebar-description = 何时启用: 很快地访问书签, 标签页从你的电话, AI chatbots 和更多, 没有采煤心烦意乱的从你的当前的查看. 何时禁用: 那新的其他选项是隐藏的; 有可能 AI 闲谈在那其他选项将显示它再一次.
 
 librewolf-header = 优势首选项
@@ -2971,4 +2971,4 @@ vantage-confirm-pdfjs-cancel = 取消
 # Vantage: 侧边栏在悬停时自动打开（左边缘）
 vantage-sidebar-hover-checkbox =
     .label = 当您的鼠标到达左边缘时自动打开侧边栏
-vantage-sidebar-hover-description = 将您的鼠标移动到窗口的左边缘，以便将侧边栏作为浮动面板在页面上弹出（其不会将页面推到一旁）。单击侧边栏外部或按 Esc 键以将其关闭。当您使用新侧边栏时，工具条与内容窗格会一起弹出，并且您上次打开的内容窗格会被恢复（用 × 将其关闭，则下次只显示工具条）。当启用时，侧边栏<b data-l10n-name="pinned">被固定到左侧，并且不能再被移动到右侧</b>。
+vantage-sidebar-hover-description = 将您的鼠标移动到窗口的最左边缘，侧边栏会以浮动面板的形式弹出，而不会推挤页面；单击侧边栏外部或按 Esc 键将其关闭。<b data-l10n-name="pinned">启用后，侧边栏会固定在左侧，无法再移动到右侧。</b>

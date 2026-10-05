@@ -29,7 +29,7 @@ vantage-ai-checkbox =
     .label = 启用侧栏的 AI 聊天
 vantage-ai-description = 在侧边栏中打开 AI 聊天机器人。支持 DeepSeek、Qwen、豆包、ChatGPT、Gemini 和 Claude。您的对话直接发送给供应商——Vantage 不会收集或处理任何数据。
 vantage-ai-sidebar-checkbox =
-    .label = 显示侧栏
+    .label = 显示新版侧栏
 vantage-ai-sidebar-description = 开启后：快捷使用书签、手机上的标签页、AI 聊天机器人等内容，无需分心于其他界面。关闭后：新侧栏不再显示；勾选「启用侧栏的 AI 聊天」时会自动重新显示。
 
 librewolf-general-heading = 浏览器行为
@@ -268,4 +268,4 @@ vantage-confirm-pdfjs-cancel = 取消
 # Vantage：侧栏悬停自动弹出（左侧边缘）
 vantage-sidebar-hover-checkbox =
     .label = 鼠标移到窗口左侧自动弹出侧栏
-vantage-sidebar-hover-description = 把鼠标移到窗口最左侧，侧栏会以浮层弹出、盖在网页之上（不推挤页面）。点击侧栏以外的任意位置或按 Esc 收起。使用新侧栏时，工具条与内容页会整条弹出，并记住上次打开的内容页（点内容页右上角 × 关闭后，则只弹出工具条）。开启后侧栏<b data-l10n-name="pinned">固定在左侧，无法再移动到右侧</b>。
+vantage-sidebar-hover-description = 鼠标移到窗口最左侧，侧栏以浮层弹出、不推挤页面；点侧栏以外或按 Esc 收起。<b data-l10n-name="pinned">开启后侧栏固定在左侧，无法再移动到右侧。</b>

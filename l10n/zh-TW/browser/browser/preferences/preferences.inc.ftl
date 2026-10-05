@@ -23,7 +23,7 @@ vantage-ai-checkbox =
     .label = 啟用側欄的 AI 聊天
 vantage-ai-description = 啟用後，您可以在瀏覽器側邊欄中使用 AI 聊天助手。此功能將在側邊欄面板中載入第三方 AI 服務。
 vantage-ai-sidebar-checkbox =
-    .label = 顯示側欄
+    .label = 顯示新版側欄
 vantage-ai-sidebar-description = 啟用後：可快速使用書籤、手機上的分頁、AI 聊天機器人等內容，無需分心於其他介面。停用後：新側欄不再顯示；勾選「啟用側欄的 AI 聊天」時會自動重新顯示。
 
 librewolf-header = Vantage 首選項
@@ -269,4 +269,4 @@ vantage-confirm-pdfjs-cancel = 取消
 # Vantage：側欄懸停自動彈出（左側邊緣）
 vantage-sidebar-hover-checkbox =
     .label = 滑鼠移到視窗左側自動彈出側欄
-vantage-sidebar-hover-description = 將滑鼠移到視窗最左側，側欄會以浮層彈出、覆蓋在網頁之上（不會推擠頁面）。點擊側欄以外的任意位置或按 Esc 收起。使用新側欄時，工具列與內容頁會整條彈出，並記住上次開啟的內容頁（點內容頁右上角 × 關閉後，則只彈出工具列）。啟用後側欄<b data-l10n-name="pinned">固定在左側，無法再移動到右側</b>。
+vantage-sidebar-hover-description = 滑鼠移到視窗最左側，側欄以浮層彈出、不推擠頁面；點側欄以外或按 Esc 收起。<b data-l10n-name="pinned">啟用後側欄固定在左側，無法再移動到右側。</b>

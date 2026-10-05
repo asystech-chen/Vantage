@@ -29,7 +29,7 @@ vantage-ai-checkbox =
     .label = Enable AI chat in the sidebar
 vantage-ai-description = Open AI chatbots in the sidebar. Supports DeepSeek, Qwen, Doubao, ChatGPT, Gemini, and Claude. Your conversations go directly to the provider — Vantage does not collect or process any data.
 vantage-ai-sidebar-checkbox =
-    .label = Show sidebar
+    .label = Show new sidebar
 vantage-ai-sidebar-description = When enabled: quickly access bookmarks, tabs from your phone, AI chatbots and more, without getting distracted from your current view. When disabled: the new sidebar is hidden; enabling AI chat in the sidebar will show it again.
 
 librewolf-header = Vantage Preferences
@@ -291,4 +291,4 @@ vantage-confirm-pdfjs-cancel = Cancel
 # Vantage: sidebar auto-open on hover (left edge)
 vantage-sidebar-hover-checkbox =
     .label = Auto-open the sidebar when the mouse reaches the left edge
-vantage-sidebar-hover-description = Move the mouse to the left edge of the window to pop the sidebar out as a floating panel over the page (it does not push the page aside). Click outside the sidebar or press Esc to close it. With the new sidebar, the toolbar and the content pane pop out together, and the content pane you had open is restored (closing it with × shows only the toolbar next time). When enabled, the sidebar is <b data-l10n-name="pinned">pinned to the left and can no longer be moved to the right</b>.
+vantage-sidebar-hover-description = Move the mouse to the left edge to pop the sidebar out as a floating panel (it does not push the page aside); click outside it or press Esc to close. <b data-l10n-name="pinned">When enabled, the sidebar stays on the left and can no longer be moved to the right.</b>
