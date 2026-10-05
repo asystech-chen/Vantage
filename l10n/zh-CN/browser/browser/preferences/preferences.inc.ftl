@@ -268,9 +268,4 @@ vantage-confirm-pdfjs-cancel = 取消
 # Vantage：侧栏悬停自动弹出（左侧边缘）
 vantage-sidebar-hover-checkbox =
     .label = 鼠标移到窗口左侧自动弹出侧栏
-vantage-sidebar-hover-description = 把鼠标移到窗口最左侧，侧栏会以浮层弹出、盖在网页之上（不推挤页面）。点击侧栏以外的任意位置或按 Esc 收起。开启后侧栏固定在左侧，无法再移动到右侧。
-
-vantage-confirm-sidebar-hover-title = 开启「鼠标移到窗口左侧自动弹出侧栏」？
-vantage-confirm-sidebar-hover-body = 侧栏将仅在鼠标移到窗口左侧时以浮层弹出，且固定在左侧、无法再移动到右侧。确定开启吗？
-vantage-confirm-sidebar-hover-ok = 仍然开启
-vantage-confirm-sidebar-hover-cancel = 取消
+vantage-sidebar-hover-description = 把鼠标移到窗口最左侧，侧栏会以浮层弹出、盖在网页之上（不推挤页面）。点击侧栏以外的任意位置或按 Esc 收起。使用新侧栏时，工具条与内容页会整条弹出，并记住上次打开的内容页（点内容页右上角 × 关闭后，则只弹出工具条）。开启后侧栏<b data-l10n-name="pinned">固定在左侧，无法再移动到右侧</b>。

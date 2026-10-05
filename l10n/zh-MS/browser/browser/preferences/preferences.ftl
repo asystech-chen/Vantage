@@ -2971,9 +2971,4 @@ vantage-confirm-pdfjs-cancel = 取消
 # Vantage: 侧边栏在悬停时自动打开（左边缘）
 vantage-sidebar-hover-checkbox =
     .label = 当您的鼠标到达左边缘时自动打开侧边栏
-vantage-sidebar-hover-description = 将您的鼠标移动到窗口的左边缘，以便将侧边栏作为浮动面板在页面上弹出（其不会将页面推到一旁）。单击侧边栏外部或按 Esc 键以将其关闭。当启用时，侧边栏被固定到左侧，并且不能再被移动到右侧。
-
-vantage-confirm-sidebar-hover-title = 启用“在悬停时自动打开侧边栏”？
-vantage-confirm-sidebar-hover-body = 侧边栏将仅在您将鼠标移动到左边缘时作为浮动面板出现，并且其将被固定到左侧——其不能再被移动到右侧。仍然启用？
-vantage-confirm-sidebar-hover-ok = 仍然启用
-vantage-confirm-sidebar-hover-cancel = 取消
+vantage-sidebar-hover-description = 将您的鼠标移动到窗口的左边缘，以便将侧边栏作为浮动面板在页面上弹出（其不会将页面推到一旁）。单击侧边栏外部或按 Esc 键以将其关闭。当您使用新侧边栏时，工具条与内容窗格会一起弹出，并且您上次打开的内容窗格会被恢复（用 × 将其关闭，则下次只显示工具条）。当启用时，侧边栏<b data-l10n-name="pinned">被固定到左侧，并且不能再被移动到右侧</b>。

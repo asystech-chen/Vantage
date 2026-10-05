@@ -269,9 +269,4 @@ vantage-confirm-pdfjs-cancel = 取消
 # Vantage：側欄懸停自動彈出（左側邊緣）
 vantage-sidebar-hover-checkbox =
     .label = 滑鼠移到視窗左側自動彈出側欄
-vantage-sidebar-hover-description = 將滑鼠移到視窗最左側，側欄會以浮層彈出、覆蓋在網頁之上（不會推擠頁面）。點擊側欄以外的任意位置或按 Esc 收起。啟用後側欄固定在左側，無法再移動到右側。
-
-vantage-confirm-sidebar-hover-title = 開啟「滑鼠移到視窗左側自動彈出側欄」？
-vantage-confirm-sidebar-hover-body = 側欄將僅在滑鼠移到視窗左側時以浮層彈出，且固定在左側、無法再移動到右側。確定開啟嗎？
-vantage-confirm-sidebar-hover-ok = 仍然開啟
-vantage-confirm-sidebar-hover-cancel = 取消
+vantage-sidebar-hover-description = 將滑鼠移到視窗最左側，側欄會以浮層彈出、覆蓋在網頁之上（不會推擠頁面）。點擊側欄以外的任意位置或按 Esc 收起。使用新側欄時，工具列與內容頁會整條彈出，並記住上次開啟的內容頁（點內容頁右上角 × 關閉後，則只彈出工具列）。啟用後側欄<b data-l10n-name="pinned">固定在左側，無法再移動到右側</b>。
