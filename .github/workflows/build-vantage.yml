@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: '发布用 tag（如 v153.0.2）；留空 = 只编译、不发布（全量 7 平台）'
+        description: '发布用 tag（如 v153.0.2）；留空 = 只编译、不发布（编译哪些平台看下面复选框）'
         required: false
         type: string
       linux-x64:
@@ -97,12 +97,10 @@ jobs:
           MSIX_URL: ${{ vars.MSIX_URL }}
         run: |
           if [ "${{ github.event_name }}" = "push" ]; then
-            TARGETS="linux-x64 linux-arm64 linux-loong64 windows-x64 windows-arm64 macos-x64 macos-arm64"
-          elif [ -z "${{ github.event.inputs.tag }}" ]; then
-            # build-only：无 tag 手动触发 = 只编译（全量 7 平台），不建 tag/release
-            echo ">>> build-only 模式：无 tag，全量编译全部平台"
+            # tag 推送没有复选框可勾 ⇒ 全量 7 平台
             TARGETS="linux-x64 linux-arm64 linux-loong64 windows-x64 windows-arm64 macos-x64 macos-arm64"
           else
+            # 手动触发一律按复选框选目标（不再因 tag 留空而强制全量）；tag 只决定发不发布
             TARGETS=""
             [ "${{ github.event.inputs['linux-x64'] }}" = "true" ] && TARGETS="$TARGETS linux-x64"
             [ "${{ github.event.inputs['linux-arm64'] }}" = "true" ] && TARGETS="$TARGETS linux-arm64"
@@ -111,6 +109,7 @@ jobs:
             [ "${{ github.event.inputs['windows-arm64'] }}" = "true" ] && TARGETS="$TARGETS windows-arm64"
             [ "${{ github.event.inputs['macos-x64'] }}" = "true" ] && TARGETS="$TARGETS macos-x64"
             [ "${{ github.event.inputs['macos-arm64'] }}" = "true" ] && TARGETS="$TARGETS macos-arm64"
+            [ -z "$TARGETS" ] && { echo "❌ 未勾选任何编译平台，已中止（请至少勾选一个）"; exit 1; }
           fi
           echo "编译目标: $TARGETS"
           ./build.sh $TARGETS
