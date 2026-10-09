@@ -160,7 +160,10 @@ $(ff_source_tarball) :
 
 $(lw_source_dir) : $(ff_source_tarball) ./version ./release scripts/librewolf-patches.py assets/mozconfig assets/patches.txt
 	rm -rf $(ff_source_dir) $(lw_source_dir)
-	tar xf $(ff_source_tarball)
+	# --no-overwrite-dir：源码包首条 entry 是 `./`，默认 tar 会 chmod 解压目录(=仓库根)：
+	#   CI 沙箱里 ci 非属主会 EPERM；且会把共享 ACL 的 mask 压成 r-x（chen 丢写权限）。
+	#   不覆盖已存在目录的元数据即可两全（新建的 firefox-*/ 子目录照常设权限）。
+	tar xf $(ff_source_tarball) --no-overwrite-dir
 	mv $(ff_source_dir) $(lw_source_dir)
 	WIN_VARIANT="$(WIN_VARIANT)" python3 scripts/librewolf-patches.py $(version) $(release)
 	$(MAKE) prepare-sfx-apply

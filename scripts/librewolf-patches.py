@@ -260,7 +260,12 @@ def librewolf_patches():
 
     # Cache l10n to avoid re-downloading 200MB+ from GitHub every build
     print("-> Preparing locales from https://github.com/mozilla-l10n/firefox-l10n")
-    l10n_cache = Path("..", ".cache", "l10n")
+    # 缓存目录必须放在【工作区之外】：CI 的 Checkout（rm -rf "$GITHUB_WORKSPACE"/*）
+    # 会把工作区内的 .cache/l10n 一起删掉，导致每次构建都联网重下。
+    #   - CI：GitHub Actions 自带 $RUNNER_WORKSPACE = 工作区父目录（Checkout 清不到）→ 用它；
+    #   - 本地：未设该变量，沿用旧行为 <repo>/.cache/l10n（本机 cwd=仓库根时的相对路径）。
+    _runner_ws = os.environ.get("RUNNER_WORKSPACE")
+    l10n_cache = (Path(_runner_ws) / ".cache" / "l10n") if _runner_ws else Path("..", ".cache", "l10n")
     l10n_cache.mkdir(parents=True, exist_ok=True)
 
     # Verify cached extraction is complete.
