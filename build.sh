@@ -31,7 +31,7 @@ exec > >(tee "$HOME/.openclaw/workspace/.build-output.log") 2>&1
 #   windows-x64-dev  (简写 wxd)  —— Windows 交叉验证
 #   ⚠️ DEV 产物仅用于功能/UI/逻辑验证，不代表发布性能；出正式包请用发布目标
 #
-# 编译/打包完成后自动执行 make checksum 生成校验和
+# 编译/打包完成后：全部目标统一 GPG 签名，再执行 make checksum 生成校验和
 # ==========================================
 
 REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
@@ -243,6 +243,8 @@ build_target() {
   if [[ "$os_type" == "windows" ]]; then
     green ">>> Windows 目标：应用 Vantage 7zSFX stub..."
     ./scripts/setup-7zsfx.sh || red "⚠️ setup-7zsfx.sh 失败（非致命，安装器可能带 Firefox stub）"
+    # wine 前缀必须预先存在：首次在并行 midl 调用里自动创建会失败（退出码 225）
+    prepare_wine_prefix
   fi
 
   # PGO：DEV 目标不用 PGO，直接跳过拉取；发布目标按平台拉取（失败/mozconfig 会自动跳过，不影响构建）
@@ -269,7 +271,7 @@ build_target() {
   green ">>> [2/3] 编译 (make build)..."
   make build || { red "❌ $label 编译失败"; return 1; }
 
-  # Step 3: 打包 + 签名 (package-all 自动包含签名)
+  # Step 3: 打包（签名统一在全部目标完成后做）
   green ">>> [3/3] 打包 (make package)..."
   make package || { red "❌ $label 打包失败"; return 1; }
 
@@ -278,9 +280,10 @@ build_target() {
     echo ""
     yellow ">>> DEV 目标：已由 make package 产出本地化包，跳过 package-all / msix（如需可手动执行）"
   elif [[ "$os_type" == "linux" ]]; then
-    # 对 Linux 目标额外执行 package-all (deb/rpm/AppImage/tar.gz + 自动签名)
+    # 对 Linux 目标额外执行 package-all (deb/rpm/AppImage/tar.gz)
     echo ""
-    green ">>> Linux 目标：执行 make package-all (生成+签名)..."
+    green ">>> Linux 目标：执行 make package-all (deb/rpm/AppImage/tar.gz)..."
+    # 签名统一在全部目标打包完成后做（见 sign_and_checksum）
     make package-all || red "⚠️  $label package-all 失败（非致命）"
   elif [[ "$os_type" == "windows" ]]; then
     # 对 Windows 目标额外执行 package-msix
@@ -418,19 +421,14 @@ package_main() {
   green "📦 所有打包产物:"
   ls -lh vantage-* 2>/dev/null || yellow "  (未找到产物)"
 
-  if gpg --list-secret-keys "$GPG_KEY_ID" &>/dev/null; then
-    echo ""
-    green "🔏 包已内嵌签名 (.deb/.rpm) 或 GPG 分离签名 (.AppImage.asc/.tar.gz.asc)"
-    make checksum 2>/dev/null
-  else
-    echo ""
-    yellow "⚠️  未找到 GPG 私钥，跳过文件签名。仅生成 SHA256SUMS:"
-    make checksum 2>/dev/null || yellow "  (checksum 生成失败)"
-  fi
-  echo ""
+  # 全部目标打包完成后：统一签名 + 计算 SHA256SUMS
+  sign_and_checksum
 
   if [[ ${#failed[@]} -eq 0 ]]; then
     green "🎉 所有目标打包成功！"
+  else
+    red "  ❌ 打包失败：${#failed[@]} / $total 个目标未完成"
+    return 1
   fi
 }
 
@@ -439,11 +437,22 @@ GPG_KEY_ID="907587D2812D7F8C"
 GPG_PRIVATE_KEY="$HOME/vantage-repo-private-key.asc"
 
 ensure_gpg_key() {
+  local soft="${1:-}"
   if ! gpg --list-secret-keys "$GPG_KEY_ID" >/dev/null 2>&1; then
     if [[ -f "$GPG_PRIVATE_KEY" ]]; then
       green ">>> 导入 GPG 私钥: $GPG_PRIVATE_KEY"
-      gpg --batch --import "$GPG_PRIVATE_KEY" || die "GPG 私钥导入失败"
+      if ! gpg --batch --import "$GPG_PRIVATE_KEY"; then
+        if [[ "$soft" == "soft" ]]; then
+          yellow "⚠️  GPG 私钥导入失败（签名将不可用）"
+          return 1
+        fi
+        die "GPG 私钥导入失败"
+      fi
     else
+      if [[ "$soft" == "soft" ]]; then
+        yellow "⚠️  未找到 GPG 私钥: $GPG_PRIVATE_KEY（签名将不可用）"
+        return 1
+      fi
       die "未找到 GPG 私钥: $GPG_PRIVATE_KEY"
     fi
   fi
@@ -451,6 +460,131 @@ ensure_gpg_key() {
     echo '%_signature gpg' >> ~/.rpmmacros
     echo "%_gpg_name Vantage Browser <repo@vantage.asystech.cn>" >> ~/.rpmmacros
   fi
+  return 0
+}
+
+# 统一签名 + 校验和：所有目标打包完成后只跑一次
+sign_and_checksum() {
+  echo ""
+  bold "───────────────────────────────────────────"
+  bold "  统一签名 + 校验和"
+  bold "───────────────────────────────────────────"
+  echo ""
+
+  if ensure_gpg_key soft; then
+    make sign-all || red "⚠️  部分包签名失败（见上方输出）"
+    echo ""
+    make checksum 2>/dev/null || yellow "  (checksum 生成失败)"
+  else
+    yellow "⚠️  GPG 私钥不可用，跳过包签名；仅生成未签名 SHA256SUMS:"
+    make checksum 2>/dev/null || yellow "  (checksum 生成失败)"
+  fi
+  echo ""
+  verify_signatures
+}
+
+# 签名结果自检：逐类检查是否真带上了签名
+verify_signatures() {
+  local f sig total=0 signed=0
+
+  # .deb：看内嵌 _gpgorigin 成员
+  for f in vantage_*_*.deb; do
+    [[ -f "$f" ]] || continue
+    total=$((total + 1))
+    if ar t "$f" 2>/dev/null | grep -qx _gpgorigin; then
+      signed=$((signed + 1))
+    else
+      red "  ✗ 未签名 deb: $f"
+    fi
+  done
+
+  # .rpm：签名可能落在 SIGPGP / RSAHEADER / DSAHEADER（rpm 4.20 用 RSAHEADER）
+  for f in vantage-*.rpm; do
+    [[ -f "$f" ]] || continue
+    total=$((total + 1))
+    sig="$(rpm -qp --qf '%{SIGPGP:pgpsig}|%{RSAHEADER:pgpsig}|%{DSAHEADER:pgpsig}' "$f" 2>/dev/null || true)"
+    if [[ "$sig" =~ (RSA|DSA|PGP)/ ]]; then
+      signed=$((signed + 1))
+    else
+      red "  ✗ 未签名 rpm: $f"
+    fi
+  done
+
+  # AppImage / portable.tar.gz：看分离签名
+  for f in vantage-*.AppImage vantage-*.portable.tar.gz; do
+    [[ -f "$f" ]] || continue
+    total=$((total + 1))
+    if [[ -f "$f.asc" ]]; then
+      signed=$((signed + 1))
+    else
+      red "  ✗ 缺少分离签名: $f.asc"
+    fi
+  done
+
+  if [[ $total -eq 0 ]]; then
+    yellow "  (没有可校验的产物)"
+  elif [[ $signed -eq $total ]]; then
+    green "🔎 签名校验: $signed / $total 全部通过"
+  else
+    yellow "🔎 签名校验: $signed / $total（未通过项见上）"
+  fi
+}
+
+# Windows 交叉编译：wine 前缀必须提前建好。
+# 首次构建时几十个 midl.exe 并行触发自动建前缀会互相踩，全部退出 225（2026-10-18 实测）。
+prepare_wine_prefix() {
+  local winebin="" winebootbin=""
+  if [[ -x "$HOME/.mozbuild/wine/bin/wine" ]]; then
+    winebin="$HOME/.mozbuild/wine/bin/wine"
+    winebootbin="$HOME/.mozbuild/wine/bin/wineboot"
+  elif command -v wine >/dev/null 2>&1; then
+    winebin="$(command -v wine)"
+    winebootbin="$(command -v wineboot 2>/dev/null || true)"
+  fi
+
+  export WINEPREFIX="${WINEPREFIX:-$HOME/.cache/wine-msvc}"
+  if [[ -d "$WINEPREFIX/drive_c" ]]; then
+    green ">>> Wine 前缀已就绪: $WINEPREFIX"
+    return 0
+  fi
+
+  mkdir -p "$WINEPREFIX"
+  green ">>> 初始化 Wine 前缀: $WINEPREFIX"
+  if [[ -z "$winebin" ]]; then
+    yellow "⚠️  未找到 wine，跳过前缀初始化（Windows 目标可能失败）"
+    return 1
+  fi
+
+  if [[ -n "$winebootbin" && -x "$winebootbin" ]]; then
+    WINEDEBUG=-all timeout 300 "$winebootbin" -u >"$WINEPREFIX/init.log" 2>&1 || true
+  else
+    WINEDEBUG=-all timeout 300 "$winebin" wineboot -u >"$WINEPREFIX/init.log" 2>&1 || true
+  fi
+
+  if [[ ! -d "$WINEPREFIX/drive_c" ]]; then
+    yellow "⚠️  Wine 前缀初始化失败（Windows 目标可能失败），日志前 10 行："
+    sed -n '1,10p' "$WINEPREFIX/init.log" 2>/dev/null | sed 's/^/    /'
+    return 1
+  fi
+  green "✅ Wine 前缀初始化完成"
+
+  # 冒烟测试：直接用 wine 跑一次 midl.exe，提前暴露沙箱/前缀问题（而不是等 make 里成片退出 225）
+  local midl="" d
+  for d in "$HOME/.mozbuild/vs/Windows Kits/10/bin"/10.*; do
+    [[ -x "$d/x64/midl.exe" ]] && midl="$d/x64/midl.exe"
+  done
+  if [[ -n "$midl" ]]; then
+    local srt=0
+    WINEDEBUG=-all timeout 120 "$winebin" "$midl" -? >"$WINEPREFIX/smoke.log" 2>&1 || srt=$?
+    if [[ $srt -eq 0 ]]; then
+      green "✅ Wine 冒烟测试通过（midl.exe 可运行）"
+    else
+      yellow "⚠️  Wine 冒烟测试失败（midl.exe 退出码 $srt），日志前 10 行："
+      sed -n '1,10p' "$WINEPREFIX/smoke.log" 2>/dev/null | sed 's/^/    /'
+      return 1
+    fi
+  fi
+  return 0
 }
 
 sign_target() {
@@ -602,12 +736,12 @@ main() {
   if [[ "${1:-}" == "package" ]]; then
     shift
     package_main "$@"
-    return
+    return $?
   fi
   if [[ "${1:-}" == "sign" ]]; then
     shift
     sign_main "$@"
-    return
+    return $?
   fi
 
   local selected=() total count=0 failed=() rc
@@ -692,20 +826,14 @@ main() {
   green "📦 所有打包产物:"
   ls -lh vantage-* 2>/dev/null || yellow "  (未找到产物)"
 
-  # 总是生成 SHA256SUMS（有 GPG 密钥时附带签名）
-  if gpg --list-secret-keys "$GPG_KEY_ID" &>/dev/null; then
-    echo ""
-    green "🔏 包已内嵌签名 (.deb/.rpm) 或 GPG 分离签名 (.AppImage.asc/.tar.gz.asc)"
-    make checksum 2>/dev/null
-  else
-    echo ""
-    yellow "⚠️  未找到 GPG 私钥，跳过文件签名。仅生成 SHA256SUMS:"
-    make checksum 2>/dev/null || yellow "  (checksum 生成失败)"
-  fi
-  echo ""
+  # 全部目标打包完成后：统一签名 + 计算 SHA256SUMS
+  sign_and_checksum
 
   if [[ ${#failed[@]} -eq 0 ]]; then
     green "🎉 所有目标编译成功！"
+  else
+    red "  ❌ 构建失败：${#failed[@]} / $total 个目标未完成"
+    return 1
   fi
 }
 

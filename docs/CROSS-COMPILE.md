@@ -453,7 +453,8 @@ cd ~/osx-cross/hfsplus-tools && make
 | 命令 | 作用 | 适用 |
 |------|------|------|
 | `make package` | 基础打包（NSIS 安装器 / dmg / tar） | 全平台 |
-| `make package-all` | deb + rpm + AppImage + portable.tar.gz，并自动 GPG 签名 | Linux |
+| `make package-all` | deb + rpm + AppImage + portable.tar.gz（不签名） | Linux |
+| `make sign-all` | 对已有产物统一 GPG 签名（`build.sh` 末尾自动执行） | Linux |
 | `make package-msix` | msix 成品（本地暂存 + 远程封包） | Windows |
 | `make checksum` | 生成 SHA256SUMS（build.sh 自动执行） | 全平台 |
 

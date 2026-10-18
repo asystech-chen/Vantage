@@ -177,7 +177,8 @@ ccache -s              # 看命中率
 | `make dir` | 解包 + 打补丁，生成/更新 `librewolf-<ver>-<rel>/` |
 | `make build` | `mach build`（并行度由 mozconfig 或 `VANTAGE_JOBS` 决定） |
 | `make package` | 基础打包（tar / NSIS / dmg） |
-| `make package-all` | Linux：deb + rpm + AppImage + portable.tar.gz（+ 签名） |
+| `make package-all` | Linux：deb + rpm + AppImage + portable.tar.gz（不签名） |
+| `make sign-all` | 对根目录当前版本的全部产物统一签名（deb/rpm/AppImage/tar.gz） |
 | `make package-msix` | Windows：msix 成品（本地生成暂存目录 → home-nas 远程 makeappx 封包 → 拉回，详见 `docs/MSIX-PACKAGING.md`） |
 | `make checksum` | 生成 `SHA256SUMS` |
 | `make bootstrap` | mach bootstrap 初始化 |
@@ -207,6 +208,7 @@ make dir
 make build
 make package
 make package-all      # 仅 Linux
+make sign-all         # 统一签名（build.sh 会在全部目标打包完后自动执行）
 make checksum
 ```
 
@@ -316,7 +318,8 @@ rustup target add --toolchain 1.94.1 x86_64-pc-windows-msvc aarch64-pc-windows-m
 | 命令 | 内容 | 平台 |
 |------|------|------|
 | `make package` | 基础包（tar / NSIS / dmg） | 全平台 |
-| `make package-all` | deb / rpm / AppImage / portable.tar.gz + GPG 签名 | Linux |
+| `make package-all` | deb / rpm / AppImage / portable.tar.gz（不签名） | Linux |
+| `make sign-all` | 对已有产物统一 GPG 签名（`build.sh` 末尾自动执行） | Linux |
 | `make package-msix` | msix 成品（本地暂存 + home-nas 封包），`*.msix-prepackage.zip` 中间产物不发布 | Windows |
 | `make checksum` | `SHA256SUMS` | 全平台 |
 

@@ -1,7 +1,7 @@
 docker_targets=docker-build-image docker-run-build-job docker-remove-image
 woodpecker_targets=fetch-upstream-woodpecker check-patchfail-woodpecker
 testing_targets=full-test test test-linux test-macos test-windows
-.PHONY : help moztree check all clean veryclean distclean patches dir bootstrap fetch build package package-all package-deb package-rpm package-appimage package-tar package-pe-sfx package-msix checksum run update setup-wasi check-patchfail check-fuzz fixfuzz $(docker_targets) $(woodpecker_targets) $(testing_targets)
+.PHONY : help moztree check all clean veryclean distclean patches dir bootstrap fetch build package package-all sign-all package-deb package-rpm package-appimage package-tar package-pe-sfx package-msix checksum run update setup-wasi check-patchfail check-fuzz fixfuzz $(docker_targets) $(woodpecker_targets) $(testing_targets)
 
 # Include ~/.local/bin for tools like appimagetool
 export PATH := $(HOME)/.local/bin:$(PATH)
@@ -69,6 +69,7 @@ help :
 	@echo "  build       - Build LibreWolf (requires bootstrapped build environment)."
 	@echo "  package     - Package LibreWolf (requires build)."
 	@echo "  package-all - Package as deb/rpm/AppImage/tar.gz (Linux only)."
+	@echo "  sign-all    - Sign all built packages (.deb/.rpm/.AppImage/.tar.gz)."
 	@echo "  checksum    - Generate sha256sums for all packages."
 	@echo "  run         - Run LibreWolf (requires build)."
 	@echo ""
@@ -679,6 +680,7 @@ APPIMAGE_RUNTIME_x86_64 := $(CURDIR)/assets/appimage-runtime/runtime-x86_64
 APPIMAGE_RUNTIME_aarch64 := $(CURDIR)/assets/appimage-runtime/runtime-aarch64
 
 # 打包为 .AppImage (通用)
+# 注意：appimagetool 本身是 AppImage，CI runner 无 FUSE，需 APPIMAGE_EXTRACT_AND_RUN=1 先解包再运行
 package-appimage : clean-packaging
 ifeq ($(PKG_ARCH),loongarch64)
 	@echo ">>> [APPIMAGE] Skipped: no loongarch64 runtime (use .deb or .tar.gz)"
@@ -717,7 +719,7 @@ else
 		runtime_opt="--runtime-file=$(APPIMAGE_RUNTIME_aarch64)"; \
 		echo ">>> Using cached runtime: $(APPIMAGE_RUNTIME_aarch64)"; \
 	fi; \
-	ARCH=$(PKG_ARCH) appimagetool --no-appstream $$runtime_opt AppDir $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).AppImage
+	ARCH=$(PKG_ARCH) APPIMAGE_EXTRACT_AND_RUN=1 appimagetool --no-appstream $$runtime_opt AppDir $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).AppImage
 	@echo ">>> [APPIMAGE] Done: $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).AppImage"
 	@rm -rf AppDir
 endif
@@ -744,26 +746,47 @@ package-tar : clean-packaging
 	@echo ">>> [TAR] Done: $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).portable.tar.gz"
 	@rm -rf $(APP_NAME)-portable
 
-# 快捷目标：一次性生成所有格式（生成后自动签名）
-package-all : package-deb package-appimage package-tar package-rpm
-	@echo ">>> [SIGN] Signing packages..."
-	@# debsigs embedded signature for .deb (like rpmsign)
-	@debfile=$(APP_NAME)_$(version)-$(release)_$(DEB_ARCH).deb; \
-	if [ -f "$$debfile" ]; then \
-	  debsigs --sign=origin --default-key=$(GPG_KEY_ID) "$$debfile" 2>/dev/null && echo "  DEBSIGS: $$debfile"; \
-	fi || true
-	@# GPG detached signatures for .AppImage, .tar.gz (skip if already signed)
-	@for f in $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).AppImage \
-	          $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).portable.tar.gz; do \
-	  if [ -f "$$f" ] && [ ! -f "$$f.asc" ]; then \
-	    gpg --batch --yes --detach-sign --armor "$$f" 2>/dev/null && echo "  GPG: $$f"; \
-	  fi; \
-	done || true
-	@# rpmsign embedded signature for .rpm
-	@rpmfile=$(APP_NAME)-$(version)-$(release).$(RPM_ARCH).rpm; \
-	if [ -f "$$rpmfile" ]; then \
-	  rpmsign --addsign "$$rpmfile" 2>/dev/null && echo "  RPMSIGN: $$rpmfile" || true; \
-	fi
-	@echo ">>> All packages generated and signed (arch: $(PKG_ARCH))."
+# 快捷目标：一次性生成所有格式（不签名；签名统一由 sign-all 完成）
+# 每种格式独立执行：单个格式失败（如无 FUSE 的 AppImage）不再中断其余格式
+package-all :
+	@$(MAKE) --no-print-directory package-deb || echo "⚠️  [DEB] 打包失败（继续其余格式）"
+	@$(MAKE) --no-print-directory package-appimage || echo "⚠️  [APPIMAGE] 打包失败（继续其余格式）"
+	@$(MAKE) --no-print-directory package-tar || echo "⚠️  [TAR] 打包失败（继续其余格式）"
+	@$(MAKE) --no-print-directory package-rpm || echo "⚠️  [RPM] 打包失败（继续其余格式）"
 	@ls -lh $(APP_NAME)*$(version)* 2>/dev/null | grep -E '\.(deb|AppImage|tar\.gz|rpm)$$' || true
 	@echo ""
+
+# 统一签名：对根目录下当前版本的所有产物（deb/rpm/AppImage/portable.tar.gz）批量签名
+# 在所有目标打包完之后跑一次：密钥只导一次，单个签名失败不会拖垮构建或阻断其他产物
+# timeout 兜底：gpg 提前退出时 debsigs 会卡在 ar 管道上永不返回（2026-10-18 实测卡死 7h17m）
+sign-all :
+	@echo ">>> [SIGN] Signing all packages..."
+	@failed=0; \
+	for f in $(APP_NAME)_$(version)-$(release)_*.deb; do \
+	  [ -f "$$f" ] || continue; \
+	  if timeout 300 debsigs --sign=origin --default-key=$(GPG_KEY_ID) "$$f"; then \
+	    echo "  DEBSIGS: $$f"; \
+	  else \
+	    echo "  ⚠️  DEBSIGS 失败（超时或密钥不可用）: $$f"; failed=$$((failed+1)); \
+	  fi; \
+	done; \
+	for f in $(APP_NAME)-$(version)-$(release).*.rpm; do \
+	  [ -f "$$f" ] || continue; \
+	  if timeout 300 rpmsign --addsign "$$f"; then \
+	    echo "  RPMSIGN: $$f"; \
+	  else \
+	    echo "  ⚠️  RPMSIGN 失败（超时或密钥不可用）: $$f"; failed=$$((failed+1)); \
+	  fi; \
+	done; \
+	for f in $(APP_NAME)-$(version)-$(release).*.AppImage \
+	         $(APP_NAME)-$(version)-$(release).*.portable.tar.gz; do \
+	  [ -f "$$f" ] || continue; \
+	  if [ -f "$$f.asc" ]; then echo "  GPG: $$f.asc 已存在"; continue; fi; \
+	  if timeout 180 gpg --batch --yes --detach-sign --armor "$$f"; then \
+	    echo "  GPG: $$f"; \
+	  else \
+	    echo "  ⚠️  GPG 签名失败: $$f"; failed=$$((failed+1)); \
+	  fi; \
+	done; \
+	if [ $$failed -ne 0 ]; then echo ">>> [SIGN] $$failed 个签名失败"; exit 1; fi; \
+	echo ">>> [SIGN] Done"
