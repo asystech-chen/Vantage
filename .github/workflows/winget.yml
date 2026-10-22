@@ -19,12 +19,10 @@ jobs:
       - name: 1. 下载微软官方 Winget 发版工具
         run: Invoke-WebRequest -Uri https://aka.ms/wingetcreate/latest -OutFile wingetcreate.exe
 
-      - name: 2. 自动同步 winget-pkgs 分叉仓库
+      - name: 2. 自动强制同步 winget-pkgs 分叉仓库
         env:
-          # 自动兼容 WINGET_TOKEN 或 WINGET 两种命名，传给 GitHub CLI
           GH_TOKEN: ${{ secrets.WINGET_TOKEN || secrets.WINGET }}
-        continue-on-error: true
-        run: gh repo sync Liangchenxu/winget-pkgs --force
+        run: gh repo sync Liangchenxu/winget-pkgs --source microsoft/winget-pkgs --force
 
       - name: 3. 自动下载包、计算哈希并提交 PR
         env:
