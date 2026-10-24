@@ -11,7 +11,7 @@
 #
 # 同步内容：
 #   - patches/pref-pane/{librewolf.inc.xhtml,librewolf.js} → 树内 browser/components/preferences/
-#   - settings/librewolf.cfg                              → 树内 lw/
+#   - settings/librewolf.cfg + settings/vantage.cfg        → 树内 lw/（cfg-merge.py 拼合）
 #   - l10n/{en-US,en-CA,en-GB,zh-CN,zh-TW,zh-MS} 文案     → 逐条比对 id，只追加缺失项（幂等）
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -22,7 +22,7 @@ echo ">>> 同步到 $TREE"
 
 cp -v patches/pref-pane/librewolf.inc.xhtml "$TREE/browser/components/preferences/librewolf.inc.xhtml"
 cp -v patches/pref-pane/librewolf.js        "$TREE/browser/components/preferences/librewolf.js"
-cp -v settings/librewolf.cfg                "$TREE/lw/librewolf.cfg"
+python3 scripts/cfg-merge.py --merge --output "$TREE/lw/librewolf.cfg"
 
 python3 - "$TREE" <<'PY'
 import sys, re, pathlib

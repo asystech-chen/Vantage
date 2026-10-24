@@ -57,20 +57,20 @@ sed -i \
   -e 's|\.includes("\.librewolf")|.includes(".vantage")|g' \
   -e 's|librewolf/librewolf/librewolf\.overrides\.cfg|vantage/vantage/vantage.overrides.cfg|g' \
   -e 's|\.librewolf/librewolf\.overrides\.cfg|.vantage/vantage.overrides.cfg|g' \
-  settings/librewolf.cfg
+  settings/librewolf.cfg settings/vantage.cfg
 echo "  overrides.cfg paths -> .vantage/vantage.overrides.cfg"
 
-if grep -q '\.includes("\.librewolf")' settings/librewolf.cfg; then
-  err "librewolf.cfg 仍残留 .includes(\".librewolf\")"
+if grep -q '\.includes("\.librewolf")' settings/librewolf.cfg settings/vantage.cfg; then
+  err "cfg 仍残留 .includes(\".librewolf\")"
 fi
-if ! grep -q '\.includes("\.vantage")' settings/librewolf.cfg; then
-  err "librewolf.cfg 未出现预期的 .includes(\".vantage\")"
+if ! grep -q '\.includes("\.vantage")' settings/librewolf.cfg settings/vantage.cfg; then
+  err "cfg 未出现预期的 .includes(\".vantage\")"
 fi
-if grep -q 'librewolf/librewolf/librewolf\.overrides\.cfg\|\.librewolf/librewolf\.overrides\.cfg' settings/librewolf.cfg; then
-  err "librewolf.cfg 仍残留旧 overrides.cfg 路径"
+if grep -q 'librewolf/librewolf/librewolf\.overrides\.cfg\|\.librewolf/librewolf\.overrides\.cfg' settings/librewolf.cfg settings/vantage.cfg; then
+  err "cfg 仍残留旧 overrides.cfg 路径"
 fi
-if ! grep -q 'vantage/vantage/vantage\.overrides\.cfg\|\.vantage/vantage\.overrides\.cfg' settings/librewolf.cfg; then
-  err "librewolf.cfg 未出现预期的 Vantage overrides.cfg 路径"
+if ! grep -q 'vantage/vantage/vantage\.overrides\.cfg\|\.vantage/vantage\.overrides\.cfg' settings/librewolf.cfg settings/vantage.cfg; then
+  err "cfg 未出现预期的 Vantage overrides.cfg 路径"
 fi
 
 echo ""
@@ -81,4 +81,4 @@ fi
 
 echo "=== Done. Verify with: ==="
 echo "  grep -in 'librewolf' patches/moz-configure.patch patches/mozilla_dirs.patch"
-echo "  grep -n 'overrides' settings/librewolf.cfg"
+echo "  grep -n 'overrides' settings/librewolf.cfg settings/vantage.cfg"

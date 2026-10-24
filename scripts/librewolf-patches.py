@@ -180,7 +180,7 @@ def librewolf_patches():
 
     exec('mkdir -p lw')
     enter_srcdir('lw')
-    exec('cp -v ../../settings/librewolf.cfg .')
+    exec('python3 ../../scripts/cfg-merge.py --merge --output librewolf.cfg')
     exec('cp -v ../../settings/distribution/policies.json .')
     exec('cp -v ../../settings/defaults/pref/local-settings.js .')
 

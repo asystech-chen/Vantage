@@ -36,6 +36,9 @@ echo "Extracting '$firefox'..."
 tar xf ../$firefox
 cd firefox-$(cat ../version)
 
+# 与 librewolf-patches.py 保持一致：先把 .rc 转 LF，避免 fix-7zsfx 的假失败
+find . -name '*.rc' -type f -exec sed -i 's/\r$//' {} + 2>/dev/null || true
+
 echo ""
 echo "Testing patches..."
 

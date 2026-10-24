@@ -131,19 +131,34 @@ fi
 echo ""
 echo -e "${BOLD}[3/5] settings/librewolf.cfg 关键内容${NC}"
 
-if grep -q "doUpdateCheck" settings/librewolf.cfg; then
+MERGED_CFG=$(mktemp)
+trap 'rm -f "$MERGED_CFG"' EXIT
+
+if python3 scripts/cfg-merge.py --check >/dev/null; then
+    ok "cfg 块标记完整"
+else
+    err "cfg 块标记不完整（cfg-merge.py --check）"
+fi
+
+if python3 scripts/cfg-merge.py --merge --output "$MERGED_CFG"; then
+    ok "librewolf.cfg 拼合成功（$(wc -l < "$MERGED_CFG") 行）"
+else
+    err "librewolf.cfg 拼合失败"
+fi
+
+if grep -q "doUpdateCheck" "$MERGED_CFG"; then
     ok "更新检查代码存在"
 else
     err "更新检查代码丢失！"
 fi
 
-if grep -q "importESModule.*NetUtil" settings/librewolf.cfg; then
+if grep -q "importESModule.*NetUtil" "$MERGED_CFG"; then
     ok "NetUtil ESM 导入正确"
 else
     err "NetUtil 导入丢失（可能是 JSM 旧版）"
 fi
 
-if grep -q '\.vantage' settings/librewolf.cfg; then
+if grep -q '\.vantage' "$MERGED_CFG"; then
     ok "overrides 路径指向 .vantage"
 else
     err "overrides 路径指向 librewolf！"

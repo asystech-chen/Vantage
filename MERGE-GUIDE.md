@@ -1,6 +1,6 @@
 # Vantage 合并上游 LibreWolf 代码指南
 
-> 最后更新: 2026-09-15（新增 settings/librewolf.cfg 分离与合并规范）
+> 最后更新: 2026-10-24（settings/librewolf.cfg 拆分为上游对照版 + settings/vantage.cfg + cfg-merge.py）
 
 合并 LibreWolf 上游代码时，以下文件**不能直接替换**，必须手动合并或跳过。
 
@@ -50,7 +50,8 @@
 
 | 文件 | 说明 |
 |------|------|
-| `settings/librewolf.cfg` | **大量定制**：overrides 路径改为 .vantage、app.support.baseURL/网址、DoH、隐私放宽、Vantage 专属 prefs + 三段 JS。合并时**逐段对比**，不能整体替换。**详见下方「settings/librewolf.cfg 分离与合并规范」** |
+| `settings/librewolf.cfg` | **上游对照版**：保留上游行；我们删除/改过的行以 `//@VANTAGE-DISABLED@` 开头注释；Vantage 专属内容在 `settings/vantage.cfg`，用 `// @VANTAGE_BLOCK:<n>@` 标记。**不要整体替换，按下方「settings/librewolf.cfg 分离与合并规范」操作** |
+| `settings/vantage.cfg` | **Vantage 专属 prefs + JS 块**；日常开发改这里。构建时由 `scripts/cfg-merge.py` 拼合，不能单独运行 |
 | `settings/distribution/policies.json` | uBlock xpi 地址指向 asystech.cn。上游指向 LibreWolf 的地址 |
 | `settings/defaults/pref/local-settings.js` | 当前未改（仍引用 librewolf.cfg），但如果上游改了需注意 |
 
@@ -202,7 +203,19 @@ Vantage 独有新增：WinUpdater `package-manifest.in` 注入（`@RESPATH@/winu
 ## 🧩 settings/librewolf.cfg 分离与合并规范（Vantage vs 上游）
 
 > 上游原版参考：本地克隆 `/home/chen/librewolf/settings`（Codeberg `librewolf/settings`），取用 `git show <ref>:librewolf.cfg`。
-> 我们的 `settings/librewolf.cfg` 与上游同名文件 diff 目前约 **29 个 hunk**（命令：`diff -u <上游>/librewolf.cfg settings/librewolf.cfg`）。
+>
+> **现行结构（2026-10-24 起）**：
+> - `settings/librewolf.cfg` = 上游对照版；禁用/修改的上游行以 `//@VANTAGE-DISABLED@` 注释；Vantage 内容用 `// @VANTAGE_BLOCK:<n>@` 占位。文件本身仍是合法 JS（`null;` 首行）。
+> - `settings/vantage.cfg` = 所有 Vantage 专属块，按 marker 编号存放。
+> - `scripts/cfg-merge.py` = 拼合/校验/上游快照/冲突 diff。
+>
+> 快速检查：
+> ```bash
+> python3 scripts/cfg-merge.py --check
+> python3 scripts/cfg-merge.py --merge --output /tmp/librewolf.cfg
+> python3 scripts/cfg-merge.py --snapshot --output /tmp/upstream-snapshot.cfg
+> python3 scripts/cfg-merge.py --diff-upstream /tmp/new-upstream.cfg
+> ```
 
 ### 一、我们的差异改了些什么（逐段对比的锚点）
 
@@ -214,13 +227,13 @@ Vantage 独有新增：WinUpdater `package-manifest.in` 注入（`@RESPATH@/winu
 | 跟进的上游加固 | QWAC 禁用、LNA 局域网防护、Cookie 分区、WebSerial 禁用、TLS 0-RTT 关闭、query stripping | 跟进上游 |
 | Vantage 专属 | `vantage.*` prefs + 三段 JS（主题注入 / 更新检查 / 复制 Markdown 链接）+ overrides 路径 `.vantage` | 整段保留 |
 
-### 二、必须「就地改」的三类（尾部 `defaultPref` 覆盖不了，最易冲突）
+### 二、不能靠尾部追加覆盖的三类（现在统一走 base 注释 + vantage 块）
 
-1. **删除上游行**（如 cookiebanner 相关项）；
-2. **解锁上游 `lockPref`**（如 `browser.ai.control.sidebarChatbot`）；
-3. **改上游用 `pref()` 设的项**（后置 `defaultPref` 压不过用户值）。
+1. **删除上游行**（如 cookiebanner 相关项）→ base 中 `//@VANTAGE-DISABLED@` 注释；
+2. **解锁上游 `lockPref`**（如 `browser.ai.control.sidebarChatbot`）→ base 注释原 `lockPref`，vantage 中写放宽后的值；
+3. **改上游用 `pref()` 设的项**（后置 `defaultPref` 压不过用户值）→ base 注释原行，vantage 中写同优先级的值。
 
-其余大多只是「换个 `defaultPref` 值」，当前仍就地改；合并时按下节顺序处理。
+其余只是「换个 `defaultPref` 值」的，也按同样方式处理，避免 base 与 vantage 语义打架。
 
 ### 三、上游「高频变动区」（churn 高，合并时重点比对）
 
@@ -229,12 +242,15 @@ Vantage 独有新增：WinUpdater `package-manifest.in` 注入（`@RESPATH@/winu
 
 ### 四、合并操作顺序
 
-1. 备份：`cp settings/librewolf.cfg /tmp/ours.cfg`；
-2. 取上游新版 `librewolf.cfg`，`diff -u` 出上游「旧→新」的改动；
-3. 把我们相对上游旧版的差异（第一节清单）逐段保持；
-4. 上游新改动里属于「我们没碰的区」→ 直接采纳；
-5. 重叠区（第三节）→ 逐行判断：放宽类保留我方、加固类跟进上游；
-6. 校验：`./scripts/check-merge.sh` + Linux dev `cp` 重启实测。
+1. `python3 scripts/cfg-merge.py --snapshot --output /tmp/ours-upstream.cfg` 取我们当前对应的上游快照；
+2. 取上游新版 `librewolf.cfg`，`python3 scripts/cfg-merge.py --diff-upstream /tmp/new-upstream.cfg` 看「上游旧→新」的改动；
+3. 上游新改动逐条处理：
+   - 想跟进：改 `settings/librewolf.cfg` 对应行（去掉 `//@VANTAGE-DISABLED@` 或补上行），并删掉/调整 `settings/vantage.cfg` 里的对应块；
+   - 不想跟进：在 `settings/librewolf.cfg` 用 `//@VANTAGE-DISABLED@` 注释该行/段，并在 `settings/vantage.cfg` 增加对应覆盖块；
+4. 上游改了我们没碰的区 → 直接把 `settings/librewolf.cfg` 中对应行更新为新上游内容；
+5. 校验：`python3 scripts/cfg-merge.py --check`、`--merge` 后 `node --check`，再跑 `./scripts/check-merge.sh` + Linux dev 重启实测。
+
+> 日常开发只改 `settings/vantage.cfg`。要动官方值时，先在 `settings/librewolf.cfg` 用 `//@VANTAGE-DISABLED@` 注释原行，再到 `settings/vantage.cfg` 加对应条目。
 
 ### 五、红线
 
@@ -382,5 +398,7 @@ rm /tmp/vantage-patches-before.txt
 - [ ] `librewolf.cfg` 中 `NetUtil.sys.mjs` + `ChromeUtils.importESModule`（FF151+）
 - [ ] `settings/distribution/policies.json` 中 uBlock 地址指向 asystech.cn
 - [ ] `l10n/` 中 Vantage 品牌文本完整
-- [ ] `settings/librewolf.cfg` 与上游 diff 已逐段核对（品牌网址 / DoH / 隐私放宽 / Vantage 三段 JS 均在，见「分离与合并规范」）
+- [ ] `python3 scripts/cfg-merge.py --check` 通过（块 marker 完整）
+- [ ] `python3 scripts/cfg-merge.py --merge --output /tmp/cfg && node --check /tmp/cfg` 通过
 - [ ] `settings/librewolf.cfg` 首行是 `null;` 且**无 `console.*`**
+- [ ] `settings/vantage.cfg` 无 `console.*`，且所有内容都被 marker 引用
