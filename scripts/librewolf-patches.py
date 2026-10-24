@@ -14,6 +14,7 @@ import time
 import glob as _g
 import subprocess
 from pathlib import Path
+from l10n_merge import merge_overlay_file
 from tempfile import TemporaryDirectory
 
 
@@ -343,18 +344,19 @@ def librewolf_patches():
         
         target_path.parent.mkdir(parents=True, exist_ok=True)
 
-        write_mode = "w"
         if ".inc" in target_path.name:
             target_path = target_path.with_name(target_path.name.replace(".inc", ""))
-            write_mode = "a"
-
-        print(f"{source_path} {'>' if write_mode == 'w' else '>>'} {target_path}")
-
-        if not target_path.exists() and write_mode == "a":
-            print(f"warning: target file {target_path} doesn't exist")
-        with open(target_path, write_mode) as target_file:
-            with open(source_path, "r") as source_file:
-                target_file.write(("\n\n" if write_mode == "a" else "") + source_file.read())
+            if not target_path.exists():
+                print(f"warning: target file {target_path} doesn't exist; writing overlay as-is")
+                target_path.write_text(source_path.read_text(encoding="utf-8"), encoding="utf-8")
+            else:
+                replaced, appended, ids = merge_overlay_file(target_path, source_path)
+                print(f"{source_path} >> {target_path} (replaced {replaced}, appended {appended})")
+                for msg_id in ids:
+                    print(f"   replaced duplicate: {msg_id}")
+        else:
+            print(f"{source_path} > {target_path}")
+            target_path.write_text(source_path.read_text(encoding="utf-8"), encoding="utf-8")
 
     leave_srcdir()
 

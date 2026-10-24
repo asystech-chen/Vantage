@@ -198,6 +198,10 @@ Vantage 独有新增：WinUpdater `package-manifest.in` 注入（`@RESPATH@/winu
 
 上游为 EME 权限界面新增了 en-US/zh-TW 翻译字符串，Vantage 三语均已齐全（之前合并时已加入）。`pane-librewolf-title2` 不跟。
 
+### l10n 覆盖合并（2026-10-24）
+
+`.inc.ftl` 不再盲目追加：`scripts/l10n_merge.py` 对上游已有的 message ID **替换整个 message 块**，只有新 ID 才追加。构建/合并后由 `scripts/check-l10n-duplicates.py` 扫描产物，发现重复 Fluent ID 直接报错。
+
 ---
 
 ## 🧩 settings/librewolf.cfg 分离与合并规范（Vantage vs 上游）

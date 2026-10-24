@@ -264,6 +264,13 @@ else
     file patches/*.patch patches/ui-patches/*.patch patches/sed-patches/*.patch 2>/dev/null | grep "CRLF"
 fi
 
+if python3 scripts/check-l10n-duplicates.py >/tmp/vantage-l10n-dups.out 2>&1; then
+    ok "l10n 构建产物无重复 Fluent ID"
+else
+    warn "l10n 构建产物存在重复 Fluent ID（可能是旧构建，重建后复查）"
+    sed 's/^/   /' /tmp/vantage-l10n-dups.out
+fi
+
 # ==========================================
 # 总结
 # ==========================================
