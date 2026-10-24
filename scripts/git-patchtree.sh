@@ -1,3 +1,4 @@
+#!/bin/sh
 #
 # taken from ./scripts/check-patchfail.sh
 #
@@ -9,10 +10,23 @@ if [ ! -f version ]; then
     echo "error: 'version' does not exist. Are you in the right folder?"
     exit 1
 fi
-firefox=firefox-$(cat version).source.tar.xz
+
+FF_ESR="${FF_ESR:-1}"
+if [ "$FF_ESR" = "1" ]; then
+    esr_suffix="esr"
+else
+    esr_suffix=""
+fi
+firefox="firefox-$(cat version)${esr_suffix}.source.tar.xz"
 if [ ! -f "$firefox" ]; then
-    echo "error: '$firefox' does not exist."
-    exit 1
+    # 兼容无 esr 后缀的源码包
+    firefox_alt="firefox-$(cat version).source.tar.xz"
+    if [ -f "$firefox_alt" ]; then
+        firefox="$firefox_alt"
+    else
+        echo "error: '$firefox' does not exist."
+        exit 1
+    fi
 fi
 
 

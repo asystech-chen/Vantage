@@ -695,6 +695,10 @@ else
 	@mkdir -p AppDir/usr/share/icons/hicolor/128x128/apps
 	@mkdir -p AppDir/usr/share/applications
 	@tar -xf $(BINARY_TARBALL) -C AppDir/usr/bin --strip-components=1
+	@if [ -f AppDir/usr/bin/$(APP_NAME)-bin ] && cmp -s AppDir/usr/bin/$(APP_NAME) AppDir/usr/bin/$(APP_NAME)-bin; then \
+		ln -sf $(APP_NAME) AppDir/usr/bin/$(APP_NAME)-bin; \
+		echo ">>> [APPIMAGE] deduplicated $(APP_NAME)-bin -> $(APP_NAME)"; \
+	fi
 	@if [ -f "$(LW_ICON)" ]; then \
 	cp "$(LW_ICON)" AppDir/usr/share/icons/hicolor/128x128/apps/$(APP_NAME).png; \
 	cp "$(LW_ICON)" AppDir/$(APP_NAME).png; \
@@ -740,7 +744,7 @@ package-tar : clean-packaging
 	@printf 'export XDG_DATA_HOME="$$HERE/Data/share"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
 	@printf 'export XDG_STATE_HOME="$$HERE/Data/state"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
 	@printf 'mkdir -p "$$HOME" "$$XDG_CONFIG_HOME" "$$XDG_CACHE_HOME" "$$XDG_DATA_HOME" "$$XDG_STATE_HOME"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
-	@printf 'exec "$$HERE/$(APP_NAME)/$(APP_NAME)" "$$@"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
+	@printf 'exec "$$HERE/$(APP_NAME)/$(APP_NAME)" -no-remote "$$@"\n' >> $(APP_NAME)-portable/$(APP_NAME)-portable
 	@chmod +x $(APP_NAME)-portable/$(APP_NAME)-portable
 	@tar -czf $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).portable.tar.gz $(APP_NAME)-portable
 	@echo ">>> [TAR] Done: $(APP_NAME)-$(version)-$(release).$(PKG_ARCH).portable.tar.gz"
