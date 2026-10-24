@@ -34,12 +34,23 @@ if os.path.exists(defines_path):
     }
     
     changed = False
+    missing = []
     for old, new in replacements.items():
         if old in content:
             content = content.replace(old, new)
             print(f">>> defines.nsi.in: replaced {old.split('!define')[1].strip().split()[0]}")
             changed = True
-    
+        elif new in content:
+            print(f">>> defines.nsi.in: already branded: {new.split('!define')[1].strip().split()[0]}")
+        else:
+            missing.append(old)
+
+    if missing:
+        print(">>> ERROR: defines.nsi.in 中找不到预期字符串，可能上游改了格式：")
+        for item in missing:
+            print(f"    {item}")
+        sys.exit(1)
+
     if changed:
         with open(defines_path, "w") as f:
             f.write(content)
@@ -55,6 +66,7 @@ if os.path.exists(module_ver_path):
         content = f.read()
     
     changed = False
+    missing = []
     replacements = [
         ("WIN32_MODULE_COMPANYNAME=Mozilla Corporation",
          "WIN32_MODULE_COMPANYNAME=ASYS Technology"),
@@ -64,12 +76,22 @@ if os.path.exists(module_ver_path):
          "WIN32_MODULE_TRADEMARKS=Vantage is a Trademark of ASYS Technology."),
     ]
     for old, new in replacements:
+        key = old.split("=")[0]
         if old in content:
             content = content.replace(old, new)
             changed = True
-            key = old.split("=")[0]
             print(f">>> module.ver: replaced {key}")
-    
+        elif new in content:
+            print(f">>> module.ver: already branded: {key}")
+        else:
+            missing.append(old)
+
+    if missing:
+        print(">>> ERROR: module.ver 中找不到预期字符串，可能上游改了格式：")
+        for item in missing:
+            print(f"    {item}")
+        sys.exit(1)
+
     if changed:
         with open(module_ver_path, "w", encoding="latin-1") as f:
             f.write(content)

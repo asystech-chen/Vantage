@@ -39,11 +39,17 @@ cd firefox-$(cat ../version)
 echo ""
 echo "Testing patches..."
 
+# 默认零 fuzz：上下文必须精确匹配，避免 patch 静默偏移
+fuzz_args="--fuzz=0"
+case " $* " in
+    *" --fuzz"*) fuzz_args="" ;;
+esac
+
 for curpatch in $(cat ../../assets/patches.txt); do
     echo ""
     echo "==> $curpatch:"
     echo ""
-    patch $* -p1 -i ../../$curpatch > ../patch.tmp
+    patch $fuzz_args $* -p1 -i ../../$curpatch > ../patch.tmp
     cat ../patch.tmp
 
     ######################

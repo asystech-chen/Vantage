@@ -20,7 +20,7 @@ errors=0
 warnings=0
 
 err()  { errors=$((errors+1)); echo -e "${RED}❌ $*${NC}"; }
-warn() { warnings=$((warnings+1)); echo -e "${YELLOW}⚠️  $*${NC}"; ((warnings++)); }
+warn() { warnings=$((warnings+1)); echo -e "${YELLOW}⚠️  $*${NC}"; }
 ok()   { echo -e "${GREEN}✅ $*${NC}"; }
 info() { echo -e "   $*"; }
 
@@ -64,15 +64,33 @@ VANTAGE_PATCHES=(
     "patches/installer-zhcn.patch"
     "patches/installer-locale.patch"
     "patches/installer-publisher.patch"
+    "patches/installer-multilang.patch"
     "patches/uninstaller-cleanup.patch"
+    "patches/installer-winupdater.patch"
+    "patches/fix-7zsfx-branding.patch"
     "patches/vantage-ai-sidebar.patch"
     "patches/vantage-privacy-dashboard.patch"
     "patches/vantage-infobar-accent.patch"
-    # "patches/dmg-fix-permissions.patch"  # macOS 已停止发布 → 已移入 patches/removed-patches/（需要时拉回并恢复本行）
     "patches/hide-passwordmgr.patch"
-    "patches/fix-7zsfx-branding.patch"
-    "patches/installer-winupdater.patch"
+    "patches/gfx-zhms-font.patch"
+    "patches/zh-ms-locale.patch"
+    "patches/zh-ms-display-name.patch"
+    "patches/fullpage-translations.patch"
     "patches/multithread-download.patch"
+    "patches/webgl-permission-helper.patch"
+    "patches/urlbarprovider-interventions.patch"
+    "patches/bootstrap.patch"
+    "patches/sed-patches/stop-undesired-requests.patch"
+    "patches/ui-patches/firefox-view.patch"
+    "patches/ui-patches/handlers.patch"
+    "patches/ui-patches/hide-finish-setup-bookmark.patch"
+    "patches/ui-patches/neterror.patch"
+    "patches/ui-patches/restore-session-button.patch"
+    "patches/ui-patches/screenshot-button-toolbar.patch"
+    "patches/ui-patches/nova-nav-selected.patch"
+    "patches/ui-patches/nova-dom-fullscreen-gap.patch"
+    "patches/ui-patches/vantage-findbar-topright.patch"
+    "patches/ui-patches/vantage-multithread-download-button.patch"
 )
 
 for p in "${VANTAGE_PATCHES[@]}"; do
@@ -131,17 +149,45 @@ else
     err "overrides 路径指向 librewolf！"
 fi
 
+if grep -q 'sandbox_enabled", false' settings/defaults/pref/local-settings.js; then
+    ok "autoconfig 沙箱保持关闭（Vantage JS 依赖）"
+else
+    err "local-settings.js 的 sandbox_enabled 不是 false！"
+fi
+
+if grep -q '@RESPATH@/winupdater' scripts/librewolf-patches.py; then
+    ok "WinUpdater package-manifest 注入代码存在"
+else
+    err "librewolf-patches.py 中 WinUpdater 注入代码丢失！"
+fi
+
+if grep -q 'def check_rejects' scripts/librewolf-patches.py; then
+    ok "补丁 .rej 检测代码存在"
+else
+    err "librewolf-patches.py 中 check_rejects 丢失！"
+fi
+
+if [ -f patches/pref-pane/librewolf.js ] && [ -f patches/pref-pane/librewolf.inc.xhtml ] \
+   && grep -q 'paneVantage' patches/pref-pane/librewolf.js \
+   && grep -q 'paneVantage' patches/pref-pane/pref-pane-small.patch; then
+    ok "Vantage pref-pane 文件与 paneVantage 注册存在"
+else
+    err "pref-pane 文件缺失或 paneVantage 注册丢失！"
+fi
+
 # ==========================================
 # 4. l10n 品牌文本
 # ==========================================
 echo ""
 echo -e "${BOLD}[4/5] l10n 品牌文本${NC}"
 
-if grep -q "Vantage" l10n/en-US/browser/browser/aboutDialog.inc.ftl 2>/dev/null; then
-    ok "en-US aboutDialog 品牌文本正确"
-else
-    err "en-US aboutDialog 品牌文本丢失"
-fi
+for lang in en-US zh-CN zh-TW; do
+    if grep -q "Vantage" "l10n/$lang/browser/browser/aboutDialog.inc.ftl" 2>/dev/null; then
+        ok "$lang aboutDialog 品牌文本正确"
+    else
+        err "$lang aboutDialog 品牌文本丢失"
+    fi
+done
 
 if grep -q "Vantage" l10n/en-US/browser/browser/preferences/preferences.inc.ftl 2>/dev/null; then
     ok "en-US preferences 品牌文本正确"
@@ -155,10 +201,32 @@ fi
 echo ""
 echo -e "${BOLD}[5/5] settings/distribution/policies.json${NC}"
 
-if grep -q "asystech.cn" settings/distribution/policies.json 2>/dev/null; then
-    ok "uBlock xpi 指向 asystech.cn"
+if python3 - <<'PY'
+import json, sys
+p = "settings/distribution/policies.json"
+try:
+    d = json.load(open(p, encoding="utf-8"))
+except Exception as e:
+    print(f"policies.json 解析失败: {e}")
+    sys.exit(1)
+pol = d.get("policies", {})
+ext = pol.get("ExtensionSettings", {})
+errs = []
+if not str(pol.get("SupportMenu", {}).get("URL", "")).startswith("https://asystech.cn"):
+    errs.append("SupportMenu.URL 未指向 asystech.cn")
+vd = ext.get("virusdetector@asystech.cn")
+if not vd or vd.get("installation_mode") != "blocked":
+    errs.append("virusdetector@asystech.cn 未设为 blocked")
+if "uBlock0@raymondhill.net" in ext:
+    errs.append("uBlock Origin 仍在预装列表")
+for e in errs:
+    print(e)
+sys.exit(1 if errs else 0)
+PY
+then
+    ok "policies.json 关键策略正确（SupportMenu / virusdetector blocked / 无 uBlock 预装）"
 else
-    warn "uBlock xpi 地址可能被上游覆盖"
+    err "policies.json 关键策略被上游覆盖或改动"
 fi
 
 # ==========================================
@@ -194,3 +262,7 @@ else
     echo -e "${RED}${BOLD}$errors 个错误, $warnings 个警告 —— 请先修复再编译${NC}"
 fi
 echo ""
+
+if [ "$errors" -gt 0 ]; then
+    exit 1
+fi
