@@ -89,8 +89,10 @@ fi
 # 自动定位 mach bootstrap 下载的 MSVC Redist CRT 目录（路径随版本变化，动态找最新）
 # 找不到时跳过并警告（configure 无 --with-redist 则安装包不含 vcruntime/msvcp DLL）
 REDIST_DIR="$(ls -d "$HOME/.mozbuild/vs/VC/Redist/MSVC"/*/x64/Microsoft.VC*.CRT 2>/dev/null | sort -V | tail -1)"
+# 注意：mozconfig 求值期不能向 stdout 输出任何文本，否则 mach 的
+# _parse_loader_output 会断言失败（2026-10-27 事故：bootstrap 更新 vs 工具链时
+# 先 rmtree 目录，随后子进程重新求值 mozconfig 命中这里的 echo，更新被中断）。
+# 缺 CRT 的提示请放在 build.sh 里。
 if [ -n "$REDIST_DIR" ]; then
     ac_add_options --with-redist="$REDIST_DIR"
-else
-    echo "⚠️ 未找到 MSVC Redist CRT 目录（$HOME/.mozbuild/vs/VC/Redist/MSVC/*/x64/Microsoft.VC*.CRT），--with-redist 跳过"
 fi

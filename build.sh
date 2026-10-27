@@ -245,6 +245,16 @@ build_target() {
     ./scripts/setup-7zsfx.sh || red "⚠️ setup-7zsfx.sh 失败（非致命，安装器可能带 Firefox stub）"
     # wine 前缀必须预先存在：首次在并行 midl 调用里自动创建会失败（退出码 225）
     prepare_wine_prefix
+
+    # VS 工具链 / MSVC CRT 检查。mozconfig 求值期一律不许输出（会让 mach 断言失败），
+    # 所以把「缺少 --with-redist 依赖」的提示放在这里。
+    local _redist_arch=x64
+    [[ "$key" == windows-arm64* ]] && _redist_arch=arm64
+    if [ ! -d "$HOME/.mozbuild/vs" ]; then
+      yellow "⚠️  VS 工具链缺失（$HOME/.mozbuild/vs）：mach 会在 configure 阶段自动安装，首次较慢"
+    elif ! ls -d "$HOME/.mozbuild/vs/VC/Redist/MSVC"/*/"$_redist_arch"/Microsoft.VC*.CRT >/dev/null 2>&1; then
+      yellow "⚠️  未找到 MSVC Redist CRT（$_redist_arch）：--with-redist 跳过，安装包将不含 VC 运行库"
+    fi
   fi
 
   # PGO：DEV 目标不用 PGO，直接跳过拉取；发布目标按平台拉取（失败/mozconfig 会自动跳过，不影响构建）
