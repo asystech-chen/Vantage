@@ -46,7 +46,7 @@ Vantage has migrated to the **Firefox ESR (Extended Support Release)** channel, 
 
 | Status | Features |
 |:---:|---|
-| ✅ Shipped | Toolbar "multi-threaded download" toggle, "find bar floating at the top-right", "sidebar auto-reveal on hover", right-click "Copy as Markdown link" / "Open in IE", toolbar "Reopen last closed", automatic tab sleep, AI sidebar, local DoH optimization, Nova appearance, Vantage theme (built into the source, applies instantly), fullscreen edge fix, compact toolbar density option |
+| ✅ Shipped | Toolbar "multi-threaded download" toggle, "find bar floating at the top-right", "sidebar auto-reveal on hover", right-click "Copy as Markdown link" / "Open in IE", toolbar "Reopen last closed", automatic tab sleep, AI sidebar, local DoH optimization, Nova appearance, Vantage theme (built into the source, applies instantly), fullscreen edge fix, compact density option (experimental) |
 | 🧪 Planned | First-run onboarding (`about:vantage`), Glance quick preview, command palette, handling of links for Chromium-based browsers, more right-click enhancements |
 
 ---
@@ -91,7 +91,7 @@ Our goal: keep Firefox's powerful extension ecosystem while giving users a priva
 - AI sidebar: built-in DeepSeek, Qwen, and Doubao — ready as soon as you open the sidebar
 - Toolbar buttons such as "Reopen last closed" and "Multi-threaded download"; wheel to switch tabs, double-click to close
 - Sidebar auto-reveals when the mouse reaches the left edge (classic and new sidebar)
-- Optional compact toolbar density (Customize Toolbar → Density)
+- Optional compact toolbar density (experimental)
 - Automatically sleeps inactive tabs under memory pressure
 - Multiple installation channels: winget / MSIX / deb / rpm / AppImage / portable
 
