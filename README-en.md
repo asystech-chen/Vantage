@@ -46,8 +46,8 @@ Vantage has migrated to the **Firefox ESR (Extended Support Release)** channel, 
 
 | Status | Features |
 |:---:|---|
-| ✅ Shipped | Toolbar "multi-threaded download" toggle, "find bar floating at the top-right", right-click "Copy as Markdown link" / "Open in IE", toolbar "Reopen last closed", automatic tab sleep, AI sidebar, local DoH optimization, Nova appearance |
-| 🧪 Planned | Windows PE single-file self-extracting package, handling of links for Chromium-based browsers, more right-click enhancements |
+| ✅ Shipped | Toolbar "multi-threaded download" toggle, "find bar floating at the top-right", "sidebar auto-reveal on hover", right-click "Copy as Markdown link" / "Open in IE", toolbar "Reopen last closed", automatic tab sleep, AI sidebar, local DoH optimization, Nova appearance, Vantage theme (built into the source, applies instantly), fullscreen edge fix, compact toolbar density option |
+| 🧪 Planned | First-run onboarding (`about:vantage`), Glance quick preview, command palette, handling of links for Chromium-based browsers, more right-click enhancements |
 
 ---
 
@@ -70,15 +70,15 @@ Our goal: keep Firefox's powerful extension ecosystem while giving users a priva
 | 🎯 **Stable ESR engine** | Built on the Firefox ESR channel for long-term engine stability; Vantage features keep landing and versions keep updating |
 | 🌏 **Local network optimization** | DoH enabled by default (Alibaba / Tencent, with automatic fallback to system DNS), switchable provider, no disconnects on intranets / VPNs |
 | 🤖 **AI sidebar, ready to use** | Built-in DeepSeek / Qwen / Doubao — open the sidebar and start chatting |
-| 🧊 **Nova appearance** | Built-in Nova interface + Vantage blue-green theme, switchable in one click from Settings |
+| 🧊 **Nova appearance** | Built-in Nova interface + Vantage blue-green theme; theme styles live in the source, apply instantly, and step aside for third-party themes |
 | ⚡ **Multi-threaded download** | Built-in multi-threaded downloads with a one-click toolbar toggle |
 | 🔍 **Find bar at the top-right** | Optionally move the find bar to the top-right, with Chromium-style compact `x/y` counting |
 | 🀄 **Deep Chinese adaptation** | Chinese installer and UI, region defaulting to CN, plus an extra Chinese language pack |
 | 🧷 **Right-click enhancements** | "Copy as Markdown link", "Open in IE" (Windows) |
 | 🛌 **Automatic tab sleep** | Automatically sleeps inactive tabs under memory pressure to free up RAM |
 | 🚫 **No telemetry by default** | Telemetry, experiments, and ad push are fully disabled |
-| 🧩 **uBlock Origin preinstalled** | Content-blocking extension preinstalled; more privacy extensions can be installed optionally |
-| 🖥️ **All platforms, multiple channels** | Windows (x64/arm64), Linux (x86_64/aarch64/LoongArch64); winget / MSIX / deb / rpm / AppImage / portable |
+| 🧩 **Extension freedom** | No bundled extensions preinstalled; users choose their own — existing uBlock Origin setups are unaffected |
+| 🖥️ **All platforms, multiple channels** | Windows (x64/arm64), Linux (x86_64/aarch64/LoongArch64), macOS (x64/arm64, unsigned `.dmg`); winget / MSIX / deb / rpm / AppImage / portable |
 | 📦 **LTO / PGO build** | Built with LTO / PGO and trimmed language packs for better runtime performance and a smaller package |
 
 ---
@@ -87,9 +87,11 @@ Our goal: keep Firefox's powerful extension ecosystem while giving users a priva
 
 **Performance & experience**
 
-- Native support for multiple architectures: Windows x64 / arm64, Linux x86_64 / aarch64 / LoongArch64
+- Native support for multiple architectures: Windows x64 / arm64, Linux x86_64 / aarch64 / LoongArch64, macOS x64 / arm64 (unsigned `.dmg`)
 - AI sidebar: built-in DeepSeek, Qwen, and Doubao — ready as soon as you open the sidebar
 - Toolbar buttons such as "Reopen last closed" and "Multi-threaded download"; wheel to switch tabs, double-click to close
+- Sidebar auto-reveals when the mouse reaches the left edge (classic and new sidebar)
+- Optional compact toolbar density (Customize Toolbar → Density)
 - Automatically sleeps inactive tabs under memory pressure
 - Multiple installation channels: winget / MSIX / deb / rpm / AppImage / portable
 
@@ -98,7 +100,7 @@ Our goal: keep Firefox's powerful extension ecosystem while giving users a priva
 - Telemetry, experiments, and ad push fully disabled; no data collection by default
 - RFP fingerprinting protection, WebRTC leak prevention, enforced HTTPS
 - DoH enabled by default (Alibaba / Tencent optimized for China, with automatic fallback to system DNS)
-- uBlock Origin preinstalled; optional privacy-enhancing extensions
+- No bundled extensions preinstalled; content blockers and other extensions are yours to choose
 
 **Usability & customization**
 
@@ -195,6 +197,17 @@ ln -s /opt/vantage/vantage /usr/local/bin/vantage
 ```
 
 The build pipeline automatically includes: **build → package → sign** (Linux targets produce deb / rpm / AppImage / tar.gz in four formats with GPG signatures).
+
+### CI build (build-only)
+
+To validate a build without publishing, trigger the workflow manually:
+
+1. Actions → **Build Vantage** → **Run workflow**
+2. Leave `tag` empty (empty = build only, no tag / release)
+3. Select at least one target platform
+4. Artifacts stay in the CI runner workspace and are not uploaded
+
+Pushing a `v*` tag builds all platforms and creates a **pre-release**; promote it manually after verification.
 
 ### Manual build
 

@@ -46,8 +46,8 @@ Vantage 已迁移至 **Firefox ESR（Extended Support Release）** 通道，当�
 
 | 状态 | 功能 |
 |:---:|---|
-| ✅ 已实现 | 工具栏「多线程下载」开关、「查找栏右上角悬浮」、右键「复制为 Markdown 链接」/「在 IE 中打开」、工具栏「恢复最近关闭」、标签自动休眠、AI 侧栏、DoH 本地优化、Nova 外观 |
-| 🧪 计划中 | Windows PE 单文件自解压包、Chromium 系外链处理、更多右键增强 |
+| ✅ 已实现 | 工具栏「多线程下载」开关、「查找栏右上角悬浮」、「侧栏悬停自动弹出」、右键「复制为 Markdown 链接」/「在 IE 中打开」、工具栏「恢复最近关闭」、标签自动休眠、AI 侧栏、DoH 本地优化、Nova 外观、Vantage 主题（源码内置，切换即时生效）、全屏贴边修正、紧凑密度选项 |
+| 🧪 计划中 | 新手引导（`about:vantage`）、Glance 浮层速览、命令面板、Chromium 系外链处理、更多右键增强 |
 
 ---
 
@@ -70,15 +70,15 @@ Vantage 已迁移至 **Firefox ESR（Extended Support Release）** 通道，当�
 | 🎯 **ESR 稳定内核** | 基于 Firefox ESR 通道，内核长期稳定；Vantage 功能持续加入，版本会不断更新 |
 | 🌏 **本地网络优化** | 默认开启 DoH（阿里 / 腾讯，故障自动回退系统 DNS），可切换供应商，内网 / VPN 不断网 |
 | 🤖 **AI 侧栏开箱即用** | 内置 DeepSeek / 通义千问 / 豆包，侧栏即开即用 |
-| 🧊 **Nova 新外观** | 内置 Nova 界面 + Vantage 蓝绿主题，设置面板一键切换 |
+| 🧊 **Nova 新外观** | 内置 Nova 界面 + Vantage 蓝绿主题；主题样式直接打进源码，切换即时生效，第三方主题自动让位 |
 | ⚡ **多线程下载** | 内置多线程下载，工具栏按钮一键开关 |
 | 🔍 **查找栏右上角悬浮** | 可选把查找栏移到右上角，Chromium 式紧凑 `x/y` 计数 |
 | 🀄 **中文深度适配** | 中文安装器与界面，默认区域 CN，并附额外中文语言包 |
 | 🧷 **右键增强** | 「复制为 Markdown 链接」、「在 IE 中打开」（Windows） |
 | 🛌 **标签自动休眠** | 内存紧张时自动休眠不活跃标签页，释放内存 |
 | 🚫 **默认无遥测** | 完全禁用遥测、实验功能与广告推送 |
-| 🧩 **预装 uBlock Origin** | 预装内容拦截扩展，可选安装更多隐私增强扩展 |
-| 🖥️ **全平台多渠道** | Windows（x64/arm64）、Linux（x86_64/aarch64/LoongArch64）；winget / MSIX / deb / rpm / AppImage / 便携版 |
+| 🧩 **扩展自由** | 不预装捆绑扩展，用户自行选择；已安装 uBlock Origin 的用户配置不受影响 |
+| 🖥️ **全平台多渠道** | Windows（x64/arm64）、Linux（x86_64/aarch64/LoongArch64）、macOS（x64/arm64，未签名 `.dmg`）；winget / MSIX / deb / rpm / AppImage / 便携版 |
 | 📦 **LTO / PGO 构建** | 采用 LTO / PGO 编译并裁剪语言包，提升运行性能、精简包体积 |
 
 ---
@@ -87,9 +87,11 @@ Vantage 已迁移至 **Firefox ESR（Extended Support Release）** 通道，当�
 
 **性能与体验**
 
-- 多架构原生支持：Windows x64 / arm64、Linux x86_64 / aarch64 / LoongArch64
+- 多架构原生支持：Windows x64 / arm64、Linux x86_64 / aarch64 / LoongArch64、macOS x64 / arm64（未签名 `.dmg`）
 - AI 侧栏：内置 DeepSeek、通义千问、豆包，侧栏即开即用
 - 工具栏「恢复最近关闭」「多线程下载」等按钮，标签页滚轮切换、双击关闭
+- 侧栏悬停自动弹出（经典/新版侧栏均支持）
+- 工具栏密度可选「紧凑」（自定义工具栏 → 密度）
 - 内存紧张时自动休眠不活跃标签页
 - 多渠道安装：winget / MSIX / deb / rpm / AppImage / 便携版
 
@@ -98,7 +100,7 @@ Vantage 已迁移至 **Firefox ESR（Extended Support Release）** 通道，当�
 - 完全禁用遥测、实验功能与广告推送，默认无数据收集
 - RFP 指纹保护、WebRTC 防泄露、强制 HTTPS
 - 默认开启 DoH（阿里 / 腾讯国内优化，故障自动回退系统 DNS）
-- 预装 uBlock Origin，可选隐私增强扩展
+- 不预装捆绑扩展，内容拦截等扩展由用户自行选择
 
 **易用与定制**
 
@@ -195,6 +197,17 @@ ln -s /opt/vantage/vantage /usr/local/bin/vantage
 ```
 
 编译流程自动包含：**编译 → 打包 → 签名**（Linux 目标生成 deb / rpm / AppImage / tar.gz 四格式并附带 GPG 签名）。
+
+### CI 构建（build-only）
+
+只验证编译、不发版时，用 GitHub Actions 手动触发：
+
+1. Actions → **Build Vantage** → **Run workflow**
+2. `tag` 留空（留空 = 只编译，不建 tag / Release）
+3. 勾选要验证的平台（至少一个）
+4. 产物留在 CI 机器的工作区，不会自动上传
+
+推送 `v*` tag 会触发全平台构建并创建 **pre-release**，验证通过后再手动转正。
 
 ### 手动编译
 
