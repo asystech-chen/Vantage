@@ -1,0 +1,62 @@
+diff --git a/browser/themes/shared/browser-shared.css b/browser/themes/shared/browser-shared.css
+index 1c9a6ca1abf62..1ddc4b62fb7dc 100644
+--- a/browser/themes/shared/browser-shared.css
++++ b/browser/themes/shared/browser-shared.css
+@@ -311,6 +311,13 @@ body {
+       background-color: var(--toolbox-background-color-inactive);
+       color: var(--toolbox-text-color-inactive);
+     }
++
++    /* Remove the border and rounded corners against the screen edge in
++     * fullscreen. */
++    :root:is([inFullscreen], [inDOMFullscreen]) & {
++      border-radius: 0;
++      border: none;
++    }
+   }
+ 
+   #navigator-toolbox,
+diff --git a/browser/themes/shared/tabbrowser/content-area.css b/browser/themes/shared/tabbrowser/content-area.css
+index 1c3e424b900df..2de221a6cb693 100644
+--- a/browser/themes/shared/tabbrowser/content-area.css
++++ b/browser/themes/shared/tabbrowser/content-area.css
+@@ -24,14 +24,24 @@
+     margin-block-end: var(--chrome-window-gap);
+     margin-inline: var(--chrome-window-gap);
+     overflow: hidden;
++
++    /* Both the #browser and #navigator-toolbox (when it's showing) should sit flush
++       against the window edge in fullscreen. */
++    :root:is([inFullscreen], [inDOMFullscreen]) & {
++      margin: 0;
++    }
+   }
+ 
+   #browser {
+     display: flex;
+     box-sizing: border-box;
++    gap: var(--chrome-window-gap);
++  }
++
++  /* Removed padding around the content area in fullscreen. */
++  :root:not([inFullscreen], [inDOMFullscreen]) #browser {
+     padding: var(--chrome-window-gap);
+     padding-block-start: 0;
+-    gap: var(--chrome-window-gap);
+   }
+ 
+   #tabbrowser-tabbox {
+@@ -52,6 +62,13 @@
+     outline: none;
+     box-shadow: none;
+     border: 1px solid var(--chrome-content-separator-color);
++
++    /* Remove the border and rounded corners against the screen edge in
++     * DOM fullscreen. */
++    :root:is([inDOMFullscreen], [inFullscreen]) & {
++      border-radius: 0;
++      border: none;
++    }
+   }
+ 
+   /* Splitter between split-view panels. The active panel's 2px focus outline

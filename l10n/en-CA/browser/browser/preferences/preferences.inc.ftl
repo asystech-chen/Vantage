@@ -19,8 +19,8 @@ vantage-update-heading = Update
 vantage-update-checkbox =
     .label = Automatically check for updates
 vantage-theme-checkbox =
-    .label = Enable Vantage Theme (requires browser restart)
-vantage-theme-description = Writes the Vantage theme to your profile, adding rounded toolbars and tabs for a modern look. Requires a browser restart to take effect. Note: some third-party themes may override these visual styles — this only affects appearance, not browser functionality.
+    .label = Enable Vantage Theme
+vantage-theme-description = Applies Vantage's blue-green palette and rounded toolbars and tabs. Takes effect immediately; steps aside when a third-party theme is active and never modifies your userChrome.css.
 
 vantage-update-description = Check for new versions of Vantage on startup. You will be notified when a new version is available, but updates will not be installed automatically.
 

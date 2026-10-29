@@ -1,0 +1,419 @@
+diff --git a/browser/themes/shared/browser-shared.css b/browser/themes/shared/browser-shared.css
+index 4a20eaa..949fc4c 100644
+--- a/browser/themes/shared/browser-shared.css
++++ b/browser/themes/shared/browser-shared.css
+@@ -4,6 +4,7 @@
+ 
+ @import url("chrome://global/skin/design-system/toolbar.css");
+ @import url("chrome://browser/skin/browser-colors.css");
++@import url("chrome://browser/skin/vantage-theme.css");
+ @import url("chrome://browser/skin/addons/extension-controlled.css");
+ @import url("chrome://browser/skin/addons/unified-extensions.css");
+ @import url("chrome://browser/skin/downloads/indicator.css");
+diff --git a/browser/themes/shared/jar.inc.mn b/browser/themes/shared/jar.inc.mn
+index 012f4e8..9e39c58 100644
+--- a/browser/themes/shared/jar.inc.mn
++++ b/browser/themes/shared/jar.inc.mn
+@@ -7,6 +7,7 @@
+ # be specified once. As a result, the source file paths are relative
+ # to the location of the actual manifest.
+ 
++  skin/classic/browser/vantage-theme.css                   (../shared/vantage-theme.css)
+   skin/classic/browser/aboutFrameCrashed.css                   (../shared/aboutFrameCrashed.css)
+   skin/classic/browser/aboutRestartRequired.css                (../shared/aboutRestartRequired.css)
+   skin/classic/browser/aboutSessionRestore.css                 (../shared/aboutSessionRestore.css)
+diff --git a/browser/themes/shared/vantage-theme.css b/browser/themes/shared/vantage-theme.css
+new file mode 100644
+index 0000000..be6ba39
+--- /dev/null
++++ b/browser/themes/shared/vantage-theme.css
+@@ -0,0 +1,389 @@
++/* This Source Code Form is subject to the terms of the Mozilla Public
++ * License, v. 2.0. If a copy of the MPL was not distributed with this
++ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
++
++/* ===== Vantage 主题（打进源码，不再写 profile/userChrome.css）=====
++   开关：vantage.theme.enabled（Vantage 设置页）
++   外观：browser.nova.enabled（Nova / Proton 两套）
++   第三方主题：规则自带 :root:not([lwtheme])，主题激活时自动让位。 */
++
++@media -moz-pref("vantage.theme.enabled") {
++  @media -moz-pref("browser.nova.enabled") {
++    /* ===== Vantage 蓝系淡雅配色（Nova 适配）===== */
++    :root:not([lwtheme]) {
++      --toolbox-text-color: #1A2B3C !important;
++      --toolbox-text-color-inactive: #5A6B7C !important;
++      --toolbar-background-color: #FFFFFF !important;
++      --toolbar-text-color: #1A2B3C !important;
++
++      /* 强调色：Vantage 偏蓝 */
++      --color-accent-primary: #3B82F6 !important;
++      --color-accent-primary-hover: #2563EB !important;
++      --color-accent-primary-active: #1D4ED8 !important;
++      --color-accent-primary-selected: #3B82F6 !important;
++      --color-accent-attention: #3B82F6 !important;
++      --button-primary-bgcolor: #3B82F6 !important;
++      --button-primary-hover-bgcolor: #2563EB !important;
++      --button-primary-active-bgcolor: #1D4ED8 !important;
++      --focus-outline-color: #3B82F6 !important;
++      --toolbarbutton-icon-fill-attention: #3B82F6 !important;
++
++      /* 菜单分隔线渐变（同步 Proton 版，覆盖 Firefox 默认紫粉橙） */
++      --panel-separator-zap-gradient: linear-gradient(90deg, #3B82F6 0%, #0EA5A0 52%, #10B981 100%) !important;
++
++      /* 地址栏选中态：蓝色系（不用深绿） */
++      --toolbar-field-focus: #FFFFFF !important;
++      --toolbar-field-focus-border-color: #3B82F6 !important;
++      --toolbar-field-border-color-focus: #3B82F6 !important;
++
++      /* 标签渐变：Tide 青（保留） */
++      --tab-border-color-selected-leading: #3B82F6 !important;
++      --tab-border-color-selected-trailing: #10B981 !important;
++
++      /* Vantage 品牌基础色（原 vantage-nova-colors.patch 效果，改为 CSS 覆盖 → 随主题让位） */
++      --color-gray-0: #f8fafc !important;
++      --color-violet-0: #eef4ff !important;
++      --color-violet-10: #dbeafe !important;
++      --color-violet-20: #93c5fd !important;
++      --color-violet-30: #60a5fa !important;
++      --color-violet-40: #3b82f6 !important;
++      --color-violet-50: #3b82f6 !important;
++      --color-violet-60: #2563eb !important;
++      --color-violet-70: #1d4ed8 !important;
++      --color-violet-80: #1e3a8a !important;
++      --color-violet-90: #172554 !important;
++      --color-violet-100: #0f1e40 !important;
++      --color-violet-110: #0a1428 !important;
++      --color-violet-desaturated-0: #f3f6fc !important;
++      --color-violet-desaturated-10: #e5edf9 !important;
++      --color-violet-desaturated-20: #cfdcf0 !important;
++      --color-violet-desaturated-30: #aec2de !important;
++      --color-violet-desaturated-40: #8ba3c8 !important;
++      --color-violet-desaturated-50: #6680a8 !important;
++      --color-violet-desaturated-60: #4d628a !important;
++      --color-violet-desaturated-70: #37486b !important;
++      --color-violet-desaturated-80: #232f4d !important;
++      --color-violet-desaturated-90: #151d33 !important;
++      --toolbarbutton-background-color-hover: light-dark(color-mix(in srgb, #3b82f6 25%, transparent), color-mix(in srgb, #60a5fa 25%, transparent)) !important;
++      --toolbarbutton-background-color-active: light-dark(color-mix(in srgb, #3b82f6 40%, transparent), color-mix(in srgb, #60a5fa 40%, transparent)) !important;
++      --toolbarbutton-icon-fill: light-dark(#6680a8, #e5edf9) !important;
++      --link-color: light-dark(#3b82f6, #60a5fa) !important;
++      --smartbar-border-color-gradient: linear-gradient(95deg, #3b82f6 1.22%, #10b981 49.98%, #34d399 99.68%) !important;
++      --smartbar-glow-color: color-mix(in srgb, #3b82f6 50%, transparent) !important;
++      --chrome-content-separator-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64)) !important;
++      --tabs-navbar-separator-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64)) !important;
++    }
++
++    /* 标题栏：淡蓝渐变（Tide 风格淡雅） */
++    :root:not([lwtheme]) #navigator-toolbox, :root:not([lwtheme]) #TabsToolbar {
++      background: linear-gradient(90deg, #D8E8FC 0%, #D8F2EF 52%, #D8F7EA 100%) !important;
++      color: #1A2B3C !important;
++    }
++    :root:not([lwtheme]) #nav-bar { background-color: #FFFFFF !important; }
++    :root:not([lwtheme]) #PersonalToolbar { background-color: #FFFFFF !important; }
++
++    /* 深色模式 */
++    @media (prefers-color-scheme: dark) {
++      :root:not([lwtheme]) {
++        --toolbox-text-color: #EBF4F5 !important;
++        --toolbox-text-color-inactive: #8FA8AE !important;
++        --toolbar-background-color: #1D1B1F !important;
++        --toolbar-text-color: #EBF4F5 !important;
++
++        --color-accent-primary: #60A5FA !important;
++        --color-accent-primary-hover: #3B82F6 !important;
++        --color-accent-primary-active: #2563EB !important;
++        --color-accent-primary-selected: #60A5FA !important;
++        --color-accent-attention: #60A5FA !important;
++        --button-primary-bgcolor: #60A5FA !important;
++        --button-primary-hover-bgcolor: #3B82F6 !important;
++        --button-primary-active-bgcolor: #2563EB !important;
++        --focus-outline-color: #60A5FA !important;
++        --toolbarbutton-icon-fill-attention: #60A5FA !important;
++
++        --toolbar-field-focus: #1D1B1F !important;
++        --toolbar-field-focus-border-color: #60A5FA !important;
++        --toolbar-field-border-color-focus: #60A5FA !important;
++
++        --tab-border-color-selected-leading: #60A5FA !important;
++        --tab-border-color-selected-trailing: #34D399 !important;
++      }
++      :root:not([lwtheme]) #navigator-toolbox, :root:not([lwtheme]) #TabsToolbar {
++        background: linear-gradient(90deg, #16406E 0%, #16605B 52%, #166B47 100%) !important;
++      }
++      :root:not([lwtheme]) #nav-bar, :root:not([lwtheme]) #PersonalToolbar { background-color: #1D1B1F !important; }
++    }
++
++    /* 隐私窗口：body gap 区域 + tabpanel 背景 → Vantage 蓝系
++       （原在 vantage-nova-colors.patch 编译进二进制，会覆盖第三方主题；
++       改由本样式表控制，随主题开关注入/让位） */
++    :root[privatebrowsingmode="temporary"][theme-effective-id="firefox-privatewindow@mozilla.org"] body {
++      background-color: light-dark(#eef2f8, #1e293b) !important;
++    }
++    :root[privatebrowsingmode="temporary"][theme-effective-id="firefox-privatewindow@mozilla.org"] {
++      --tabpanel-background-color: linear-gradient(45deg, #172A45 0%, #1E293B 50%, #153D3A 100%) !important;
++
++      /* 覆盖 Firefox 内置隐私主题（privatewindow）的紫色系（violet-desaturated）：
++         地址栏 / 按钮(含悬浮) / 分割线 / 菜单 / 标签 / 侧边栏 → Vantage 蓝系 */
++      --toolbar-background-color: light-dark(#F4F6FA, #1D1B1F) !important;
++      --toolbar-text-color: light-dark(#1A2B3C, #EBF4F5) !important;
++      --toolbox-text-color: light-dark(#1A2B3C, #EBF4F5) !important;
++      --toolbar-field-background-color: light-dark(#FFFFFF, #1D1B1F) !important;
++      --toolbar-field-background-color-focus: light-dark(#FFFFFF, #1D1B1F) !important;
++      --toolbar-field-text-color: light-dark(#1A2B3C, #EBF4F5) !important;
++      --toolbar-field-text-color-focus: light-dark(#1A2B3C, #EBF4F5) !important;
++      --toolbar-field-border-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64)) !important;
++      --toolbar-field-border-color-focus: #3B82F6 !important;
++      --toolbarbutton-background-color-hover: light-dark(rgba(59, 130, 246, 0.15), rgba(96, 165, 250, 0.2)) !important;
++      --toolbarbutton-background-color-active: light-dark(rgba(59, 130, 246, 0.25), rgba(96, 165, 250, 0.3)) !important;
++      --panel-background-color: light-dark(#FFFFFF, #1D1B1F) !important;
++      --panel-text-color: light-dark(#1A2B3C, #EBF4F5) !important;
++      --panel-border-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64)) !important;
++      --tab-background-color-selected: light-dark(#FFFFFF, #2B2933) !important;
++      --tab-selected-textcolor: light-dark(#1A2B3C, #EBF4F5) !important;
++      --tab-loading-fill: #3B82F6 !important;
++      --lwt-tab-line-color: #3B82F6 !important;
++      --tabs-navbar-separator-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64)) !important;
++      --sidebar-background-color: light-dark(#FFFFFF, #1D1B1F) !important;
++      --sidebar-text-color: light-dark(#1A2B3C, #EBF4F5) !important;
++      --chrome-content-separator-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64)) !important;
++    }
++
++    /* ===== Nova 最大化：清零窗口边缘圆角/边框/padding（上游 Bug 2054183，Nightly 156 验证）===== */
++    :root[sizemode="maximized"] #navigator-toolbox {
++      margin-block-start: 0 !important;
++      margin-block-end: 0 !important;
++      margin-inline: 0 !important;
++      border-radius: 0 !important;
++      border-style: none !important;
++      border-block-end-style: solid !important; /* 保留与内容区的分隔线 */
++    }
++    :root[sizemode="maximized"] #browser {
++      padding-inline: 0 !important;
++      padding-block-start: 0 !important;
++      padding-block-end: 0 !important;
++      gap: 0 !important;
++    }
++    :root[sizemode="maximized"] :is(#sidebar-container, #sidebar-box) {
++      border-end-start-radius: 0 !important;
++      border-end-end-radius: 0 !important;
++      border-block-end: none !important;
++    }
++    :root[sizemode="maximized"] #sidebar-container:not([sidebar-positionend]) {
++      border-start-start-radius: 0 !important;
++      border-inline-start: none !important;
++    }
++    :root[sizemode="maximized"] #sidebar-container[sidebar-positionend] {
++      border-start-end-radius: 0 !important;
++      border-inline-end: none !important;
++    }
++    :root[sizemode="maximized"] #sidebar-container[sidebar-panel-open] {
++      border-radius: 0 !important;
++    }
++    :root[sizemode="maximized"] .browserContainer {
++      border-end-start-radius: 0 !important;
++      border-end-end-radius: 0 !important;
++      border-block-end: none !important;
++    }
++    :root[sizemode="maximized"] #tabbrowser-tabbox:not([sidebar-shown]) .browserContainer,
++    :root[sizemode="maximized"] #tabbrowser-tabbox[sidebar-shown][sidebar-positionend] .browserContainer {
++      border-start-start-radius: 0 !important;
++      border-inline-start: none !important;
++    }
++    :root[sizemode="maximized"] #tabbrowser-tabbox:not([sidebar-positionend], [ai-window-open]) .browserContainer {
++      border-start-end-radius: 0 !important;
++      border-inline-end: none !important;
++    }
++    :root[sizemode="maximized"] #customization-container {
++      margin-inline: 0 !important;
++      margin-block-end: 0 !important;
++      border-radius: 0 !important;
++      border-inline: none !important;
++      border-block-end: none !important;
++    }
++  }
++
++  @media not -moz-pref("browser.nova.enabled") {
++    /* ===== Vantage Theme (Proton) ===== */
++    :root:not([lwtheme]) {
++      --tab-border-radius: 8px !important;
++      --panel-separator-zap-gradient: linear-gradient(90deg, #3B82F6 0%, #0EA5A0 52%, #10B981 100%) !important;
++      --color-accent-primary: #3B82F6 !important;
++      --color-accent-primary-hover: #2563EB !important;
++      --color-accent-primary-active: #1D4ED8 !important;
++      --color-accent-primary-selected: #3B82F6 !important;
++      --button-primary-bgcolor: #3B82F6 !important;
++      --button-primary-hover-bgcolor: #2563EB !important;
++      --button-primary-active-bgcolor: #1D4ED8 !important;
++      --focus-outline-color: #3B82F6 !important;
++
++      /* Vantage 品牌基础色（原 vantage-nova-colors.patch 效果，改为 CSS 覆盖 → 随主题让位） */
++      --color-gray-0: #f8fafc !important;
++      --color-violet-0: #eef4ff !important;
++      --color-violet-10: #dbeafe !important;
++      --color-violet-20: #93c5fd !important;
++      --color-violet-30: #60a5fa !important;
++      --color-violet-40: #3b82f6 !important;
++      --color-violet-50: #3b82f6 !important;
++      --color-violet-60: #2563eb !important;
++      --color-violet-70: #1d4ed8 !important;
++      --color-violet-80: #1e3a8a !important;
++      --color-violet-90: #172554 !important;
++      --color-violet-100: #0f1e40 !important;
++      --color-violet-110: #0a1428 !important;
++      --color-violet-desaturated-0: #f3f6fc !important;
++      --color-violet-desaturated-10: #e5edf9 !important;
++      --color-violet-desaturated-20: #cfdcf0 !important;
++      --color-violet-desaturated-30: #aec2de !important;
++      --color-violet-desaturated-40: #8ba3c8 !important;
++      --color-violet-desaturated-50: #6680a8 !important;
++      --color-violet-desaturated-60: #4d628a !important;
++      --color-violet-desaturated-70: #37486b !important;
++      --color-violet-desaturated-80: #232f4d !important;
++      --color-violet-desaturated-90: #151d33 !important;
++      --toolbarbutton-background-color-hover: light-dark(color-mix(in srgb, #3b82f6 25%, transparent), color-mix(in srgb, #60a5fa 25%, transparent)) !important;
++      --toolbarbutton-background-color-active: light-dark(color-mix(in srgb, #3b82f6 40%, transparent), color-mix(in srgb, #60a5fa 40%, transparent)) !important;
++      --toolbarbutton-icon-fill: light-dark(#6680a8, #e5edf9) !important;
++      --link-color: light-dark(#3b82f6, #60a5fa) !important;
++      --smartbar-border-color-gradient: linear-gradient(95deg, #3b82f6 1.22%, #10b981 49.98%, #34d399 99.68%) !important;
++      --smartbar-glow-color: color-mix(in srgb, #3b82f6 50%, transparent) !important;
++      --chrome-content-separator-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64)) !important;
++      --tabs-navbar-separator-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64)) !important;
++    }
++
++    /* 圆角卡片布局（Proton） */
++    :root:not([lwtheme]) #nav-bar {
++      border-radius: 10px !important;
++      margin: 3px 6px !important;
++    }
++    :root:not([lwtheme]) #PersonalToolbar {
++      border-radius: 8px !important;
++      margin: 2px 6px !important;
++    }
++    :root:not([lwtheme]) #navigator-toolbox { border-bottom: none !important; }
++    :root:not([lwtheme]) #navigator-toolbox::after { display: none !important; }
++    :root:not([lwtheme]) #sidebar-box { border-radius: 10px !important; margin: 4px !important; }
++
++    /* 隐私窗口：body gap 区域 + tabpanel 背景 → Vantage 蓝系
++       （原在 vantage-nova-colors.patch 编译进二进制，会覆盖第三方主题；
++       改由本样式表控制，随主题开关注入/让位） */
++    :root[privatebrowsingmode="temporary"][theme-effective-id="firefox-privatewindow@mozilla.org"] body {
++      background-color: light-dark(#eef2f8, #1e293b) !important;
++    }
++    :root[privatebrowsingmode="temporary"][theme-effective-id="firefox-privatewindow@mozilla.org"] {
++      --tabpanel-background-color: linear-gradient(45deg, #172A45 0%, #1E293B 50%, #153D3A 100%) !important;
++
++      /* 覆盖 Firefox 内置隐私主题（privatewindow）的紫色系（violet-desaturated）：
++         地址栏 / 按钮(含悬浮) / 分割线 / 菜单 / 标签 / 侧边栏 → Vantage 蓝系 */
++      --toolbar-background-color: light-dark(#F4F6FA, #1D1B1F) !important;
++      --toolbar-text-color: light-dark(#1A2B3C, #EBF4F5) !important;
++      --toolbox-text-color: light-dark(#1A2B3C, #EBF4F5) !important;
++      --toolbar-field-background-color: light-dark(#FFFFFF, #1D1B1F) !important;
++      --toolbar-field-background-color-focus: light-dark(#FFFFFF, #1D1B1F) !important;
++      --toolbar-field-text-color: light-dark(#1A2B3C, #EBF4F5) !important;
++      --toolbar-field-text-color-focus: light-dark(#1A2B3C, #EBF4F5) !important;
++      --toolbar-field-border-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64)) !important;
++      --toolbar-field-border-color-focus: #3B82F6 !important;
++      --toolbarbutton-background-color-hover: light-dark(rgba(59, 130, 246, 0.15), rgba(96, 165, 250, 0.2)) !important;
++      --toolbarbutton-background-color-active: light-dark(rgba(59, 130, 246, 0.25), rgba(96, 165, 250, 0.3)) !important;
++      --panel-background-color: light-dark(#FFFFFF, #1D1B1F) !important;
++      --panel-text-color: light-dark(#1A2B3C, #EBF4F5) !important;
++      --panel-border-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64)) !important;
++      --tab-background-color-selected: light-dark(#FFFFFF, #2B2933) !important;
++      --tab-selected-textcolor: light-dark(#1A2B3C, #EBF4F5) !important;
++      --tab-loading-fill: #3B82F6 !important;
++      --lwt-tab-line-color: #3B82F6 !important;
++      --tabs-navbar-separator-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64)) !important;
++      --sidebar-background-color: light-dark(#FFFFFF, #1D1B1F) !important;
++      --sidebar-text-color: light-dark(#1A2B3C, #EBF4F5) !important;
++      --chrome-content-separator-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64)) !important;
++    }
++  }
++}
++
++/* ===== Vantage: 侧栏悬停浮层（不挑主题） ===== */
++/* 屏蔽原生 expand-on-hover 给内容区/内容页/工具条加的 margin。
++   原生在 sidebar.visibility=expand-on-hover 下会给 #tabbrowser-tabbox 留
++   margin-inline-start = calc(--sidebar-launcher-collapsed-width + gap)（给常驻工具条预留位置）。
++   本功能是"浮层、永不推挤"，且收起时会把工具条隐藏——若不恒清这条 margin，收起后
++   就会空出一条"折叠工具条宽度"的空白并挤占内容。故只在**功能启用期间**恒清（浮层态/收起态都清）；
++   功能关闭时不带此属性 → 原生 expand-on-hover 行为完全不受影响。 */
++:root[vantage-sidebar-hover-active] #browser > #tabbrowser-tabbox,
++:root[vantage-sidebar-hover-active] #browser > #sidebar-box,
++:root[vantage-sidebar-hover-active] #browser > #sidebar-container {
++  margin-inline: 0 !important;
++}
++/* --- 经典侧栏（默认）：浮内容面板；工具条与分隔条归零（内容不被推挤） --- */
++:root:not([vantage-sidebar-revamp])[vantage-sidebar-floating] #browser > #sidebar-container,
++:root:not([vantage-sidebar-revamp])[vantage-sidebar-floating] #browser > #sidebar-splitter,
++:root:not([vantage-sidebar-revamp])[vantage-sidebar-floating] #browser > #sidebar-launcher-splitter {
++  width: 0 !important;
++  min-width: 0 !important;
++  max-width: 0 !important;
++  margin: 0 !important;
++  padding: 0 !important;
++  border: 0 !important;
++  overflow: hidden !important;
++}
++:root:not([vantage-sidebar-revamp])[vantage-sidebar-floating] #browser > #sidebar-box {
++  position: absolute !important;
++  top: var(--chrome-window-gap, 4px) !important;
++  bottom: var(--chrome-window-gap, 4px) !important;
++  inset-inline-start: var(--chrome-window-gap, 4px) !important;
++  height: auto !important;
++  z-index: 5 !important;
++  border-radius: 10px !important;
++  overflow: clip !important;
++  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28) !important;
++  animation: vantage-sidebar-in 0.16s ease-out !important;
++  background-color: light-dark(rgba(255, 255, 255, 0.72), rgba(29, 27, 31, 0.62)) !important;
++  backdrop-filter: blur(18px) saturate(1.25) !important;
++}
++:root:not([vantage-sidebar-revamp])[vantage-sidebar-floating] #browser > #sidebar-box #sidebar {
++  background-color: transparent !important;
++  box-shadow: none !important;
++}
++/* --- 新侧栏（revamp）：整条（工具条 + 内容页）浮层、盖在网页上、不推挤 --- */
++:root[vantage-sidebar-revamp][vantage-sidebar-floating] #browser > #sidebar-container,
++:root[vantage-sidebar-revamp][vantage-sidebar-floating] #browser > #sidebar-box {
++  position: absolute !important;
++  top: var(--chrome-window-gap, 4px) !important;
++  bottom: var(--chrome-window-gap, 4px) !important;
++  height: auto !important;
++  z-index: 5 !important;
++}
++:root[vantage-sidebar-revamp][vantage-sidebar-floating] #browser > #sidebar-container {
++  inset-inline-start: var(--chrome-window-gap, 4px) !important;
++  border-radius: 10px !important;
++  overflow: clip !important;
++  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28) !important;
++  background-color: light-dark(rgba(255, 255, 255, 0.72), rgba(29, 27, 31, 0.62)) !important;
++  backdrop-filter: blur(18px) saturate(1.25) !important;
++}
++:root[vantage-sidebar-revamp][vantage-sidebar-floating] #browser > #sidebar-box {
++  inset-inline-start: var(--vantage-sidebar-box-inset, 61px) !important;
++  border-radius: 10px !important;
++  overflow: clip !important;
++  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.28) !important;
++  animation: vantage-sidebar-in 0.16s ease-out !important;
++  background-color: light-dark(rgba(255, 255, 255, 0.72), rgba(29, 27, 31, 0.62)) !important;
++  backdrop-filter: blur(18px) saturate(1.25) !important;
++}
++:root[vantage-sidebar-revamp][vantage-sidebar-floating] #browser > #sidebar-box #sidebar {
++  background-color: transparent !important;
++  box-shadow: none !important;
++}
++:root[vantage-sidebar-revamp][vantage-sidebar-floating] #browser > #sidebar-launcher-splitter,
++:root[vantage-sidebar-revamp][vantage-sidebar-floating] #browser > #sidebar-splitter {
++  width: 0 !important;
++  min-width: 0 !important;
++  max-width: 0 !important;
++  margin: 0 !important;
++  padding: 0 !important;
++  border: 0 !important;
++  overflow: hidden !important;
++}
++@keyframes vantage-sidebar-in {
++  from { translate: -22px 0; opacity: 0; }
++  to { translate: 0 0; opacity: 1; }
++}

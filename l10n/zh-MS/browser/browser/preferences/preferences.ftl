@@ -2700,8 +2700,8 @@ vantage-update-heading = 更新
 vantage-update-checkbox =
     .label = 自动地复选为了更新
 vantage-theme-checkbox =
-    .label = 启用优势主题 (需要浏览器重新启动)
-vantage-theme-description = 书写器那优势主题到你的提问档, 加法的圆形的工具栏和标签页为了一个现代人一看. 需要一个浏览器重新启动到采取效果. 笔记: 一些第三-party 主题可以推翻这些视觉的风格—这仅影响外观, 不浏览器功能性.
+    .label = 启用 Vantage 主题
+vantage-theme-description = 为浏览器启用 Vantage 的蓝绿配色与圆角工具栏、标签页。切换后立即生效；使用第三方主题时自动让位，不会修改你的 userChrome.css。
 
 vantage-update-description = 复选为了新的版本的优势在启动. 你将是通知何时一个新版本是可利用的, 除了更新将不是安装自动地.
 
