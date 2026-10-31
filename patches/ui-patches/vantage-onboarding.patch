@@ -800,7 +800,7 @@ index 0000000..585ab2f
 +</html>
 diff --git a/browser/base/content/onboarding/onboarding.js b/browser/base/content/onboarding/onboarding.js
 new file mode 100644
-index 0000000..8cf6e97
+index 0000000..70a23bd
 --- /dev/null
 +++ b/browser/base/content/onboarding/onboarding.js
 @@ -0,0 +1,391 @@
@@ -1114,14 +1114,11 @@ index 0000000..8cf6e97
 +  doneView.classList.remove("is-active");
 +  nextBtn.hidden = n === total;
 +  finishBtn.hidden = n !== total;
-+  if (push !== false) {
-+    const url = new URL(location.href);
-+    url.searchParams.set("step", n);
-+    history.replaceState(null, "", url);
-+  }
 +  const heading = screens[n - 1].querySelector("h1");
 +  if (heading) {
-+    heading.focus();
++    try {
++      heading.focus();
++    } catch (e) {}
 +  }
 +}
 +
@@ -1138,9 +1135,12 @@ index 0000000..8cf6e97
 +  animating = true;
 +  current.classList.add("is-leaving");
 +  setTimeout(() => {
-+    current.classList.remove("is-active", "is-leaving");
-+    paint(n, push);
-+    animating = false;
++    try {
++      current.classList.remove("is-active", "is-leaving");
++      paint(n, push);
++    } finally {
++      animating = false;
++    }
 +  }, 170);
 +}
 +
