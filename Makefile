@@ -236,7 +236,7 @@ package :
 	  OBJDIR=$$(ls -td $(lw_source_dir)/obj-* 2>/dev/null | head -1); \
 	fi; \
 	for f in "$$OBJDIR/dist/bin/defaults/pref/local-settings.js" "$$OBJDIR/dist/bin/librewolf.cfg"; do \
-	  if [ -L "$$f" ]; then cp -L --remove-destination "$$f" "$$f"; fi; \
+	  if [ -L "$$f" ]; then t=$$(readlink -f "$$f"); cp --remove-destination "$$t" "$$f"; fi; \
 	done; \
 	if [ -n "$(WIN_VARIANT)" ] && [ -f winupdater/Vantage-WinUpdater.exe ]; then \
 	  echo ">>> Injecting WinUpdater into dist for NSIS installer..."; \
