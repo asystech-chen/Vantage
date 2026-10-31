@@ -783,10 +783,10 @@ index 0000000..585ab2f
 +</html>
 diff --git a/browser/base/content/onboarding/onboarding.js b/browser/base/content/onboarding/onboarding.js
 new file mode 100644
-index 0000000..e2d37cb
+index 0000000..45fb9d6
 --- /dev/null
 +++ b/browser/base/content/onboarding/onboarding.js
-@@ -0,0 +1,359 @@
+@@ -0,0 +1,380 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -1023,6 +1023,27 @@ index 0000000..e2d37cb
 +  if (win) {
 +    MigrationUtils.showMigrationWizard(win, { entrypoint: "newtab" });
 +  }
++});
++
++// 外部链接统一用浏览器窗口打开，避免 chrome 页面里 target=_blank 变成空白页
++function openExternalLink(url) {
++  const win = getBrowserWindow();
++  if (win) {
++    win.openTrustedLinkIn(url, "tab");
++  } else {
++    window.open(url, "_blank");
++  }
++}
++
++document.querySelectorAll("a[href]").forEach(link => {
++  const href = link.getAttribute("href");
++  if (!/^(https?:|about:)/.test(href)) {
++    return;
++  }
++  link.addEventListener("click", event => {
++    event.preventDefault();
++    openExternalLink(href);
++  });
 +});
 +
 +const defaultSwitch = document.getElementById("defaultSwitch");
