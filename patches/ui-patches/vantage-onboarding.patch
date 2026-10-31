@@ -1,3 +1,20 @@
+diff --git a/browser/app/profile/firefox.js b/browser/app/profile/firefox.js
+index 838ce4c..ad7c72c 100644
+--- a/browser/app/profile/firefox.js
++++ b/browser/app/profile/firefox.js
+@@ -4,6 +4,12 @@
+ // License, v. 2.0. If a copy of the MPL was not distributed with this
+ // file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
++// Vantage: 加载 librewolf.cfg。某些打包路径会漏掉 defaults/pref/local-settings.js，
++// 这里直接把 autoconfig 入口写进 firefox.js，保证打包后依然生效。
++pref("general.config.filename", "librewolf.cfg");
++pref("general.config.obscure_value", 0);
++pref("general.config.sandbox_enabled", false);
++
+ // Non-static prefs that are specific to desktop Firefox belong in this file
+ // (unless there is a compelling and documented reason for them to belong in
+ // another file).
 diff --git a/browser/base/content/onboarding/onboarding.css b/browser/base/content/onboarding/onboarding.css
 new file mode 100644
 index 0000000..30b69c9
