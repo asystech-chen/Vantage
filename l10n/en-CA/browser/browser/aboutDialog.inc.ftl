@@ -2,3 +2,5 @@ about-librewolf = Vantage Browser is developed by ASYS Technology, built on the 
 official-site1 = Official Site
 changelog-link = What's New
 github-link = GitHub
+
+vantage-onboarding-button = Reopen setup guide

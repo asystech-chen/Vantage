@@ -76,8 +76,9 @@ Vantage 已迁移至 **Firefox ESR（Extended Support Release）** 通道，当�
 | 🀄 **中文深度适配** | 中文安装器与界面，默认区域 CN，并附额外中文语言包 |
 | 🧷 **右键增强** | 「复制为 Markdown 链接」、「在 IE 中打开」（Windows） |
 | 🛌 **标签自动休眠** | 内存紧张时自动休眠不活跃标签页，释放内存 |
+| 🧭 **首次启动引导** | 内置 `about:onboarding`，六步设好外观、功能、隐私与导入 |
 | 🚫 **默认无遥测** | 完全禁用遥测、实验功能与广告推送 |
-| 🧩 **扩展自由** | 不预装捆绑扩展，用户自行选择；已安装 uBlock Origin 的用户配置不受影响 |
+| 🧩 **扩展自由** | 仅随附两个网页兼容小扩展（Cookie 提示、恢复右键），其余由用户自行选择；已安装 uBlock Origin 的用户配置不受影响 |
 | 🖥️ **全平台多渠道** | Windows（x64/arm64）、Linux（x86_64/aarch64/LoongArch64）、macOS（x64/arm64，未签名 `.dmg`）；winget / MSIX / deb / rpm / AppImage / 便携版 |
 | 📦 **LTO / PGO 构建** | 采用 LTO / PGO 编译并裁剪语言包，提升运行性能、精简包体积 |
 
@@ -100,7 +101,7 @@ Vantage 已迁移至 **Firefox ESR（Extended Support Release）** 通道，当�
 - 完全禁用遥测、实验功能与广告推送，默认无数据收集
 - RFP 指纹保护、WebRTC 防泄露、强制 HTTPS
 - 默认开启 DoH（阿里 / 腾讯国内优化，故障自动回退系统 DNS）
-- 不预装捆绑扩展，内容拦截等扩展由用户自行选择
+- 仅随附两个网页兼容小扩展，内容拦截等扩展由用户自行选择
 
 **易用与定制**
 
@@ -228,6 +229,7 @@ MOZCONFIG=$(pwd)/assets/mozconfig.win-cross.arm64 make build # Windows arm64（�
 ## ⚙️ 配置与使用
 
 ### 首次启动建议
+- ✅ 首次启动会打开内置引导 `about:onboarding`（之后可从「设置 → Vantage」重新打开）
 - ✅ 访问 `about:preferences#vantage` 了解 Vantage 专属设置（更新检查、AI 侧栏、隐私策略等）
 - ✅ 检查 `about:preferences#privacy` 中的隐私设置
 - ✅ 根据需要启用/禁用 Mozilla 同步功能

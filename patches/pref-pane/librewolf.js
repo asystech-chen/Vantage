@@ -987,6 +987,12 @@ var gLibrewolfPane = {
         openTab("https://github.com/asystech-chen/Vantage")
       );
     }
+    let onboardingBtn = document.getElementById(
+      "vantage-about-onboarding-button"
+    );
+    if (onboardingBtn) {
+      onboardingBtn.addEventListener("command", () => openTab("about:onboarding"));
+    }
 
     // 检查更新（与 aboutDialog 一致：拉 releases.json 对比版本）
     let statusEl = document.getElementById("vantage-about-update-status");

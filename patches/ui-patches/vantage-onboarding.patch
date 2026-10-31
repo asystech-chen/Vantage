@@ -1,0 +1,1295 @@
+diff --git a/browser/base/content/onboarding/onboarding.css b/browser/base/content/onboarding/onboarding.css
+new file mode 100644
+index 0000000..0a35d58
+--- /dev/null
++++ b/browser/base/content/onboarding/onboarding.css
+@@ -0,0 +1,422 @@
++/* ===== Vantage 品牌色（取自 browser/themes/shared/vantage-theme.css） ===== */
++  :root {
++    --accent: #3b82f6;
++    --accent-hover: #2563eb;
++    --accent-active: #1d4ed8;
++    --accent-soft: #eef4ff;
++    --accent-soft-2: #dbeafe;
++    --teal: #0ea5a0;
++    --green: #10b981;
++    --brand-gradient: linear-gradient(90deg, #3b82f6 0%, #0ea5a0 52%, #10b981 100%);
++
++    --bg: #f8fafc;
++    --panel: #ffffff;
++    --panel-2: #f3f6fc;
++    --text: #1a2b3c;
++    --muted: #5a6b7c;
++    --faint: #8ba3c8;
++    --line: rgba(157, 180, 208, .42);
++    --line-strong: rgba(139, 163, 200, .62);
++    --ok: #10b981;
++    --shadow: 0 16px 44px rgba(26, 43, 60, .12);
++    --radius: 14px;
++  }
++
++  html[data-dark="true"] {
++    --accent: #60a5fa;
++    --accent-hover: #3b82f6;
++    --accent-active: #2563eb;
++    --accent-soft: #1b2b42;
++    --accent-soft-2: #223a5c;
++    --bg: #141316;
++    --panel: #1d1b1f;
++    --panel-2: #26232a;
++    --text: #ebf4f5;
++    --muted: #8fa8ae;
++    --faint: #6680a8;
++    --line: rgba(143, 168, 174, .26);
++    --line-strong: rgba(143, 168, 174, .44);
++    --ok: #34d399;
++    --shadow: 0 16px 44px rgba(0, 0, 0, .5);
++  }
++
++  /* 关闭 Vantage 主题：回到 Firefox 原生紫 */
++  html[data-vantage-theme="off"] {
++    --accent: #8b5cf6;
++    --accent-hover: #7c3aed;
++    --accent-active: #6d28d9;
++    --accent-soft: #f3edff;
++    --accent-soft-2: #e9dcff;
++    --brand-gradient: linear-gradient(90deg, #8b5cf6 0%, #a855f7 100%);
++  }
++  html[data-dark="true"][data-vantage-theme="off"] {
++    --accent: #a78bfa;
++    --accent-hover: #8b5cf6;
++    --accent-soft: #2a2340;
++    --accent-soft-2: #3a3058;
++  }
++
++  * { box-sizing: border-box; }
++  html, body { height: 100%; }
++
++  body {
++    margin: 0;
++    color: var(--text);
++    background: var(--bg);
++    font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
++                 "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
++    -webkit-font-smoothing: antialiased;
++    display: flex;
++    align-items: stretch;
++  }
++
++  button { font: inherit; color: inherit; }
++
++  .app {
++    width: 100%;
++    min-height: 100vh;
++    background: var(--panel);
++    border: 0;
++    border-radius: 0;
++    box-shadow: none;
++    display: flex;
++    flex-direction: column;
++    overflow: hidden;
++    position: relative;
++  }
++
++  /* Vantage 品牌渐变条 */
++  .app::before {
++    content: "";
++    position: absolute; inset: 0 0 auto 0; height: 3px;
++    background: var(--brand-gradient);
++    z-index: 20;
++  }
++
++  /* ---------- 顶栏 ---------- */
++  .topbar {
++    display: flex; align-items: center; gap: 10px;
++    padding: 19px 26px 17px;
++    border-bottom: 1px solid var(--line);
++  }
++  .brand { display: flex; align-items: center; gap: 9px; font-weight: 650; letter-spacing: .1px; }
++  .brand img { width: 24px; height: 24px; border-radius: 6px; }
++  .brand small { color: var(--faint); font-weight: 500; letter-spacing: 0; font-size: 12px; }
++  .topbar .spacer { flex: 1; }
++  .link-btn {
++    border: 0; background: transparent; color: var(--muted);
++    padding: 7px 11px; border-radius: 8px; cursor: pointer; font-size: 13px;
++  }
++  .link-btn:hover { background: var(--panel-2); color: var(--text); }
++
++  /* ---------- 主体 ---------- */
++  .stage { flex: 1; position: relative; min-height: 0; }
++  .screen {
++    position: absolute; inset: 0;
++    padding: 34px 44px 30px;
++    display: none;
++    overflow: auto;
++  }
++  .screen.is-active {
++    display: block;
++    animation: screenIn .26s ease both;
++  }
++  .screen.is-leaving {
++    display: block; pointer-events: none;
++    animation: screenOut .17s ease both;
++  }
++  @keyframes screenIn {
++    from { opacity: 0; transform: translateY(8px); }
++    to { opacity: 1; transform: none; }
++  }
++  @keyframes screenOut {
++    from { opacity: 1; transform: none; }
++    to { opacity: 0; transform: translateY(-6px); }
++  }
++  @media (prefers-reduced-motion: reduce) {
++    .screen.is-active, .screen.is-leaving { animation: none; }
++    * { transition: none !important; }
++  }
++
++  .split {
++    display: grid;
++    grid-template-columns: minmax(0, 1fr) minmax(330px, .9fr);
++    gap: 42px;
++    align-items: center;
++    min-height: 100%;
++  }
++  .split.single {
++    grid-template-columns: minmax(0, 1fr);
++    max-width: 680px;
++    align-content: start;
++    padding-top: 6px;
++  }
++
++  .eyebrow {
++    display: inline-flex; align-items: center; gap: 7px;
++    font-size: 12px; font-weight: 650; letter-spacing: .3px;
++    color: var(--accent);
++    background: var(--accent-soft);
++    border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
++    border-radius: 999px; padding: 5px 11px;
++    margin-bottom: 16px;
++  }
++  .eyebrow::before {
++    content: ""; width: 6px; height: 6px; border-radius: 50%;
++    background: var(--brand-gradient);
++  }
++
++  h1 {
++    font-size: clamp(27px, 3.1vw, 36px);
++    line-height: 1.2; letter-spacing: -.5px;
++    margin: 0 0 14px; outline: none;
++  }
++  .lead {
++    font-size: 15.5px; line-height: 1.72; color: var(--muted);
++    margin: 0 0 20px; max-width: 48ch;
++  }
++
++  .bullets { list-style: none; margin: 0; padding: 0; display: grid; gap: 11px; }
++  .bullets li {
++    display: flex; gap: 10px; align-items: flex-start;
++    font-size: 14px; color: var(--muted); line-height: 1.55;
++  }
++  .bullets svg { flex: none; margin-top: 2px; color: var(--accent); }
++
++  .hero-visual {
++    display: flex; align-items: center; justify-content: center;
++    min-height: 320px; position: relative;
++  }
++  .hero-logo {
++    width: 172px; height: 172px; border-radius: 38px;
++    box-shadow: 0 20px 50px rgba(26, 43, 60, .20);
++  }
++
++  /* ---------- 主题商店引导 ---------- */
++  .store-cta {
++    display: flex; align-items: center; gap: 12px; margin-top: 14px;
++    padding: 12px 14px; border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--line));
++    border-radius: 10px; background: var(--accent-soft);
++  }
++  .store-cta .grow { flex: 1; min-width: 0; }
++  .store-cta strong { display: block; font-size: 13px; margin-bottom: 2px; }
++  .store-cta span { color: var(--muted); font-size: 12px; line-height: 1.5; }
++
++  /* ---------- 表单行 ---------- */
++  .field { padding: 12px 0; border-bottom: 1px solid var(--line); }
++  .field:last-of-type { border-bottom: 0; }
++  .field-head { display: flex; align-items: center; gap: 12px; }
++  .field-title { font-size: 14px; font-weight: 620; }
++  .field-desc { color: var(--muted); font-size: 12.5px; line-height: 1.5; margin-top: 2px; }
++  .field .grow { flex: 1; min-width: 0; }
++
++  .switch {
++    appearance: none; width: 40px; height: 23px; border-radius: 999px;
++    background: var(--line-strong); position: relative; cursor: pointer;
++    transition: background .16s ease; flex: none;
++  }
++  .switch::after {
++    content: ""; position: absolute; top: 3px; left: 3px;
++    width: 17px; height: 17px; border-radius: 50%; background: #fff;
++    box-shadow: 0 1px 3px rgba(0, 0, 0, .25); transition: transform .16s ease;
++  }
++  .switch:checked { background: var(--accent); }
++  .switch:checked::after { transform: translateX(17px); }
++  .switch:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
++
++  .segmented {
++    display: inline-flex; background: var(--panel-2); border: 1px solid var(--line);
++    border-radius: 9px; padding: 3px; gap: 2px; flex: none;
++  }
++  .segmented button {
++    border: 0; background: transparent; color: var(--muted);
++    padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12.5px;
++  }
++  .segmented button[aria-pressed="true"] {
++    background: var(--panel); color: var(--text);
++    box-shadow: 0 1px 3px rgba(26, 43, 60, .14); font-weight: 600;
++  }
++  .segmented button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
++
++  /* ---------- 隐私卡片 ---------- */
++  .privacy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 4px; }
++  .choice {
++    position: relative; text-align: left; cursor: pointer;
++    background: var(--panel); border: 1.5px solid var(--line);
++    border-radius: 12px; padding: 16px 15px 14px;
++    display: flex; flex-direction: column; gap: 7px;
++    transition: border-color .15s ease, background .15s ease;
++  }
++  .choice:hover { border-color: var(--line-strong); }
++  .choice[aria-checked="true"] {
++    border-color: var(--accent); background: var(--accent-soft);
++    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 14%, transparent);
++  }
++  .choice:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
++  .choice .icon {
++    width: 32px; height: 32px; border-radius: 8px;
++    display: grid; place-items: center; background: var(--accent-soft-2); color: var(--accent);
++  }
++  .choice h3 { margin: 1px 0 0; font-size: 14.5px; }
++  .choice p { margin: 0; color: var(--muted); font-size: 12.3px; line-height: 1.55; }
++  .badge {
++    position: absolute; top: 11px; right: 11px;
++    font-size: 10px; font-weight: 650; color: var(--accent);
++    background: var(--panel); border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
++    border-radius: 999px; padding: 2px 7px;
++  }
++  .checkmark {
++    position: absolute; top: 11px; right: 11px; width: 17px; height: 17px;
++    border-radius: 50%; background: var(--accent); color: #fff; display: none; place-items: center;
++  }
++  .choice[aria-checked="true"] .checkmark { display: grid; }
++  .choice[aria-checked="true"] .badge { display: none; }
++
++  /* ---------- 功能开关列表 ---------- */
++  .feature-list { display: grid; gap: 0; margin-top: 2px; }
++  .feature-list .field { padding: 11px 0; }
++
++  .note {
++    display: flex; gap: 9px; align-items: flex-start;
++    margin-top: 16px; padding: 11px 13px;
++    background: var(--panel-2); border: 1px solid var(--line);
++    border-radius: 10px; color: var(--muted); font-size: 12.3px; line-height: 1.6;
++  }
++  .note svg { flex: none; margin-top: 1px; color: var(--accent); }
++  .note a { color: var(--accent); text-decoration: none; }
++  .note a:hover { text-decoration: underline; }
++
++  /* ---------- 扩展 ---------- */
++  .ext-card {
++    display: flex; align-items: center; gap: 14px;
++    padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px;
++    background: var(--panel); margin-bottom: 10px;
++  }
++  .ext-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
++  .ext-grid .ext-card { margin-bottom: 0; }
++  .tag.soft {
++    color: var(--muted); background: var(--panel-2);
++    border: 1px solid var(--line);
++  }
++  .ext-card .logo {
++    width: 40px; height: 40px; border-radius: 10px; flex: none;
++    display: grid; place-items: center;
++    background: var(--accent-soft-2); color: var(--accent); font-weight: 700; font-size: 13px;
++  }
++  .ext-card h3 { margin: 0 0 2px; font-size: 14px; }
++  .ext-card p { margin: 0; color: var(--muted); font-size: 12.3px; line-height: 1.55; }
++  .ext-card .grow { flex: 1; min-width: 0; }
++  .tag {
++    font-size: 10px; font-weight: 650; color: var(--accent);
++    background: var(--accent-soft); border-radius: 999px; padding: 2px 7px; margin-left: 6px;
++  }
++
++  /* ---------- 导入 ---------- */
++  .option-row {
++    display: flex; align-items: center; gap: 14px;
++    padding: 15px 16px; border: 1px solid var(--line);
++    border-radius: 12px; background: var(--panel); margin-bottom: 10px;
++  }
++  .option-row .icon {
++    width: 38px; height: 38px; border-radius: 9px; flex: none;
++    display: grid; place-items: center; background: var(--accent-soft-2); color: var(--accent);
++  }
++  .option-row .grow { flex: 1; min-width: 0; }
++  .option-row h3 { margin: 0 0 2px; font-size: 14px; }
++  .option-row p { margin: 0; color: var(--muted); font-size: 12.3px; line-height: 1.5; }
++
++  /* ---------- 按钮 ---------- */
++  .btn {
++    border: 1px solid var(--line-strong); background: var(--panel);
++    border-radius: 8px; padding: 8px 14px; cursor: pointer;
++    font-size: 12.8px; font-weight: 560; white-space: nowrap;
++  }
++  .btn:hover { background: var(--panel-2); }
++  .btn.primary {
++    background: var(--accent); border-color: var(--accent); color: #fff;
++    box-shadow: 0 6px 16px color-mix(in srgb, var(--accent) 28%, transparent);
++    transition: background .16s ease, box-shadow .16s ease;
++  }
++  .btn.primary:hover {
++    background: var(--accent-hover); border-color: var(--accent-hover);
++    box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 34%, transparent);
++  }
++  .btn.ghost { background: transparent; border-color: transparent; color: var(--muted); }
++  .btn.ghost:hover { background: var(--panel-2); color: var(--text); }
++  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
++
++  /* ---------- 底部 ---------- */
++  .footer {
++    display: flex; align-items: center; gap: 16px;
++    padding: 16px 24px; border-top: 1px solid var(--line); background: var(--panel);
++  }
++  .dots { display: flex; gap: 6px; flex: 1; align-items: center; }
++  .dots button {
++    width: 7px; height: 7px; border-radius: 50%; border: 0; padding: 0;
++    background: var(--line-strong); cursor: pointer;
++    transition: width .18s ease, background .18s ease;
++  }
++  .dots button[aria-current="true"] { width: 22px; border-radius: 999px; background: var(--accent); }
++  .footer .nav { display: flex; gap: 9px; }
++
++  /* ---------- 完成态 ---------- */
++  .done {
++    position: absolute; inset: 0; display: none; place-items: center; text-align: center;
++    padding: 40px; background: var(--panel); z-index: 5;
++  }
++  .done.is-active { display: grid; animation: screenIn .24s ease both; }
++  .done .icon {
++    width: 68px; height: 68px; border-radius: 50%;
++    background: color-mix(in srgb, var(--ok) 14%, transparent); color: var(--ok);
++    display: grid; place-items: center; margin: 0 auto 16px;
++    animation: popIn .4s cubic-bezier(.2, .9, .3, 1.2) both;
++  }
++  @keyframes popIn {
++    from { opacity: 0; transform: scale(.6); }
++    to { opacity: 1; transform: scale(1); }
++  }
++  .done h2 { font-size: 24px; margin: 0 0 8px; }
++  .done p { color: var(--muted); margin: 0 0 22px; line-height: 1.65; }
++  .done .nav { display: flex; gap: 9px; justify-content: center; }
++
++  /* ---------- 弹窗 ---------- */
++  .modal-backdrop {
++    position: absolute; inset: 0; background: rgba(14, 22, 32, .45);
++    display: none; align-items: center; justify-content: center; z-index: 10; padding: 24px;
++  }
++  .modal-backdrop.is-open { display: flex; }
++  .modal {
++    width: min(430px, 100%); background: var(--panel);
++    border: 1px solid var(--line); border-radius: 14px;
++    box-shadow: var(--shadow); padding: 20px;
++  }
++  .modal h3 { margin: 0 0 3px; font-size: 16px; }
++  .modal .sub { color: var(--muted); font-size: 12.3px; margin: 0 0 15px; }
++  .browser-list { display: grid; gap: 7px; margin-bottom: 16px; }
++  .browser-item {
++    display: flex; align-items: center; gap: 10px;
++    padding: 10px 11px; border: 1px solid var(--line);
++    border-radius: 9px; cursor: pointer; background: var(--panel);
++    font-size: 12.8px;
++  }
++  .browser-item[aria-checked="true"] { border-color: var(--accent); background: var(--accent-soft); }
++  .browser-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
++  .browser-item .glyph {
++    width: 21px; height: 21px; border-radius: 5px; background: var(--panel-2);
++    display: grid; place-items: center; font-size: 10px; font-weight: 700; color: var(--muted);
++  }
++  .browser-item .grow { flex: 1; }
++  .modal .nav { display: flex; justify-content: flex-end; gap: 9px; }
++  .progress { height: 5px; border-radius: 999px; background: var(--panel-2); overflow: hidden; margin: 2px 0 16px; display: none; }
++  .progress.is-on { display: block; }
++  .progress i { display: block; height: 100%; width: 0; background: var(--brand-gradient); transition: width .4s ease; }
++
++  @media (max-width: 900px) {
++    .screen { position: relative; inset: auto; padding: 26px 22px; }
++    .app { min-height: 0; }
++    .split { grid-template-columns: 1fr; gap: 24px; align-items: start; }
++    .privacy-grid { grid-template-columns: 1fr; }
++    .hero-visual { min-height: 220px; }
++    .hero-visual .plate { width: 220px; height: 220px; }
++    .hero-visual img { width: 100px; height: 100px; }
++  }
+diff --git a/browser/base/content/onboarding/onboarding.html b/browser/base/content/onboarding/onboarding.html
+new file mode 100644
+index 0000000..81723f6
+--- /dev/null
++++ b/browser/base/content/onboarding/onboarding.html
+@@ -0,0 +1,346 @@
++<!DOCTYPE html>
++<!-- This Source Code Form is subject to the terms of the Mozilla Public
++   - License, v. 2.0. If a copy of the MPL was not distributed with this
++   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
++<html>
++<head>
++  <meta charset="utf-8">
++  <title data-l10n-id="onboarding-window-title"></title>
++  <link rel="localization" href="browser/onboarding.ftl">
++  <link rel="stylesheet" href="chrome://browser/content/onboarding/onboarding.css">
++</head>
++<body>
++
++<div class="app">
++  <header class="topbar">
++    <div class="brand">
++      <img src="chrome://branding/content/icon128.png" alt="">
++      <span data-l10n-id="onboarding-brand"></span>
++      <small data-l10n-id="onboarding-brand-sub"></small>
++    </div>
++    <div class="spacer"></div>
++    <button class="link-btn" id="skipBtn" type="button" data-l10n-id="onboarding-skip"></button>
++  </header>
++
++  <main class="stage">
++
++    <!-- 1 欢迎 -->
++    <section class="screen is-active" data-screen="1">
++      <div class="split">
++        <div>
++          <span class="eyebrow" data-l10n-id="onboarding-welcome-eyebrow"></span>
++          <h1 tabindex="-1" data-l10n-id="onboarding-welcome-title"></h1>
++          <p class="lead" data-l10n-id="onboarding-welcome-body"></p>
++          <ul class="bullets">
++            <li>
++              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
++              <span data-l10n-id="onboarding-welcome-point-esr"></span>
++            </li>
++            <li>
++              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
++              <span data-l10n-id="onboarding-welcome-point-privacy"></span>
++            </li>
++            <li>
++              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
++              <span data-l10n-id="onboarding-welcome-point-settings"></span>
++            </li>
++          </ul>
++        </div>
++        <div class="hero-visual" aria-hidden="true">
++          <img class="hero-logo" src="chrome://branding/content/icon128.png" alt="">
++        </div>
++      </div>
++    </section>
++
++    <!-- 2 外观 -->
++    <section class="screen" data-screen="2">
++      <div class="split single">
++        <div>
++          <span class="eyebrow" data-l10n-id="onboarding-appearance-eyebrow"></span>
++          <h1 tabindex="-1" data-l10n-id="onboarding-appearance-title"></h1>
++          <p class="lead" data-l10n-id="onboarding-appearance-body"></p>
++
++          <div class="field">
++            <div class="field-head">
++              <div class="grow">
++                <div class="field-title" data-l10n-id="onboarding-theme-label"></div>
++                <div class="field-desc" data-l10n-id="onboarding-theme-desc"></div>
++              </div>
++              <input class="switch" type="checkbox" id="themeSwitch">
++            </div>
++          </div>
++
++          <div class="field">
++            <div class="field-head">
++              <div class="grow">
++                <div class="field-title" data-l10n-id="onboarding-variant-label"></div>
++                <div class="field-desc" data-l10n-id="onboarding-variant-desc"></div>
++              </div>
++              <div class="segmented" id="variantSeg" role="group">
++                <button type="button" data-variant="nova">Nova</button>
++                <button type="button" data-variant="proton">Proton</button>
++              </div>
++            </div>
++          </div>
++
++          <div class="field">
++            <div class="field-head">
++              <div class="grow">
++                <div class="field-title" data-l10n-id="onboarding-mode-label"></div>
++                <div class="field-desc" data-l10n-id="onboarding-mode-desc"></div>
++              </div>
++              <div class="segmented" id="modeSeg" role="group">
++                <button type="button" data-mode="auto" data-l10n-id="onboarding-mode-auto"></button>
++                <button type="button" data-mode="light" data-l10n-id="onboarding-mode-light"></button>
++                <button type="button" data-mode="dark" data-l10n-id="onboarding-mode-dark"></button>
++              </div>
++            </div>
++          </div>
++
++          <div class="field">
++            <div class="field-head">
++              <div class="grow">
++                <div class="field-title" data-l10n-id="onboarding-density-label"></div>
++                <div class="field-desc" data-l10n-id="onboarding-density-desc"></div>
++              </div>
++              <div class="segmented" id="densitySeg" role="group">
++                <button type="button" data-density="normal" data-l10n-id="onboarding-density-normal"></button>
++                <button type="button" data-density="compact" data-l10n-id="onboarding-density-compact"></button>
++                <button type="button" data-density="touch" data-l10n-id="onboarding-density-touch"></button>
++              </div>
++            </div>
++          </div>
++
++          <div class="store-cta">
++            <div class="grow">
++              <strong data-l10n-id="onboarding-theme-store-title"></strong>
++              <span data-l10n-id="onboarding-theme-store-desc"></span>
++            </div>
++            <a class="btn" id="themeStoreBtn" href="https://addons.mozilla.org/firefox/themes/" target="_blank" rel="noopener" data-l10n-id="onboarding-theme-store-button"></a>
++          </div>
++
++          <div class="note">
++            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.2v3.4M8 5.2v.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
++            <span data-l10n-id="onboarding-theme-yield-note"></span>
++          </div>
++        </div>
++      </div>
++    </section>
++
++    <!-- 3 自定义 -->
++    <section class="screen" data-screen="3">
++      <span class="eyebrow" data-l10n-id="onboarding-custom-eyebrow"></span>
++      <h1 tabindex="-1" data-l10n-id="onboarding-custom-title"></h1>
++      <p class="lead" data-l10n-id="onboarding-custom-body"></p>
++
++      <div class="feature-list">
++        <div class="field">
++          <div class="field-head">
++            <div class="grow">
++              <div class="field-title" data-l10n-id="onboarding-multithread-label"></div>
++              <div class="field-desc" data-l10n-id="onboarding-multithread-desc"></div>
++            </div>
++            <input class="switch" type="checkbox" data-feature="multithread">
++          </div>
++        </div>
++
++        <div class="field">
++          <div class="field-head">
++            <div class="grow">
++              <div class="field-title" data-l10n-id="onboarding-sidebar-hover-label"></div>
++              <div class="field-desc" data-l10n-id="onboarding-sidebar-hover-desc"></div>
++            </div>
++            <input class="switch" type="checkbox" data-feature="sidebar-hover">
++          </div>
++        </div>
++
++        <div class="field">
++          <div class="field-head">
++            <div class="grow">
++              <div class="field-title" data-l10n-id="onboarding-findbar-label"></div>
++            </div>
++            <input class="switch" type="checkbox" data-feature="findbar">
++          </div>
++        </div>
++
++        <div class="field">
++          <div class="field-head">
++            <div class="grow">
++              <div class="field-title" data-l10n-id="onboarding-tabs-unload-label"></div>
++              <div class="field-desc" data-l10n-id="onboarding-tabs-unload-desc"></div>
++            </div>
++            <input class="switch" type="checkbox" data-feature="tabs-unload">
++          </div>
++        </div>
++
++        <div class="field">
++          <div class="field-head">
++            <div class="grow">
++              <div class="field-title" data-l10n-id="onboarding-update-check-label"></div>
++              <div class="field-desc" data-l10n-id="onboarding-update-check-desc"></div>
++            </div>
++            <input class="switch" type="checkbox" data-feature="update-check">
++          </div>
++        </div>
++
++        <div class="field">
++          <div class="field-head">
++            <div class="grow">
++              <div class="field-title" data-l10n-id="onboarding-ai-sidebar-label"></div>
++              <div class="field-desc" data-l10n-id="onboarding-ai-sidebar-desc"></div>
++            </div>
++            <input class="switch" type="checkbox" data-feature="ai-sidebar">
++          </div>
++        </div>
++      </div>
++
++      <div class="note">
++        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.2v3.4M8 5.2v.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
++        <span data-l10n-id="onboarding-custom-note"><a data-l10n-name="settings" href="about:preferences#vantage"></a></span>
++      </div>
++    </section>
++
++    <!-- 4 隐私 -->
++    <section class="screen" data-screen="4">
++      <span class="eyebrow" data-l10n-id="onboarding-privacy-eyebrow"></span>
++      <h1 tabindex="-1" data-l10n-id="onboarding-privacy-title"></h1>
++      <p class="lead" data-l10n-id="onboarding-privacy-body"></p>
++
++      <div class="ext-card" style="margin-bottom:12px">
++        <span class="logo" aria-hidden="true">
++          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
++        </span>
++        <div class="grow">
++          <h3 data-l10n-id="onboarding-privacy-strict-label"></h3>
++          <p data-l10n-id="onboarding-privacy-strict-desc"></p>
++        </div>
++      </div>
++
++      <div class="field">
++        <div class="field-head">
++          <div class="grow">
++            <div class="field-title" data-l10n-id="onboarding-site-fixes-label"></div>
++            <div class="field-desc" data-l10n-id="onboarding-site-fixes-desc"></div>
++          </div>
++          <input class="switch" type="checkbox" data-feature="site-fixes">
++        </div>
++      </div>
++
++      <div class="field">
++        <div class="field-head">
++          <div class="grow">
++            <div class="field-title" data-l10n-id="onboarding-doh-label"></div>
++            <div class="field-desc" data-l10n-id="onboarding-doh-desc"></div>
++          </div>
++          <input class="switch" type="checkbox" data-feature="doh">
++        </div>
++      </div>
++
++      <div class="note">
++        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.2v3.4M8 5.2v.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
++        <span data-l10n-id="onboarding-privacy-note"></span>
++      </div>
++    </section>
++
++    <!-- 5 扩展 -->
++    <section class="screen" data-screen="5">
++      <span class="eyebrow" data-l10n-id="onboarding-ext-eyebrow"></span>
++      <h1 tabindex="-1" data-l10n-id="onboarding-ext-title"></h1>
++      <p class="lead" data-l10n-id="onboarding-ext-body"></p>
++
++      <div class="ext-grid">
++        <div class="ext-card">
++          <span class="logo" aria-hidden="true">CC</span>
++          <div class="grow">
++            <h3><span data-l10n-id="onboarding-ext-cookies"></span><span class="tag soft" data-l10n-id="onboarding-bundled"></span></h3>
++            <p data-l10n-id="onboarding-ext-cookies-desc"></p>
++          </div>
++        </div>
++
++        <div class="ext-card">
++          <span class="logo" aria-hidden="true">RC</span>
++          <div class="grow">
++            <h3><span data-l10n-id="onboarding-ext-rightclick"></span><span class="tag soft" data-l10n-id="onboarding-bundled"></span></h3>
++            <p data-l10n-id="onboarding-ext-rightclick-desc"></p>
++          </div>
++        </div>
++      </div>
++
++      <div class="ext-card">
++        <span class="logo" aria-hidden="true">Fx</span>
++        <div class="grow">
++          <h3 data-l10n-id="onboarding-ext-store"></h3>
++          <p data-l10n-id="onboarding-ext-store-desc"></p>
++        </div>
++        <a class="btn" href="https://addons.mozilla.org/firefox/" target="_blank" rel="noopener" data-l10n-id="onboarding-ext-store-button"></a>
++      </div>
++
++      <div class="note">
++        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.2v3.4M8 5.2v.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
++        <span data-l10n-id="onboarding-ext-note"><a data-l10n-name="addons" href="about:addons"></a></span>
++      </div>
++    </section>
++
++    <!-- 6 导入与默认 -->
++    <section class="screen" data-screen="6">
++      <span class="eyebrow" data-l10n-id="onboarding-import-eyebrow"></span>
++      <h1 tabindex="-1" data-l10n-id="onboarding-import-title"></h1>
++      <p class="lead" data-l10n-id="onboarding-import-body"></p>
++
++      <div class="option-row">
++        <span class="icon" aria-hidden="true">
++          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3v11m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 15v3a2 2 0 002 2h12a2 2 0 002-2v-3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
++        </span>
++        <div class="grow">
++          <h3 data-l10n-id="onboarding-import-label"></h3>
++          <p data-l10n-id="onboarding-import-desc"></p>
++        </div>
++        <button class="btn" type="button" id="importBtn" data-l10n-id="onboarding-import-button"></button>
++      </div>
++
++      <div class="option-row">
++        <span class="icon" aria-hidden="true">
++          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 12h17M12 3.5c2.2 2.4 3.3 5.3 3.3 8.5S14.2 18.1 12 20.5c-2.2-2.4-3.3-5.3-3.3-8.5S9.8 5.9 12 3.5z" stroke="currentColor" stroke-width="1.5"/></svg>
++        </span>
++        <div class="grow">
++          <h3 data-l10n-id="onboarding-default-label"></h3>
++          <p data-l10n-id="onboarding-default-desc"></p>
++        </div>
++        <input class="switch" type="checkbox" id="defaultSwitch">
++      </div>
++
++      <div class="note">
++        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.2v3.4M8 5.2v.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
++        <span data-l10n-id="onboarding-import-note"></span>
++      </div>
++    </section>
++
++    <!-- 完成态 -->
++    <div class="done" id="doneView" aria-live="polite">
++      <div>
++        <div class="icon" aria-hidden="true">
++          <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
++        </div>
++        <h2 data-l10n-id="onboarding-done-title"></h2>
++        <p data-l10n-id="onboarding-done-body"></p>
++        <div class="nav">
++          <button class="btn" type="button" id="doneClose" data-l10n-id="onboarding-done-close"></button>
++          <button class="btn primary" type="button" id="doneNewTab" data-l10n-id="onboarding-done-newtab"></button>
++        </div>
++      </div>
++    </div>
++
++  </main>
++
++  <footer class="footer">
++    <div class="dots" id="dots" role="tablist"></div>
++    <div class="nav">
++      <button class="btn ghost" type="button" id="backBtn" hidden data-l10n-id="onboarding-back"></button>
++      <button class="btn primary" type="button" id="nextBtn" data-l10n-id="onboarding-next"></button>
++    </div>
++  </footer>
++</div>
++
++<script src="chrome://browser/content/onboarding/onboarding.js" defer></script>
++</body>
++</html>
+diff --git a/browser/base/content/onboarding/onboarding.js b/browser/base/content/onboarding/onboarding.js
+new file mode 100644
+index 0000000..010d5e3
+--- /dev/null
++++ b/browser/base/content/onboarding/onboarding.js
+@@ -0,0 +1,367 @@
++/* This Source Code Form is subject to the terms of the Mozilla Public
++ * License, v. 2.0. If a copy of the MPL was not distributed with this
++ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
++
++"use strict";
++
++const PREF = {
++  theme: "vantage.theme.enabled",
++  nova: "browser.nova.enabled",
++  toolbarTheme: "browser.theme.toolbar-theme",
++  contentTheme: "browser.theme.content-theme",
++  contentOverride: "layout.css.prefers-color-scheme.content-override",
++  density: "browser.uidensity",
++  multithread: "vantage.download.multithread",
++  sidebarHover: "vantage.sidebar.hover-autohide.enabled",
++  findbar: "vantage.findbar.topright",
++  tabsUnload: "browser.tabs.unloadOnLowMemory",
++  updateCheck: "vantage.updateCheck.enabled",
++  aiSidebar: "browser.ml.chat.enabled",
++  siteFixesBaseline: "privacy.trackingprotection.allow_list.baseline.enabled",
++  siteFixesConvenience:
++    "privacy.trackingprotection.allow_list.convenience.enabled",
++  doh: "network.trr.mode",
++  done: "vantage.onboarding.done",
++};
++
++const FEATURE_PREFS = {
++  multithread: PREF.multithread,
++  "sidebar-hover": PREF.sidebarHover,
++  findbar: PREF.findbar,
++  "tabs-unload": PREF.tabsUnload,
++  "update-check": PREF.updateCheck,
++  "ai-sidebar": PREF.aiSidebar,
++  "site-fixes": PREF.siteFixesBaseline,
++  doh: PREF.doh,
++};
++
++const DEFAULTS = {
++  [PREF.theme]: true,
++  [PREF.nova]: true,
++  [PREF.density]: 0,
++  [PREF.multithread]: false,
++  [PREF.sidebarHover]: false,
++  [PREF.findbar]: false,
++  [PREF.tabsUnload]: true,
++  [PREF.updateCheck]: true,
++  [PREF.aiSidebar]: false,
++  [PREF.siteFixesBaseline]: true,
++  [PREF.siteFixesConvenience]: true,
++  [PREF.doh]: 2,
++};
++
++function getBool(name) {
++  try {
++    return Services.prefs.getBoolPref(name);
++  } catch (e) {
++    return !!DEFAULTS[name];
++  }
++}
++
++function getInt(name) {
++  try {
++    return Services.prefs.getIntPref(name);
++  } catch (e) {
++    return Number(DEFAULTS[name] ?? 0);
++  }
++}
++
++function setBool(name, value) {
++  Services.prefs.setBoolPref(name, !!value);
++}
++
++function setInt(name, value) {
++  Services.prefs.setIntPref(name, Number(value));
++}
++
++const screens = Array.from(document.querySelectorAll(".screen[data-screen]"));
++const dotsWrap = document.getElementById("dots");
++const backBtn = document.getElementById("backBtn");
++const nextBtn = document.getElementById("nextBtn");
++const skipBtn = document.getElementById("skipBtn");
++const doneView = document.getElementById("doneView");
++const total = screens.length;
++
++let step = 0;
++let animating = false;
++let mode = "auto";
++
++// ---------- 步骤点 ----------
++for (let i = 1; i <= total; i++) {
++  const b = document.createElement("button");
++  b.type = "button";
++  b.dataset.go = String(i);
++  b.addEventListener("click", () => showStep(i));
++  dotsWrap.appendChild(b);
++}
++const dots = Array.from(dotsWrap.children);
++
++// ---------- 外观 ----------
++const themeSwitch = document.getElementById("themeSwitch");
++const variantSeg = document.getElementById("variantSeg");
++const modeSeg = document.getElementById("modeSeg");
++const densitySeg = document.getElementById("densitySeg");
++
++function applyTheme(value) {
++  document.documentElement.dataset.vantageTheme = value ? "on" : "off";
++}
++
++function applyDark() {
++  const dark =
++    mode === "dark" ||
++    (mode === "auto" &&
++      window.matchMedia("(prefers-color-scheme: dark)").matches);
++  document.documentElement.dataset.dark = dark ? "true" : "false";
++}
++
++function applyModeButtons() {
++  modeSeg.querySelectorAll("button").forEach(b => {
++    b.setAttribute("aria-pressed", String(b.dataset.mode === mode));
++  });
++}
++
++function applyVariant(value) {
++  variantSeg.querySelectorAll("button").forEach(b => {
++    b.setAttribute("aria-pressed", String(b.dataset.variant === value));
++  });
++}
++
++function applyDensity(value) {
++  densitySeg.querySelectorAll("button").forEach(b => {
++    b.setAttribute("aria-pressed", String(b.dataset.density === value));
++  });
++}
++
++const MODE_TO_PREF = { dark: 0, light: 1, auto: 2 };
++
++function readMode() {
++  const value = getInt(PREF.toolbarTheme);
++  return value === 0 ? "dark" : value === 1 ? "light" : "auto";
++}
++
++function writeMode(value) {
++  const n = MODE_TO_PREF[value] ?? 2;
++  setInt(PREF.toolbarTheme, n);
++  setInt(PREF.contentTheme, n);
++  setInt(PREF.contentOverride, n);
++}
++
++themeSwitch.checked = getBool(PREF.theme);
++applyTheme(themeSwitch.checked);
++themeSwitch.addEventListener("change", () => {
++  setBool(PREF.theme, themeSwitch.checked);
++  applyTheme(themeSwitch.checked);
++});
++
++const novaEnabled = getBool(PREF.nova);
++applyVariant(novaEnabled ? "nova" : "proton");
++variantSeg.addEventListener("click", event => {
++  const btn = event.target.closest("button[data-variant]");
++  if (!btn) {
++    return;
++  }
++  const isNova = btn.dataset.variant === "nova";
++  setBool(PREF.nova, isNova);
++  applyVariant(btn.dataset.variant);
++});
++
++mode = readMode();
++applyModeButtons();
++applyDark();
++modeSeg.addEventListener("click", event => {
++  const btn = event.target.closest("button[data-mode]");
++  if (!btn) {
++    return;
++  }
++  mode = btn.dataset.mode;
++  writeMode(mode);
++  applyModeButtons();
++  applyDark();
++});
++
++const densityValue = getInt(PREF.density);
++applyDensity(
++  densityValue === 1 ? "compact" : densityValue === 2 ? "touch" : "normal"
++);
++densitySeg.addEventListener("click", event => {
++  const btn = event.target.closest("button[data-density]");
++  if (!btn) {
++    return;
++  }
++  const value = { normal: 0, compact: 1, touch: 2 }[btn.dataset.density] ?? 0;
++  setInt(PREF.density, value);
++  applyDensity(btn.dataset.density);
++});
++
++// ---------- 功能开关 ----------
++document.querySelectorAll("[data-feature]").forEach(input => {
++  const key = input.dataset.feature;
++  if (key === "doh") {
++    input.checked = getInt(PREF.doh) !== 0;
++    input.addEventListener("change", () => {
++      setInt(PREF.doh, input.checked ? 2 : 0);
++    });
++    return;
++  }
++  if (key === "site-fixes") {
++    input.checked =
++      getBool(PREF.siteFixesBaseline) && getBool(PREF.siteFixesConvenience);
++    input.addEventListener("change", () => {
++      setBool(PREF.siteFixesBaseline, input.checked);
++      setBool(PREF.siteFixesConvenience, input.checked);
++    });
++    return;
++  }
++  const pref = FEATURE_PREFS[key];
++  if (!pref) {
++    return;
++  }
++  input.checked = getBool(pref);
++  input.addEventListener("change", () => setBool(pref, input.checked));
++});
++
++// ---------- 导入 / 默认 ----------
++function getBrowserWindow() {
++  return Services.wm.getMostRecentWindow("navigator:browser");
++}
++
++document.getElementById("importBtn").addEventListener("click", () => {
++  const win = getBrowserWindow();
++  const { MigrationUtils } = ChromeUtils.importESModule(
++    "resource:///modules/MigrationUtils.sys.mjs"
++  );
++  if (win) {
++    MigrationUtils.showMigrationWizard(win, { entrypoint: "newtab" });
++  }
++});
++
++const defaultSwitch = document.getElementById("defaultSwitch");
++defaultSwitch.addEventListener("change", async () => {
++  if (!defaultSwitch.checked) {
++    return;
++  }
++  try {
++    const { ShellService } = ChromeUtils.importESModule(
++      "resource:///modules/ShellService.sys.mjs"
++    );
++    await ShellService.setDefaultBrowser();
++  } catch (e) {
++    defaultSwitch.checked = false;
++  }
++});
++
++// ---------- 完成 / 导航 ----------
++function finish() {
++  try {
++    Services.prefs.setBoolPref(PREF.done, true);
++  } catch (e) {
++    // 写失败不影响关闭
++  }
++  const win = getBrowserWindow();
++  if (win) {
++    win.gBrowser.removeCurrentTab();
++  }
++}
++
++function paint(n, push) {
++  step = n;
++  screens.forEach(s =>
++    s.classList.toggle("is-active", Number(s.dataset.screen) === n)
++  );
++  dots.forEach(d =>
++    d.setAttribute("aria-current", String(Number(d.dataset.go) === n))
++  );
++  backBtn.hidden = n === 1;
++  doneView.classList.remove("is-active");
++  if (n === total) {
++    nextBtn.dataset.l10nId = "onboarding-finish";
++  } else {
++    nextBtn.dataset.l10nId = "onboarding-next";
++  }
++  document.l10n.translateElements([nextBtn]);
++  if (push !== false) {
++    const url = new URL(location.href);
++    url.searchParams.set("step", n);
++    history.replaceState(null, "", url);
++  }
++  const heading = screens[n - 1].querySelector("h1");
++  if (heading) {
++    heading.focus();
++  }
++}
++
++function showStep(n, push) {
++  n = Math.max(1, Math.min(total, n));
++  if (n === step || animating) {
++    return;
++  }
++  const current = step ? screens[step - 1] : null;
++  if (!current) {
++    paint(n, push);
++    return;
++  }
++  animating = true;
++  current.classList.add("is-leaving");
++  setTimeout(() => {
++    current.classList.remove("is-active", "is-leaving");
++    paint(n, push);
++    animating = false;
++  }, 170);
++}
++
++nextBtn.addEventListener("click", () => {
++  if (step === total) {
++    finish();
++  } else {
++    showStep(step + 1);
++  }
++});
++backBtn.addEventListener("click", () => showStep(step - 1));
++skipBtn.addEventListener("click", finish);
++
++document.getElementById("doneClose").addEventListener("click", finish);
++document.getElementById("doneNewTab").addEventListener("click", () => {
++  const win = getBrowserWindow();
++  if (win) {
++    win.openTrustedLinkIn("about:newtab", "tab");
++    win.gBrowser.removeCurrentTab();
++  }
++});
++
++document.addEventListener("keydown", event => {
++  if (event.altKey || event.metaKey || event.ctrlKey) {
++    return;
++  }
++  const t = event.target;
++  if (t && (t.tagName === "INPUT" || t.tagName === "BUTTON" || t.isContentEditable)) {
++    return;
++  }
++  if (event.key === "ArrowRight") {
++    showStep(step + 1);
++  } else if (event.key === "ArrowLeft") {
++    showStep(step - 1);
++  }
++});
++
++// 给开关补上可读标签（用同行的标题元素）
++document.querySelectorAll("input.switch").forEach((input, index) => {
++  const row = input.closest(".field, .option-row");
++  const title = row?.querySelector(".field-title, h3");
++  if (!title) {
++    return;
++  }
++  if (!title.id) {
++    title.id = `onboarding-label-${index}`;
++  }
++  input.setAttribute("aria-labelledby", title.id);
++});
++
++const mq = window.matchMedia("(prefers-color-scheme: dark)");
++mq.addEventListener?.("change", () => {
++  if (mode === "auto") {
++    applyDark();
++  }
++});
++
++const params = new URLSearchParams(location.search);
++showStep(Number(params.get("step")) || 1, false);
+diff --git a/browser/base/jar.mn b/browser/base/jar.mn
+index 1cac142..5732b39 100644
+--- a/browser/base/jar.mn
++++ b/browser/base/jar.mn
+@@ -72,6 +72,9 @@ browser.jar:
+         content/browser/pageinfo/security.js                (content/pageinfo/security.js)
+         content/browser/robot.ico                           (content/robot.ico)
+         content/browser/static-robot.png                    (content/static-robot.png)
++        content/browser/onboarding/onboarding.html         (content/onboarding/onboarding.html)
++        content/browser/onboarding/onboarding.css          (content/onboarding/onboarding.css)
++        content/browser/onboarding/onboarding.js           (content/onboarding/onboarding.js)
+         content/browser/safeMode.css                        (content/safeMode.css)
+         content/browser/safeMode.js                         (content/safeMode.js)
+         content/browser/safeMode.xhtml                      (content/safeMode.xhtml)
+diff --git a/browser/components/about/AboutRedirector.cpp b/browser/components/about/AboutRedirector.cpp
+index 48bbf40..a1b5e79 100644
+--- a/browser/components/about/AboutRedirector.cpp
++++ b/browser/components/about/AboutRedirector.cpp
+@@ -81,6 +81,9 @@ static const RedirEntry kRedirMap[] = {
+          nsIAboutModule::IS_SECURE_CHROME_UI},
+     {"firefoxview", "chrome://browser/content/firefoxview/firefoxview.html",
+      nsIAboutModule::ALLOW_SCRIPT | nsIAboutModule::IS_SECURE_CHROME_UI},
++    {"onboarding", "chrome://browser/content/onboarding/onboarding.html",
++     nsIAboutModule::ALLOW_SCRIPT | nsIAboutModule::IS_SECURE_CHROME_UI |
++         nsIAboutModule::HIDE_FROM_ABOUTABOUT},
+     {"opentabs", "chrome://browser/content/tabbrowser/opentabs.html",
+      nsIAboutModule::ALLOW_SCRIPT | nsIAboutModule::IS_SECURE_CHROME_UI |
+          nsIAboutModule::HIDE_FROM_ABOUTABOUT},
+diff --git a/browser/components/about/components.conf b/browser/components/about/components.conf
+index 6d439f1..3f484f2 100644
+--- a/browser/components/about/components.conf
++++ b/browser/components/about/components.conf
+@@ -14,6 +14,7 @@ pages = [
+     'loginsimportreport',
+     'firefoxview',
+     'messagepreview',
++    'onboarding',
+     'opentabs',
+     'policies',
+     'preferences',
+diff --git a/browser/locales/en-US/browser/onboarding.ftl b/browser/locales/en-US/browser/onboarding.ftl
+new file mode 100644
+index 0000000..9db285e
+--- /dev/null
++++ b/browser/locales/en-US/browser/onboarding.ftl
+@@ -0,0 +1,96 @@
++# This Source Code Form is subject to the terms of the Mozilla Public
++# License, v. 2.0. If a copy of the MPL was not distributed with this
++# file, You can obtain one at http://mozilla.org/MPL/2.0/.
++
++onboarding-window-title = Set up Vantage
++onboarding-brand = Vantage
++onboarding-brand-sub = Setup
++
++onboarding-skip = Skip
++onboarding-back = Back
++onboarding-next = Continue
++onboarding-finish = Finish
++
++onboarding-welcome-eyebrow = Welcome
++onboarding-welcome-title = Welcome to Vantage
++onboarding-welcome-body = Take a minute to set up the look and the features you use. Everything can be changed later.
++onboarding-welcome-point-esr = Built on Firefox ESR, with steady updates
++onboarding-welcome-point-privacy = Tracking protection on, no usage data collected
++onboarding-welcome-point-settings = Every option can be changed anytime
++
++onboarding-appearance-eyebrow = Appearance
++onboarding-appearance-title = Make it look like yours
++onboarding-appearance-body = Pick what fits you. Every option can be changed later.
++onboarding-theme-label = Vantage theme
++onboarding-theme-desc = Blue palette shared by the toolbar, sidebar, and menus.
++onboarding-variant-label = Interface style
++onboarding-variant-desc = Nova is the Firefox 153 layout; Proton is the classic one.
++onboarding-mode-label = Color mode
++onboarding-mode-desc = Applies to the browser interface and default web colors.
++onboarding-mode-auto = System
++onboarding-mode-light = Light
++onboarding-mode-dark = Dark
++onboarding-density-label = Toolbar density
++onboarding-density-desc = Normal is the default; Compact saves space; Touch is for touch screens.
++onboarding-density-normal = Normal
++onboarding-density-compact = Compact (experimental)
++onboarding-density-touch = Touch
++onboarding-theme-store-title = Want a different look?
++onboarding-theme-store-desc = The theme store has more colors and backgrounds.
++onboarding-theme-store-button = Browse themes
++onboarding-theme-yield-note = When a third-party theme is enabled, the Vantage theme steps aside and leaves your theme untouched.
++
++onboarding-custom-eyebrow = Customize
++onboarding-custom-title = Customize your journey
++onboarding-custom-body = A few settings worth deciding now. Only the common ones are listed here; more are in Settings.
++onboarding-multithread-label = Multi-threaded downloads
++onboarding-multithread-desc = Downloads in parallel when the server supports ranges, otherwise falls back to a single connection.
++onboarding-sidebar-hover-label = Sidebar on hover
++onboarding-sidebar-hover-desc = Move the pointer to the left edge of the window to open the sidebar.
++onboarding-findbar-label = Chromium-style find bar
++onboarding-tabs-unload-label = Unload inactive tabs
++onboarding-tabs-unload-desc = Unloads inactive tabs when memory is low, and reloads them when needed.
++onboarding-update-check-label = Check for updates
++onboarding-update-check-desc = Checks for a new Vantage version at startup. It only notifies, never installs.
++onboarding-ai-sidebar-label = AI sidebar
++onboarding-ai-sidebar-desc = Opens AI chat in the sidebar, with DeepSeek, Qwen, Doubao, ChatGPT, Gemini, and Claude.
++onboarding-custom-note = The full list is in <a data-l10n-name="settings">Settings → Vantage</a>. You can change it anytime.
++
++onboarding-privacy-eyebrow = Privacy
++onboarding-privacy-title = Privacy is already set
++onboarding-privacy-body = Vantage uses strict tracking protection by default, so there is no level to pick. If a site breaks because of it, you can relax protection for that site only.
++onboarding-privacy-strict-label = Strict protection (default)
++onboarding-privacy-strict-desc = Blocks known trackers, cross-site cookies, fingerprinting scripts, and miners. No extra setup needed.
++onboarding-site-fixes-label = Fix minor site issues automatically
++onboarding-site-fixes-desc = Automatically relaxes protection for known affected sites. Only those sites are affected; the global level stays the same.
++onboarding-doh-label = DNS over HTTPS (DoH)
++onboarding-doh-desc = Encrypts DNS queries. On by default, using regional servers, with a fallback to system DNS.
++onboarding-privacy-note = If one site breaks, click the shield icon in the address bar to turn protection off for that site only.
++
++onboarding-ext-eyebrow = Extensions
++onboarding-ext-title = Extensions: two included
++onboarding-ext-body = Both are enabled by default and can be disabled in the add-ons manager. Install anything else from the store.
++onboarding-bundled = Included
++onboarding-ext-cookies = I still don't care about cookies
++onboarding-ext-cookies-desc = Handles cookie consent prompts automatically.
++onboarding-ext-rightclick = Re-enable right click
++onboarding-ext-rightclick-desc = Forces copying on pages that block right-click and copy.
++onboarding-ext-store = Add-ons store
++onboarding-ext-store-desc = Everything else lives here. Extensions installed in Vantage work the same as in Firefox.
++onboarding-ext-store-button = Open the store
++onboarding-ext-note = Permissions, updates, and disabling are managed in the <a data-l10n-name="addons">add-ons manager</a>.
++
++onboarding-import-eyebrow = Import and default
++onboarding-import-title = Two last things
++onboarding-import-body = Bring over bookmarks, passwords, and history from another browser if you want, and make Vantage your default browser.
++onboarding-import-label = Import from another browser
++onboarding-import-desc = Bookmarks, passwords, history, extensions, and settings.
++onboarding-import-button = Import…
++onboarding-default-label = Set as default browser
++onboarding-default-desc = Open web links in Vantage.
++onboarding-import-note = Both can be changed later in Settings → General.
++
++onboarding-done-title = All set
++onboarding-done-body = You can reopen this guide from Settings → Vantage.
++onboarding-done-close = Close
++onboarding-done-newtab = Open a new tab

@@ -117,3 +117,5 @@ about-librewolf = 优势浏览器是发达的（国家或地区）由 ASYS 技�
 official-site1 = 官员位置
 changelog-link = 什么是新的
 github-link = GitHub
+
+vantage-onboarding-button = 重新查看新手引导

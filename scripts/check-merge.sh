@@ -91,6 +91,8 @@ VANTAGE_PATCHES=(
     "patches/ui-patches/nova-dom-fullscreen-gap.patch"
     "patches/ui-patches/vantage-findbar-topright.patch"
     "patches/ui-patches/vantage-multithread-download-button.patch"
+    "patches/ui-patches/vantage-theme.patch"
+    "patches/ui-patches/vantage-onboarding.patch"
 )
 
 for p in "${VANTAGE_PATCHES[@]}"; do

@@ -2,3 +2,5 @@ about-librewolf = Vantage 瀏覽器由 ASYS 科技開發，基於 Mozilla Firefo
 official-site1 = 官方網站
 changelog-link = 新版變化
 github-link = GitHub
+
+vantage-onboarding-button = 重新開啟新手引導

@@ -47,7 +47,8 @@ Vantage has migrated to the **Firefox ESR (Extended Support Release)** channel, 
 | Status | Features |
 |:---:|---|
 | ✅ Shipped | Toolbar "multi-threaded download" toggle, "find bar floating at the top-right", "sidebar auto-reveal on hover", right-click "Copy as Markdown link" / "Open in IE", toolbar "Reopen last closed", automatic tab sleep, AI sidebar, local DoH optimization, Nova appearance, Vantage theme (built into the source, applies instantly), fullscreen edge fix, compact density option (experimental) |
-| 🧪 Planned | First-run onboarding (`about:vantage`), Glance quick preview, command palette, handling of links for Chromium-based browsers, more right-click enhancements |
+| ✅ Done | First-run onboarding (`about:onboarding`) |
+| 🧪 Planned | Glance quick preview, command palette, handling of links for Chromium-based browsers, more right-click enhancements |
 
 ---
 
@@ -77,7 +78,7 @@ Our goal: keep Firefox's powerful extension ecosystem while giving users a priva
 | 🧷 **Right-click enhancements** | "Copy as Markdown link", "Open in IE" (Windows) |
 | 🛌 **Automatic tab sleep** | Automatically sleeps inactive tabs under memory pressure to free up RAM |
 | 🚫 **No telemetry by default** | Telemetry, experiments, and ad push are fully disabled |
-| 🧩 **Extension freedom** | No bundled extensions preinstalled; users choose their own — existing uBlock Origin setups are unaffected |
+| 🧩 **Extension freedom** | Ships only two small web-compatibility extensions (cookie prompts, restore right-click); everything else is your choice — existing uBlock Origin setups are unaffected |
 | 🖥️ **All platforms, multiple channels** | Windows (x64/arm64), Linux (x86_64/aarch64/LoongArch64), macOS (x64/arm64, unsigned `.dmg`); winget / MSIX / deb / rpm / AppImage / portable |
 | 📦 **LTO / PGO build** | Built with LTO / PGO and trimmed language packs for better runtime performance and a smaller package |
 
@@ -100,7 +101,7 @@ Our goal: keep Firefox's powerful extension ecosystem while giving users a priva
 - Telemetry, experiments, and ad push fully disabled; no data collection by default
 - RFP fingerprinting protection, WebRTC leak prevention, enforced HTTPS
 - DoH enabled by default (Alibaba / Tencent optimized for China, with automatic fallback to system DNS)
-- No bundled extensions preinstalled; content blockers and other extensions are yours to choose
+- Ships only two small web-compatibility extensions; content blockers and other extensions are yours to choose
 
 **Usability & customization**
 
@@ -228,6 +229,7 @@ See [`docs/LOONG64-CROSS-COMPILE.md`](docs/LOONG64-CROSS-COMPILE.md)
 ## ⚙️ Configuration & usage
 
 ### Suggested first-run checklist
+- ✅ The setup guide opens on first run at `about:onboarding` (reopen it from Settings → Vantage)
 - ✅ Visit `about:preferences#vantage` to explore Vantage-specific settings (update checks, AI sidebar, privacy policy, etc.)
 - ✅ Review the privacy settings under `about:preferences#privacy`
 - ✅ Enable or disable Mozilla sync as you prefer

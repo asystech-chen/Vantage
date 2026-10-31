@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vantage 新手引导 · 原型</title>
+<link rel="icon" href="assets/logo32.png">
+<style>
+  /* ===== Vantage 品牌色（取自 browser/themes/shared/vantage-theme.css） ===== */
+  :root {
+    --accent: #3b82f6;
+    --accent-hover: #2563eb;
+    --accent-active: #1d4ed8;
+    --accent-soft: #eef4ff;
+    --accent-soft-2: #dbeafe;
+    --teal: #0ea5a0;
+    --green: #10b981;
+    --brand-gradient: linear-gradient(90deg, #3b82f6 0%, #0ea5a0 52%, #10b981 100%);
+
+    --bg: #f8fafc;
+    --panel: #ffffff;
+    --panel-2: #f3f6fc;
+    --text: #1a2b3c;
+    --muted: #5a6b7c;
+    --faint: #8ba3c8;
+    --line: rgba(157, 180, 208, .42);
+    --line-strong: rgba(139, 163, 200, .62);
+    --ok: #10b981;
+    --shadow: 0 16px 44px rgba(26, 43, 60, .12);
+    --radius: 14px;
+  }
+
+  html[data-dark="true"] {
+    --accent: #60a5fa;
+    --accent-hover: #3b82f6;
+    --accent-active: #2563eb;
+    --accent-soft: #1b2b42;
+    --accent-soft-2: #223a5c;
+    --bg: #141316;
+    --panel: #1d1b1f;
+    --panel-2: #26232a;
+    --text: #ebf4f5;
+    --muted: #8fa8ae;
+    --faint: #6680a8;
+    --line: rgba(143, 168, 174, .26);
+    --line-strong: rgba(143, 168, 174, .44);
+    --ok: #34d399;
+    --shadow: 0 16px 44px rgba(0, 0, 0, .5);
+  }
+
+  /* 关闭 Vantage 主题：回到 Firefox 原生紫 */
+  html[data-vantage-theme="off"] {
+    --accent: #8b5cf6;
+    --accent-hover: #7c3aed;
+    --accent-active: #6d28d9;
+    --accent-soft: #f3edff;
+    --accent-soft-2: #e9dcff;
+    --brand-gradient: linear-gradient(90deg, #8b5cf6 0%, #a855f7 100%);
+  }
+  html[data-dark="true"][data-vantage-theme="off"] {
+    --accent: #a78bfa;
+    --accent-hover: #8b5cf6;
+    --accent-soft: #2a2340;
+    --accent-soft-2: #3a3058;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+
+  body {
+    margin: 0;
+    color: var(--text);
+    background: var(--bg);
+    font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
+                 "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 18px;
+  }
+
+  button { font: inherit; color: inherit; }
+
+  .app {
+    width: min(1120px, 100%);
+    min-height: min(720px, calc(100vh - 48px));
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Vantage 品牌渐变条 */
+  .app::before {
+    content: "";
+    position: absolute; inset: 0 0 auto 0; height: 3px;
+    background: var(--brand-gradient);
+    z-index: 20;
+  }
+
+  /* ---------- 顶栏 ---------- */
+  .topbar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 19px 26px 17px;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 9px; font-weight: 650; letter-spacing: .1px; }
+  .brand img { width: 24px; height: 24px; border-radius: 6px; }
+  .brand small { color: var(--faint); font-weight: 500; letter-spacing: 0; font-size: 12px; }
+  .topbar .spacer { flex: 1; }
+  .link-btn {
+    border: 0; background: transparent; color: var(--muted);
+    padding: 7px 11px; border-radius: 8px; cursor: pointer; font-size: 13px;
+  }
+  .link-btn:hover { background: var(--panel-2); color: var(--text); }
+
+  /* ---------- 主体 ---------- */
+  .stage { flex: 1; position: relative; min-height: 0; }
+  .screen {
+    position: absolute; inset: 0;
+    padding: 34px 44px 30px;
+    display: none;
+    overflow: auto;
+  }
+  .screen.is-active {
+    display: block;
+    animation: screenIn .26s ease both;
+  }
+  .screen.is-leaving {
+    display: block; pointer-events: none;
+    animation: screenOut .17s ease both;
+  }
+  @keyframes screenIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes screenOut {
+    from { opacity: 1; transform: none; }
+    to { opacity: 0; transform: translateY(-6px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .screen.is-active, .screen.is-leaving { animation: none; }
+    * { transition: none !important; }
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(330px, .9fr);
+    gap: 42px;
+    align-items: center;
+    min-height: 100%;
+  }
+  .split.single {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 680px;
+    align-content: start;
+    padding-top: 6px;
+  }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 12px; font-weight: 650; letter-spacing: .3px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+    border-radius: 999px; padding: 5px 11px;
+    margin-bottom: 16px;
+  }
+  .eyebrow::before {
+    content: ""; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--brand-gradient);
+  }
+
+  h1 {
+    font-size: clamp(27px, 3.1vw, 36px);
+    line-height: 1.2; letter-spacing: -.5px;
+    margin: 0 0 14px; outline: none;
+  }
+  .lead {
+    font-size: 15.5px; line-height: 1.72; color: var(--muted);
+    margin: 0 0 20px; max-width: 48ch;
+  }
+
+  .bullets { list-style: none; margin: 0; padding: 0; display: grid; gap: 11px; }
+  .bullets li {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 14px; color: var(--muted); line-height: 1.55;
+  }
+  .bullets svg { flex: none; margin-top: 2px; color: var(--accent); }
+
+  .hero-visual {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 320px; position: relative;
+  }
+  .hero-logo {
+    width: 172px; height: 172px; border-radius: 38px;
+    box-shadow: 0 20px 50px rgba(26, 43, 60, .20);
+  }
+
+  /* ---------- 主题商店引导 ---------- */
+  .store-cta {
+    display: flex; align-items: center; gap: 12px; margin-top: 14px;
+    padding: 12px 14px; border: 1px solid color-mix(in srgb, var(--accent) 26%, var(--line));
+    border-radius: 10px; background: var(--accent-soft);
+  }
+  .store-cta .grow { flex: 1; min-width: 0; }
+  .store-cta strong { display: block; font-size: 13px; margin-bottom: 2px; }
+  .store-cta span { color: var(--muted); font-size: 12px; line-height: 1.5; }
+
+  /* ---------- 表单行 ---------- */
+  .field { padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .field:last-of-type { border-bottom: 0; }
+  .field-head { display: flex; align-items: center; gap: 12px; }
+  .field-title { font-size: 14px; font-weight: 620; }
+  .field-desc { color: var(--muted); font-size: 12.5px; line-height: 1.5; margin-top: 2px; }
+  .field .grow { flex: 1; min-width: 0; }
+
+  .switch {
+    appearance: none; width: 40px; height: 23px; border-radius: 999px;
+    background: var(--line-strong); position: relative; cursor: pointer;
+    transition: background .16s ease; flex: none;
+  }
+  .switch::after {
+    content: ""; position: absolute; top: 3px; left: 3px;
+    width: 17px; height: 17px; border-radius: 50%; background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .25); transition: transform .16s ease;
+  }
+  .switch:checked { background: var(--accent); }
+  .switch:checked::after { transform: translateX(17px); }
+  .switch:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+  .segmented {
+    display: inline-flex; background: var(--panel-2); border: 1px solid var(--line);
+    border-radius: 9px; padding: 3px; gap: 2px; flex: none;
+  }
+  .segmented button {
+    border: 0; background: transparent; color: var(--muted);
+    padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12.5px;
+  }
+  .segmented button[aria-pressed="true"] {
+    background: var(--panel); color: var(--text);
+    box-shadow: 0 1px 3px rgba(26, 43, 60, .14); font-weight: 600;
+  }
+  .segmented button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  /* ---------- 隐私卡片 ---------- */
+  .privacy-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 4px; }
+  .choice {
+    position: relative; text-align: left; cursor: pointer;
+    background: var(--panel); border: 1.5px solid var(--line);
+    border-radius: 12px; padding: 16px 15px 14px;
+    display: flex; flex-direction: column; gap: 7px;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .choice:hover { border-color: var(--line-strong); }
+  .choice[aria-checked="true"] {
+    border-color: var(--accent); background: var(--accent-soft);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 14%, transparent);
+  }
+  .choice:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .choice .icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    display: grid; place-items: center; background: var(--accent-soft-2); color: var(--accent);
+  }
+  .choice h3 { margin: 1px 0 0; font-size: 14.5px; }
+  .choice p { margin: 0; color: var(--muted); font-size: 12.3px; line-height: 1.55; }
+  .badge {
+    position: absolute; top: 11px; right: 11px;
+    font-size: 10px; font-weight: 650; color: var(--accent);
+    background: var(--panel); border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+    border-radius: 999px; padding: 2px 7px;
+  }
+  .checkmark {
+    position: absolute; top: 11px; right: 11px; width: 17px; height: 17px;
+    border-radius: 50%; background: var(--accent); color: #fff; display: none; place-items: center;
+  }
+  .choice[aria-checked="true"] .checkmark { display: grid; }
+  .choice[aria-checked="true"] .badge { display: none; }
+
+  /* ---------- 功能开关列表 ---------- */
+  .feature-list { display: grid; gap: 0; margin-top: 2px; }
+  .feature-list .field { padding: 11px 0; }
+
+  .note {
+    display: flex; gap: 9px; align-items: flex-start;
+    margin-top: 16px; padding: 11px 13px;
+    background: var(--panel-2); border: 1px solid var(--line);
+    border-radius: 10px; color: var(--muted); font-size: 12.3px; line-height: 1.6;
+  }
+  .note svg { flex: none; margin-top: 1px; color: var(--accent); }
+  .note a { color: var(--accent); text-decoration: none; }
+  .note a:hover { text-decoration: underline; }
+
+  /* ---------- 扩展 ---------- */
+  .ext-card {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px;
+    background: var(--panel); margin-bottom: 10px;
+  }
+  .ext-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .ext-grid .ext-card { margin-bottom: 0; }
+  .tag.soft {
+    color: var(--muted); background: var(--panel-2);
+    border: 1px solid var(--line);
+  }
+  .ext-card .logo {
+    width: 40px; height: 40px; border-radius: 10px; flex: none;
+    display: grid; place-items: center;
+    background: var(--accent-soft-2); color: var(--accent); font-weight: 700; font-size: 13px;
+  }
+  .ext-card h3 { margin: 0 0 2px; font-size: 14px; }
+  .ext-card p { margin: 0; color: var(--muted); font-size: 12.3px; line-height: 1.55; }
+  .ext-card .grow { flex: 1; min-width: 0; }
+  .tag {
+    font-size: 10px; font-weight: 650; color: var(--accent);
+    background: var(--accent-soft); border-radius: 999px; padding: 2px 7px; margin-left: 6px;
+  }
+
+  /* ---------- 导入 ---------- */
+  .option-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 15px 16px; border: 1px solid var(--line);
+    border-radius: 12px; background: var(--panel); margin-bottom: 10px;
+  }
+  .option-row .icon {
+    width: 38px; height: 38px; border-radius: 9px; flex: none;
+    display: grid; place-items: center; background: var(--accent-soft-2); color: var(--accent);
+  }
+  .option-row .grow { flex: 1; min-width: 0; }
+  .option-row h3 { margin: 0 0 2px; font-size: 14px; }
+  .option-row p { margin: 0; color: var(--muted); font-size: 12.3px; line-height: 1.5; }
+
+  /* ---------- 按钮 ---------- */
+  .btn {
+    border: 1px solid var(--line-strong); background: var(--panel);
+    border-radius: 8px; padding: 8px 14px; cursor: pointer;
+    font-size: 12.8px; font-weight: 560; white-space: nowrap;
+  }
+  .btn:hover { background: var(--panel-2); }
+  .btn.primary {
+    background: var(--accent); border-color: var(--accent); color: #fff;
+    box-shadow: 0 6px 16px color-mix(in srgb, var(--accent) 28%, transparent);
+    transition: background .16s ease, box-shadow .16s ease;
+  }
+  .btn.primary:hover {
+    background: var(--accent-hover); border-color: var(--accent-hover);
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 34%, transparent);
+  }
+  .btn.ghost { background: transparent; border-color: transparent; color: var(--muted); }
+  .btn.ghost:hover { background: var(--panel-2); color: var(--text); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* ---------- 底部 ---------- */
+  .footer {
+    display: flex; align-items: center; gap: 16px;
+    padding: 16px 24px; border-top: 1px solid var(--line); background: var(--panel);
+  }
+  .dots { display: flex; gap: 6px; flex: 1; align-items: center; }
+  .dots button {
+    width: 7px; height: 7px; border-radius: 50%; border: 0; padding: 0;
+    background: var(--line-strong); cursor: pointer;
+    transition: width .18s ease, background .18s ease;
+  }
+  .dots button[aria-current="true"] { width: 22px; border-radius: 999px; background: var(--accent); }
+  .footer .nav { display: flex; gap: 9px; }
+
+  /* ---------- 完成态 ---------- */
+  .done {
+    position: absolute; inset: 0; display: none; place-items: center; text-align: center;
+    padding: 40px; background: var(--panel); z-index: 5;
+  }
+  .done.is-active { display: grid; animation: screenIn .24s ease both; }
+  .done .icon {
+    width: 68px; height: 68px; border-radius: 50%;
+    background: color-mix(in srgb, var(--ok) 14%, transparent); color: var(--ok);
+    display: grid; place-items: center; margin: 0 auto 16px;
+    animation: popIn .4s cubic-bezier(.2, .9, .3, 1.2) both;
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(.6); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .done h2 { font-size: 24px; margin: 0 0 8px; }
+  .done p { color: var(--muted); margin: 0 0 22px; line-height: 1.65; }
+  .done .nav { display: flex; gap: 9px; justify-content: center; }
+
+  /* ---------- 弹窗 ---------- */
+  .modal-backdrop {
+    position: absolute; inset: 0; background: rgba(14, 22, 32, .45);
+    display: none; align-items: center; justify-content: center; z-index: 10; padding: 24px;
+  }
+  .modal-backdrop.is-open { display: flex; }
+  .modal {
+    width: min(430px, 100%); background: var(--panel);
+    border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow); padding: 20px;
+  }
+  .modal h3 { margin: 0 0 3px; font-size: 16px; }
+  .modal .sub { color: var(--muted); font-size: 12.3px; margin: 0 0 15px; }
+  .browser-list { display: grid; gap: 7px; margin-bottom: 16px; }
+  .browser-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 11px; border: 1px solid var(--line);
+    border-radius: 9px; cursor: pointer; background: var(--panel);
+    font-size: 12.8px;
+  }
+  .browser-item[aria-checked="true"] { border-color: var(--accent); background: var(--accent-soft); }
+  .browser-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .browser-item .glyph {
+    width: 21px; height: 21px; border-radius: 5px; background: var(--panel-2);
+    display: grid; place-items: center; font-size: 10px; font-weight: 700; color: var(--muted);
+  }
+  .browser-item .grow { flex: 1; }
+  .modal .nav { display: flex; justify-content: flex-end; gap: 9px; }
+  .progress { height: 5px; border-radius: 999px; background: var(--panel-2); overflow: hidden; margin: 2px 0 16px; display: none; }
+  .progress.is-on { display: block; }
+  .progress i { display: block; height: 100%; width: 0; background: var(--brand-gradient); transition: width .4s ease; }
+
+  /* ---------- 评审标记 ---------- */
+  .proto-chip {
+    position: fixed; left: 14px; bottom: 12px;
+    font-size: 11px; color: var(--faint);
+    background: color-mix(in srgb, var(--panel) 82%, transparent);
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 5px 10px; backdrop-filter: blur(8px);
+    display: flex; gap: 8px; align-items: center;
+  }
+  .proto-chip button { border: 0; background: transparent; color: var(--accent); cursor: pointer; font-size: 11px; padding: 0; }
+
+  @media (max-width: 900px) {
+    .screen { position: relative; inset: auto; padding: 26px 22px; }
+    .app { min-height: 0; }
+    .split { grid-template-columns: 1fr; gap: 24px; align-items: start; }
+    .privacy-grid { grid-template-columns: 1fr; }
+    .hero-visual { min-height: 220px; }
+    .hero-visual .plate { width: 220px; height: 220px; }
+    .hero-visual img { width: 100px; height: 100px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <img src="assets/logo.png" alt="">
+      <span>Vantage</span>
+      <small>新手引导</small>
+    </div>
+    <div class="spacer"></div>
+    <button class="link-btn" id="skipBtn" type="button">跳过</button>
+  </header>
+
+  <main class="stage">
+
+    <!-- 1 欢迎 -->
+    <section class="screen is-active" data-screen="1">
+      <div class="split">
+        <div>
+          <span class="eyebrow">欢迎</span>
+          <h1 tabindex="-1">欢迎使用 Vantage</h1>
+          <p class="lead">先花一分钟，把外观和常用功能设好。所有选项之后都能改。</p>
+          <ul class="bullets">
+            <li>
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              基于 Firefox ESR，更新稳定
+            </li>
+            <li>
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              默认开启跟踪保护，不收集数据
+            </li>
+            <li>
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              设置随时可改
+            </li>
+          </ul>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <img class="hero-logo" src="assets/logo.png" alt="">
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 外观 -->
+    <section class="screen" data-screen="2">
+      <div class="split single">
+        <div>
+          <span class="eyebrow">外观</span>
+          <h1 tabindex="-1">先让它看起来顺眼</h1>
+          <p class="lead">选一套自己喜欢的样子，所有选项都能随时改。</p>
+
+          <div class="field">
+            <div class="field-head">
+              <div class="grow">
+                <div class="field-title">Vantage 主题</div>
+                <div class="field-desc">蓝系配色，工具栏、侧栏和菜单使用同一套颜色。</div>
+              </div>
+              <input class="switch" type="checkbox" id="themeSwitch" checked aria-label="Vantage 主题">
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-head">
+              <div class="grow">
+                <div class="field-title">界面风格</div>
+                <div class="field-desc">Nova 是 Firefox 153 的新布局；Proton 是经典布局。</div>
+              </div>
+              <div class="segmented" id="variantSeg" role="group" aria-label="界面风格">
+                <button type="button" data-variant="nova" aria-pressed="true">Nova</button>
+                <button type="button" data-variant="proton" aria-pressed="false">Proton</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-head">
+              <div class="grow">
+                <div class="field-title">颜色模式</div>
+                <div class="field-desc">作用于浏览器界面和网页的默认配色。</div>
+              </div>
+              <div class="segmented" id="modeSeg" role="group" aria-label="颜色模式">
+                <button type="button" data-mode="auto" aria-pressed="true">跟随系统</button>
+                <button type="button" data-mode="light" aria-pressed="false">浅色</button>
+                <button type="button" data-mode="dark" aria-pressed="false">深色</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="field-head">
+              <div class="grow">
+                <div class="field-title">工具栏密度</div>
+                <div class="field-desc">普通是默认；紧凑更省空间；触摸适合触屏设备。</div>
+              </div>
+              <div class="segmented" id="densitySeg" role="group" aria-label="工具栏密度">
+                <button type="button" data-density="normal" aria-pressed="true">普通</button>
+                <button type="button" data-density="compact" aria-pressed="false">紧凑（实验）</button>
+                <button type="button" data-density="touch" aria-pressed="false">触摸</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="store-cta">
+            <div class="grow">
+              <strong>想换个样子？</strong>
+              <span>主题商店里有更多配色和背景，装上就是你的。</span>
+            </div>
+            <a class="btn" href="https://addons.mozilla.org/firefox/themes/" target="_blank" rel="noopener">浏览主题</a>
+          </div>
+
+          <div class="note">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.2v3.4M8 5.2v.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <span>启用第三方主题后，Vantage 主题会自动让位，不会覆盖你的主题。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 功能开关 -->
+    <section class="screen" data-screen="3">
+      <span class="eyebrow">自定义</span>
+      <h1 tabindex="-1">自定义你的旅途</h1>
+      <p class="lead">挑几个顺手的设置。这里只列常用的，更多在设置面板里。</p>
+
+      <div class="feature-list">
+        <div class="field">
+          <div class="field-head">
+            <div class="grow">
+              <div class="field-title">多线程下载</div>
+              <div class="field-desc">服务器支持分段时并行下载；不支持时自动回退为单线程。</div>
+            </div>
+            <input class="switch" type="checkbox" data-feature="multithread" aria-label="多线程下载">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <div class="grow">
+              <div class="field-title">侧栏悬停弹出</div>
+              <div class="field-desc">鼠标移到窗口左侧边缘时，自动弹出侧栏。</div>
+            </div>
+            <input class="switch" type="checkbox" data-feature="sidebar-hover" aria-label="侧栏悬停弹出">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <div class="grow">
+              <div class="field-title">Chromium 样式查找栏</div>
+            </div>
+            <input class="switch" type="checkbox" data-feature="findbar" aria-label="查找栏显示在右上角">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <div class="grow">
+              <div class="field-title">标签自动休眠</div>
+              <div class="field-desc">内存紧张时休眠不活跃标签页，需要时再唤醒。</div>
+            </div>
+            <input class="switch" type="checkbox" data-feature="tabs-unload" checked aria-label="标签自动休眠">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <div class="grow">
+              <div class="field-title">自动检查更新</div>
+              <div class="field-desc">启动后检查 Vantage 新版本，只提示，不自动安装。</div>
+            </div>
+            <input class="switch" type="checkbox" data-feature="update-check" checked aria-label="自动检查更新">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="field-head">
+            <div class="grow">
+              <div class="field-title">AI 侧栏</div>
+              <div class="field-desc">在侧边栏打开 AI 聊天，支持 DeepSeek、Qwen、豆包、ChatGPT、Gemini 和 Claude。</div>
+            </div>
+            <input class="switch" type="checkbox" data-feature="ai-sidebar" aria-label="AI 侧栏">
+          </div>
+        </div>
+      </div>
+
+      <div class="note">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.2v3.4M8 5.2v.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span>完整列表在 <a href="about:preferences#vantage">设置 → Vantage</a>。之后随时可以改。</span>
+      </div>
+    </section>
+
+    <!-- 4 隐私 -->
+    <section class="screen" data-screen="4">
+      <span class="eyebrow">隐私</span>
+      <h1 tabindex="-1">隐私默认已经调好</h1>
+      <p class="lead">
+        Vantage 默认使用严格跟踪保护，不需要你在级别之间选择。遇到网站因为保护而显示异常时，可以只对这个网站放宽。
+      </p>
+
+      <div class="ext-card" style="margin-bottom:12px">
+        <span class="logo" aria-hidden="true">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <div class="grow">
+          <h3>严格保护（默认）</h3>
+          <p>拦截已知跟踪器、跨站 Cookie、指纹脚本和挖矿脚本。不需要额外设置。</p>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <div class="grow">
+            <div class="field-title">自动修复轻微的网站问题</div>
+            <div class="field-desc">对已知会被跟踪保护弄坏的网站自动放宽，只影响这些站点，不改变全局保护级别。</div>
+          </div>
+          <input class="switch" type="checkbox" data-feature="site-fixes" checked aria-label="自动修复轻微的网站问题">
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <div class="grow">
+            <div class="field-title">DNS over HTTPS（DoH）</div>
+            <div class="field-desc">加密 DNS 查询。默认开启，使用国内可用节点，故障时回退系统 DNS。</div>
+          </div>
+          <input class="switch" type="checkbox" data-feature="doh" checked aria-label="DNS over HTTPS">
+        </div>
+      </div>
+
+      <div class="note">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.2v3.4M8 5.2v.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span>单个网站出问题时，点地址栏的盾牌图标，就能只对这个网站关闭保护。</span>
+      </div>
+    </section>
+
+    <!-- 5 扩展 -->
+    <section class="screen" data-screen="5">
+      <span class="eyebrow">扩展</span>
+      <h1 tabindex="-1">扩展：两个已随附</h1>
+      <p class="lead">这两个扩展默认启用，可以在扩展管理器里停用。其他扩展去商店自己装。</p>
+
+      <div class="ext-grid">
+        <div class="ext-card">
+          <span class="logo" aria-hidden="true">CC</span>
+          <div class="grow">
+            <h3>I still don't care about cookies<span class="tag soft">已随附</span></h3>
+            <p>自动处理 Cookie 同意提示。</p>
+          </div>
+        </div>
+
+        <div class="ext-card">
+          <span class="logo" aria-hidden="true">RC</span>
+          <div class="grow">
+            <h3>Re-enable right click<span class="tag soft">已随附</span></h3>
+            <p>强制允许无法右键和复制的网页进行复制。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="ext-card">
+        <span class="logo" aria-hidden="true">Fx</span>
+        <div class="grow">
+          <h3>扩展商店</h3>
+          <p>其他扩展都在这里。装在 Vantage 里的扩展与 Firefox 通用。</p>
+        </div>
+        <a class="btn" href="https://addons.mozilla.org/firefox/" target="_blank" rel="noopener">打开扩展商店</a>
+      </div>
+
+      <div class="note">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.2v3.4M8 5.2v.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span>扩展的权限、更新和停用都在 <a href="about:addons">扩展管理器</a> 里统一管理。</span>
+      </div>
+    </section>
+
+    <!-- 6 导入与默认 -->
+    <section class="screen" data-screen="6">
+      <span class="eyebrow">导入与默认</span>
+      <h1 tabindex="-1">最后两件事</h1>
+      <p class="lead">需要的话，把旧浏览器里的书签、密码和历史带过来；也可以让 Vantage 成为默认浏览器。</p>
+
+      <div class="option-row">
+        <span class="icon" aria-hidden="true">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><path d="M12 3v11m0 0l-4-4m4 4l4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 15v3a2 2 0 002 2h12a2 2 0 002-2v-3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </span>
+        <div class="grow">
+          <h3>从其他浏览器导入</h3>
+          <p>书签、密码、历史、扩展和设置。</p>
+        </div>
+        <button class="btn" type="button" id="importBtn">导入…</button>
+      </div>
+
+      <div class="option-row">
+        <span class="icon" aria-hidden="true">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 12h17M12 3.5c2.2 2.4 3.3 5.3 3.3 8.5S14.2 18.1 12 20.5c-2.2-2.4-3.3-5.3-3.3-8.5S9.8 5.9 12 3.5z" stroke="currentColor" stroke-width="1.5"/></svg>
+        </span>
+        <div class="grow">
+          <h3>设为默认浏览器</h3>
+          <p>打开网页链接时优先使用 Vantage。</p>
+        </div>
+        <input class="switch" type="checkbox" id="defaultSwitch" aria-label="设为默认浏览器">
+      </div>
+
+      <div class="note">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.2v3.4M8 5.2v.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <span>这两项之后都能在「设置 → 常规」里重新操作。</span>
+      </div>
+    </section>
+
+    <!-- 完成态 -->
+    <div class="done" id="doneView" aria-live="polite">
+      <div>
+        <div class="icon" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h2>设置完成</h2>
+        <p>随时可以在「设置 → 常规」里重新打开这个引导。</p>
+        <div class="nav">
+          <button class="btn" type="button" id="doneClose">关闭</button>
+          <button class="btn primary" type="button" id="doneNewTab">打开新标签页</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 导入弹窗 -->
+    <div class="modal-backdrop" id="importModal" role="dialog" aria-modal="true" aria-labelledby="importTitle">
+      <div class="modal">
+        <h3 id="importTitle">从其他浏览器导入</h3>
+        <p class="sub">选择要导入数据的浏览器。</p>
+        <div class="browser-list" role="listbox" aria-label="浏览器">
+          <div class="browser-item" role="option" tabindex="0" aria-checked="true">
+            <span class="glyph">C</span><span class="grow">Chrome</span><span class="dot c"></span>
+          </div>
+          <div class="browser-item" role="option" tabindex="0" aria-checked="false">
+            <span class="glyph">E</span><span class="grow">Edge</span><span class="dot b"></span>
+          </div>
+          <div class="browser-item" role="option" tabindex="0" aria-checked="false">
+            <span class="glyph">F</span><span class="grow">Firefox</span><span class="dot a"></span>
+          </div>
+          <div class="browser-item" role="option" tabindex="0" aria-checked="false">
+            <span class="glyph">S</span><span class="grow">Safari</span><span class="dot"></span>
+          </div>
+        </div>
+        <div class="progress" id="importProgress"><i></i></div>
+        <div class="nav">
+          <button class="btn ghost" type="button" id="importCancel">取消</button>
+          <button class="btn primary" type="button" id="importStart">开始导入</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="footer">
+    <div class="dots" id="dots" role="tablist" aria-label="步骤"></div>
+    <div class="nav">
+      <button class="btn ghost" type="button" id="backBtn" hidden>返回</button>
+      <button class="btn primary" type="button" id="nextBtn">继续</button>
+    </div>
+  </footer>
+</div>
+
+<div class="proto-chip">
+  <span>HTML 原型 · 仅用于评审</span>
+  <button type="button" id="resetBtn">重置</button>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  const screens = Array.from(document.querySelectorAll(".screen[data-screen]"));
+  const dotsWrap = document.getElementById("dots");
+  const backBtn = document.getElementById("backBtn");
+  const nextBtn = document.getElementById("nextBtn");
+  const skipBtn = document.getElementById("skipBtn");
+  const doneView = document.getElementById("doneView");
+  const total = screens.length;
+  let step = 0;
+  let animating = false;
+
+  const params = new URLSearchParams(location.search);
+
+  const state = {
+    theme: true,
+    variant: "nova",
+    mode: "auto",
+    density: "normal",
+    privacy: "strict",
+  };
+
+  // 步骤点
+  for (let i = 1; i <= total; i++) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.dataset.go = String(i);
+    b.setAttribute("aria-label", "第 " + i + " 步");
+    b.addEventListener("click", () => showStep(i));
+    dotsWrap.appendChild(b);
+  }
+  const dots = Array.from(dotsWrap.children);
+
+  function applyMode() {
+    const dark = state.mode === "dark" ||
+      (state.mode === "auto" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    document.documentElement.dataset.dark = dark ? "true" : "false";
+  }
+
+  function applyTheme() {
+    document.documentElement.dataset.vantageTheme = state.theme ? "on" : "off";
+  }
+
+  function applyVariant() {
+    document.querySelectorAll("#variantSeg button").forEach(b => {
+      b.setAttribute("aria-pressed", String(b.dataset.variant === state.variant));
+    });
+  }
+
+  function applyDensity() {
+    document.querySelectorAll("#densitySeg button").forEach(b => {
+      b.setAttribute("aria-pressed", String(b.dataset.density === state.density));
+    });
+  }
+
+  function applyModeButtons() {
+    document.querySelectorAll("#modeSeg button").forEach(b => {
+      b.setAttribute("aria-pressed", String(b.dataset.mode === state.mode));
+    });
+  }
+
+  function applyPrivacy(value) {
+    state.privacy = value;
+    document.querySelectorAll(".choice").forEach(c => {
+      c.setAttribute("aria-checked", String(c.dataset.privacy === value));
+    });
+  }
+
+  function paint(n, push) {
+    step = n;
+    screens.forEach(s => s.classList.toggle("is-active", Number(s.dataset.screen) === n));
+    dots.forEach(d => d.setAttribute("aria-current", String(Number(d.dataset.go) === n)));
+    backBtn.hidden = n === 1;
+    nextBtn.textContent = n === total ? "完成" : "继续";
+    doneView.classList.remove("is-active");
+    if (push !== false) {
+      const url = new URL(location.href);
+      url.searchParams.set("step", n);
+      history.replaceState(null, "", url);
+    }
+    const heading = screens[n - 1].querySelector("h1");
+    if (heading) heading.focus();
+  }
+
+  function showStep(n, push) {
+    n = Math.max(1, Math.min(total, n));
+    if (n === step || animating) return;
+    const current = step ? screens[step - 1] : null;
+    if (!current) { paint(n, push); return; }
+    animating = true;
+    current.classList.add("is-leaving");
+    setTimeout(() => {
+      current.classList.remove("is-active", "is-leaving");
+      paint(n, push);
+      animating = false;
+    }, 170);
+  }
+
+  nextBtn.addEventListener("click", () => {
+    if (step === total) {
+      doneView.classList.add("is-active");
+      document.getElementById("doneNewTab").focus();
+    } else {
+      showStep(step + 1);
+    }
+  });
+
+  backBtn.addEventListener("click", () => showStep(step - 1));
+  skipBtn.addEventListener("click", () => doneView.classList.add("is-active"));
+
+  // 外观
+  document.getElementById("themeSwitch").addEventListener("change", e => {
+    state.theme = e.target.checked;
+    applyTheme();
+  });
+  document.querySelectorAll("#variantSeg button").forEach(btn => {
+    btn.addEventListener("click", () => { state.variant = btn.dataset.variant; applyVariant(); });
+  });
+  document.querySelectorAll("#modeSeg button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      state.mode = btn.dataset.mode; applyMode(); applyModeButtons();
+    });
+  });
+  document.getElementById("densitySeg").addEventListener("click", e => {
+    const btn = e.target.closest("button[data-density]");
+    if (!btn) return;
+    state.density = btn.dataset.density;
+    applyDensity();
+  });
+
+  // 隐私
+  document.querySelectorAll(".choice").forEach(card => {
+    const pick = () => {
+      applyPrivacy(card.dataset.privacy);
+      if (card.dataset.privacy === "custom") {
+        setTimeout(() => window.open("about:preferences#privacy", "_blank", "noopener"), 240);
+      }
+    };
+    card.addEventListener("click", pick);
+    card.addEventListener("keydown", e => {
+      if (e.key === " " || e.key === "Enter") { e.preventDefault(); pick(); }
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        const all = Array.from(document.querySelectorAll(".choice"));
+        const i = all.indexOf(card);
+        const next = all[(i + (e.key === "ArrowRight" ? 1 : all.length - 1)) % all.length];
+        next.focus();
+        applyPrivacy(next.dataset.privacy);
+      }
+    });
+  });
+
+  // 导入
+  const importModal = document.getElementById("importModal");
+  const importProgress = document.getElementById("importProgress");
+  const importStart = document.getElementById("importStart");
+
+  document.getElementById("importBtn").addEventListener("click", () => {
+    importModal.classList.add("is-open");
+    importProgress.classList.remove("is-on");
+    importProgress.querySelector("i").style.width = "0";
+    importStart.textContent = "开始导入";
+    importStart.disabled = false;
+    importModal.querySelector(".browser-item").focus();
+  });
+  document.getElementById("importCancel").addEventListener("click", () => importModal.classList.remove("is-open"));
+  importModal.addEventListener("click", e => { if (e.target === importModal) importModal.classList.remove("is-open"); });
+
+  document.querySelectorAll(".browser-item").forEach(item => {
+    const select = () => {
+      document.querySelectorAll(".browser-item").forEach(i => i.setAttribute("aria-checked", "false"));
+      item.setAttribute("aria-checked", "true");
+    };
+    item.addEventListener("click", select);
+    item.addEventListener("keydown", e => {
+      if (e.key === " " || e.key === "Enter") { e.preventDefault(); select(); }
+    });
+  });
+
+  importStart.addEventListener("click", () => {
+    importStart.disabled = true;
+    importStart.textContent = "导入中…";
+    importProgress.classList.add("is-on");
+    const bar = importProgress.querySelector("i");
+    let p = 0;
+    const timer = setInterval(() => {
+      p = Math.min(100, p + 12 + Math.random() * 14);
+      bar.style.width = p + "%";
+      if (p >= 100) {
+        clearInterval(timer);
+        importStart.textContent = "完成";
+        setTimeout(() => {
+          importModal.classList.remove("is-open");
+          importStart.disabled = false;
+        }, 450);
+      }
+    }, 240);
+  });
+
+  document.getElementById("doneClose").addEventListener("click", () => {
+    doneView.classList.remove("is-active");
+    showStep(1);
+  });
+  document.getElementById("doneNewTab").addEventListener("click", () => {
+    window.open("about:newtab", "_blank", "noopener");
+  });
+
+  // 重置 / 键盘
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    state.theme = true; state.variant = "nova"; state.mode = "auto";
+    state.density = "normal"; state.privacy = "strict";
+    document.getElementById("themeSwitch").checked = true;
+    document.getElementById("defaultSwitch").checked = false;
+    document.querySelectorAll("[data-feature]").forEach(el => {
+      el.checked = el.dataset.feature === "tabs-unload" || el.dataset.feature === "update-check" || el.dataset.feature === "doh" || el.dataset.feature === "site-fixes";
+    });
+    applyTheme(); applyVariant(); applyMode(); applyModeButtons(); applyDensity(); applyPrivacy("strict");
+    importModal.classList.remove("is-open");
+    doneView.classList.remove("is-active");
+    showStep(1);
+  });
+
+  document.addEventListener("keydown", e => {
+    if (importModal.classList.contains("is-open")) {
+      if (e.key === "Escape") importModal.classList.remove("is-open");
+      return;
+    }
+    if (e.key === "Escape") { doneView.classList.add("is-active"); return; }
+    if (e.altKey || e.metaKey || e.ctrlKey) return;
+    const t = e.target;
+    if (t && (t.tagName === "INPUT" || t.tagName === "BUTTON" || t.isContentEditable)) return;
+    if (e.key === "ArrowRight") showStep(step + 1);
+    if (e.key === "ArrowLeft") showStep(step - 1);
+  });
+
+  // 初始化
+  if (params.get("dark") === "1") state.mode = "dark";
+  if (params.get("theme") === "off") {
+    state.theme = false;
+    document.getElementById("themeSwitch").checked = false;
+  }
+  if (params.get("variant") === "proton") state.variant = "proton";
+  if (params.get("density") === "compact") state.density = "compact";
+  if (params.get("density") === "touch") state.density = "touch";
+
+  applyMode(); applyTheme(); applyVariant(); applyModeButtons(); applyDensity(); applyPrivacy("strict");
+  showStep(Number(params.get("step")) || 1, false);
+
+  const mq = window.matchMedia("(prefers-color-scheme: dark)");
+  mq.addEventListener?.("change", () => { if (state.mode === "auto") applyMode(); });
+})();
+</script>
+</body>
+</html>
