@@ -1,9 +1,9 @@
 diff --git a/browser/base/content/onboarding/onboarding.css b/browser/base/content/onboarding/onboarding.css
 new file mode 100644
-index 0000000..0a35d58
+index 0000000..30b69c9
 --- /dev/null
 +++ b/browser/base/content/onboarding/onboarding.css
-@@ -0,0 +1,422 @@
+@@ -0,0 +1,424 @@
 +/* ===== Vantage 品牌色（取自 browser/themes/shared/vantage-theme.css） ===== */
 +  :root {
 +    --accent: #3b82f6;
@@ -73,18 +73,20 @@ index 0000000..0a35d58
 +                 "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
 +    -webkit-font-smoothing: antialiased;
 +    display: flex;
-+    align-items: stretch;
++    align-items: center;
++    justify-content: center;
++    padding: 24px 18px;
 +  }
 +
 +  button { font: inherit; color: inherit; }
 +
 +  .app {
-+    width: 100%;
-+    min-height: 100vh;
++    width: min(1120px, 100%);
++    min-height: min(720px, calc(100vh - 48px));
 +    background: var(--panel);
-+    border: 0;
-+    border-radius: 0;
-+    box-shadow: none;
++    border: 1px solid var(--line);
++    border-radius: 16px;
++    box-shadow: var(--shadow);
 +    display: flex;
 +    flex-direction: column;
 +    overflow: hidden;
@@ -428,10 +430,10 @@ index 0000000..0a35d58
 +  }
 diff --git a/browser/base/content/onboarding/onboarding.html b/browser/base/content/onboarding/onboarding.html
 new file mode 100644
-index 0000000..81723f6
+index 0000000..585ab2f
 --- /dev/null
 +++ b/browser/base/content/onboarding/onboarding.html
-@@ -0,0 +1,346 @@
+@@ -0,0 +1,347 @@
 +<!DOCTYPE html>
 +<!-- This Source Code Form is subject to the terms of the Mozilla Public
 +   - License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -771,6 +773,7 @@ index 0000000..81723f6
 +    <div class="nav">
 +      <button class="btn ghost" type="button" id="backBtn" hidden data-l10n-id="onboarding-back"></button>
 +      <button class="btn primary" type="button" id="nextBtn" data-l10n-id="onboarding-next"></button>
++      <button class="btn primary" type="button" id="finishBtn" data-l10n-id="onboarding-finish" hidden></button>
 +    </div>
 +  </footer>
 +</div>
@@ -780,10 +783,10 @@ index 0000000..81723f6
 +</html>
 diff --git a/browser/base/content/onboarding/onboarding.js b/browser/base/content/onboarding/onboarding.js
 new file mode 100644
-index 0000000..010d5e3
+index 0000000..e2d37cb
 --- /dev/null
 +++ b/browser/base/content/onboarding/onboarding.js
-@@ -0,0 +1,367 @@
+@@ -0,0 +1,359 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -865,6 +868,7 @@ index 0000000..010d5e3
 +const backBtn = document.getElementById("backBtn");
 +const nextBtn = document.getElementById("nextBtn");
 +const skipBtn = document.getElementById("skipBtn");
++const finishBtn = document.getElementById("finishBtn");
 +const doneView = document.getElementById("doneView");
 +const total = screens.length;
 +
@@ -1059,12 +1063,8 @@ index 0000000..010d5e3
 +  );
 +  backBtn.hidden = n === 1;
 +  doneView.classList.remove("is-active");
-+  if (n === total) {
-+    nextBtn.dataset.l10nId = "onboarding-finish";
-+  } else {
-+    nextBtn.dataset.l10nId = "onboarding-next";
-+  }
-+  document.l10n.translateElements([nextBtn]);
++  nextBtn.hidden = n === total;
++  finishBtn.hidden = n !== total;
 +  if (push !== false) {
 +    const url = new URL(location.href);
 +    url.searchParams.set("step", n);
@@ -1095,13 +1095,8 @@ index 0000000..010d5e3
 +  }, 170);
 +}
 +
-+nextBtn.addEventListener("click", () => {
-+  if (step === total) {
-+    finish();
-+  } else {
-+    showStep(step + 1);
-+  }
-+});
++nextBtn.addEventListener("click", () => showStep(step + 1));
++finishBtn.addEventListener("click", finish);
 +backBtn.addEventListener("click", () => showStep(step - 1));
 +skipBtn.addEventListener("click", finish);
 +
