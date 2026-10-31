@@ -800,10 +800,10 @@ index 0000000..585ab2f
 +</html>
 diff --git a/browser/base/content/onboarding/onboarding.js b/browser/base/content/onboarding/onboarding.js
 new file mode 100644
-index 0000000..70a23bd
+index 0000000..f4f75d4
 --- /dev/null
 +++ b/browser/base/content/onboarding/onboarding.js
-@@ -0,0 +1,391 @@
+@@ -0,0 +1,397 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -1064,6 +1064,12 @@ index 0000000..70a23bd
 +});
 +
 +const defaultSwitch = document.getElementById("defaultSwitch");
++try {
++  const { ShellService } = ChromeUtils.importESModule(
++    "resource:///modules/ShellService.sys.mjs"
++  );
++  defaultSwitch.checked = ShellService.isDefaultBrowser();
++} catch (e) {}
 +defaultSwitch.addEventListener("change", async () => {
 +  if (!defaultSwitch.checked) {
 +    return;
@@ -1074,7 +1080,7 @@ index 0000000..70a23bd
 +    );
 +    await ShellService.setDefaultBrowser();
 +  } catch (e) {
-+    defaultSwitch.checked = false;
++    // 系统注册失败时保持用户的选择，不回弹
 +  }
 +});
 +
