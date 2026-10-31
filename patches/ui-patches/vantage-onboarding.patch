@@ -800,10 +800,10 @@ index 0000000..585ab2f
 +</html>
 diff --git a/browser/base/content/onboarding/onboarding.js b/browser/base/content/onboarding/onboarding.js
 new file mode 100644
-index 0000000..45fb9d6
+index 0000000..8cf6e97
 --- /dev/null
 +++ b/browser/base/content/onboarding/onboarding.js
-@@ -0,0 +1,380 @@
+@@ -0,0 +1,391 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -1081,6 +1081,17 @@ index 0000000..45fb9d6
 +// ---------- 完成 / 导航 ----------
 +function finish() {
 +  try {
++    if (
++      Services.prefs.getStringPref("browser.startup.homepage", "") ===
++      "about:onboarding"
++    ) {
++      Services.prefs.setStringPref(
++        "browser.startup.homepage",
++        "https://asystech.cn/start"
++      );
++    }
++  } catch (e) {}
++  try {
 +    Services.prefs.setBoolPref(PREF.done, true);
 +  } catch (e) {
 +    // 写失败不影响关闭
@@ -1198,52 +1209,6 @@ index 1cac142..5732b39 100644
          content/browser/safeMode.css                        (content/safeMode.css)
          content/browser/safeMode.js                         (content/safeMode.js)
          content/browser/safeMode.xhtml                      (content/safeMode.xhtml)
-diff --git a/browser/components/BrowserContentHandler.sys.mjs b/browser/components/BrowserContentHandler.sys.mjs
-index 64c325f..964f0fd 100644
---- a/browser/components/BrowserContentHandler.sys.mjs
-+++ b/browser/components/BrowserContentHandler.sys.mjs
-@@ -155,6 +155,13 @@ const OVERRIDE_NEW_BUILD_ID = 3;
-  *       otherwise.
-  */
- function needHomepageOverride(updateMilestones = true) {
-+  // Vantage: 新 profile 首次启动优先打开内置引导（about:onboarding）。
-+  // LibreWolf 默认把 homepage_override.mstone 设为 ignore，welcome_url 不会触发；
-+  // 标记由 settings/vantage.cfg 在检测到全新 profile 时写入。
-+  if (Services.prefs.getBoolPref("vantage.onboarding.firstRun", false)) {
-+    return OVERRIDE_NEW_PROFILE;
-+  }
-+
-   var savedmstone = Services.prefs.getCharPref(
-     "browser.startup.homepage_override.mstone",
-     ""
-@@ -832,12 +839,21 @@ nsBrowserContentHandler.prototype = {
-           case OVERRIDE_NEW_PROFILE:
-             // New profile.
-             gFirstRunProfile = true;
--            overridePage = Services.urlFormatter.formatURLPref(
--              "startup.homepage_welcome_url"
--            );
--            additionalPage = Services.urlFormatter.formatURLPref(
--              "startup.homepage_welcome_url.additional"
--            );
-+            if (
-+              Services.prefs.getBoolPref("vantage.onboarding.firstRun", false)
-+            ) {
-+              // Vantage: 新 profile 首次启动直接打开内置引导，不依赖 welcome_url。
-+              Services.prefs.setBoolPref("vantage.onboarding.firstRun", false);
-+              overridePage = "about:onboarding";
-+              additionalPage = "";
-+            } else {
-+              overridePage = Services.urlFormatter.formatURLPref(
-+                "startup.homepage_welcome_url"
-+              );
-+              additionalPage = Services.urlFormatter.formatURLPref(
-+                "startup.homepage_welcome_url.additional"
-+              );
-+            }
-             // Turn on 'later run' pages for new profiles.
-             lazy.LaterRun.enable(lazy.LaterRun.ENABLE_REASON_NEW_PROFILE);
-             break;
 diff --git a/browser/components/about/AboutRedirector.cpp b/browser/components/about/AboutRedirector.cpp
 index 48bbf40..a1b5e79 100644
 --- a/browser/components/about/AboutRedirector.cpp
