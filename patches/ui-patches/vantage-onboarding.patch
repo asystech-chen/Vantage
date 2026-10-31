@@ -1160,6 +1160,25 @@ index 1cac142..5732b39 100644
          content/browser/safeMode.css                        (content/safeMode.css)
          content/browser/safeMode.js                         (content/safeMode.js)
          content/browser/safeMode.xhtml                      (content/safeMode.xhtml)
+diff --git a/browser/components/BrowserContentHandler.sys.mjs b/browser/components/BrowserContentHandler.sys.mjs
+index 64c325f..4d95788 100644
+--- a/browser/components/BrowserContentHandler.sys.mjs
++++ b/browser/components/BrowserContentHandler.sys.mjs
+@@ -155,6 +155,14 @@ const OVERRIDE_NEW_BUILD_ID = 3;
+  *       otherwise.
+  */
+ function needHomepageOverride(updateMilestones = true) {
++  // Vantage: 新 profile 首次启动优先打开内置引导（about:onboarding）。
++  // LibreWolf 默认把 homepage_override.mstone 设为 ignore，welcome_url 不会触发；
++  // 标记由 settings/vantage.cfg 在检测到全新 profile 时写入。
++  if (Services.prefs.getBoolPref("vantage.onboarding.firstRun", false)) {
++    Services.prefs.setBoolPref("vantage.onboarding.firstRun", false);
++    return OVERRIDE_NEW_PROFILE;
++  }
++
+   var savedmstone = Services.prefs.getCharPref(
+     "browser.startup.homepage_override.mstone",
+     ""
 diff --git a/browser/components/about/AboutRedirector.cpp b/browser/components/about/AboutRedirector.cpp
 index 48bbf40..a1b5e79 100644
 --- a/browser/components/about/AboutRedirector.cpp
