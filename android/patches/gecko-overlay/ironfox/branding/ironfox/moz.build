@@ -1,5 +1,0 @@
-
-DIRS += [
-    "content",
-    "locales",
-]

@@ -62,3 +62,6 @@ scripts/ms-zh/dict/
 scripts/ms-zh/en-toolkit/
 
 l10n/zh-MS.bak-硬翻/
+
+# Android 已独立为 ~/Vantage-Android，桌面仓库不再携带 vendored 快照
+/android/

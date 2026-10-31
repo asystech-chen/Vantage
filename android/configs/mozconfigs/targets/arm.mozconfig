@@ -1,4 +1,0 @@
-. "${IRONFOX_MOZCONFIGS}/targets/common.mozconfig"
-
-ac_add_options --disable-android-bundle
-ac_add_options --target='arm-linux-androideabi'
