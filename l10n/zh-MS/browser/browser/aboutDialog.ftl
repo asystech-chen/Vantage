@@ -118,4 +118,3 @@ official-site1 = 官员位置
 changelog-link = 什么是新的
 github-link = GitHub
 
-vantage-onboarding-button = 重新查看新手引导
