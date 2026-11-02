@@ -1,0 +1,239 @@
+diff --git a/browser/base/content/contentTheme.js b/browser/base/content/contentTheme.js
+index 73bd581..76958cb 100644
+--- a/browser/base/content/contentTheme.js
++++ b/browser/base/content/contentTheme.js
+@@ -194,6 +194,9 @@
+      */
+     _setProperties(themeData) {
+       const root = document.documentElement;
++      // 让侧栏、内嵌 about 页等独立文档也能判断第三方主题是否激活，
++      // 便于按 "轻量主题激活时让位" 的 CSS 规则正确回退。
++      root.toggleAttribute("lwtheme", !!themeData.hasTheme);
+       for (let [cssVarName, definition] of inContentVariableMap) {
+         const { lwtProperty, processColor } = definition;
+         let value = themeData[lwtProperty];
+diff --git a/browser/themes/shared/vantage-theme.css b/browser/themes/shared/vantage-theme.css
+index 81e70b4..a1ec9b1 100644
+--- a/browser/themes/shared/vantage-theme.css
++++ b/browser/themes/shared/vantage-theme.css
+@@ -16,18 +16,6 @@
+       --toolbar-background-color: #FFFFFF !important;
+       --toolbar-text-color: #1A2B3C !important;
+ 
+-      /* 强调色：Vantage 偏蓝 */
+-      --color-accent-primary: #3B82F6 !important;
+-      --color-accent-primary-hover: #2563EB !important;
+-      --color-accent-primary-active: #1D4ED8 !important;
+-      --color-accent-primary-selected: #3B82F6 !important;
+-      --color-accent-attention: #3B82F6 !important;
+-      --button-primary-bgcolor: #3B82F6 !important;
+-      --button-primary-hover-bgcolor: #2563EB !important;
+-      --button-primary-active-bgcolor: #1D4ED8 !important;
+-      --focus-outline-color: #3B82F6 !important;
+-      --toolbarbutton-icon-fill-attention: #3B82F6 !important;
+-
+       /* 菜单分隔线渐变（同步 Proton 版，覆盖 Firefox 默认紫粉橙） */
+       --panel-separator-zap-gradient: linear-gradient(90deg, #3B82F6 0%, #0EA5A0 52%, #10B981 100%) !important;
+ 
+@@ -40,34 +28,6 @@
+       --tab-border-color-selected-leading: #3B82F6 !important;
+       --tab-border-color-selected-trailing: #10B981 !important;
+ 
+-      /* Vantage 品牌基础色（原 vantage-nova-colors.patch 效果，改为 CSS 覆盖 → 随主题让位） */
+-      --color-gray-0: #f8fafc !important;
+-      --color-violet-0: #eef4ff !important;
+-      --color-violet-10: #dbeafe !important;
+-      --color-violet-20: #93c5fd !important;
+-      --color-violet-30: #60a5fa !important;
+-      --color-violet-40: #3b82f6 !important;
+-      --color-violet-50: #3b82f6 !important;
+-      --color-violet-60: #2563eb !important;
+-      --color-violet-70: #1d4ed8 !important;
+-      --color-violet-80: #1e3a8a !important;
+-      --color-violet-90: #172554 !important;
+-      --color-violet-100: #0f1e40 !important;
+-      --color-violet-110: #0a1428 !important;
+-      --color-violet-desaturated-0: #f3f6fc !important;
+-      --color-violet-desaturated-10: #e5edf9 !important;
+-      --color-violet-desaturated-20: #cfdcf0 !important;
+-      --color-violet-desaturated-30: #aec2de !important;
+-      --color-violet-desaturated-40: #8ba3c8 !important;
+-      --color-violet-desaturated-50: #6680a8 !important;
+-      --color-violet-desaturated-60: #4d628a !important;
+-      --color-violet-desaturated-70: #37486b !important;
+-      --color-violet-desaturated-80: #232f4d !important;
+-      --color-violet-desaturated-90: #151d33 !important;
+-      --toolbarbutton-background-color-hover: light-dark(color-mix(in srgb, #3b82f6 25%, transparent), color-mix(in srgb, #60a5fa 25%, transparent)) !important;
+-      --toolbarbutton-background-color-active: light-dark(color-mix(in srgb, #3b82f6 40%, transparent), color-mix(in srgb, #60a5fa 40%, transparent)) !important;
+-      --toolbarbutton-icon-fill: light-dark(#6680a8, #e5edf9) !important;
+-      --link-color: light-dark(#3b82f6, #60a5fa) !important;
+       --smartbar-border-color-gradient: linear-gradient(95deg, #3b82f6 1.22%, #10b981 49.98%, #34d399 99.68%) !important;
+       --smartbar-glow-color: color-mix(in srgb, #3b82f6 50%, transparent) !important;
+       --chrome-content-separator-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64)) !important;
+@@ -90,17 +50,6 @@
+         --toolbar-background-color: #1D1B1F !important;
+         --toolbar-text-color: #EBF4F5 !important;
+ 
+-        --color-accent-primary: #60A5FA !important;
+-        --color-accent-primary-hover: #3B82F6 !important;
+-        --color-accent-primary-active: #2563EB !important;
+-        --color-accent-primary-selected: #60A5FA !important;
+-        --color-accent-attention: #60A5FA !important;
+-        --button-primary-bgcolor: #60A5FA !important;
+-        --button-primary-hover-bgcolor: #3B82F6 !important;
+-        --button-primary-active-bgcolor: #2563EB !important;
+-        --focus-outline-color: #60A5FA !important;
+-        --toolbarbutton-icon-fill-attention: #60A5FA !important;
+-
+         --toolbar-field-focus: #1D1B1F !important;
+         --toolbar-field-focus-border-color: #60A5FA !important;
+         --toolbar-field-border-color-focus: #60A5FA !important;
+@@ -156,43 +105,6 @@
+     :root:not([lwtheme]) {
+       --tab-border-radius: 8px !important;
+       --panel-separator-zap-gradient: linear-gradient(90deg, #3B82F6 0%, #0EA5A0 52%, #10B981 100%) !important;
+-      --color-accent-primary: #3B82F6 !important;
+-      --color-accent-primary-hover: #2563EB !important;
+-      --color-accent-primary-active: #1D4ED8 !important;
+-      --color-accent-primary-selected: #3B82F6 !important;
+-      --button-primary-bgcolor: #3B82F6 !important;
+-      --button-primary-hover-bgcolor: #2563EB !important;
+-      --button-primary-active-bgcolor: #1D4ED8 !important;
+-      --focus-outline-color: #3B82F6 !important;
+-
+-      /* Vantage 品牌基础色（原 vantage-nova-colors.patch 效果，改为 CSS 覆盖 → 随主题让位） */
+-      --color-gray-0: #f8fafc !important;
+-      --color-violet-0: #eef4ff !important;
+-      --color-violet-10: #dbeafe !important;
+-      --color-violet-20: #93c5fd !important;
+-      --color-violet-30: #60a5fa !important;
+-      --color-violet-40: #3b82f6 !important;
+-      --color-violet-50: #3b82f6 !important;
+-      --color-violet-60: #2563eb !important;
+-      --color-violet-70: #1d4ed8 !important;
+-      --color-violet-80: #1e3a8a !important;
+-      --color-violet-90: #172554 !important;
+-      --color-violet-100: #0f1e40 !important;
+-      --color-violet-110: #0a1428 !important;
+-      --color-violet-desaturated-0: #f3f6fc !important;
+-      --color-violet-desaturated-10: #e5edf9 !important;
+-      --color-violet-desaturated-20: #cfdcf0 !important;
+-      --color-violet-desaturated-30: #aec2de !important;
+-      --color-violet-desaturated-40: #8ba3c8 !important;
+-      --color-violet-desaturated-50: #6680a8 !important;
+-      --color-violet-desaturated-60: #4d628a !important;
+-      --color-violet-desaturated-70: #37486b !important;
+-      --color-violet-desaturated-80: #232f4d !important;
+-      --color-violet-desaturated-90: #151d33 !important;
+-      --toolbarbutton-background-color-hover: light-dark(color-mix(in srgb, #3b82f6 25%, transparent), color-mix(in srgb, #60a5fa 25%, transparent)) !important;
+-      --toolbarbutton-background-color-active: light-dark(color-mix(in srgb, #3b82f6 40%, transparent), color-mix(in srgb, #60a5fa 40%, transparent)) !important;
+-      --toolbarbutton-icon-fill: light-dark(#6680a8, #e5edf9) !important;
+-      --link-color: light-dark(#3b82f6, #60a5fa) !important;
+       --smartbar-border-color-gradient: linear-gradient(95deg, #3b82f6 1.22%, #10b981 49.98%, #34d399 99.68%) !important;
+       --smartbar-glow-color: color-mix(in srgb, #3b82f6 50%, transparent) !important;
+       --chrome-content-separator-color: light-dark(rgb(157, 180, 208), rgb(42, 50, 64)) !important;
+diff --git a/toolkit/themes/shared/design-system/vantage-tokens.css b/toolkit/themes/shared/design-system/vantage-tokens.css
+new file mode 100644
+index 0000000..3b2dce8
+--- /dev/null
++++ b/toolkit/themes/shared/design-system/vantage-tokens.css
+@@ -0,0 +1,75 @@
++/* This Source Code Form is subject to the terms of the Mozilla Public
++ * License, v. 2.0. If a copy of the MPL was not distributed with this
++ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
++
++/* ===== Vantage 主题：全局设计令牌 =====
++   由 vantage.theme.enabled 开关控制，并在第三方主题激活时让位。
++   放在 toolkit/global 样式层，让主窗口之外的 chrome 文档（侧栏、设置、
++   书库、页面信息、对话框等）也拿到同一套 Vantage 强调色。 */
++
++@media -moz-pref("vantage.theme.enabled") {
++  :root:not([lwtheme]) {
++    /* Vantage 品牌基础色（原 vantage-nova-colors.patch 效果） */
++    --color-gray-0: #f8fafc !important;
++    --color-violet-0: #eef4ff !important;
++    --color-violet-10: #dbeafe !important;
++    --color-violet-20: #93c5fd !important;
++    --color-violet-30: #60a5fa !important;
++    --color-violet-40: #3b82f6 !important;
++    --color-violet-50: #3b82f6 !important;
++    --color-violet-60: #2563eb !important;
++    --color-violet-70: #1d4ed8 !important;
++    --color-violet-80: #1e3a8a !important;
++    --color-violet-90: #172554 !important;
++    --color-violet-100: #0f1e40 !important;
++    --color-violet-110: #0a1428 !important;
++    --color-violet-desaturated-0: #f3f6fc !important;
++    --color-violet-desaturated-10: #e5edf9 !important;
++    --color-violet-desaturated-20: #cfdcf0 !important;
++    --color-violet-desaturated-30: #aec2de !important;
++    --color-violet-desaturated-40: #8ba3c8 !important;
++    --color-violet-desaturated-50: #6680a8 !important;
++    --color-violet-desaturated-60: #4d628a !important;
++    --color-violet-desaturated-70: #37486b !important;
++    --color-violet-desaturated-80: #232f4d !important;
++    --color-violet-desaturated-90: #151d33 !important;
++
++    /* 强调色：Vantage 偏蓝 */
++    --color-accent-primary: #3b82f6 !important;
++    --color-accent-primary-hover: #2563eb !important;
++    --color-accent-primary-active: #1d4ed8 !important;
++    --color-accent-primary-selected: #3b82f6 !important;
++    --button-primary-bgcolor: #3b82f6 !important;
++    --button-primary-hover-bgcolor: #2563eb !important;
++    --button-primary-active-bgcolor: #1d4ed8 !important;
++    --focus-outline-color: #3b82f6 !important;
++
++    --toolbarbutton-background-color-hover: light-dark(color-mix(in srgb, #3b82f6 25%, transparent), color-mix(in srgb, #60a5fa 25%, transparent)) !important;
++    --toolbarbutton-background-color-active: light-dark(color-mix(in srgb, #3b82f6 40%, transparent), color-mix(in srgb, #60a5fa 40%, transparent)) !important;
++    --toolbarbutton-icon-fill: light-dark(#6680a8, #e5edf9) !important;
++    --link-color: light-dark(#3b82f6, #60a5fa) !important;
++  }
++
++  /* Nova 独有：attention 色（Proton 不覆盖，保持默认） */
++  @media -moz-pref("browser.nova.enabled") {
++    :root:not([lwtheme]) {
++      --color-accent-attention: #3b82f6 !important;
++      --toolbarbutton-icon-fill-attention: #3b82f6 !important;
++    }
++
++    @media (prefers-color-scheme: dark) {
++      :root:not([lwtheme]) {
++        --color-accent-primary: #60a5fa !important;
++        --color-accent-primary-hover: #3b82f6 !important;
++        --color-accent-primary-active: #2563eb !important;
++        --color-accent-primary-selected: #60a5fa !important;
++        --color-accent-attention: #60a5fa !important;
++        --button-primary-bgcolor: #60a5fa !important;
++        --button-primary-hover-bgcolor: #3b82f6 !important;
++        --button-primary-active-bgcolor: #2563eb !important;
++        --focus-outline-color: #60a5fa !important;
++        --toolbarbutton-icon-fill-attention: #60a5fa !important;
++      }
++    }
++  }
++}
+diff --git a/toolkit/themes/shared/desktop-jar.inc.mn b/toolkit/themes/shared/desktop-jar.inc.mn
+index 9861375..8076b1b 100644
+--- a/toolkit/themes/shared/desktop-jar.inc.mn
++++ b/toolkit/themes/shared/desktop-jar.inc.mn
+@@ -35,6 +35,7 @@
+   skin/classic/global/design-system/tokens-brand.css       (../../shared/design-system/dist/tokens-brand.css)
+   skin/classic/global/design-system/tokens-platform.css    (../../shared/design-system/dist/tokens-platform.css)
+   skin/classic/global/design-system/tokens-shared.css      (../../shared/design-system/dist/tokens-shared.css)
++  skin/classic/global/design-system/vantage-tokens.css     (../../shared/design-system/vantage-tokens.css)
+   skin/classic/global/error-pages.css                      (../../shared/error-pages.css)
+   skin/classic/global/findbar.css                          (../../shared/findbar.css)
+   skin/classic/global/global-shared.css                    (../../shared/global-shared.css)
+diff --git a/toolkit/themes/shared/global-shared.css b/toolkit/themes/shared/global-shared.css
+index a5ed45c..45291b4 100644
+--- a/toolkit/themes/shared/global-shared.css
++++ b/toolkit/themes/shared/global-shared.css
+@@ -5,6 +5,7 @@
+ /* all localizable skin settings shall live here */
+ 
+ @import url("chrome://global/skin/design-system/tokens-platform.css");
++@import url("chrome://global/skin/design-system/vantage-tokens.css");
+ @import url("chrome://global/skin/design-system/panel.css");
+ @import url("chrome://global/skin/design-system/text-and-typography.css");
+ @import url("chrome://global/skin/design-system/toolbar.css");

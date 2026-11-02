@@ -92,6 +92,7 @@ VANTAGE_PATCHES=(
     "patches/ui-patches/vantage-findbar-topright.patch"
     "patches/ui-patches/vantage-multithread-download-button.patch"
     "patches/ui-patches/vantage-theme.patch"
+    "patches/ui-patches/vantage-theme-tokens.patch"
     "patches/ui-patches/vantage-onboarding.patch"
 )
 
