@@ -94,6 +94,7 @@ VANTAGE_PATCHES=(
     "patches/ui-patches/vantage-theme.patch"
     "patches/ui-patches/vantage-theme-tokens.patch"
     "patches/ui-patches/vantage-onboarding.patch"
+    "patches/ui-patches/vantage-onboarding-trigger.patch"
 )
 
 for p in "${VANTAGE_PATCHES[@]}"; do

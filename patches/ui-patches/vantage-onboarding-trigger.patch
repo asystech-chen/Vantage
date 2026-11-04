@@ -1,0 +1,70 @@
+diff --git a/browser/base/content/onboarding/onboarding.js b/browser/base/content/onboarding/onboarding.js
+index f4f75d4..6033e41 100644
+--- a/browser/base/content/onboarding/onboarding.js
++++ b/browser/base/content/onboarding/onboarding.js
+@@ -22,6 +22,8 @@ const PREF = {
+     "privacy.trackingprotection.allow_list.convenience.enabled",
+   doh: "network.trr.mode",
+   done: "vantage.onboarding.done",
++  currentTour: "vantage.onboarding.currentTour",
++  completedTours: "vantage.onboarding.completedTours",
+ };
+ 
+ const FEATURE_PREFS = {
+@@ -292,6 +294,17 @@ function finish() {
+     }
+   } catch (e) {}
+   try {
++    // 按 tour id 记录已完成的引导；以后可以据此只展示用户没看过的新内容。
++    const currentTour = Services.prefs.getStringPref(PREF.currentTour, "v1");
++    const completed = Services.prefs
++      .getStringPref(PREF.completedTours, "")
++      .split(",")
++      .map(id => id.trim())
++      .filter(Boolean);
++    if (currentTour && !completed.includes(currentTour)) {
++      completed.push(currentTour);
++      Services.prefs.setStringPref(PREF.completedTours, completed.join(","));
++    }
+     Services.prefs.setBoolPref(PREF.done, true);
+   } catch (e) {
+     // 写失败不影响关闭
+diff --git a/browser/components/BrowserContentHandler.sys.mjs b/browser/components/BrowserContentHandler.sys.mjs
+index 64c325f..09e0dab 100644
+--- a/browser/components/BrowserContentHandler.sys.mjs
++++ b/browser/components/BrowserContentHandler.sys.mjs
+@@ -1035,6 +1035,34 @@ nsBrowserContentHandler.prototype = {
+       overridePage = "";
+     }
+ 
++    // Vantage: open the setup guide when its current tour has not been
++    // completed. Recording tour ids (instead of a single boolean) lets
++    // future guides decide what to show based on what the user has seen.
++    try {
++      const currentTour = prefb.getStringPref(
++        "vantage.onboarding.currentTour",
++        ""
++      );
++      const completedTours = prefb
++        .getStringPref("vantage.onboarding.completedTours", "")
++        .split(",")
++        .map(tour => tour.trim())
++        .filter(Boolean);
++      const homepageIsGuide =
++        prefb.getStringPref("browser.startup.homepage", "") ==
++        "about:onboarding";
++      if (
++        currentTour &&
++        !completedTours.includes(currentTour) &&
++        !homepageIsGuide &&
++        !(overridePage || "").includes("about:onboarding")
++      ) {
++        overridePage = overridePage
++          ? overridePage + "|about:onboarding"
++          : "about:onboarding";
++      }
++    } catch (e) {}
++
+     // Allow showing a one-time startup override if we're not showing one
+     if (overridePage == "" && prefb.prefHasUserValue(ONCE_PREF)) {
+       try {
