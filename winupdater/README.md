@@ -57,12 +57,19 @@ NSIS installer behavior (installer-winupdater.patch):
 
 ### Uninstalling WinUpdater from the Windows app list
 
-The Add/Remove Programs entry points at `Uninstall.ps1`, which:
+The Add/Remove Programs entry points at `Uninstall.ps1`. Because the entry
+is per-user but the component lives under Program Files, the script
+re-launches itself with a UAC prompt (administrator rights are required to
+remove the files and the scheduled task). It then:
 
-1. Removes the scheduled task (`Vantage WinUpdater (<user>)`)
+1. Removes every scheduled task named `Vantage WinUpdater (<user>)`
 2. Removes the runtime copy under `%APPDATA%\Vantage\WinUpdater`
-3. Removes the Add/Remove Programs registry key
-4. Removes the component folder it lives in
+3. Removes the Add/Remove Programs registry keys (HKCU/HKLM, 32/64-bit)
+4. Removes the component folder it lives in (retried by a detached
+   `cmd.exe` if a file is still locked)
+
+Everything runs hidden, so failures are written to
+`%TEMP%\Vantage-WinUpdater-uninstall.log`.
 
 ## vd.json Format
 

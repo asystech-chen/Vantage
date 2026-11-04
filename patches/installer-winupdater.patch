@@ -1,5 +1,5 @@
 diff --git a/browser/installer/windows/nsis/installer.nsi b/browser/installer/windows/nsis/installer.nsi
-index 785e5cc..6952236 100755
+index e4cca5c..8c32aaa 100755
 --- a/browser/installer/windows/nsis/installer.nsi
 +++ b/browser/installer/windows/nsis/installer.nsi
 @@ -46,6 +46,7 @@ Var AddDesktopLauncher
@@ -45,7 +45,7 @@ index 785e5cc..6952236 100755
 +  ${If} $InstallWinUpdater == "0"
 +    ${LogHeader} "Removing WinUpdater (opted out)"
 +    IfFileExists "$INSTDIR\winupdater\Uninstall.ps1" 0 +3
-+      ExecWait 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "$INSTDIR\winupdater\Uninstall.ps1"'
++      ExecWait 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "$INSTDIR\winupdater\Uninstall.ps1" -Quiet'
 +    IfFileExists "$INSTDIR\winupdater" 0 +2
 +      RmDir /r "$INSTDIR\winupdater"
 +  ${EndIf}
@@ -90,7 +90,7 @@ index 785e5cc..6952236 100755
  SectionEnd
  
  ################################################################################
-@@ -1227,6 +1271,27 @@ Function leaveOptions
+@@ -1229,6 +1273,27 @@ Function leaveOptions
    ${EndIf}
  FunctionEnd
  
@@ -118,7 +118,7 @@ index 785e5cc..6952236 100755
  Function preDirectory
    StrCpy $PageName "Directory"
    ${PreDirectoryCommon}
-@@ -1621,6 +1686,7 @@ Function .onInit
+@@ -1622,6 +1687,7 @@ Function .onInit
    !insertmacro InitInstallOptionsFile "components.ini"
    !insertmacro InitInstallOptionsFile "extensions.ini"
    !insertmacro InitInstallOptionsFile "summary.ini"
@@ -126,7 +126,7 @@ index 785e5cc..6952236 100755
  
    WriteINIStr "$PLUGINSDIR\options.ini" "Settings" NumFields "5"
  
-@@ -1661,6 +1727,23 @@ Function .onInit
+@@ -1662,6 +1728,23 @@ Function .onInit
    WriteINIStr "$PLUGINSDIR\options.ini" "Field 5" Right  "-1"
    WriteINIStr "$PLUGINSDIR\options.ini" "Field 5" Top    "67"
    WriteINIStr "$PLUGINSDIR\options.ini" "Field 5" Bottom "87"
@@ -151,17 +151,17 @@ index 785e5cc..6952236 100755
    ${If} ${IsPinningSupportedByWindowsVersionWithoutSystemPopup}
      WriteINIStr "$PLUGINSDIR\shortcuts.ini" "Settings" NumFields "4"
 diff --git a/browser/installer/windows/nsis/uninstaller.nsi b/browser/installer/windows/nsis/uninstaller.nsi
-index becbb0f..428ff14 100755
+index 4f5626b..50cd5f7 100755
 --- a/browser/installer/windows/nsis/uninstaller.nsi
 +++ b/browser/installer/windows/nsis/uninstaller.nsi
-@@ -616,6 +616,14 @@ Section "Uninstall"
+@@ -602,6 +602,14 @@ Section "Uninstall"
    ${If} ${FileExists} "$INSTDIR\distribution"
      RmDir /r /REBOOTOK "$INSTDIR\distribution"
    ${EndIf}
 +  ; Vantage: remove the WinUpdater scheduled task, its files, the
 +  ; %APPDATA% copy, and the Add/Remove Programs entry (Uninstall.ps1).
 +  ${If} ${FileExists} "$INSTDIR\winupdater\Uninstall.ps1"
-+    ExecWait 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "$INSTDIR\winupdater\Uninstall.ps1"'
++    ExecWait 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "$INSTDIR\winupdater\Uninstall.ps1" -Quiet'
 +  ${EndIf}
 +  ${If} ${FileExists} "$INSTDIR\winupdater"
 +    RmDir /r /REBOOTOK "$INSTDIR\winupdater"
