@@ -11,10 +11,10 @@ index c1da6e4..0b5028b 100644
        lazy.ippEnabled ? "ipprotection-button" : null,
        "fxa-toolbar-menu-button",
 diff --git a/browser/components/customizableui/CustomizableWidgets.sys.mjs b/browser/components/customizableui/CustomizableWidgets.sys.mjs
-index c0dd6ce..8a0789c 100644
+index c0dd6ce..1931395 100644
 --- a/browser/components/customizableui/CustomizableWidgets.sys.mjs
 +++ b/browser/components/customizableui/CustomizableWidgets.sys.mjs
-@@ -326,6 +326,47 @@ export const CustomizableWidgets = [
+@@ -326,6 +326,95 @@ export const CustomizableWidgets = [
        }
      },
    },
@@ -33,29 +33,77 @@ index c0dd6ce..8a0789c 100644
 +      }
 +      aNode.setAttribute("type", "menu");
 +
++      let win = doc.defaultView;
 +      let popup = doc.createXULElement("menupopup");
 +      popup.id = "vantage-workspace-menu";
 +
-+      let addItem = (key, l10nId, handler) => {
++      let addItem = (id, l10nId, handler) => {
 +        let item = doc.createXULElement("menuitem");
-+        item.id = "vantage-workspace-" + key;
++        item.id = "vantage-workspace-" + id;
 +        doc.l10n.setAttributes(item, l10nId);
-+        item.addEventListener("command", handler);
++        if (handler) {
++          item.addEventListener("command", handler);
++        }
 +        popup.appendChild(item);
++        return item;
++      };
++      let addSeparator = () =>
++        popup.appendChild(doc.createXULElement("menuseparator"));
++
++      // Rebuilt every time the menu opens so it reflects the current groups.
++      let buildMenu = () => {
++        while (popup.firstChild) {
++          popup.firstChild.remove();
++        }
++
++        addItem("profiles", "vantage-workspace-menu-profiles", () => {
++          win.openTrustedLinkIn("about:profilemanager", "tab");
++        });
++        addItem("new-profile", "vantage-workspace-menu-new-profile", () => {
++          win.openTrustedLinkIn("about:newprofile", "tab");
++        });
++        addSeparator();
++
++        // One entry per tab group; clicking it focuses that group: every other
++        // group is collapsed, the target group is expanded and its first tab
++        // is selected (native TabGroup.select()).
++        let groups = Array.from(win.gBrowser.tabGroups).filter(
++          group => group.tabs.length
++        );
++        if (groups.length) {
++          for (let [index, group] of groups.entries()) {
++            let name = group.label || group.defaultGroupName;
++            let item = doc.createXULElement("menuitem");
++            item.id = "vantage-workspace-group-" + index;
++            item.setAttribute("label", `${name} (${group.tabs.length})`);
++            item.setAttribute("type", "radio");
++            item.setAttribute("name", "vantage-workspace-group");
++            item.toggleAttribute("checked", group.hasActiveTab);
++            item.addEventListener("command", () => {
++              for (let other of win.gBrowser.tabGroups) {
++                other.collapsed = other !== group;
++              }
++              group.select();
++            });
++            popup.appendChild(item);
++          }
++        } else {
++          let empty = doc.createXULElement("menuitem");
++          empty.setAttribute("disabled", "true");
++          doc.l10n.setAttributes(empty, "vantage-workspace-groups-empty");
++          popup.appendChild(empty);
++        }
++
++        addSeparator();
++        addItem("manage-groups", "vantage-workspace-manage-groups", () => {
++          // Let the menu close before anchoring the native panel to the button.
++          win.setTimeout(() => {
++            win.PanelUI.showSubView("toolbar-tabGroupsListView", aNode);
++          }, 0);
++        });
 +      };
 +
-+      let win = doc.defaultView;
-+      addItem("profiles", "vantage-workspace-menu-profiles", () => {
-+        win.openTrustedLinkIn("about:profilemanager", "tab");
-+      });
-+      addItem("new-profile", "vantage-workspace-menu-new-profile", () => {
-+        win.openTrustedLinkIn("about:newprofile", "tab");
-+      });
-+      popup.appendChild(doc.createXULElement("menuseparator"));
-+      addItem("tab-groups", "vantage-workspace-menu-tab-groups", () => {
-+        win.PanelUI.showSubView("toolbar-tabGroupsListView", aNode);
-+      });
-+
++      popup.addEventListener("popupshowing", buildMenu);
 +      aNode.appendChild(popup);
 +    },
 +  },
@@ -63,7 +111,7 @@ index c0dd6ce..8a0789c 100644
      id: "print-button",
      l10nId: "navbar-print",
 diff --git a/browser/locales/en-US/browser/browser.ftl b/browser/locales/en-US/browser/browser.ftl
-index c510f57..4f189be 100644
+index c510f57..6303049 100644
 --- a/browser/locales/en-US/browser/browser.ftl
 +++ b/browser/locales/en-US/browser/browser.ftl
 @@ -1298,6 +1298,17 @@ vantage-multithread-download-button =
@@ -78,8 +126,8 @@ index c510f57..4f189be 100644
 +    .label = Manage Profiles…
 +vantage-workspace-menu-new-profile =
 +    .label = New Profile…
-+vantage-workspace-menu-tab-groups =
-+    .label = Tab Groups
++vantage-workspace-groups-empty = No tab groups yet
++vantage-workspace-manage-groups = Manage Tab Groups…
 +
  navbar-library =
      .label = Library
