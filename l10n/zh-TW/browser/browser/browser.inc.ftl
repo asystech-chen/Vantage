@@ -9,3 +9,14 @@ toolbar-undo-close-button =
 vantage-multithread-download-button =
     .label = 多執行緒下載
     .tooltiptext = 開啟或關閉多執行緒下載
+
+vantage-workspace-button =
+    .label = 工作區
+    .tooltiptext = 管理設定檔與分頁群組
+
+vantage-workspace-menu-profiles =
+    .label = 管理設定檔…
+vantage-workspace-menu-new-profile =
+    .label = 新增設定檔…
+vantage-workspace-menu-tab-groups =
+    .label = 分頁群組

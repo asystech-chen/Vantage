@@ -2972,3 +2972,10 @@ vantage-confirm-pdfjs-cancel = 取消
 vantage-sidebar-hover-checkbox =
     .label = 当您的鼠标到达左边缘时自动打开侧边栏
 vantage-sidebar-hover-description = 将您的鼠标移动到窗口的最左边缘，侧边栏会以浮动面板的形式弹出，而不会推挤页面；单击侧边栏外部或按 Esc 键将其关闭。<b data-l10n-name="pinned">启用后，侧边栏会固定在左侧，无法再移动到右侧。</b>
+
+# Vantage：工作区（配置文件 + 标签页群组）
+vantage-workspace-heading = 工作区
+vantage-workspace-description = 用「配置文件」隔离不同身份（各自拥有书签、扩展和登录状态），用「标签页群组」在同一个身份下按项目整理标签页。
+vantage-workspace-profiles-button = 管理配置文件…
+vantage-workspace-tabgroups-button = 打开标签页群组
+vantage-workspace-note = 工具栏上的「工作区」按钮可快速打开这些入口。切换配置文件会打开另一个浏览器窗口；不同配置文件之间不共享登录状态和扩展。

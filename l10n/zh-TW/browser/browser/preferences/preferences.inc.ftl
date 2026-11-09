@@ -270,3 +270,10 @@ vantage-confirm-pdfjs-cancel = 取消
 vantage-sidebar-hover-checkbox =
     .label = 滑鼠移到視窗左側自動彈出側欄
 vantage-sidebar-hover-description = 滑鼠移到視窗最左側，側欄以浮層彈出、不推擠頁面；點側欄以外或按 Esc 收起。<b data-l10n-name="pinned">啟用後側欄固定在左側，無法再移動到右側。</b>
+
+# Vantage：工作區（設定檔 + 分頁群組）
+vantage-workspace-heading = 工作區
+vantage-workspace-description = 用「設定檔」隔離不同身分（各自擁有書籤、擴充套件與登入狀態），用「分頁群組」在同一個身分下依專案整理分頁。
+vantage-workspace-profiles-button = 管理設定檔…
+vantage-workspace-tabgroups-button = 開啟分頁群組
+vantage-workspace-note = 工具列上的「工作區」按鈕可快速開啟這些入口。切換設定檔會開啟另一個瀏覽器視窗；不同設定檔之間不共用登入狀態與擴充套件。

@@ -74,6 +74,9 @@ var gLibrewolfPane = {
     // ---- About Vantage：版本号 + 更新检查 + 链接按钮 ----
     this.initAboutVantage();
 
+    // ---- 工作区：配置文件 + 标签页群组入口 ----
+    this.initWorkspace();
+
     // Set all event listeners on checkboxes
     // AI Chat（主开关，browser.ml.chat.enabled）：勾选时若新侧栏未显示（sidebar.revamp=false）
     // 则自动启用——与设置-常规「显示侧栏」同 pref、同 enabledViaSettings 副作用；
@@ -1048,6 +1051,43 @@ var gLibrewolfPane = {
         statusEl.textContent = "";
       })
       .finally(() => clearTimeout(timer));
+  },
+
+  // 「工作区」区块：把原生配置文件与标签页群组的入口放进设置页
+  initWorkspace() {
+    let openTab = url => {
+      try {
+        window.openWebLinkIn(url, "tab");
+      } catch (e) {
+        window.open(url, "_blank");
+      }
+    };
+
+    let profilesBtn = document.getElementById(
+      "vantage-workspace-profiles-button"
+    );
+    if (profilesBtn) {
+      profilesBtn.addEventListener("command", () =>
+        openTab("about:profilemanager")
+      );
+    }
+
+    let groupsBtn = document.getElementById(
+      "vantage-workspace-tabgroups-button"
+    );
+    if (groupsBtn) {
+      groupsBtn.addEventListener("command", () => {
+        let win = Services.wm.getMostRecentWindow("navigator:browser");
+        if (!win) {
+          return;
+        }
+        win.focus();
+        win.PanelUI.showSubView(
+          "toolbar-tabGroupsListView",
+          win.document.getElementById("PanelUI-menu-button")
+        );
+      });
+    }
   },
 
   isNewerVersion(newVer, oldVer) {

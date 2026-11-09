@@ -10,3 +10,14 @@ toolbar-undo-close-button =
 vantage-multithread-download-button =
     .label = 多线程下载
     .tooltiptext = 开启或关闭多线程下载
+
+vantage-workspace-button =
+    .label = 工作区
+    .tooltiptext = 管理配置文件与标签页群组
+
+vantage-workspace-menu-profiles =
+    .label = 管理配置文件…
+vantage-workspace-menu-new-profile =
+    .label = 新建配置文件…
+vantage-workspace-menu-tab-groups =
+    .label = 标签页群组

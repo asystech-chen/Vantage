@@ -1693,3 +1693,14 @@ urlbar-webgl-blocked =
 vantage-multithread-download-button =
     .label = 多-threaded 下载
     .tooltiptext = 打开或关闭多-threaded 下载
+
+vantage-workspace-button =
+    .label = 工作区
+    .tooltiptext = 管理配置文件与标签页群组
+
+vantage-workspace-menu-profiles =
+    .label = 管理配置文件…
+vantage-workspace-menu-new-profile =
+    .label = 新建配置文件…
+vantage-workspace-menu-tab-groups =
+    .label = 标签页群组

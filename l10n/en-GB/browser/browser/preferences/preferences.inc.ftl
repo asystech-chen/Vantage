@@ -292,3 +292,10 @@ vantage-confirm-pdfjs-cancel = Cancel
 vantage-sidebar-hover-checkbox =
     .label = Auto-open the sidebar when the mouse reaches the left edge
 vantage-sidebar-hover-description = Move the mouse to the left edge to pop the sidebar out as a floating panel (it does not push the page aside); click outside it or press Esc to close. <b data-l10n-name="pinned">When enabled, the sidebar stays on the left and can no longer be moved to the right.</b>
+
+# Vantage: Workspaces (profiles + tab groups)
+vantage-workspace-heading = Workspaces
+vantage-workspace-description = Use Profiles to separate identities (each keeps its own bookmarks, extensions and sign-ins), and Tab Groups to organise tabs by project within the same profile.
+vantage-workspace-profiles-button = Manage Profiles…
+vantage-workspace-tabgroups-button = Open Tab Groups
+vantage-workspace-note = The Workspaces button on the toolbar opens the same entries. Switching profiles opens another browser window; profiles do not share sign-ins or extensions.

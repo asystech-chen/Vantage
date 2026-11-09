@@ -63,3 +63,8 @@
 	font-size: 0.9em;
 	opacity: 0.8;
 }
+
+.vantage-workspace-buttons {
+	margin-top: 8px;
+	gap: 8px;
+}
