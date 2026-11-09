@@ -96,6 +96,9 @@ jobs:
           MSIX_TOKEN: ${{ secrets.MSIX_TOKEN }}
           MSIX_URL: ${{ vars.MSIX_URL }}
         run: |
+          # 与 Android CI 共用同一把构建锁：后到的构建阻塞等待，避免两边同时编译
+          exec 9>/home/ci/.vantage-ci-build.lock
+          flock -w 43200 9
           if [ "${{ github.event_name }}" = "push" ]; then
             # tag 推送没有复选框可勾 ⇒ 全量 7 平台
             TARGETS="linux-x64 linux-arm64 linux-loong64 windows-x64 windows-arm64 macos-x64 macos-arm64"
