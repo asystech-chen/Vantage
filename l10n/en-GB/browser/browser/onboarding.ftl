@@ -43,6 +43,10 @@ onboarding-theme-yield-note = When a third-party theme is enabled, the Vantage t
 onboarding-custom-eyebrow = Customize
 onboarding-custom-title = Customize your journey
 onboarding-custom-body = A few settings worth deciding now. Only the common ones are listed here; more are in Settings.
+onboarding-sidebar-label = Sidebar
+onboarding-sidebar-desc = Shows or hides the sidebar in this window, the same as the Ctrl+B shortcut.
+onboarding-vertical-tabs-label = Vertical tabs
+onboarding-vertical-tabs-desc = Moves tabs into the sidebar as a vertical list. Best with many tabs open.
 onboarding-multithread-label = Multi-threaded downloads
 onboarding-multithread-desc = Downloads in parallel when the server supports ranges, otherwise falls back to a single connection.
 onboarding-sidebar-hover-label = Sidebar on hover
@@ -55,6 +59,17 @@ onboarding-update-check-desc = Checks for a new Vantage version at startup. It o
 onboarding-ai-sidebar-label = AI sidebar
 onboarding-ai-sidebar-desc = Opens AI chat in the sidebar, with DeepSeek, Qwen, Doubao, ChatGPT, Gemini, and Claude.
 onboarding-custom-note = The full list is in <a data-l10n-name="settings">Settings → Vantage</a>. You can change it anytime.
+
+onboarding-workspace-eyebrow = Workspaces
+onboarding-workspace-title = One browser, separate identities and projects
+onboarding-workspace-body = Workspaces have two parts: Profiles keep identities apart, and Tab Groups organize tabs by project within one identity.
+onboarding-workspace-profiles-label = Profiles
+onboarding-workspace-profiles-desc = Each profile has its own bookmarks, extensions, and sign-ins. Switching profiles opens another browser window.
+onboarding-workspace-profiles-button = Manage Profiles…
+onboarding-workspace-groups-label = Tab Groups
+onboarding-workspace-groups-desc = Collect the tabs for one project into a group, then name, collapse, and jump back to it.
+onboarding-workspace-groups-button = Open Tab Groups
+onboarding-workspace-note = The Workspaces button on the toolbar lists the tab groups in this window; click one to focus it. These entries are also in Settings → Vantage.
 
 onboarding-privacy-eyebrow = Privacy
 onboarding-privacy-title = Privacy is already set

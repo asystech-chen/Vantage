@@ -450,7 +450,7 @@ new file mode 100644
 index 0000000..585ab2f
 --- /dev/null
 +++ b/browser/base/content/onboarding/onboarding.html
-@@ -0,0 +1,347 @@
+@@ -0,0 +1,401 @@
 +<!DOCTYPE html>
 +<!-- This Source Code Form is subject to the terms of the Mozilla Public
 +   - License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -590,6 +590,26 @@ index 0000000..585ab2f
 +        <div class="field">
 +          <div class="field-head">
 +            <div class="grow">
++              <div class="field-title" data-l10n-id="onboarding-sidebar-label"></div>
++              <div class="field-desc" data-l10n-id="onboarding-sidebar-desc"></div>
++            </div>
++            <input class="switch" type="checkbox" data-feature="sidebar">
++          </div>
++        </div>
++
++        <div class="field">
++          <div class="field-head">
++            <div class="grow">
++              <div class="field-title" data-l10n-id="onboarding-vertical-tabs-label"></div>
++              <div class="field-desc" data-l10n-id="onboarding-vertical-tabs-desc"></div>
++            </div>
++            <input class="switch" type="checkbox" data-feature="vertical-tabs">
++          </div>
++        </div>
++
++        <div class="field">
++          <div class="field-head">
++            <div class="grow">
 +              <div class="field-title" data-l10n-id="onboarding-multithread-label"></div>
 +              <div class="field-desc" data-l10n-id="onboarding-multithread-desc"></div>
 +            </div>
@@ -653,8 +673,42 @@ index 0000000..585ab2f
 +      </div>
 +    </section>
 +
-+    <!-- 4 隐私 -->
++    <!-- 4 工作区 -->
 +    <section class="screen" data-screen="4">
++      <span class="eyebrow" data-l10n-id="onboarding-workspace-eyebrow"></span>
++      <h1 tabindex="-1" data-l10n-id="onboarding-workspace-title"></h1>
++      <p class="lead" data-l10n-id="onboarding-workspace-body"></p>
++
++      <div class="option-row">
++        <span class="icon" aria-hidden="true">
++          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="1.7"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M15.5 5.6a3 3 0 010 5.6M17 14.4c2 .5 3.3 2.1 3.7 4.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
++        </span>
++        <div class="grow">
++          <h3 data-l10n-id="onboarding-workspace-profiles-label"></h3>
++          <p data-l10n-id="onboarding-workspace-profiles-desc"></p>
++        </div>
++        <button class="btn" type="button" id="workspaceProfilesBtn" data-l10n-id="onboarding-workspace-profiles-button"></button>
++      </div>
++
++      <div class="option-row">
++        <span class="icon" aria-hidden="true">
++          <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="14" y="3" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="3" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="14" y="14" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.7"/></svg>
++        </span>
++        <div class="grow">
++          <h3 data-l10n-id="onboarding-workspace-groups-label"></h3>
++          <p data-l10n-id="onboarding-workspace-groups-desc"></p>
++        </div>
++        <button class="btn" type="button" id="workspaceGroupsBtn" data-l10n-id="onboarding-workspace-groups-button"></button>
++      </div>
++
++      <div class="note">
++        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.4"/><path d="M8 7.2v3.4M8 5.2v.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
++        <span data-l10n-id="onboarding-workspace-note"></span>
++      </div>
++    </section>
++
++    <!-- 5 隐私 -->
++    <section class="screen" data-screen="5">
 +      <span class="eyebrow" data-l10n-id="onboarding-privacy-eyebrow"></span>
 +      <h1 tabindex="-1" data-l10n-id="onboarding-privacy-title"></h1>
 +      <p class="lead" data-l10n-id="onboarding-privacy-body"></p>
@@ -695,8 +749,8 @@ index 0000000..585ab2f
 +      </div>
 +    </section>
 +
-+    <!-- 5 扩展 -->
-+    <section class="screen" data-screen="5">
++    <!-- 6 扩展 -->
++    <section class="screen" data-screen="6">
 +      <span class="eyebrow" data-l10n-id="onboarding-ext-eyebrow"></span>
 +      <h1 tabindex="-1" data-l10n-id="onboarding-ext-title"></h1>
 +      <p class="lead" data-l10n-id="onboarding-ext-body"></p>
@@ -734,8 +788,8 @@ index 0000000..585ab2f
 +      </div>
 +    </section>
 +
-+    <!-- 6 导入与默认 -->
-+    <section class="screen" data-screen="6">
++    <!-- 7 导入与默认 -->
++    <section class="screen" data-screen="7">
 +      <span class="eyebrow" data-l10n-id="onboarding-import-eyebrow"></span>
 +      <h1 tabindex="-1" data-l10n-id="onboarding-import-title"></h1>
 +      <p class="lead" data-l10n-id="onboarding-import-body"></p>
@@ -803,7 +857,7 @@ new file mode 100644
 index 0000000..f4f75d4
 --- /dev/null
 +++ b/browser/base/content/onboarding/onboarding.js
-@@ -0,0 +1,397 @@
+@@ -0,0 +1,527 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -819,6 +873,7 @@ index 0000000..f4f75d4
 +  density: "browser.uidensity",
 +  multithread: "vantage.download.multithread",
 +  sidebarHover: "vantage.sidebar.hover-autohide.enabled",
++  verticalTabs: "sidebar.verticalTabs",
 +  findbar: "vantage.findbar.topright",
 +  tabsUnload: "browser.tabs.unloadOnLowMemory",
 +  updateCheck: "vantage.updateCheck.enabled",
@@ -833,6 +888,7 @@ index 0000000..f4f75d4
 +const FEATURE_PREFS = {
 +  multithread: PREF.multithread,
 +  "sidebar-hover": PREF.sidebarHover,
++  "vertical-tabs": PREF.verticalTabs,
 +  findbar: PREF.findbar,
 +  "tabs-unload": PREF.tabsUnload,
 +  "update-check": PREF.updateCheck,
@@ -847,6 +903,7 @@ index 0000000..f4f75d4
 +  [PREF.density]: 0,
 +  [PREF.multithread]: false,
 +  [PREF.sidebarHover]: false,
++  [PREF.verticalTabs]: false,
 +  [PREF.findbar]: false,
 +  [PREF.tabsUnload]: true,
 +  [PREF.updateCheck]: true,
@@ -1001,8 +1058,93 @@ index 0000000..f4f75d4
 +});
 +
 +// ---------- 功能开关 ----------
++const sidebarSwitch = document.querySelector('[data-feature="sidebar"]');
++
++function getSidebarController() {
++  return getBrowserWindow()?.SidebarController ?? null;
++}
++
++function syncSidebarSwitch() {
++  if (sidebarSwitch) {
++    sidebarSwitch.checked = !!getSidebarController()?.isOpen;
++  }
++}
++
++(function watchSidebarState() {
++  const win = getBrowserWindow();
++  const box = win?.document.getElementById("sidebar-box");
++  if (!box) {
++    return;
++  }
++  new win.MutationObserver(syncSidebarSwitch).observe(box, {
++    attributes: true,
++    attributeFilter: ["hidden"],
++  });
++})();
++
++syncSidebarSwitch();
++
 +document.querySelectorAll("[data-feature]").forEach(input => {
 +  const key = input.dataset.feature;
++  if (key === "sidebar") {
++    input.addEventListener("change", async () => {
++      const controller = getSidebarController();
++      if (!controller) {
++        syncSidebarSwitch();
++        return;
++      }
++      try {
++        if (input.checked) {
++          await controller.toggle();
++        } else {
++          controller.hide();
++        }
++      } catch (e) {
++        // 显示失败时以下一次同步结果为准
++      }
++      setTimeout(syncSidebarSwitch, 250);
++    });
++    return;
++  }
++  if (key === "vertical-tabs") {
++    input.checked = getBool(PREF.verticalTabs);
++    input.addEventListener("change", () => {
++      setBool(PREF.verticalTabs, input.checked);
++    });
++    return;
++  }
++  if (key === "ai-sidebar") {
++    input.checked = getBool(PREF.aiSidebar);
++    input.addEventListener("change", () => {
++      const enabled = input.checked;
++      setBool(PREF.aiSidebar, enabled);
++      if (!enabled) {
++        return;
++      }
++      // 与 pref-pane 的 AI 主开关保持一致：补工具项、同步官方 AI 状态、
++      // 必要时打开新版侧栏，然后直接打开 AI 聊天面板。
++      const SIDEBAR_TOOLS = "sidebar.main.tools";
++      let tools = Services.prefs.getStringPref(SIDEBAR_TOOLS, "");
++      let list = tools ? tools.split(",") : [];
++      if (!list.includes("aichat")) {
++        list.push("aichat");
++        Services.prefs.setStringPref(SIDEBAR_TOOLS, list.join());
++      }
++      Services.prefs.setStringPref(
++        "browser.ai.control.sidebarChatbot",
++        "available"
++      );
++      const win = getBrowserWindow();
++      if (!Services.prefs.getBoolPref("sidebar.revamp", true)) {
++        Services.prefs.setBoolPref("sidebar.revamp", true);
++        win?.SidebarController?.enabledViaSettings?.(true);
++      }
++      setTimeout(() => {
++        win?.SidebarController?.show("viewGenaiChatSidebar")?.catch?.(() => {});
++      }, 0);
++    });
++    return;
++  }
 +  if (key === "doh") {
 +    input.checked = getInt(PREF.doh) !== 0;
 +    input.addEventListener("change", () => {
@@ -1063,25 +1205,67 @@ index 0000000..f4f75d4
 +  });
 +});
 +
-+const defaultSwitch = document.getElementById("defaultSwitch");
-+try {
-+  const { ShellService } = ChromeUtils.importESModule(
-+    "resource:///modules/ShellService.sys.mjs"
++document.getElementById("workspaceProfilesBtn").addEventListener("click", () => {
++  openExternalLink("about:profilemanager");
++});
++
++document.getElementById("workspaceGroupsBtn").addEventListener("click", () => {
++  const win = getBrowserWindow();
++  if (!win) {
++    return;
++  }
++  win.focus();
++  win.PanelUI.showSubView(
++    "toolbar-tabGroupsListView",
++    win.document.getElementById("PanelUI-menu-button")
 +  );
-+  defaultSwitch.checked = ShellService.isDefaultBrowser();
-+} catch (e) {}
++});
++
++const defaultSwitch = document.getElementById("defaultSwitch");
++
++async function getShellService() {
++  try {
++    const { ShellService } = ChromeUtils.importESModule(
++      "moz-src:///browser/components/shell/ShellService.sys.mjs"
++    );
++    return ShellService;
++  } catch (e) {
++    return null;
++  }
++}
++
++async function syncDefaultBrowserSwitch() {
++  const shellService = await getShellService();
++  if (!shellService) {
++    return false;
++  }
++  try {
++    defaultSwitch.checked = shellService.isDefaultBrowser();
++    return true;
++  } catch (e) {
++    return false;
++  }
++}
++
++syncDefaultBrowserSwitch();
++
 +defaultSwitch.addEventListener("change", async () => {
++  const shellService = await getShellService();
++  if (!shellService) {
++    defaultSwitch.checked = false;
++    return;
++  }
 +  if (!defaultSwitch.checked) {
++    // 只能设置默认浏览器，无法取消；回读真实状态，避免视觉误导
++    syncDefaultBrowserSwitch();
 +    return;
 +  }
 +  try {
-+    const { ShellService } = ChromeUtils.importESModule(
-+      "resource:///modules/ShellService.sys.mjs"
-+    );
-+    await ShellService.setDefaultBrowser();
++    await shellService.setDefaultBrowser();
 +  } catch (e) {
-+    // 系统注册失败时保持用户的选择，不回弹
++    // 注册失败时同样以系统真实状态为准
 +  }
++  syncDefaultBrowserSwitch();
 +});
 +
 +// ---------- 完成 / 导航 ----------
@@ -1246,7 +1430,7 @@ new file mode 100644
 index 0000000..9db285e
 --- /dev/null
 +++ b/browser/locales/en-US/browser/onboarding.ftl
-@@ -0,0 +1,96 @@
+@@ -0,0 +1,111 @@
 +# This Source Code Form is subject to the terms of the Mozilla Public
 +# License, v. 2.0. If a copy of the MPL was not distributed with this
 +# file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -1292,6 +1476,10 @@ index 0000000..9db285e
 +onboarding-custom-eyebrow = Customize
 +onboarding-custom-title = Customize your journey
 +onboarding-custom-body = A few settings worth deciding now. Only the common ones are listed here; more are in Settings.
++onboarding-sidebar-label = Sidebar
++onboarding-sidebar-desc = Shows or hides the sidebar in this window, the same as the Ctrl+B shortcut.
++onboarding-vertical-tabs-label = Vertical tabs
++onboarding-vertical-tabs-desc = Moves tabs into the sidebar as a vertical list. Best with many tabs open.
 +onboarding-multithread-label = Multi-threaded downloads
 +onboarding-multithread-desc = Downloads in parallel when the server supports ranges, otherwise falls back to a single connection.
 +onboarding-sidebar-hover-label = Sidebar on hover
@@ -1304,6 +1492,17 @@ index 0000000..9db285e
 +onboarding-ai-sidebar-label = AI sidebar
 +onboarding-ai-sidebar-desc = Opens AI chat in the sidebar, with DeepSeek, Qwen, Doubao, ChatGPT, Gemini, and Claude.
 +onboarding-custom-note = The full list is in <a data-l10n-name="settings">Settings → Vantage</a>. You can change it anytime.
++
++onboarding-workspace-eyebrow = Workspaces
++onboarding-workspace-title = One browser, separate identities and projects
++onboarding-workspace-body = Workspaces have two parts: Profiles keep identities apart, and Tab Groups organize tabs by project within one identity.
++onboarding-workspace-profiles-label = Profiles
++onboarding-workspace-profiles-desc = Each profile has its own bookmarks, extensions, and sign-ins. Switching profiles opens another browser window.
++onboarding-workspace-profiles-button = Manage Profiles…
++onboarding-workspace-groups-label = Tab Groups
++onboarding-workspace-groups-desc = Collect the tabs for one project into a group, then name, collapse, and jump back to it.
++onboarding-workspace-groups-button = Open Tab Groups
++onboarding-workspace-note = The Workspaces button on the toolbar lists the tab groups in this window; click one to focus it. These entries are also in Settings → Vantage.
 +
 +onboarding-privacy-eyebrow = Privacy
 +onboarding-privacy-title = Privacy is already set

@@ -43,6 +43,10 @@ onboarding-theme-yield-note = 啟用第三方主題後，Vantage 主題會自動
 onboarding-custom-eyebrow = 自訂
 onboarding-custom-title = 自訂你的旅程
 onboarding-custom-body = 挑幾個順手的設定。這裡只列常用的，更多在設定面板裡。
+onboarding-sidebar-label = 側邊欄
+onboarding-sidebar-desc = 在目前視窗顯示或隱藏側邊欄，與 Ctrl+B 快速鍵相同。
+onboarding-vertical-tabs-label = 直式分頁
+onboarding-vertical-tabs-desc = 把分頁移到側邊欄，以垂直清單排列，適合同時開啟許多分頁。
 onboarding-multithread-label = 多執行緒下載
 onboarding-multithread-desc = 伺服器支援分段時平行下載；不支援時自動回到單一連線。
 onboarding-sidebar-hover-label = 側邊欄懸停彈出
@@ -55,6 +59,17 @@ onboarding-update-check-desc = 啟動後檢查 Vantage 新版本，只提示，�
 onboarding-ai-sidebar-label = AI 側邊欄
 onboarding-ai-sidebar-desc = 在側邊欄開啟 AI 聊天，支援 DeepSeek、Qwen、豆包、ChatGPT、Gemini 和 Claude。
 onboarding-custom-note = 完整清單在 <a data-l10n-name="settings">設定 → Vantage</a>。之後隨時可以改。
+
+onboarding-workspace-eyebrow = 工作區
+onboarding-workspace-title = 一個瀏覽器，分開的身分與專案
+onboarding-workspace-body = 工作區由兩部分組成：用「設定檔」隔離不同身分，用「分頁群組」在同一個身分下依專案整理分頁。
+onboarding-workspace-profiles-label = 設定檔
+onboarding-workspace-profiles-desc = 每個設定檔有獨立的書籤、擴充套件和登入狀態；切換設定檔會開啟另一個瀏覽器視窗。
+onboarding-workspace-profiles-button = 管理設定檔…
+onboarding-workspace-groups-label = 分頁群組
+onboarding-workspace-groups-desc = 把同一個專案的分頁收進一個群組，可以命名、收合，再快速切回來。
+onboarding-workspace-groups-button = 開啟分頁群組
+onboarding-workspace-note = 工具列上的「工作區」按鈕會列出目前視窗的分頁群組，點一下即可聚焦切換；這些入口之後也能在設定 → Vantage 裡找到。
 
 onboarding-privacy-eyebrow = 隱私
 onboarding-privacy-title = 隱私預設已經調好

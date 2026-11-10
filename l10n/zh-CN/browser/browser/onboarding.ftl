@@ -43,6 +43,10 @@ onboarding-theme-yield-note = 启用第三方主题后，Vantage 主题会自动
 onboarding-custom-eyebrow = 自定义
 onboarding-custom-title = 自定义你的旅途
 onboarding-custom-body = 挑几个顺手的设置。这里只列常用的，更多在设置面板里。
+onboarding-sidebar-label = 侧栏
+onboarding-sidebar-desc = 在当前窗口显示或隐藏侧栏，与 Ctrl+B 快捷键相同。
+onboarding-vertical-tabs-label = 竖排标签页
+onboarding-vertical-tabs-desc = 把标签页移到侧栏，按垂直列表排列，适合同时打开很多标签页。
 onboarding-multithread-label = 多线程下载
 onboarding-multithread-desc = 服务器支持分段时并行下载；不支持时自动回退为单线程。
 onboarding-sidebar-hover-label = 侧栏悬停弹出
@@ -55,6 +59,17 @@ onboarding-update-check-desc = 启动后检查 Vantage 新版本，只提示，�
 onboarding-ai-sidebar-label = AI 侧栏
 onboarding-ai-sidebar-desc = 在侧边栏打开 AI 聊天，支持 DeepSeek、Qwen、豆包、ChatGPT、Gemini 和 Claude。
 onboarding-custom-note = 完整列表在 <a data-l10n-name="settings">设置 → Vantage</a>。之后随时可以改。
+
+onboarding-workspace-eyebrow = 工作区
+onboarding-workspace-title = 一个浏览器，分开的身份与项目
+onboarding-workspace-body = 工作区由两部分组成：用配置文件隔离不同身份，用标签页群组在同一个身份下按项目整理标签页。
+onboarding-workspace-profiles-label = 配置文件
+onboarding-workspace-profiles-desc = 每个配置文件有独立的书签、扩展和登录状态；切换配置文件会打开另一个浏览器窗口。
+onboarding-workspace-profiles-button = 管理配置文件…
+onboarding-workspace-groups-label = 标签页群组
+onboarding-workspace-groups-desc = 把同一项目的标签页收进一个组，可以命名、折叠，再快速切回来。
+onboarding-workspace-groups-button = 打开标签页群组
+onboarding-workspace-note = 工具栏上的「工作区」按钮会列出当前窗口的标签页群组，点一下即可聚焦切换；这些入口之后也能在设置 → Vantage 里找到。
 
 onboarding-privacy-eyebrow = 隐私
 onboarding-privacy-title = 隐私默认已经调好
