@@ -450,7 +450,7 @@ new file mode 100644
 index 0000000..585ab2f
 --- /dev/null
 +++ b/browser/base/content/onboarding/onboarding.html
-@@ -0,0 +1,401 @@
+@@ -0,0 +1,411 @@
 +<!DOCTYPE html>
 +<!-- This Source Code Form is subject to the terms of the Mozilla Public
 +   - License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -594,6 +594,16 @@ index 0000000..585ab2f
 +              <div class="field-desc" data-l10n-id="onboarding-sidebar-desc"></div>
 +            </div>
 +            <input class="switch" type="checkbox" data-feature="sidebar">
++          </div>
++        </div>
++
++        <div class="field">
++          <div class="field-head">
++            <div class="grow">
++              <div class="field-title" data-l10n-id="onboarding-revamp-sidebar-label"></div>
++              <div class="field-desc" data-l10n-id="onboarding-revamp-sidebar-desc"></div>
++            </div>
++            <input class="switch" type="checkbox" data-feature="revamp-sidebar">
 +          </div>
 +        </div>
 +
@@ -857,7 +867,7 @@ new file mode 100644
 index 0000000..f4f75d4
 --- /dev/null
 +++ b/browser/base/content/onboarding/onboarding.js
-@@ -0,0 +1,527 @@
+@@ -0,0 +1,587 @@
 +/* This Source Code Form is subject to the terms of the Mozilla Public
 + * License, v. 2.0. If a copy of the MPL was not distributed with this
 + * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -873,6 +883,7 @@ index 0000000..f4f75d4
 +  density: "browser.uidensity",
 +  multithread: "vantage.download.multithread",
 +  sidebarHover: "vantage.sidebar.hover-autohide.enabled",
++  revampSidebar: "sidebar.revamp",
 +  verticalTabs: "sidebar.verticalTabs",
 +  findbar: "vantage.findbar.topright",
 +  tabsUnload: "browser.tabs.unloadOnLowMemory",
@@ -1059,14 +1070,36 @@ index 0000000..f4f75d4
 +
 +// ---------- 功能开关 ----------
 +const sidebarSwitch = document.querySelector('[data-feature="sidebar"]');
++const revampSidebarSwitch = document.querySelector(
++  '[data-feature="revamp-sidebar"]'
++);
++const verticalTabsSwitch = document.querySelector(
++  '[data-feature="vertical-tabs"]'
++);
 +
 +function getSidebarController() {
 +  return getBrowserWindow()?.SidebarController ?? null;
 +}
 +
-+function syncSidebarSwitch() {
++let sidebarSwitchState = false;
++
++function setSidebarSwitchState(value) {
++  sidebarSwitchState = !!value;
 +  if (sidebarSwitch) {
-+    sidebarSwitch.checked = !!getSidebarController()?.isOpen;
++    sidebarSwitch.checked = sidebarSwitchState;
++  }
++}
++
++function syncSidebarSwitch() {
++  setSidebarSwitchState(getSidebarController()?.isOpen);
++}
++
++function syncSidebarModeSwitches() {
++  if (revampSidebarSwitch) {
++    revampSidebarSwitch.checked = getBool(PREF.revampSidebar);
++  }
++  if (verticalTabsSwitch) {
++    verticalTabsSwitch.checked = getBool(PREF.verticalTabs);
 +  }
 +}
 +
@@ -1083,26 +1116,62 @@ index 0000000..f4f75d4
 +})();
 +
 +syncSidebarSwitch();
++syncSidebarModeSwitches();
++Services.prefs.addObserver(PREF.revampSidebar, syncSidebarModeSwitches);
++Services.prefs.addObserver(PREF.verticalTabs, syncSidebarModeSwitches);
++
++// 侧栏开关：与 Ctrl+B 相同，只控制当前窗口侧栏的显示/隐藏。
++// 用 pointerdown 记录意图、click 手动执行，避免 mousedown 阶段被悬停
++// 侧栏的「点击外部收起」改写状态后又被原生 checkbox 翻转一次。
++let sidebarSwitchIntent = null;
++window.addEventListener(
++  "pointerdown",
++  event => {
++    if (event.target === sidebarSwitch) {
++      sidebarSwitchIntent = !sidebarSwitchState;
++    }
++  },
++  true
++);
++
++sidebarSwitch?.addEventListener("click", event => {
++  event.preventDefault();
++  const next = sidebarSwitchIntent ?? !sidebarSwitchState;
++  sidebarSwitchIntent = null;
++  setSidebarSwitchState(next);
++  const controller = getSidebarController();
++  if (!controller) {
++    syncSidebarSwitch();
++    return;
++  }
++  try {
++    if (next) {
++      controller.toggle();
++    } else {
++      controller.hide({ dismissPanel: false });
++      if (controller._state) {
++        controller._state.launcherVisible = false;
++      }
++    }
++  } catch (e) {
++    // 失败时以系统真实状态为准
++  }
++  setTimeout(syncSidebarSwitch, 250);
++});
 +
 +document.querySelectorAll("[data-feature]").forEach(input => {
 +  const key = input.dataset.feature;
 +  if (key === "sidebar") {
-+    input.addEventListener("change", async () => {
-+      const controller = getSidebarController();
-+      if (!controller) {
-+        syncSidebarSwitch();
-+        return;
++    return;
++  }
++  if (key === "revamp-sidebar") {
++    input.checked = getBool(PREF.revampSidebar);
++    input.addEventListener("change", () => {
++      setBool(PREF.revampSidebar, input.checked);
++      if (input.checked) {
++        getSidebarController()?.enabledViaSettings?.(true);
 +      }
-+      try {
-+        if (input.checked) {
-+          await controller.toggle();
-+        } else {
-+          controller.hide();
-+        }
-+      } catch (e) {
-+        // 显示失败时以下一次同步结果为准
-+      }
-+      setTimeout(syncSidebarSwitch, 250);
++      syncSidebarModeSwitches();
 +    });
 +    return;
 +  }
@@ -1110,6 +1179,7 @@ index 0000000..f4f75d4
 +    input.checked = getBool(PREF.verticalTabs);
 +    input.addEventListener("change", () => {
 +      setBool(PREF.verticalTabs, input.checked);
++      syncSidebarModeSwitches();
 +    });
 +    return;
 +  }
@@ -1430,7 +1500,7 @@ new file mode 100644
 index 0000000..9db285e
 --- /dev/null
 +++ b/browser/locales/en-US/browser/onboarding.ftl
-@@ -0,0 +1,111 @@
+@@ -0,0 +1,113 @@
 +# This Source Code Form is subject to the terms of the Mozilla Public
 +# License, v. 2.0. If a copy of the MPL was not distributed with this
 +# file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -1478,6 +1548,8 @@ index 0000000..9db285e
 +onboarding-custom-body = A few settings worth deciding now. Only the common ones are listed here; more are in Settings.
 +onboarding-sidebar-label = Sidebar
 +onboarding-sidebar-desc = Shows or hides the sidebar in this window, the same as the Ctrl+B shortcut.
++onboarding-revamp-sidebar-label = New sidebar
++onboarding-revamp-sidebar-desc = Uses the new sidebar, with a toolbar and content panel for bookmarks, history, AI chat, and more. Turning it off also turns off vertical tabs.
 +onboarding-vertical-tabs-label = Vertical tabs
 +onboarding-vertical-tabs-desc = Moves tabs into the sidebar as a vertical list. Best with many tabs open.
 +onboarding-multithread-label = Multi-threaded downloads
