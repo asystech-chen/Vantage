@@ -14,7 +14,7 @@ diff --git a/browser/components/customizableui/CustomizableWidgets.sys.mjs b/bro
 index c0dd6ce..1931395 100644
 --- a/browser/components/customizableui/CustomizableWidgets.sys.mjs
 +++ b/browser/components/customizableui/CustomizableWidgets.sys.mjs
-@@ -326,6 +326,95 @@ export const CustomizableWidgets = [
+@@ -326,6 +326,109 @@ export const CustomizableWidgets = [
        }
      },
    },
@@ -96,10 +96,24 @@ index c0dd6ce..1931395 100644
 +
 +        addSeparator();
 +        addItem("manage-groups", "vantage-workspace-manage-groups", () => {
-+          // Let the menu close before anchoring the native panel to the button.
-+          win.setTimeout(() => {
-+            win.PanelUI.showSubView("toolbar-tabGroupsListView", aNode);
-+          }, 0);
++          let opened = false;
++          let openPanel = () => {
++            if (opened) {
++              return;
++            }
++            opened = true;
++            popup.removeEventListener("popuphidden", openPanel);
++            // Let the menu close before anchoring the native panel to the button.
++            win.setTimeout(() => {
++              win.PanelUI.showSubView("toolbar-tabGroupsListView", aNode);
++            }, 0);
++          };
++          if (popup.state === "closed") {
++            openPanel();
++          } else {
++            popup.addEventListener("popuphidden", openPanel);
++            popup.hidePopup();
++          }
 +        });
 +      };
 +
