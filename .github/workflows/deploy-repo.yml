@@ -12,8 +12,18 @@ jobs:
 
       - name: 2. 安装打包和签名必备工具
         run: |
-          sudo apt-get update
-          sudo apt-get install -y dpkg-dev apt-utils createrepo-c gnupg rpm
+          # 1. 强制写入公共 DNS (Google 8.8.8.8 / Cloudflare 1.1.1.1)，彻底干掉 DNS 解析失败
+          echo -e "nameserver 8.8.8.8\nnameserver 1.1.1.1" | sudo tee /etc/resolv.conf
+
+          # 2. 自动重试 5 次 update，直到网络稳定
+          for i in {1..5}; do
+            sudo apt-get update && break || (echo "apt update 失败，3秒后重试..." && sleep 3)
+          done
+
+          # 3. 加上 --fix-missing 和 5 次重试安装，杜绝偶发断流
+          for i in {1..5}; do
+            sudo apt-get install -y --fix-missing dpkg-dev apt-utils createrepo-c gnupg rpm && break || (echo "apt install 失败，3秒后重试..." && sleep 3)
+          done
 
       - name: 3. 导入 GPG 私钥并配置静默模式
         run: |
