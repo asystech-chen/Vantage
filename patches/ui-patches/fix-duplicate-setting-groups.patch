@@ -1,0 +1,30 @@
+--- a/browser/components/preferences/main.js
++++ b/browser/components/preferences/main.js
+@@ -801,17 +801,22 @@
+   for (let group of groups) {
+     if (group && config) {
+       let sectionEnabled = srdSectionEnabled(id);
++      let legacySections = document.querySelectorAll(
++        `[data-srd-groupid=${id}]`
++      );
+ 
+       if (
+         (sectionEnabled && group.hasAttribute("data-srd-migrated")) ||
+-        (config.inProgress && !sectionEnabled)
++        (config.inProgress && !sectionEnabled) ||
++        // Classic UI: a migrated group with a legacy counterpart in the same
++        // pane would render the same settings twice.
++        (!sectionEnabled &&
++          group.hasAttribute("data-srd-migrated") &&
++          legacySections.length)
+       ) {
+         group.remove();
++        continue;
+       }
+-
+-      let legacySections = document.querySelectorAll(
+-        `[data-srd-groupid=${id}]`
+-      );
+       for (let section of legacySections) {
+         if (sectionEnabled) {
+           section.hidden = true;
