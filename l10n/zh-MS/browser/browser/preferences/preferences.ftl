@@ -2751,6 +2751,9 @@ librewolf-webrtc-ip-description = 限制 WebRTC 到使用仅那默认网络接�
 librewolf-font-vis-checkbox =
     .label = 界限字体可见性
 librewolf-font-vis-description = 仅使暴露基准系统字体到网站（全球资讯网的主机站）, 预防字体指纹法. 做不影响如何字体是已渲染的在页.
+vantage-insecure-field-warning-checkbox =
+    .label = 在局域网页面也显示“连接不安全”提示
+vantage-insecure-field-warning-description = 默认只在公网 HTTP 页面提示。开启后，用 IP 或主机名访问的内网 HTTP 页面也会显示该提示。
 
 librewolf-xorigin-ref-checkbox =
     .label = 界限交叉-origin 推荐人

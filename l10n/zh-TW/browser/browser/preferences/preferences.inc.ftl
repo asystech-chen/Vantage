@@ -60,6 +60,9 @@ librewolf-webrtc-ip-description = 限制 WebRTC 僅使用預設網路介面，�
 librewolf-font-vis-checkbox =
     .label = 限制字型可見性
 librewolf-font-vis-description = 僅向網站暴露基礎系統字型，防止字型指紋追蹤。不影響網頁字型渲染效果。
+vantage-insecure-field-warning-checkbox =
+    .label = 在區域網路頁面也顯示「連線不安全」提示
+vantage-insecure-field-warning-description = 預設只在公網 HTTP 頁面提示。開啟後，以 IP 或主機名稱存取的內網 HTTP 頁面也會顯示此提示。
 
 librewolf-xorigin-ref-checkbox =
     .label = 限制跨域引用

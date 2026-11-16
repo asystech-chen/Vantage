@@ -70,6 +70,9 @@ librewolf-webrtc-ip-description = Restrict WebRTC to use only the default networ
 librewolf-font-vis-checkbox =
     .label = Limit font visibility
 librewolf-font-vis-description = Only expose base system fonts to websites, preventing font fingerprinting. Does not affect how fonts are rendered on pages.
+vantage-insecure-field-warning-checkbox =
+    .label = Also show “connection is not secure” warning on LAN pages
+vantage-insecure-field-warning-description = By default the warning appears only on public HTTP pages. Enable this to show it on LAN pages too, including IP addresses and local hostnames.
 
 librewolf-xorigin-ref-checkbox =
     .label = Limit cross-origin referrers

@@ -45,6 +45,7 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "browser.nova.enabled", type: "bool" },
   { id: "vantage.findbar.topright", type: "bool" },
   { id: "vantage.sidebar.hover-autohide.enabled", type: "bool" },
+  { id: "vantage.security.insecure-field-warning.show-on-local", type: "bool" },
   { id: "xpinstall.signatures.required", type: "bool" },
   { id: "browser.download.start_downloads_in_tmp_dir", type: "bool" },
   { id: "pdfjs.enableScripting", type: "bool" },
