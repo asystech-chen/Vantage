@@ -159,7 +159,12 @@ def librewolf_patches():
     # read lines of .txt file into 'patches'
     with open('../assets/patches.txt'.format(version), "r") as f:
         for line in f.readlines():
-            patch('../'+line.strip())
+            line = line.strip()
+            # 跳过空行与注释：空行曾被当成补丁路径去 patch 一个目录，
+            # 导致整个打补丁阶段 fatal 退出、后面的 lw/l10n 也没生成。
+            if not line or line.startswith('#'):
+                continue
+            patch('../'+line)
 
     # Fix cargo checksum for rust-build.patch (modifies x_user_defined.rs)
 

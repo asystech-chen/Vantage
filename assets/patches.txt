@@ -73,5 +73,4 @@ patches/ui-patches/nova-fullscreen-decoration.patch
 patches/ui-patches/vantage-onboarding.patch
 patches/ui-patches/vantage-onboarding-trigger.patch
 patches/ui-patches/vantage-workspace-button.patch
-
 patches/ui-patches/fix-duplicate-setting-groups.patch
