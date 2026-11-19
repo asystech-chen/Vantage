@@ -655,6 +655,11 @@
       }
     }
 
+    // 供其它 feature（地址栏「网站兼容」按钮）复用检测/启动逻辑
+    try {
+      Services.vantageCompat = { detectBrowsers, launch, lastId, remember };
+    } catch (e) {}
+
     Services.obs.addObserver(
       {
         observe(subject, topic) {

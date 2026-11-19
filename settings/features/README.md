@@ -24,6 +24,7 @@ Vantage 独有功能的源码片段。构建时由 `scripts/cfg-merge.py` 展开
 | 文件 | 功能 | 入口 | 关键 pref | 平台 |
 |---|---|---|---|---|
 | `compat.js` | 右键用 Chromium 系浏览器打开页面/链接/标签页 | 页面右键、链接右键、标签页右键 | `vantage.compat.externalBrowser`（记住上次选择） | Windows / macOS / Linux |
+| `chromium-ua.js` | 地址栏「网站兼容」按钮：按站点伪装 Chromium UA + 外部浏览器打开；依赖 `compat.js`（`globalThis.VantageCompat`） | 地址栏右侧页面操作区 | `vantage.compat.uaSites`（已启用域名）、`vantage.compat.chromeVersion`（UA 版本号） | Windows / macOS / Linux |
 | `open-in-ie.js` | 右键用 IE 打开 | 页面右键、链接右键、标签页右键 | 无 | 仅 Windows |
 
 后续可搬迁（尚未拆分，代码仍在 `vantage.cfg` 内）：
