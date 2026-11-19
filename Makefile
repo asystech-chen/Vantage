@@ -212,8 +212,16 @@ setup-wasi :
 
 
 dir : $(lw_source_dir)
+	@test -x "$(lw_source_dir)/mach" || { \
+	  echo "!!! 源码树 $(lw_source_dir) 不完整（缺少 mach），请删除该目录后重新执行 make dir"; \
+	  exit 1; \
+	}
 
 build : $(lw_source_dir)
+	@test -x "$(lw_source_dir)/mach" || { \
+	  echo "!!! 源码树 $(lw_source_dir) 不完整（缺少 mach），请删除该目录后重新执行 make dir"; \
+	  exit 1; \
+	}
 	@if [ -n "$${VANTAGE_JOBS}" ]; then \
 	  echo ">>> mach build -j$${VANTAGE_JOBS} (VANTAGE_JOBS 覆盖)"; \
 	  (cd $(lw_source_dir) && ./mach build -j$${VANTAGE_JOBS}); \
