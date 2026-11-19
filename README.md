@@ -46,8 +46,8 @@ Vantage 已迁移至 **Firefox ESR（Extended Support Release）** 通道，当�
 
 | 状态 | 功能 |
 |:---:|---|
-| ✅ 已实现 | 工具栏「多线程下载」开关、「查找栏右上角悬浮」、「侧栏悬停自动弹出」、右键「复制为 Markdown 链接」/「在 IE 中打开」、工具栏「恢复最近关闭」、标签自动休眠、AI 侧栏、DoH 本地优化、Nova 外观、Vantage 主题（源码内置，切换即时生效）、全屏贴边修正、紧凑密度选项（实验） |
-| 🧪 计划中 | 新手引导（`about:vantage`）、Glance 浮层速览、命令面板、Chromium 系外链处理、更多右键增强 |
+| ✅ 已实现 | 工具栏「多线程下载」开关、「查找栏右上角悬浮」、「侧栏悬停自动弹出」、右键「复制为 Markdown 链接」/「在 IE 中打开」、工具栏「恢复最近关闭」、标签自动休眠、AI 侧栏、DoH 本地优化、Nova 外观、Vantage 主题（源码内置，切换即时生效）、全屏贴边修正、紧凑密度选项（实验）、新手引导（`about:onboarding`）、工作区入口（配置文件 + 标签页群组） |
+| 🧪 计划中 | Glance 浮层速览、命令面板、Chromium 系外链处理、更多右键增强 |
 
 ---
 
@@ -321,6 +321,16 @@ Vantage 浏览器主体代码遵循 **Mozilla Public License 2.0** 开源。
 - 💻 源码：[GitHub - asystech-chen/Vantage](https://github.com/asystech-chen/Vantage)
 - 🐛 问题反馈：[Issues](https://github.com/asystech-chen/Vantage/issues)
 - 📚 Firefox 文档：[MDN Web Docs](https://developer.mozilla.org/)
+
+### 🌍 镜像站点
+
+源码同步托管在以下站点，访问不畅时可切换；发布包以 GitHub Releases 为准。
+
+| 站点 | 源码 |
+|---|---|
+| GitHub（主站） | [asystech-chen/Vantage](https://github.com/asystech-chen/Vantage) |
+| Gitee | [asystech-chen/Vantage](https://gitee.com/asystech-chen/Vantage) |
+| Codeberg | [asystech-chen/Vantage](https://codeberg.org/asystech-chen/Vantage) |
 
 ---
 

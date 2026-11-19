@@ -46,7 +46,7 @@ Vantage has migrated to the **Firefox ESR (Extended Support Release)** channel, 
 
 | Status | Features |
 |:---:|---|
-| ✅ Shipped | Toolbar "multi-threaded download" toggle, "find bar floating at the top-right", "sidebar auto-reveal on hover", right-click "Copy as Markdown link" / "Open in IE", toolbar "Reopen last closed", automatic tab sleep, AI sidebar, local DoH optimization, Nova appearance, Vantage theme (built into the source, applies instantly), fullscreen edge fix, compact density option (experimental) |
+| ✅ Shipped | Toolbar "multi-threaded download" toggle, "find bar floating at the top-right", "sidebar auto-reveal on hover", right-click "Copy as Markdown link" / "Open in IE", toolbar "Reopen last closed", automatic tab sleep, AI sidebar, local DoH optimization, Nova appearance, Vantage theme (built into the source, applies instantly), fullscreen edge fix, compact density option (experimental), workspace entry (profiles + tab groups) |
 | ✅ Done | First-run onboarding (`about:onboarding`) |
 | 🧪 Planned | Glance quick preview, command palette, handling of links for Chromium-based browsers, more right-click enhancements |
 
@@ -321,6 +321,16 @@ Some bundled extensions and assets are under their respective licenses.
 - 💻 Source code: [GitHub - asystech-chen/Vantage](https://github.com/asystech-chen/Vantage)
 - 🐛 Issue tracker: [Issues](https://github.com/asystech-chen/Vantage/issues)
 - 📚 Firefox docs: [MDN Web Docs](https://developer.mozilla.org/)
+
+### 🌍 Mirrors
+
+Source code is mirrored to the sites below for better accessibility; release binaries are published on GitHub Releases.
+
+| Site | Source |
+|---|---|
+| GitHub (primary) | [asystech-chen/Vantage](https://github.com/asystech-chen/Vantage) |
+| Gitee | [asystech-chen/Vantage](https://gitee.com/asystech-chen/Vantage) |
+| Codeberg | [asystech-chen/Vantage](https://codeberg.org/asystech-chen/Vantage) |
 
 ---
 
