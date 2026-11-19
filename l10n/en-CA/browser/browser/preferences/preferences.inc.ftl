@@ -302,3 +302,7 @@ vantage-workspace-description = Use Profiles to separate identities (each keeps 
 vantage-workspace-profiles-button = Manage Profiles…
 vantage-workspace-tabgroups-button = Open Tab Groups
 vantage-workspace-note = The Workspaces button on the toolbar opens the same entries. Switching profiles opens another browser window; profiles do not share sign-ins or extensions.
+
+# Vantage: taskbar tabs
+vantage-taskbar-tabs-checkbox = Show the “Add to taskbar” button in the address bar
+vantage-taskbar-tabs-description = Windows only. On Linux it depends on the desktop environment.

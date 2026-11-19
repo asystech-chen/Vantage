@@ -280,3 +280,7 @@ vantage-workspace-description = 用「設定檔」隔離不同身分（各自擁
 vantage-workspace-profiles-button = 管理設定檔…
 vantage-workspace-tabgroups-button = 開啟分頁群組
 vantage-workspace-note = 工具列上的「工作區」按鈕可快速開啟這些入口。切換設定檔會開啟另一個瀏覽器視窗；不同設定檔之間不共用登入狀態與擴充套件。
+
+# Vantage: taskbar tabs
+vantage-taskbar-tabs-checkbox = 在網址列顯示「新增至工作列」按鈕
+vantage-taskbar-tabs-description = 僅 Windows；Linux 視桌面環境而定。

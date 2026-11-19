@@ -60,6 +60,7 @@ ChromeUtils.defineLazyGetter(this, "L10n", () => {
   { id: "network.trr.mode", type: "int" },
   { id: "network.trr.uri", type: "string" },
   { id: "browser.tabs.unloadOnLowMemory", type: "bool" },
+  { id: "browser.taskbarTabs.enabled", type: "bool" },
 ];
   for (let p of prefsToAdd) {
     try { Preferences.add(p); } catch (e) { /* already registered */ }

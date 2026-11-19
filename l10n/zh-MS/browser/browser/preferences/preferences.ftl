@@ -2982,3 +2982,7 @@ vantage-workspace-description = 用「配置文件」隔离不同身份（各自
 vantage-workspace-profiles-button = 管理配置文件…
 vantage-workspace-tabgroups-button = 打开标签页群组
 vantage-workspace-note = 工具栏上的「工作区」按钮可快速打开这些入口。切换配置文件会打开另一个浏览器窗口；不同配置文件之间不共享登录状态和扩展。
+
+# Vantage: taskbar tabs
+vantage-taskbar-tabs-checkbox = 在地址栏显示「添加到任务栏」按钮
+vantage-taskbar-tabs-description = 仅 Windows；Linux 视桌面环境而定。
