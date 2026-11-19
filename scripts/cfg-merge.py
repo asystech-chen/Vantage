@@ -7,6 +7,8 @@ settings/librewolf.cfg  — annotated copy of upstream LibreWolf librewolf.cfg.
                           settings/vantage.cfg and is referenced by
                           // @VANTAGE_BLOCK:<n>@ markers.
 settings/vantage.cfg    — Vantage-only prefs and JS blocks.
+settings/features/*.js  — Vantage-only feature code, expanded via
+                          // @VANTAGE_INCLUDE: features/<name>.js
 
 Usage:
   scripts/cfg-merge.py --merge --output path      # build a merged cfg
@@ -30,6 +32,8 @@ VANTAGE = ROOT / "settings" / "vantage.cfg"
 DISABLED = "//@VANTAGE-DISABLED@"
 META = "//@VANTAGE-META@"
 BLOCK_RE = re.compile(r"^// @VANTAGE_BLOCK:(\d+)@$")
+INCLUDE_RE = re.compile(r"^\s*//\s*@VANTAGE_INCLUDE:\s*(\S.*?)\s*$")
+SETTINGS_DIR = ROOT / "settings"
 
 
 def read_lines(path: Path) -> list[str]:
@@ -59,7 +63,31 @@ def parse_blocks(path: Path) -> dict[int, list[str]]:
     return blocks
 
 
-def build_merged() -> tuple[list[str], dict[int, list[str]], list[int]]:
+def expand_includes(lines: list[str], stack: tuple[Path, ...] = ()) -> tuple[list[str], int]:
+    """Expand // @VANTAGE_INCLUDE: features/xxx.js directives (paths relative to settings/)."""
+    out: list[str] = []
+    count = 0
+    for line in lines:
+        m = INCLUDE_RE.match(line)
+        if not m:
+            out.append(line)
+            continue
+        rel = m.group(1)
+        path = (SETTINGS_DIR / rel).resolve()
+        if not path.is_relative_to(SETTINGS_DIR.resolve()):
+            raise SystemExit(f"include escapes settings/: {rel}")
+        if path in stack:
+            raise SystemExit(f"include cycle: {' -> '.join(str(x) for x in stack + (path,))}")
+        if not path.is_file():
+            raise SystemExit(f"missing include: {rel} ({path})")
+        count += 1
+        sub, sub_count = expand_includes(read_lines(path), stack + (path,))
+        out.extend(sub)
+        count += sub_count
+    return out, count
+
+
+def build_merged() -> tuple[list[str], dict[int, list[str]], list[int], int]:
     base = read_lines(BASE)
     blocks = parse_blocks(VANTAGE)
     out: list[str] = []
@@ -82,7 +110,8 @@ def build_merged() -> tuple[list[str], dict[int, list[str]], list[int]]:
             out.append(line)
 
     unused = sorted(set(blocks) - set(used))
-    return out, blocks, unused
+    out, include_count = expand_includes(out)
+    return out, blocks, unused, include_count
 
 
 def snapshot_lines() -> list[str]:
@@ -142,7 +171,7 @@ def main() -> int:
         write_output(snapshot_lines(), args.output)
         return 0
 
-    merged, blocks, unused = build_merged()
+    merged, blocks, unused, include_count = build_merged()
 
     if args.check:
         if unused:
@@ -151,7 +180,10 @@ def main() -> int:
         if any(BLOCK_RE.match(line) for line in merged):
             print("unresolved block marker in merged output", file=sys.stderr)
             return 1
-        print(f"OK: {len(blocks)} blocks, merged {len(merged)} lines")
+        if any(INCLUDE_RE.match(line) for line in merged):
+            print("unresolved include directive in merged output", file=sys.stderr)
+            return 1
+        print(f"OK: {len(blocks)} blocks, {include_count} includes, merged {len(merged)} lines")
         return 0
 
     write_output(merged, args.output)
