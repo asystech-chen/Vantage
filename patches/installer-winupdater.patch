@@ -44,8 +44,8 @@ index e4cca5c..8c32aaa 100755
 +  ; a fresh silent install.
 +  ${If} $InstallWinUpdater == "0"
 +    ${LogHeader} "Removing WinUpdater (opted out)"
-+    IfFileExists "$INSTDIR\winupdater\Uninstall.ps1" 0 +3
-+      ExecWait 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "$INSTDIR\winupdater\Uninstall.ps1" -Quiet'
++    IfFileExists "$INSTDIR\winupdater\Vantage-WinUpdater.exe" 0 +3
++      ExecWait '"$INSTDIR\winupdater\Vantage-WinUpdater.exe" /Uninstall /Quiet'
 +    IfFileExists "$INSTDIR\winupdater" 0 +2
 +      RmDir /r "$INSTDIR\winupdater"
 +  ${EndIf}
@@ -71,17 +71,17 @@ index e4cca5c..8c32aaa 100755
 +  ; the checkbox ticked, or silent upgrade of an existing install), register
 +  ; the scheduled task and add an Add/Remove Programs entry so the user can
 +  ; uninstall the component from the Windows app list. Uninstalling there
-+  ; runs Uninstall.ps1 which removes the task, the %APPDATA% copy, the
++  ; runs the updater's /Uninstall mode, which removes the task, the %APPDATA% copy, the
 +  ; registry entry, and the component folder.
 +  ${If} $InstallWinUpdater != "0"
-+    IfFileExists "$INSTDIR\winupdater\ScheduledTask-Create.ps1" 0 +2
-+      ExecWait 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "$INSTDIR\winupdater\ScheduledTask-Create.ps1"'
++    IfFileExists "$INSTDIR\winupdater\Vantage-WinUpdater.exe" 0 +2
++      ExecWait '"$INSTDIR\winupdater\Vantage-WinUpdater.exe" /CreateTask'
 +    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "DisplayName" "Vantage WinUpdater"
 +    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "DisplayVersion" "${AppVersion}"
 +    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "Publisher" "${CERTIFICATE_NAME}"
 +    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "InstallLocation" "$INSTDIR\winupdater"
 +    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "DisplayIcon" "$INSTDIR\winupdater\Vantage-WinUpdater.ico"
-+    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "UninstallString" 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "$INSTDIR\winupdater\Uninstall.ps1"'
++    WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "UninstallString" '"$INSTDIR\winupdater\Vantage-WinUpdater.exe" /Uninstall'
 +    WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "NoModify" 1
 +    WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "NoRepair" 1
 +    WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Vantage WinUpdater" "EstimatedSize" 2048
@@ -159,9 +159,9 @@ index 4f5626b..50cd5f7 100755
      RmDir /r /REBOOTOK "$INSTDIR\distribution"
    ${EndIf}
 +  ; Vantage: remove the WinUpdater scheduled task, its files, the
-+  ; %APPDATA% copy, and the Add/Remove Programs entry (Uninstall.ps1).
-+  ${If} ${FileExists} "$INSTDIR\winupdater\Uninstall.ps1"
-+    ExecWait 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "$INSTDIR\winupdater\Uninstall.ps1" -Quiet'
++  ; %APPDATA% copy, and the Add/Remove Programs entry.
++  ${If} ${FileExists} "$INSTDIR\winupdater\Vantage-WinUpdater.exe"
++    ExecWait '"$INSTDIR\winupdater\Vantage-WinUpdater.exe" /Uninstall /Quiet'
 +  ${EndIf}
 +  ${If} ${FileExists} "$INSTDIR\winupdater"
 +    RmDir /r /REBOOTOK "$INSTDIR\winupdater"

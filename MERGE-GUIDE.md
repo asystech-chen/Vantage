@@ -30,7 +30,7 @@
 | `patches/dmg-fix-permissions.patch` | **macOS 签名修复**。上游无此文件 |
 | `patches/fix-7zsfx-branding.patch` | **7zSFX 品牌替换**：`other-licenses/7zstub/firefox/resource.rc` 中 CompanyName/FileDescription 改为 Vantage。⚠️ **需 LF 行尾！** 因为 `librewolf-patches.py` 在打补丁前会将所有源文件（含 .rc）转为 LF，CRLF patch 反而会导致 "different line endings" 错误。 |
 | `patches/hide-passwordmgr.patch` | 隐藏密码管理器（Firefox Sync 特性，Vantage 不需要） |
-| `patches/installer-winupdater.patch` | **WinUpdater 自动更新**：NSIS 安装器 post-install 钩子，自动注册 ScheduledTask-Create.ps1 计划任务。配合 `librewolf-patches.py` 注入的 `@RESPATH@/winupdater/*` manifest 条目和 Makefile 的 dist 注入。上游无此文件 |
+| `patches/installer-winupdater.patch` | **WinUpdater 自动更新**：NSIS 安装器 post-install 钩子，调用 `Vantage-WinUpdater.exe /CreateTask` / `/Uninstall`。配合 `librewolf-patches.py` 注入的 `@RESPATH@/winupdater/*` manifest 条目和 Makefile 的 dist 注入。上游无此文件 |
 
 ---
 

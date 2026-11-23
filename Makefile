@@ -251,9 +251,6 @@ package :
 	  mkdir -p $$OBJDIR/dist/bin/winupdater && \
 	  cp winupdater/Vantage-WinUpdater.exe \
 	     winupdater/Vantage-WinUpdater.ico \
-	     winupdater/ScheduledTask-Create.ps1 \
-	     winupdater/ScheduledTask-Remove.ps1 \
-	     winupdater/Uninstall.ps1 \
 	     $$OBJDIR/dist/bin/winupdater/; \
 	  echo ">>> Ensuring WinUpdater entries in package-manifest.in..."; \
 	  MF=$(lw_source_dir)/browser/installer/package-manifest.in; \
@@ -300,9 +297,6 @@ package :
 	      mkdir -p $(APP_NAME)-portable/$(APP_NAME)/winupdater; \
 	      cp winupdater/Vantage-WinUpdater.exe $(APP_NAME)-portable/$(APP_NAME)/winupdater/; \
 	      cp winupdater/Vantage-WinUpdater.ico $(APP_NAME)-portable/$(APP_NAME)/winupdater/; \
-	      cp winupdater/ScheduledTask-Create.ps1 $(APP_NAME)-portable/$(APP_NAME)/winupdater/; \
-	      cp winupdater/ScheduledTask-Remove.ps1 $(APP_NAME)-portable/$(APP_NAME)/winupdater/; \
-	      cp winupdater/Uninstall.ps1 $(APP_NAME)-portable/$(APP_NAME)/winupdater/; \
 	      echo "    WinUpdater files bundled in portable package."; \
 	    else \
 	      echo "    (WinUpdater .exe not found, skipping)"; \
