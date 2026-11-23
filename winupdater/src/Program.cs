@@ -65,6 +65,7 @@ namespace Vantage.WinUpdater
             Application.SetCompatibleTextRenderingDefault(false);
 
             Options options = Options.Parse(args);
+            Diagnostics.Start("args=" + string.Join(" ", args));
 
             if (options.Uninstall)
                 return Uninstaller.Run(options);
@@ -82,8 +83,7 @@ namespace Vantage.WinUpdater
             {
                 string message = "Could not find the browser path.";
                 config.SetLastResult(message);
-                if (!options.Scheduled)
-                    TemporaryBalloon.Show("Vantage WinUpdater", message);
+                TemporaryBalloon.Show("Vantage WinUpdater", message);
                 return 1;
             }
 
@@ -95,10 +95,11 @@ namespace Vantage.WinUpdater
             {
                 string message = "Could not determine the current version of " + browserPath;
                 config.SetLastResult(message);
-                if (!options.Scheduled)
-                    TemporaryBalloon.Show("Vantage WinUpdater", message);
+                TemporaryBalloon.Show("Vantage WinUpdater", message);
                 return 1;
             }
+
+            Diagnostics.Write("browser=" + browserPath + " version=" + currentVersion);
 
             if (!EnsureWritableLocation(config, options, portable, browserPath))
                 return 0;
@@ -118,6 +119,9 @@ namespace Vantage.WinUpdater
 
                 try
                 {
+                    if (!portable)
+                        EnsureScheduledTask(browserPath);
+
                     return RunUpdateLoop(config, options, browserPath, currentVersion, portable);
                 }
                 finally
@@ -125,6 +129,31 @@ namespace Vantage.WinUpdater
                     try { mutex.ReleaseMutex(); }
                     catch { }
                 }
+            }
+        }
+
+        private static void EnsureScheduledTask(string browserPath)
+        {
+            try
+            {
+                string taskName = ScheduledTask.CurrentTaskName;
+                if (ScheduledTask.Exists(taskName))
+                    return;
+
+                // Point the task at the installed copy, not at the %APPDATA%
+                // copy this process may be running from.
+                string canonical = Path.Combine(
+                    Path.GetDirectoryName(browserPath), "winupdater", "Vantage-WinUpdater.exe");
+                string exePath = File.Exists(canonical) ? canonical : Native.ExePath;
+
+                string error;
+                bool ok = ScheduledTask.Create(taskName, exePath, out error);
+                Diagnostics.Write("scheduled task missing; register " +
+                                  (ok ? "ok" : "failed: " + error) + " -> " + exePath);
+            }
+            catch (Exception ex)
+            {
+                Diagnostics.Write("scheduled task ensure failed: " + ex.Message);
             }
         }
 
@@ -147,9 +176,10 @@ namespace Vantage.WinUpdater
 
                 Task.Run(() =>
                 {
+                    UpdateRunner runner = null;
                     try
                     {
-                        var runner = new UpdateRunner(config, browserPath, currentVersion,
+                        runner = new UpdateRunner(config, browserPath, currentVersion,
                             options.Scheduled, portable, tray);
                         exitCode = runner.Run();
                     }
@@ -165,8 +195,10 @@ namespace Vantage.WinUpdater
                             running = false;
                         }
 
-                        if (options.Scheduled)
-                            tray.ExitApp();
+                        // One-shot run: always exit when the check finished
+                        // (silently when there is no update, with a balloon
+                        // on success or failure).
+                        tray.ExitApp();
                     }
                 });
             };
@@ -278,8 +310,7 @@ namespace Vantage.WinUpdater
             string message = "Could not write to " + location +
                              ". Please check write permissions for this folder.";
             config.SetLastResult(message);
-            if (!options.Scheduled)
-                TemporaryBalloon.Show("Vantage WinUpdater", message);
+            TemporaryBalloon.Show("Vantage WinUpdater", message);
         }
 
         private static bool PathsEqual(string a, string b)

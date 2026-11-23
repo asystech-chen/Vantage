@@ -181,6 +181,19 @@ else
     err "librewolf-patches.py 中 WinUpdater 注入代码丢失！"
 fi
 
+if grep -q 'Vantage-WinUpdater.exe" /CreateTask' patches/installer-winupdater.patch && \
+   grep -q 'Vantage-WinUpdater.exe" /Uninstall' patches/installer-winupdater.patch; then
+    ok "WinUpdater NSIS 钩子调用原生 exe（/CreateTask、/Uninstall）"
+else
+    err "installer-winupdater.patch 的 NSIS 钩子未指向 Vantage-WinUpdater.exe！"
+fi
+
+if grep -q 'Uninstall\.ps1\|ScheduledTask-Create\.ps1\|ScheduledTask-Remove\.ps1' patches/installer-winupdater.patch; then
+    err "installer-winupdater.patch 仍引用旧 PowerShell 脚本！"
+else
+    ok "WinUpdater NSIS 钩子不再引用 PowerShell 脚本"
+fi
+
 if grep -q 'def check_rejects' scripts/librewolf-patches.py; then
     ok "补丁 .rej 检测代码存在"
 else

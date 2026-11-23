@@ -22,8 +22,30 @@ There is no window. The updater lives in the notification area:
 - Right-click → **Check for updates** or **Exit**
 - Balloon notifications announce new versions, download results and errors
 
-Scheduled runs stay invisible until a new version is found, and never show
-dialogs. The only notification is a success balloon after an update.
+The updater is one-shot: it checks once and exits. With no update it exits
+silently. The normal flow (new version found, downloading, installing) shows
+no balloons — only the tray tooltip changes. After a successful update or an
+error it shows a result balloon, waits a few seconds, and exits. Scheduled
+runs stay invisible until a new version is found and never show dialogs, but
+errors are still reported.
+
+If the per-user scheduled task is missing, any non-portable run registers it
+again (the installer already does this through `/CreateTask`). When the
+installer runs elevated, the task is registered with `HighestAvailable` (like
+the old PowerShell version) so scheduled updates install without an extra UAC
+prompt; otherwise it uses `LeastPrivilege`.
+
+## Download layer
+
+Downloads use the .NET HTTP stack (`HttpWebRequest`, TLS 1.2 via Schannel),
+connect directly (like the old curl calls, ignoring any stale WinINet proxy),
+disable certificate-revocation checks and stream to disk. Neither `curl.exe`
+nor `cmd.exe` is involved.
+
+Data is written to a stable `<version>.exe.partial` file and moved to a
+unique per-run name (`Vantage-<version>-<id>.exe`) when complete, so a stale
+locked file from an earlier stalled run cannot block the update. Failures and
+progress are logged to `%TEMP%\Vantage-WinUpdater.log`.
 
 ## Download tuning
 
@@ -31,6 +53,11 @@ The updater probes `Content-Length` / `Accept-Ranges` and splits files of
 8 MB or more into parallel Range segments. Each segment has a low-speed
 watchdog and up to three retries; any failure falls back to a plain
 single-connection download.
+
+Downloads are written to `<file>.partial` and moved into place only when
+complete, so a stale/locked destination cannot block a retry. If no bytes
+arrive for 90 seconds the segmented attempt is aborted and the updater falls
+back to a resuming single connection.
 
 Connections can be tuned in `Vantage-WinUpdater.ini` (next to the exe):
 
@@ -45,7 +72,7 @@ Threads=8
 
 | Argument | Behaviour |
 |---|---|
-| *(none)* | Interactive: tray icon, immediate check, stays running until **Exit** |
+| *(none)* | Interactive: tray icon, immediate check, then exit (silent when no update, balloon on success/error) |
 | `/Scheduled` | Silent run for Task Scheduler; exits when finished |
 | `/CreateTask` | Registers the per-user scheduled task and exits |
 | `/RemoveTask` | Removes the per-user scheduled task and exits |

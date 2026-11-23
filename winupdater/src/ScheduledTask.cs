@@ -20,6 +20,21 @@ namespace Vantage.WinUpdater
             get { return Prefix + " (" + Native.ShortUserName() + ")"; }
         }
 
+        public static bool Exists(string taskName)
+        {
+            try
+            {
+                object folder = Connect();
+                object task = folder.GetType().InvokeMember(
+                    "GetTask", BindingFlags.InvokeMethod, null, folder, new object[] { taskName });
+                return task != null;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public static bool Create(string taskName, string exePath, out string error)
         {
             error = null;
@@ -287,7 +302,7 @@ namespace Vantage.WinUpdater
                 "    <Principal id=\"Author\">" + Environment.NewLine +
                 "      " + principalUserId + Environment.NewLine +
                 "      <LogonType>InteractiveToken</LogonType>" + Environment.NewLine +
-                "      <RunLevel>LeastPrivilege</RunLevel>" + Environment.NewLine +
+                "      <RunLevel>" + (Native.IsAdmin() ? "HighestAvailable" : "LeastPrivilege") + "</RunLevel>" + Environment.NewLine +
                 "    </Principal>" + Environment.NewLine +
                 "  </Principals>" + Environment.NewLine +
                 "  <Settings>" + Environment.NewLine +
