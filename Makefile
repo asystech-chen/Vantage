@@ -602,7 +602,7 @@ APP_DISPLAY_NAME := Vantage
 
 # 通用清理
 clean-packaging :
-	@rm -rf deb_build rpm_build AppDir .rpm-post-install.sh .rpm-post-remove.sh
+	@rm -rf deb_build rpm_build AppDir .rpmhome .rpm-post-install.sh .rpm-post-remove.sh
 
 # 打包为 .deb (Debian/Ubuntu/Mint)
 package-deb : clean-packaging
@@ -667,7 +667,9 @@ package-rpm : clean-packaging
 	@printf 'command -v gtk-update-icon-cache >/dev/null 2>&1 && gtk-update-icon-cache -qtf /usr/share/icons/hicolor >/dev/null 2>&1 || true\n' >> .rpm-post-install.sh
 	@printf '#!/bin/sh\n' > .rpm-post-remove.sh
 	@printf 'rm -f /usr/bin/$(APP_NAME)\n' >> .rpm-post-remove.sh
-	@fpm --force -s dir -t rpm -n $(APP_NAME) -v $(version) --iteration $(release) \
+	@mkdir -p .rpmhome
+	@printf '%%__requires_exclude_from ^/opt/$(APP_NAME)/libonnxruntime\\.so$$\n%%__provides_exclude_from ^/opt/$(APP_NAME)/libonnxruntime\\.so$$\n' > .rpmhome/.rpmmacros
+	@HOME=$(CURDIR)/.rpmhome fpm --force -s dir -t rpm -n $(APP_NAME) -v $(version) --iteration $(release) \
 		--rpm-os linux \
 		--rpm-compression xzmt \
 		--architecture $(RPM_ARCH) \
@@ -684,7 +686,7 @@ package-rpm : clean-packaging
 		opt/$(APP_NAME) usr/share/applications usr/share/icons
 	@rm -f .rpm-post-install.sh .rpm-post-remove.sh
 	@echo ">>> [RPM] Done: $(APP_NAME)-$(version)-$(release).$(RPM_ARCH).rpm"
-	@rm -rf rpm_build
+	@rm -rf rpm_build .rpmhome
 
 # AppImage runtime 文件（用于离线构建）
 APPIMAGE_RUNTIME_x86_64 := $(CURDIR)/assets/appimage-runtime/runtime-x86_64
