@@ -13,68 +13,70 @@ namespace Vantage.WinUpdater
         private const string BrowserExe = "vantage.exe";
         private const string UninstallKey = @"Software\Microsoft\Windows\CurrentVersion\Uninstall";
 
-        public static string Locate(Config cfg)
+        public static string Locate(Config cfg, string preferredPath = null)
         {
-            // 1) winupdater sits inside <install dir>\winupdater, so the
+            // 1) Path handed over by the parent process. Needed after the
+            //    updater relaunches itself from the %APPDATA% copy: there the
+            //    "../vantage.exe" shortcut no longer works.
+            if (IsInstallRootExe(preferredPath))
+                return preferredPath;
+
+            // 2) winupdater sits inside <install dir>\winupdater, so the
             //    browser is one level up. Most reliable source.
             string sibling = Path.GetFullPath(Path.Combine(Native.BaseDir, "..", BrowserExe));
             if (File.Exists(sibling))
                 return sibling;
 
-            // 2) path remembered in the ini (may have been picked on an
-            //    older version of the updater)
-            string saved = cfg.GetBrowserPath();
-            if (!string.IsNullOrEmpty(saved) && File.Exists(saved))
-                return saved;
-
-            // 3) Uninstall registry keys. Try the exact key first, then
-            //    enumerate versioned keys ("Vantage 153.0.3 (x86_64 zh-CN)").
-            string found = ReadInstallLocation(RegistryHive.LocalMachine, RegistryView.Registry64, "Vantage")
-                        ?? ReadInstallLocation(RegistryHive.LocalMachine, RegistryView.Registry32, "Vantage")
-                        ?? ReadInstallLocation(RegistryHive.CurrentUser, RegistryView.Registry64, "Vantage")
-                        ?? ReadInstallLocation(RegistryHive.CurrentUser, RegistryView.Registry32, "Vantage");
-
-            if (string.IsNullOrEmpty(found))
-                found = EnumerateUninstall(RegistryHive.LocalMachine, RegistryView.Registry64)
-                     ?? EnumerateUninstall(RegistryHive.LocalMachine, RegistryView.Registry32)
-                     ?? EnumerateUninstall(RegistryHive.CurrentUser, RegistryView.Registry64)
-                     ?? EnumerateUninstall(RegistryHive.CurrentUser, RegistryView.Registry32);
-
-            if (!string.IsNullOrEmpty(found))
+            // 3) Uninstall registry keys ("Vantage 153.7.0-1 (x86_64 zh-CN)").
+            //    Old entries are never cleaned up reliably, so collect every
+            //    real installation and pick the newest one instead of taking
+            //    the first match (which used to be a stale 153.1.0-1 install
+            //    and made the updater reinstall over and over).
+            string installed = FindNewestInstalled();
+            if (!string.IsNullOrEmpty(installed))
             {
-                try { cfg.SetBrowserPath(found); }
+                try { cfg.SetBrowserPath(installed); }
                 catch { }
-                return found;
+                return installed;
             }
 
-            // 4) last resort: default install location
+            // 4) Path remembered in the ini (may have been picked on an older
+            //    version, so validate it before trusting it).
+            string saved = cfg.GetBrowserPath();
+            if (IsInstallRootExe(saved))
+                return saved;
+
+            // 5) last resort: default install location
             string fallback = Path.Combine(Native.ProgramW6432, "Vantage Browser", BrowserExe);
             return File.Exists(fallback) ? fallback : null;
         }
 
-        private static string ReadInstallLocation(RegistryHive hive, RegistryView view, string keyName)
+        /// <summary>
+        /// True when the path points at a vantage.exe inside a real
+        /// installation (an install root always contains application.ini).
+        /// Filters out stale copies left behind by old installers.
+        /// </summary>
+        private static bool IsInstallRootExe(string path)
         {
-            try
-            {
-                using (var baseKey = RegistryKey.OpenBaseKey(hive, view))
-                using (var key = baseKey.OpenSubKey(UninstallKey + "\\" + keyName))
-                {
-                    if (key == null)
-                        return null;
-                    string dir = key.GetValue("InstallLocation") as string;
-                    if (string.IsNullOrEmpty(dir))
-                        return null;
-                    string exe = Path.Combine(dir, BrowserExe);
-                    return File.Exists(exe) ? exe : null;
-                }
-            }
-            catch
-            {
-                return null;
-            }
+            if (string.IsNullOrEmpty(path) || !File.Exists(path))
+                return false;
+            string dir = Path.GetDirectoryName(path);
+            if (string.IsNullOrEmpty(dir))
+                return false;
+            return File.Exists(Path.Combine(dir, "application.ini"));
         }
 
-        private static string EnumerateUninstall(RegistryHive hive, RegistryView view)
+        private static List<string> RegistryCandidates()
+        {
+            var result = new List<string>();
+            CollectRegistryCandidates(RegistryHive.LocalMachine, RegistryView.Registry64, result);
+            CollectRegistryCandidates(RegistryHive.LocalMachine, RegistryView.Registry32, result);
+            CollectRegistryCandidates(RegistryHive.CurrentUser, RegistryView.Registry64, result);
+            CollectRegistryCandidates(RegistryHive.CurrentUser, RegistryView.Registry32, result);
+            return result;
+        }
+
+        private static void CollectRegistryCandidates(RegistryHive hive, RegistryView view, List<string> result)
         {
             try
             {
@@ -82,7 +84,7 @@ namespace Vantage.WinUpdater
                 using (var root = baseKey.OpenSubKey(UninstallKey))
                 {
                     if (root == null)
-                        return null;
+                        return;
 
                     foreach (string name in root.GetSubKeyNames())
                     {
@@ -93,12 +95,33 @@ namespace Vantage.WinUpdater
                         {
                             if (key == null)
                                 continue;
+
+                            // Never treat the updater's own Add/Remove entry
+                            // as a browser installation.
+                            string displayName = key.GetValue("DisplayName") as string;
+                            if (!string.IsNullOrEmpty(displayName) &&
+                                displayName.IndexOf("WinUpdater", StringComparison.OrdinalIgnoreCase) >= 0)
+                                continue;
+
                             string dir = key.GetValue("InstallLocation") as string;
                             if (string.IsNullOrEmpty(dir))
                                 continue;
+
                             string exe = Path.Combine(dir, BrowserExe);
-                            if (File.Exists(exe))
-                                return exe;
+                            if (!IsInstallRootExe(exe))
+                                continue;
+
+                            bool duplicate = false;
+                            foreach (string existing in result)
+                            {
+                                if (string.Equals(existing, exe, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    duplicate = true;
+                                    break;
+                                }
+                            }
+                            if (!duplicate)
+                                result.Add(exe);
                         }
                     }
                 }
@@ -107,7 +130,40 @@ namespace Vantage.WinUpdater
             {
                 // ignore and try the next registry view
             }
-            return null;
+        }
+
+        private static string FindNewestInstalled()
+        {
+            string best = null;
+            var bestVersion = new List<int>();
+
+            foreach (string candidate in RegistryCandidates())
+            {
+                string version = GetVersion(candidate);
+                Diagnostics.Write("registry candidate=" + candidate + " version=" + version);
+
+                var parsed = SplitVersion(version);
+                if (best == null || CompareVersions(parsed, bestVersion) > 0)
+                {
+                    best = candidate;
+                    bestVersion = parsed;
+                }
+            }
+
+            return best;
+        }
+
+        private static int CompareVersions(List<int> left, List<int> right)
+        {
+            int count = Math.Max(left.Count, right.Count);
+            for (int i = 0; i < count; i++)
+            {
+                int a = i < left.Count ? left[i] : 0;
+                int b = i < right.Count ? right[i] : 0;
+                if (a != b)
+                    return a < b ? -1 : 1;
+            }
+            return 0;
         }
 
         /// <summary>
@@ -122,6 +178,16 @@ namespace Vantage.WinUpdater
 
             try
             {
+                // The backup is the pre-update executable. When the browser
+                // exe is present the install/update finished and only the
+                // cleanup was interrupted — restoring would downgrade it,
+                // which used to make the updater report an ancient version.
+                if (File.Exists(browserPath))
+                {
+                    File.Delete(backup);
+                    return true;
+                }
+
                 File.Copy(backup, browserPath, true);
                 File.Delete(backup);
                 return true;

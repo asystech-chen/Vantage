@@ -19,6 +19,7 @@ namespace Vantage.WinUpdater
         public bool Quiet;
         public bool Elevated;
         public bool Restart;
+        public string BrowserPath;
         public string[] RawArguments = new string[0];
 
         public static Options Parse(string[] args)
@@ -37,6 +38,18 @@ namespace Vantage.WinUpdater
                     case "/quiet": options.Quiet = true; break;
                     case "/elevated": options.Elevated = true; break;
                     case "/restart": options.Restart = true; break;
+                    default:
+                        // Internal hand-off used when the updater relaunches
+                        // itself from the %APPDATA% copy: keep the browser path
+                        // that was already resolved by the parent process.
+                        if (!string.IsNullOrEmpty(argument) &&
+                            argument.StartsWith("/BrowserPath=", StringComparison.OrdinalIgnoreCase))
+                        {
+                            string value = argument.Substring("/BrowserPath=".Length).Trim().Trim('"');
+                            if (value.Length > 0)
+                                options.BrowserPath = value;
+                        }
+                        break;
                 }
             }
 
@@ -78,7 +91,11 @@ namespace Vantage.WinUpdater
             if (options.CreateTask || options.RemoveTask)
                 return RunTaskCommand(options, config);
 
-            string browserPath = Browser.Locate(config);
+            string browserPath = null;
+            if (!string.IsNullOrEmpty(options.BrowserPath) && File.Exists(options.BrowserPath))
+                browserPath = options.BrowserPath;
+            if (browserPath == null)
+                browserPath = Browser.Locate(config);
             if (browserPath == null)
             {
                 string message = "Could not find the browser path.";
@@ -112,8 +129,8 @@ namespace Vantage.WinUpdater
 
                 if (!owned)
                 {
-                    if (!options.Scheduled)
-                        TemporaryBalloon.Show("Vantage WinUpdater", "Vantage WinUpdater is already running.");
+                    // Another instance owns this update cycle. This is not an
+                    // error, so stay silent (notifications are error-only).
                     return 0;
                 }
 
@@ -264,7 +281,16 @@ namespace Vantage.WinUpdater
                 string destination = Path.Combine(appData, Path.GetFileName(Native.ExePath));
                 File.Copy(Native.ExePath, destination, true);
 
-                var psi = new ProcessStartInfo(destination, options.RebuildArguments())
+                // Hand the already resolved browser path to the relaunched
+                // process: from %APPDATA% the "..\vantage.exe" shortcut no
+                // longer works and re-resolving through the registry may pick
+                // a stale leftover installation.
+                string arguments = options.RebuildArguments();
+                if (arguments.Length > 0)
+                    arguments += " ";
+                arguments += "/BrowserPath=\"" + browserPath + "\"";
+
+                var psi = new ProcessStartInfo(destination, arguments)
                 {
                     UseShellExecute = true,
                     WorkingDirectory = appData

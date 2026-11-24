@@ -87,9 +87,8 @@ namespace Vantage.WinUpdater
                 return 0;
             }
 
+            // Normal flow stays silent: only the tray tooltip is updated.
             Status("New version " + release.Version + " available.");
-            if (_scheduled)
-                _tray.ShowIcon();
 
             // Unique final name per run: a leftover stalled download (or an
             // antivirus scanner) may hold the canonical file, and renaming
@@ -174,6 +173,14 @@ namespace Vantage.WinUpdater
 
         private int Success()
         {
+            // Sanity check: never report success when the exe on disk is not
+            // the version we just installed (wrong install dir, locked file,
+            // leftovers). This is an error and is reported as such.
+            string installed = Browser.GetVersion(_browserPath);
+            if (!string.IsNullOrEmpty(installed) && !SameVersion(installed, _newVersion))
+                return Fail("Vantage was updated, but " + _browserPath +
+                            " is still version " + installed + " instead of " + _newVersion + ".");
+
             _cfg.SetLog("LastUpdateTo", _newVersion);
             _cfg.SetLog("LastUpdateFrom", _currentVersion);
             _cfg.SetLastResult("Vantage has been updated.");
@@ -181,12 +188,8 @@ namespace Vantage.WinUpdater
 
             Status("Vantage has been updated to " + _newVersion + ".");
 
-            // Show the result, then exit in both interactive and scheduled
-            // mode. Keep the icon alive long enough for the balloon to be
-            // visible before the process disappears.
-            _tray.Notify("Vantage WinUpdater",
-                "Vantage has been updated to " + _newVersion + ".", 8000);
-            Thread.Sleep(8000);
+            // Silent finish: notifications are error-only, so the normal
+            // check/download/install flow never shows a balloon.
             return 0;
         }
 
@@ -224,6 +227,24 @@ namespace Vantage.WinUpdater
                 if (updated)
                     Native.TryDelete(_setupFile);
             }
+        }
+
+        private static bool SameVersion(string leftText, string rightText)
+        {
+            var left = Browser.SplitVersion(leftText);
+            var right = Browser.SplitVersion(rightText);
+            if (left.Count == 0 || right.Count == 0)
+                return string.Equals(leftText, rightText, StringComparison.OrdinalIgnoreCase);
+
+            int count = Math.Max(left.Count, right.Count);
+            for (int i = 0; i < count; i++)
+            {
+                int a = i < left.Count ? left[i] : 0;
+                int b = i < right.Count ? right[i] : 0;
+                if (a != b)
+                    return false;
+            }
+            return true;
         }
 
         private static bool IsNewer(string candidate, string current)

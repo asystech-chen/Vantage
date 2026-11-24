@@ -9,6 +9,15 @@ AutoHotkey-compiled executable used to trigger.
 
 1. Downloads `vd.json` from `asystech.cn/vantage/vd.json`
 2. Compares the advertised version with the installed `vantage.exe`
+   - The version comes from the `ProductVersion` resource of `vantage.exe`
+     (`153.7.0-1`); a leftover `vantage.exe.wubak` is restored only when the
+     browser executable is missing, so an interrupted cleanup can never
+     downgrade a working install
+   - The browser is located by: the path handed over when the updater
+     relaunches itself from `%APPDATA%`, `..\vantage.exe` next to the
+     updater, then all `Uninstall` registry entries that still contain a real
+     installation (`application.ini` present) — the newest version wins, so
+     stale 153.1.0-1 leftovers are ignored
 3. If a newer version is found: downloads the installer, verifies its SHA-256,
    waits for the browser to close, then runs `vantage-setup.exe /S`
    - Large files are fetched with HTTP Range segments over 8 parallel
@@ -20,14 +29,15 @@ There is no window. The updater lives in the notification area:
 
 - Hover the tray icon to see the current status / progress
 - Right-click → **Check for updates** or **Exit**
-- Balloon notifications announce new versions, download results and errors
+- Balloon notifications are error-only: checking, downloading and installing
+  never show a balloon
 
 The updater is one-shot: it checks once and exits. With no update it exits
 silently. The normal flow (new version found, downloading, installing) shows
-no balloons — only the tray tooltip changes. After a successful update or an
-error it shows a result balloon, waits a few seconds, and exits. Scheduled
-runs stay invisible until a new version is found and never show dialogs, but
-errors are still reported.
+no balloons — only the tray tooltip changes — and a successful update also
+finishes silently. Only errors show a balloon, wait a few seconds, and exit.
+Scheduled runs stay completely invisible (no tray icon, no dialogs); errors
+are still reported.
 
 If the per-user scheduled task is missing, any non-portable run registers it
 again (the installer already does this through `/CreateTask`). When the
@@ -72,7 +82,7 @@ Threads=8
 
 | Argument | Behaviour |
 |---|---|
-| *(none)* | Interactive: tray icon, immediate check, then exit (silent when no update, balloon on success/error) |
+| *(none)* | Interactive: tray icon, immediate check, then exit (silent when no update or after success, balloon on errors only) |
 | `/Scheduled` | Silent run for Task Scheduler; exits when finished |
 | `/CreateTask` | Registers the per-user scheduled task and exits |
 | `/RemoveTask` | Removes the per-user scheduled task and exits |

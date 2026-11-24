@@ -248,7 +248,13 @@ package :
 	done; \
 	if [ -n "$(WIN_VARIANT)" ] && [ -f winupdater/Vantage-WinUpdater.exe ]; then \
 	  echo ">>> Injecting WinUpdater into dist for NSIS installer..."; \
+	  WINUPD_SIZE=$$(stat -c%s winupdater/Vantage-WinUpdater.exe); \
+	  if [ "$$WINUPD_SIZE" -gt 600000 ]; then \
+	    echo "❌ winupdater/Vantage-WinUpdater.exe 是 $$WINUPD_SIZE 字节，疑似旧 AHK 版（C# 版约 330 KB），拒绝打包" >&2; \
+	    exit 1; \
+	  fi; \
 	  mkdir -p $$OBJDIR/dist/bin/winupdater && \
+	  rm -f $$OBJDIR/dist/bin/winupdater/*.ps1 && \
 	  cp winupdater/Vantage-WinUpdater.exe \
 	     winupdater/Vantage-WinUpdater.ico \
 	     $$OBJDIR/dist/bin/winupdater/; \
@@ -294,6 +300,11 @@ package :
 	    ./scripts/bundle-vcrt.sh $(APP_NAME)-portable/$(APP_NAME)/ 2>&1 || true; \
 	    echo ">>> Bundling WinUpdater..."; \
 	    if [ -f winupdater/Vantage-WinUpdater.exe ]; then \
+	      WINUPD_SIZE=$$(stat -c%s winupdater/Vantage-WinUpdater.exe); \
+	      if [ "$$WINUPD_SIZE" -gt 600000 ]; then \
+	        echo "❌ winupdater/Vantage-WinUpdater.exe 是 $$WINUPD_SIZE 字节，疑似旧 AHK 版（C# 版约 330 KB），拒绝打包" >&2; \
+	        exit 1; \
+	      fi; \
 	      mkdir -p $(APP_NAME)-portable/$(APP_NAME)/winupdater; \
 	      cp winupdater/Vantage-WinUpdater.exe $(APP_NAME)-portable/$(APP_NAME)/winupdater/; \
 	      cp winupdater/Vantage-WinUpdater.ico $(APP_NAME)-portable/$(APP_NAME)/winupdater/; \
